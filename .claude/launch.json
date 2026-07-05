@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-history",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8743", "--directory", "history"],
+      "port": 8743
+    }
+  ]
+}
