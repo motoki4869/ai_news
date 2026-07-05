@@ -488,7 +488,11 @@ footer .logo {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .nav-links { display: none; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links { gap: 8px; }
+  .nav-cta { font-size: 0.72rem; padding: 4px 10px !important; white-space: nowrap; }
+  nav { padding: 12px 14px; }
+  .nav-logo { font-size: 0.85rem; }
   .timeline::before { left: 18px; }
   .tl-item, .tl-item:nth-child(odd), .tl-item:nth-child(even) {
     width: 100%;
@@ -515,8 +519,8 @@ footer .logo {
     <a href="#dl">深層学習</a>
     <a href="#gen">生成AI</a>
     <a href="#future">未来</a>
-    <a href="generative.html" style="color: var(--magenta); border: 1px solid rgba(255,46,230,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(255,46,230,0.06);">生成AI詳細 ▶</a>
-    <a href="news.html" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
+    <a href="generative.html" class="nav-cta" style="color: var(--magenta); border: 1px solid rgba(255,46,230,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(255,46,230,0.06);">生成AI詳細 ▶</a>
+    <a href="news.html" class="nav-cta" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
   </div>
 </nav>
 
