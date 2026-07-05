@@ -98,6 +98,34 @@ nav {
 
 .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 12px rgba(0,229,255,0.7); }
 
+.nav-search {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.nav-search:focus { border-color: rgba(0,229,255,0.6); box-shadow: 0 0 14px rgba(0,229,255,0.25); }
+.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+
+#search-count {
+  display: none;
+  position: fixed;
+  top: 64px; right: 32px; z-index: 99;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--green);
+  background: rgba(5,6,15,0.85);
+  border: 1px solid rgba(0,255,163,0.35);
+  border-radius: 999px;
+  padding: 3px 14px;
+}
+
 /* ===== Hero ===== */
 .hero {
   min-height: 100vh;
@@ -360,6 +388,23 @@ nav {
 .tag-green { color: var(--green); background: rgba(0,255,163,0.07); border: 1px solid rgba(0,255,163,0.3); }
 .tag-amber { color: var(--amber); background: rgba(255,181,71,0.07); border: 1px solid rgba(255,181,71,0.3); }
 
+/* cross-page link inside timeline cards */
+.tl-link {
+  display: inline-block;
+  margin: 12px 0 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  border: 1px solid rgba(0,229,255,0.3);
+  background: rgba(0,229,255,0.05);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.tl-link:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); transform: translateY(-1px); }
+
 /* era dot colors */
 .era-dawn .tl-dot { border-color: var(--amber); box-shadow: 0 0 14px rgba(255,181,71,0.8); }
 .era-dawn .tl-year { color: var(--amber); }
@@ -493,6 +538,8 @@ footer .logo {
   .nav-cta { font-size: 0.72rem; padding: 4px 10px !important; white-space: nowrap; }
   nav { padding: 12px 14px; }
   .nav-logo { font-size: 0.85rem; }
+  .nav-search { width: 130px; font-size: 0.7rem; }
+  #search-count { right: 14px; }
   .timeline::before { left: 18px; }
   .tl-item, .tl-item:nth-child(odd), .tl-item:nth-child(even) {
     width: 100%;
@@ -522,7 +569,9 @@ footer .logo {
     <a href="generative.html" class="nav-cta" style="color: var(--magenta); border: 1px solid rgba(255,46,230,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(255,46,230,0.06);">生成AI詳細 ▶</a>
     <a href="news.html" class="nav-cta" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
   </div>
+  <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: モデル / 年 / 出来事">
 </nav>
+<span id="search-count"></span>
 
 <div class="content">
 
@@ -775,7 +824,7 @@ footer .logo {
           <div class="tl-year">2020</div>
           <h3>GPT-3 — 1750億パラメータの衝撃</h3>
           <p>OpenAIが発表した超大規模言語モデル。例を数個見せるだけで翻訳も要約もこなす「文脈内学習」能力を示し、スケーリング則の威力を決定づけた。</p>
-          <span class="tl-tag tag-magenta">LLM</span>
+          <span class="tl-tag tag-magenta">LLM</span><a class="tl-link" href="generative.html#y2020">2020年の詳細 →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -784,7 +833,7 @@ footer .logo {
           <div class="tl-year">2022</div>
           <h3>画像生成AIの爆発 — Stable Diffusion / Midjourney</h3>
           <p>拡散モデルによる画像生成が一般公開され、誰もが言葉から絵を生み出せるように。「生成AI」という言葉が一般社会に浸透し、クリエイティブの定義を揺さぶった。</p>
-          <span class="tl-tag tag-magenta">DIFFUSION</span>
+          <span class="tl-tag tag-magenta">DIFFUSION</span><a class="tl-link" href="generative.html#y2022">2022年の詳細 →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -793,7 +842,7 @@ footer .logo {
           <div class="tl-year">2022</div>
           <h3>ChatGPT — 史上最速で1億ユーザーへ</h3>
           <p>11月30日公開。わずか2ヶ月で月間ユーザー1億人に到達し、史上最速で普及したサービスとなった。AIとの対話が日常になり、世界中で「AIをどう使うか」が一斉に問われ始めた。</p>
-          <span class="tl-tag tag-magenta">CHATGPT</span>
+          <span class="tl-tag tag-magenta">CHATGPT</span><a class="tl-link" href="generative.html#y2022">2022年の詳細 →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -802,7 +851,7 @@ footer .logo {
           <div class="tl-year">2023</div>
           <h3>GPT-4 / Claude / Gemini — マルチモーダル競争</h3>
           <p>OpenAI、Anthropic、Googleが最先端モデルを次々投入。テキストに加え画像も理解するマルチモーダル化が進み、司法試験合格レベルの推論力が現実となった。</p>
-          <span class="tl-tag tag-magenta">MULTIMODAL</span>
+          <span class="tl-tag tag-magenta">MULTIMODAL</span><a class="tl-link" href="generative.html#y2023">2023年の詳細 →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -811,7 +860,7 @@ footer .logo {
           <div class="tl-year">2024</div>
           <h3>動画生成と推論モデル</h3>
           <p>Soraが言葉から高品質な動画を生成し、o1系の「考えてから答える」推論モデルが登場。ノーベル物理学賞・化学賞をAI研究者が受賞し、AIは科学の中心に躍り出た。</p>
-          <span class="tl-tag tag-magenta">REASONING</span>
+          <span class="tl-tag tag-magenta">REASONING</span><a class="tl-link" href="generative.html#y2024">2024年の詳細 →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -820,7 +869,7 @@ footer .logo {
           <div class="tl-year">2025</div>
           <h3>AIエージェントの時代へ</h3>
           <p>対話するだけでなく、コードを書き、ツールを操作し、複数ステップのタスクを自律的にこなすAIエージェントが実用化。人間とAIの協働が、働き方の新しい標準になりつつある。</p>
-          <span class="tl-tag tag-magenta">AGENTS</span>
+          <span class="tl-tag tag-magenta">AGENTS</span><a class="tl-link" href="generative.html#y2025">2025年の詳細 →</a><a class="tl-link" href="news.html#agent">関連ニュース →</a>
         </div>
       </div>
       <div class="tl-item">
@@ -829,7 +878,7 @@ footer .logo {
           <div class="tl-year">2026</div>
           <h3>Mythos級モデルと規制の時代</h3>
           <p>AnthropicがOpusの上位ティア「Mythos級」のClaude Fable 5を、OpenAIがGPT-5.6を投入。一方で米政府による輸出規制や限定提供も始まり、フロンティアAIは安全保障の対象となった。性能競争と統治の両立が新しい主題に。</p>
-          <span class="tl-tag tag-magenta">FRONTIER</span>
+          <span class="tl-tag tag-magenta">FRONTIER</span><a class="tl-link" href="generative.html#y2026">2026年の詳細 →</a><a class="tl-link" href="news.html#sovereign">関連ニュース →</a>
         </div>
       </div>
     </div>
@@ -990,6 +1039,35 @@ window.addEventListener('scroll', () => {
   const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById('progress').style.width = p + '%';
 }, { passive: true });
+
+/* ===== Keyword search ===== */
+const searchInput = document.getElementById('site-search');
+const searchCount = document.getElementById('search-count');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  let hits = 0;
+
+  document.querySelectorAll('.tl-item').forEach(item => {
+    const match = !q || item.textContent.toLowerCase().includes(q);
+    item.style.display = match ? '' : 'none';
+    if (match) {
+      hits++;
+      if (q) item.classList.add('visible');
+    }
+  });
+
+  // hide era sections that have no matching items
+  document.querySelectorAll('.section').forEach(sec => {
+    const items = sec.querySelectorAll('.tl-item');
+    if (!items.length) return;
+    const any = [...items].some(i => i.style.display !== 'none');
+    sec.style.display = (any || !q) ? '' : 'none';
+  });
+
+  searchCount.textContent = hits + '件ヒット';
+  searchCount.style.display = q ? 'block' : 'none';
+});
 </script>
 
 </body>

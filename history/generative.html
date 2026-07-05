@@ -77,6 +77,34 @@ nav {
 }
 .nav-links a:hover { color: var(--magenta); text-shadow: 0 0 12px rgba(255,46,230,0.7); }
 
+.nav-search {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+  background: rgba(255, 46, 230, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.nav-search:focus { border-color: rgba(255,46,230,0.6); box-shadow: 0 0 14px rgba(255,46,230,0.25); }
+.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+
+#search-count {
+  display: none;
+  position: fixed;
+  top: 64px; right: 32px; z-index: 99;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--green);
+  background: rgba(5,6,15,0.85);
+  border: 1px solid rgba(0,255,163,0.35);
+  border-radius: 999px;
+  padding: 3px 14px;
+}
+
 .back-btn {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem !important;
@@ -174,7 +202,7 @@ nav {
 .section-header p { color: var(--text-dim); max-width: 680px; margin: 14px auto 0; font-size: 0.92rem; }
 
 /* ===== Year timeline (vertical, single column) ===== */
-.year-block { margin-bottom: 64px; opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+.year-block { margin-bottom: 64px; opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; scroll-margin-top: 110px; }
 .year-block.visible { opacity: 1; transform: translateY(0); }
 
 .year-label {
@@ -225,6 +253,37 @@ nav {
 .chip-open { color: var(--cyan); background: rgba(0,229,255,0.07); border: 1px solid rgba(0,229,255,0.3); }
 .chip-media { color: var(--magenta); background: rgba(255,46,230,0.07); border: 1px solid rgba(255,46,230,0.3); }
 .chip-tech { color: var(--violet); background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); }
+
+.event-card .chip { cursor: pointer; transition: box-shadow 0.25s; }
+.event-card .chip:hover { box-shadow: 0 0 12px rgba(255,255,255,0.25); }
+
+/* ===== Filter bar ===== */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-top: 24px; width: 100%;
+}
+.filter-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em;
+  color: var(--text-dim); background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
+  padding: 6px 18px; cursor: pointer; transition: all 0.25s;
+}
+.filter-btn:hover { color: var(--text); border-color: rgba(255,46,230,0.5); }
+.filter-btn.active {
+  color: var(--magenta); border-color: rgba(255,46,230,0.6);
+  background: rgba(255,46,230,0.1); box-shadow: 0 0 14px rgba(255,46,230,0.25);
+}
+
+/* ===== Related-page link ===== */
+.rel-link {
+  display: inline-block; margin-top: 10px; margin-right: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  padding: 3px 11px; border-radius: 999px; letter-spacing: 0.08em;
+  text-decoration: none; color: var(--green);
+  background: rgba(0,255,163,0.07); border: 1px solid rgba(0,255,163,0.3);
+  transition: box-shadow 0.25s;
+}
+.rel-link:hover { box-shadow: 0 0 12px rgba(0,255,163,0.4); }
 
 /* ===== Lineage (model family) ===== */
 .lineage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
@@ -349,6 +408,8 @@ footer .logo {
   .nav-links a:not(.back-btn) { display: none; }
   .ctx-label { width: 105px; font-size: 0.62rem; }
   .ctx-val { width: 70px; font-size: 0.62rem; }
+  .nav-search { width: 130px; font-size: 0.7rem; }
+  #search-count { right: 14px; }
 }
 </style>
 </head>
@@ -368,7 +429,9 @@ footer .logo {
     <a href="news.html" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
     <a class="back-btn" href="index.html">← AI HISTORY</a>
   </div>
+  <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: モデル / 年 / 企業">
 </nav>
+<span id="search-count"></span>
 
 <div class="content">
 
@@ -410,11 +473,20 @@ footer .logo {
     <div class="section-header">
       <span class="era-chip">DEEP TIMELINE</span>
       <h2>年表 — モデルで振り返る生成AI史</h2>
-      <p>主要モデルのリリースを年ごとに整理。わずか6年の間に、何世代もの「革命」が積み重なったことがわかる。</p>
+      <p>主要モデルのリリースを年ごとに整理。わずか6年の間に、何世代もの「革命」が積み重なったことがわかる。カード内のタグをクリックしても絞り込みできる。</p>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-chip="">すべて</button>
+        <button class="filter-btn" data-chip="chip-openai">OpenAI</button>
+        <button class="filter-btn" data-chip="chip-anthropic">Anthropic</button>
+        <button class="filter-btn" data-chip="chip-google">Google</button>
+        <button class="filter-btn" data-chip="chip-open">オープンモデル</button>
+        <button class="filter-btn" data-chip="chip-media">メディア生成</button>
+        <button class="filter-btn" data-chip="chip-tech">技術</button>
+      </div>
     </div>
 
     <!-- 2020 -->
-    <div class="year-block">
+    <div class="year-block" id="y2020">
       <div class="year-label"><span class="yr">2020</span><span class="yr-sub">スケーリング則の証明</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -433,7 +505,7 @@ footer .logo {
     </div>
 
     <!-- 2021 -->
-    <div class="year-block">
+    <div class="year-block" id="y2021">
       <div class="year-label"><span class="yr">2021</span><span class="yr-sub">マルチモーダルへの助走</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -452,7 +524,7 @@ footer .logo {
     </div>
 
     <!-- 2022 -->
-    <div class="year-block">
+    <div class="year-block" id="y2022">
       <div class="year-label"><span class="yr">2022</span><span class="yr-sub">生成AIの一般化 — 運命の年</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -477,7 +549,7 @@ footer .logo {
     </div>
 
     <!-- 2023 -->
-    <div class="year-block">
+    <div class="year-block" id="y2023">
       <div class="year-label"><span class="yr">2023</span><span class="yr-sub">LLM戦国時代の開幕</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -508,7 +580,7 @@ footer .logo {
     </div>
 
     <!-- 2024 -->
-    <div class="year-block">
+    <div class="year-block" id="y2024">
       <div class="year-label"><span class="yr">2024</span><span class="yr-sub">マルチモーダルと「考えるAI」</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -551,7 +623,7 @@ footer .logo {
     </div>
 
     <!-- 2025 -->
-    <div class="year-block">
+    <div class="year-block" id="y2025">
       <div class="year-label"><span class="yr">2025</span><span class="yr-sub">効率化の衝撃とエージェント元年</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -588,13 +660,13 @@ footer .logo {
           <span class="month">2025 通年</span>
           <h3>MCP標準化とエージェントエコシステム</h3>
           <p>AIと外部ツールをつなぐ共通規格MCP(Model Context Protocol)が業界標準として普及。AIがブラウザ、IDE、業務システムを直接操作する基盤が整い、「対話するAI」から「働くAI」への転換が本格化した。</p>
-          <span class="chip chip-tech">MCP / AGENTS</span>
+          <span class="chip chip-tech">MCP / AGENTS</span><a class="rel-link" href="news.html#agent">関連ニュース →</a>
         </div>
       </div>
     </div>
 
     <!-- 2026 -->
-    <div class="year-block">
+    <div class="year-block" id="y2026">
       <div class="year-label"><span class="yr">2026</span><span class="yr-sub">Mythos級モデルと規制の時代</span></div>
       <div class="event-grid">
         <div class="event-card">
@@ -619,7 +691,7 @@ footer .logo {
           <span class="month">JUN 12–30, 2026</span>
           <h3>フロンティアAIに輸出規制</h3>
           <p>Fable 5公開直後、米政府が輸出規制を適用しAnthropicは一時アクセスを停止(6月30日に解除、7月1日から全世界で再提供)。6月26日公開のGPT-5.6(Sol / Terra / Luna)も政府の要請で約20社への限定提供からスタート。最先端モデルが安全保障の対象になる時代が現実になった。</p>
-          <span class="chip chip-openai">OpenAI</span><span class="chip chip-tech">REGULATION</span>
+          <span class="chip chip-openai">OpenAI</span><span class="chip chip-tech">REGULATION</span><a class="rel-link" href="news.html#sovereign">関連ニュース →</a>
         </div>
         <div class="event-card">
           <span class="month">JUN 30, 2026</span>
@@ -631,7 +703,7 @@ footer .logo {
           <span class="month">NOW — JUL 2026</span>
           <h3>自律エージェントの実用段階</h3>
           <p>計画を立て、複数のツールを操作し、長時間の業務を自律的に進めるAIエージェントが職場に浸透。新モデルの登場は数日単位となり、人間の役割は「作業する人」から「AIに方向を示し、成果を判断する人」へとシフトしつつある。次のフロンティアは科学的発見と物理世界(ロボティクス)だ。</p>
-          <span class="chip chip-tech">ONGOING</span>
+          <span class="chip chip-tech">ONGOING</span><a class="rel-link" href="news.html">最新トレンド全体 →</a>
         </div>
       </div>
     </div>
@@ -977,6 +1049,88 @@ window.addEventListener('scroll', () => {
   const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById('progress').style.width = p + '%';
 }, { passive: true });
+
+/* ===== Keyword search & company filter ===== */
+const searchInput = document.getElementById('site-search');
+const searchCount = document.getElementById('search-count');
+let activeChip = '';
+const lineageMap = {
+  'chip-openai': 'c-openai',
+  'chip-anthropic': 'c-anthropic',
+  'chip-google': 'c-google',
+  'chip-open': 'c-open'
+};
+
+function applyFilters() {
+  const q = searchInput.value.trim().toLowerCase();
+  const filtering = !!(q || activeChip);
+  let hits = 0;
+
+  document.querySelectorAll('.event-card').forEach(card => {
+    const tMatch = !q || card.textContent.toLowerCase().includes(q);
+    const cMatch = !activeChip || !!card.querySelector('.' + activeChip);
+    const show = tMatch && cMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) { hits++; if (filtering) card.classList.add('visible'); }
+  });
+
+  document.querySelectorAll('.lineage-card').forEach(card => {
+    const tMatch = !q || card.textContent.toLowerCase().includes(q);
+    const cMatch = !activeChip || card.classList.contains(lineageMap[activeChip] || '__none');
+    const show = tMatch && cMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) { hits++; if (filtering) card.classList.add('visible'); }
+  });
+
+  document.querySelectorAll('.tech-card').forEach(card => {
+    const show = (!q || card.textContent.toLowerCase().includes(q)) && !activeChip;
+    card.style.display = show ? '' : 'none';
+    if (show) { hits++; if (filtering) card.classList.add('visible'); }
+  });
+
+  // hide year blocks with no visible cards
+  document.querySelectorAll('.year-block').forEach(b => {
+    const any = [...b.querySelectorAll('.event-card')].some(c => c.style.display !== 'none');
+    b.style.display = (any || !filtering) ? '' : 'none';
+    if (any && filtering) b.classList.add('visible');
+  });
+
+  // hide sections with no visible cards
+  document.querySelectorAll('.section').forEach(sec => {
+    const cards = sec.querySelectorAll('.event-card, .lineage-card, .tech-card');
+    if (!cards.length) return;
+    const any = [...cards].some(c => c.style.display !== 'none');
+    sec.style.display = (any || !filtering) ? '' : 'none';
+  });
+
+  // context-window viz is not a card: hide it while filtering
+  document.getElementById('ctx-viz').style.display = filtering ? 'none' : '';
+
+  searchCount.textContent = hits + '件ヒット';
+  searchCount.style.display = filtering ? 'block' : 'none';
+
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.chip === activeChip));
+}
+
+searchInput.addEventListener('input', applyFilters);
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeChip = btn.dataset.chip;
+    applyFilters();
+  });
+});
+
+/* clicking a chip inside a card toggles that filter */
+document.querySelectorAll('.event-card .chip').forEach(chip => {
+  chip.title = 'クリックで絞り込み';
+  chip.addEventListener('click', () => {
+    const cls = [...chip.classList].find(c => c.startsWith('chip-'));
+    activeChip = (activeChip === cls) ? '' : cls;
+    applyFilters();
+  });
+});
 </script>
 
 </body>

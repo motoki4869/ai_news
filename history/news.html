@@ -77,6 +77,34 @@ nav {
 }
 .nav-links a:hover { color: var(--green); text-shadow: 0 0 12px rgba(0,255,163,0.7); }
 
+.nav-search {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+  background: rgba(0, 255, 163, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.nav-search:focus { border-color: rgba(0,255,163,0.6); box-shadow: 0 0 14px rgba(0,255,163,0.25); }
+.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+
+#search-count {
+  display: none;
+  position: fixed;
+  top: 98px; right: 32px; z-index: 99;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--green);
+  background: rgba(5,6,15,0.85);
+  border: 1px solid rgba(0,255,163,0.35);
+  border-radius: 999px;
+  padding: 3px 14px;
+}
+
 .back-btn {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem !important;
@@ -174,8 +202,40 @@ nav {
   color: var(--green);
 }
 
+/* ===== Quick filters ===== */
+.quick-filters {
+  margin-top: 30px;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; align-items: center;
+  max-width: 680px;
+}
+.qf-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  color: var(--text-dim); letter-spacing: 0.15em; margin-right: 4px;
+}
+.quick-filters button {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--green); background: rgba(0,255,163,0.06);
+  border: 1px solid rgba(0,255,163,0.3); border-radius: 999px;
+  padding: 5px 16px; cursor: pointer; transition: all 0.25s;
+}
+.quick-filters button:hover { box-shadow: 0 0 12px rgba(0,255,163,0.35); }
+.quick-filters button.active { color: var(--bg); background: var(--green); }
+.quick-filters .qf-clear { color: var(--text-dim); border-color: rgba(255,255,255,0.2); background: transparent; }
+
+/* ===== Related-page link ===== */
+.rel-link {
+  display: inline-block; align-self: flex-start; margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  padding: 3px 11px; border-radius: 999px; letter-spacing: 0.08em;
+  text-decoration: none; color: var(--magenta);
+  background: rgba(255,46,230,0.07); border: 1px solid rgba(255,46,230,0.3);
+  transition: box-shadow 0.25s;
+}
+.rel-link:hover { box-shadow: 0 0 12px rgba(255,46,230,0.4); }
+
 /* ===== Sections ===== */
-.section { max-width: 1100px; margin: 0 auto; padding: 70px 24px 10px; }
+.section { max-width: 1100px; margin: 0 auto; padding: 70px 24px 10px; scroll-margin-top: 40px; }
 
 .section-header { margin-bottom: 34px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 
@@ -314,7 +374,9 @@ footer .logo {
     <a href="#security">セキュリティ</a>
     <a class="back-btn" href="index.html">← AI HISTORY</a>
   </div>
+  <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: 企業 / 技術 / トピック">
 </nav>
+<span id="search-count"></span>
 
 <div class="ticker-wrap">
   <div class="ticker-label">BREAKING</div>
@@ -335,6 +397,18 @@ footer .logo {
       調査レポート15本を横断して抽出した直近のトレンドを、7つのテーマに整理してお届けする。
       <br><span class="src-note">&gt; source: ai_news/report/ — 15 reports analyzed</span>
     </p>
+    <div class="quick-filters">
+      <span class="qf-label">QUICK FILTER:</span>
+      <button data-q="OpenAI">OpenAI</button>
+      <button data-q="Anthropic">Anthropic</button>
+      <button data-q="Google">Google</button>
+      <button data-q="NVIDIA">NVIDIA</button>
+      <button data-q="NTT">NTT</button>
+      <button data-q="ソニー">ソニー</button>
+      <button data-q="金融">金融</button>
+      <button data-q="ロボット">ロボット</button>
+      <button class="qf-clear">✕ クリア</button>
+    </div>
   </header>
 
   <!-- ============ 1. AGENT ============ -->
@@ -344,6 +418,7 @@ footer .logo {
       <h2>エージェンティックAI — SaaSの次へ</h2>
       <span class="sec-line"></span>
       <p>2026年最大の構造転換。AIは「答えるツール」から「実行する主体」へ。ソフトウェア産業のビジネスモデルそのものが書き換わりつつある。</p>
+      <a class="rel-link" href="generative.html#y2025">背景: 年表 2025「エージェント元年」→</a>
     </div>
     <div class="news-grid">
       <div class="news-card">
@@ -440,6 +515,7 @@ footer .logo {
       <h2>フィジカルAI — 物理世界への進出</h2>
       <span class="sec-line"></span>
       <p>デジタル空間に閉じていた生成AIが、身体を持って現実世界に出てきた。ロボティクス、自動運転、世界基盤モデルの最前線。</p>
+      <a class="rel-link" href="generative.html#y2024">背景: 年表 2024「推論モデルの登場」→</a>
     </div>
     <div class="news-grid">
       <div class="news-card">
@@ -482,6 +558,7 @@ footer .logo {
       <h2>ソブリンAI — 国家戦略としてのAI</h2>
       <span class="sec-line"></span>
       <p>AIは国家の主権の問題になった。データ・計算資源・モデルを自国で持つ「ソブリンAI」を巡り、日欧が動く。</p>
+      <a class="rel-link" href="generative.html#y2026">背景: 年表 2026「Mythos級と規制」→</a>
     </div>
     <div class="news-grid">
       <div class="news-card">
@@ -500,6 +577,7 @@ footer .logo {
         <div class="kicker">GEOPOLITICS</div>
         <h3>フロンティアAIが安全保障の対象に — GPT-5.6公開制限</h3>
         <p>最先端モデルの能力が国家安全保障に直結する水準に達し、GPT-5.6は公開制限付きでのリリースに。OpenAIの「Frontier Governance Framework」や責任あるスケーリング政策(RSP)など、フロンティアAIのガバナンス枠組みが地政学の焦点となっている。</p>
+        <a class="rel-link" href="generative.html#y2026">この出来事を年表で見る →</a>
         <div class="src">Physical and Sovereign AI Trends / 自律型AIの技術と戦略</div>
       </div>
       <div class="news-card">
@@ -721,6 +799,47 @@ window.addEventListener('scroll', () => {
   const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById('progress').style.width = p + '%';
 }, { passive: true });
+
+/* ===== Keyword search & quick filters ===== */
+const searchInput = document.getElementById('site-search');
+const searchCount = document.getElementById('search-count');
+
+function applySearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  let hits = 0;
+
+  document.querySelectorAll('.news-card').forEach(card => {
+    const match = !q || card.textContent.toLowerCase().includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) { hits++; if (q) card.classList.add('visible'); }
+  });
+
+  // hide theme sections with no matching cards
+  document.querySelectorAll('.section').forEach(sec => {
+    const any = [...sec.querySelectorAll('.news-card')].some(c => c.style.display !== 'none');
+    sec.style.display = (any || !q) ? '' : 'none';
+  });
+
+  searchCount.textContent = hits + '件ヒット';
+  searchCount.style.display = q ? 'block' : 'none';
+
+  document.querySelectorAll('.quick-filters button[data-q]').forEach(b =>
+    b.classList.toggle('active', b.dataset.q.toLowerCase() === q));
+}
+
+searchInput.addEventListener('input', applySearch);
+
+document.querySelectorAll('.quick-filters button[data-q]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    searchInput.value = (searchInput.value === btn.dataset.q) ? '' : btn.dataset.q;
+    applySearch();
+  });
+});
+
+document.querySelector('.qf-clear').addEventListener('click', () => {
+  searchInput.value = '';
+  applySearch();
+});
 </script>
 
 </body>
