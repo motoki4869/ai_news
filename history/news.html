@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI NEWS FEED — 直近のAIトレンド</title>
+<meta name="description" content="調査レポート15本から抽出した、2026年時点の直近AIトレンド。エージェンティックAI、フィジカルAI、ソブリンAI、インフラ、経済・社会、セキュリティ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05060f;
+  --bg-2: #0a0d1f;
+  --cyan: #00e5ff;
+  --magenta: #ff2ee6;
+  --violet: #8b5cf6;
+  --green: #00ffa3;
+  --amber: #ffb547;
+  --coral: #ff7a5c;
+  --blue: #5c9dff;
+  --text: #e6ecff;
+  --text-dim: #8a94b8;
+  --card: rgba(20, 25, 55, 0.55);
+  --border: rgba(0, 255, 163, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+#neural-bg { position: fixed; inset: 0; z-index: 0; opacity: 0.45; }
+
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 255, 163, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 163, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 75%);
+}
+
+.content { position: relative; z-index: 2; }
+
+/* ===== Nav ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(5, 6, 15, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links { display: flex; gap: 24px; align-items: center; }
+
+.nav-links a {
+  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
+  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
+}
+.nav-links a:hover { color: var(--green); text-shadow: 0 0 12px rgba(0,255,163,0.7); }
+
+.back-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem !important;
+  color: var(--cyan) !important;
+  border: 1px solid rgba(0,229,255,0.35);
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(0,229,255,0.06);
+}
+.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
+
+/* ===== Ticker ===== */
+.ticker-wrap {
+  position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+  background: rgba(0, 255, 163, 0.06);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  height: 34px;
+  display: flex; align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.ticker-label {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.15em;
+  color: var(--bg);
+  background: var(--green);
+  padding: 2px 14px;
+  margin-left: 0;
+  height: 100%;
+  display: flex; align-items: center;
+  box-shadow: 0 0 18px rgba(0,255,163,0.5);
+}
+
+.ticker {
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--green);
+  animation: ticker-scroll 60s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 62vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 150px 24px 50px; position: relative;
+}
+
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+  color: var(--green);
+  border: 1px solid rgba(0,255,163,0.4); border-radius: 999px;
+  padding: 6px 20px; margin-bottom: 28px;
+  background: rgba(0,255,163,0.06);
+  animation: pulse-border 3s ease-in-out infinite;
+}
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,255,163,0.25); }
+  50% { box-shadow: 0 0 22px rgba(0,255,163,0.55); }
+}
+
+.hero h1 {
+  font-family: 'Orbitron', sans-serif; font-weight: 800;
+  font-size: clamp(2rem, 6.5vw, 4.6rem);
+  letter-spacing: 0.1em; line-height: 1.15;
+  background: linear-gradient(120deg, var(--green) 0%, var(--cyan) 55%, var(--violet) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero h2 {
+  margin-top: 16px; font-weight: 300;
+  font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+  color: var(--text-dim); letter-spacing: 0.3em;
+}
+
+.hero-desc { margin-top: 28px; max-width: 680px; color: var(--text-dim); font-size: 0.92rem; }
+
+.hero-desc .src-note {
+  display: inline-block; margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--green);
+}
+
+/* ===== Sections ===== */
+.section { max-width: 1100px; margin: 0 auto; padding: 70px 24px 10px; }
+
+.section-header { margin-bottom: 34px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+
+.sec-no {
+  font-family: 'Orbitron', sans-serif; font-weight: 800;
+  font-size: 1.9rem; opacity: 0.9;
+}
+
+.section-header h2 {
+  font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.2rem, 3.2vw, 1.7rem); font-weight: 600; letter-spacing: 0.05em;
+}
+
+.section-header .sec-line { flex: 1; height: 1px; min-width: 60px; }
+
+.section-header p { width: 100%; color: var(--text-dim); font-size: 0.88rem; margin-top: 4px; }
+
+/* theme colors */
+.t-agent .sec-no, .t-agent h2 { color: var(--green); }
+.t-agent .sec-line { background: linear-gradient(90deg, rgba(0,255,163,0.6), transparent); }
+.t-japan .sec-no, .t-japan h2 { color: var(--amber); }
+.t-japan .sec-line { background: linear-gradient(90deg, rgba(255,181,71,0.6), transparent); }
+.t-physical .sec-no, .t-physical h2 { color: var(--violet); }
+.t-physical .sec-line { background: linear-gradient(90deg, rgba(139,92,246,0.6), transparent); }
+.t-sovereign .sec-no, .t-sovereign h2 { color: var(--blue); }
+.t-sovereign .sec-line { background: linear-gradient(90deg, rgba(92,157,255,0.6), transparent); }
+.t-infra .sec-no, .t-infra h2 { color: var(--cyan); }
+.t-infra .sec-line { background: linear-gradient(90deg, rgba(0,229,255,0.6), transparent); }
+.t-society .sec-no, .t-society h2 { color: var(--magenta); }
+.t-society .sec-line { background: linear-gradient(90deg, rgba(255,46,230,0.6), transparent); }
+.t-security .sec-no, .t-security h2 { color: var(--coral); }
+.t-security .sec-line { background: linear-gradient(90deg, rgba(255,122,92,0.6), transparent); }
+
+/* ===== News cards ===== */
+.news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; }
+
+.news-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 22px 24px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateY(36px);
+  display: flex; flex-direction: column;
+}
+.news-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.7s, transform 0.7s, box-shadow 0.3s; }
+.news-card:hover { transform: translateY(-4px); box-shadow: 0 8px 36px rgba(0,255,163,0.12); }
+
+.news-card .kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  letter-spacing: 0.15em; margin-bottom: 6px;
+}
+.t-agent .kicker { color: var(--green); }
+.t-japan .kicker { color: var(--amber); }
+.t-physical .kicker { color: #b79bff; }
+.t-sovereign .kicker { color: var(--blue); }
+.t-infra .kicker { color: var(--cyan); }
+.t-society .kicker { color: var(--magenta); }
+.t-security .kicker { color: var(--coral); }
+
+.news-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.55; }
+.news-card p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; flex: 1; }
+
+.src {
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.64rem;
+  color: var(--text-dim); letter-spacing: 0.04em;
+  border-top: 1px dashed rgba(255,255,255,0.12);
+  padding-top: 10px;
+}
+.src::before { content: '📄 SOURCE: '; color: rgba(255,255,255,0.35); }
+
+/* ===== CTA / footer ===== */
+.cta-back { text-align: center; padding: 80px 24px 100px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+.cta-back a {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 34px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.cta-back a.to-index {
+  color: var(--cyan);
+  border: 1px solid rgba(0,229,255,0.4);
+  background: rgba(0,229,255,0.05);
+}
+.cta-back a.to-index:hover { box-shadow: 0 0 26px rgba(0,229,255,0.4); transform: translateY(-2px); }
+.cta-back a.to-gen {
+  color: var(--magenta);
+  border: 1px solid rgba(255,46,230,0.4);
+  background: rgba(255,46,230,0.05);
+}
+.cta-back a.to-gen:hover { box-shadow: 0 0 26px rgba(255,46,230,0.4); transform: translateY(-2px); }
+
+footer {
+  border-top: 1px solid var(--border); padding: 34px 24px; text-align: center;
+  color: var(--text-dim); font-size: 0.75rem; letter-spacing: 0.1em;
+  background: rgba(5, 6, 15, 0.8);
+}
+footer .logo {
+  font-family: 'Orbitron', sans-serif; font-weight: 800; letter-spacing: 0.2em;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px; font-size: 0.95rem;
+}
+
+#progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--green), var(--cyan), var(--violet));
+  z-index: 200; box-shadow: 0 0 12px rgba(0,255,163,0.7);
+}
+
+@media (max-width: 768px) {
+  .nav-links a:not(.back-btn) { display: none; }
+  .hero { padding-top: 140px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<canvas id="neural-bg"></canvas>
+<div class="grid-overlay"></div>
+
+<nav>
+  <div class="nav-logo">AI NEWS FEED</div>
+  <div class="nav-links">
+    <a href="#agent">エージェント</a>
+    <a href="#japan">国内実装</a>
+    <a href="#physical">フィジカルAI</a>
+    <a href="#sovereign">ソブリンAI</a>
+    <a href="#infra">インフラ</a>
+    <a href="#society">経済・社会</a>
+    <a href="#security">セキュリティ</a>
+    <a class="back-btn" href="index.html">← AI HISTORY</a>
+  </div>
+</nav>
+
+<div class="ticker-wrap">
+  <div class="ticker-label">BREAKING</div>
+  <div class="ticker">
+    NTTデータ、150秒で商品企画を生成するAIエージェントサービスを提供開始 +++ Sony AIの卓球ロボット「Ace」がNature誌の表紙に — プロ選手からゲームを奪取 +++ オープンソースエージェント基盤「OpenClaw」が爆発的普及、AIエージェントのOSへ +++ 政府専用AI「源内」の実装が段階的に進行中 +++ SMBC、シンガポールに「kAIgentic」設立でAgentic AIを外販へ +++ データセンター電力、2030年に向け「ギガワットの天井」が最大の制約に +++ AI ASIC市場、2030年に1,500億ドル超へ — GPUからの移行が加速 +++ SaaSのID課金モデルが終焉へ、成果連動型への移行が加速 +++
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-tag">LIVE FEED — 2026.07 時点</div>
+    <h1>AI NEWS FEED</h1>
+    <h2>直近のAIトレンド — 7つの潮流</h2>
+    <p class="hero-desc">
+      いまAIの世界で何が起きているのか。
+      調査レポート15本を横断して抽出した直近のトレンドを、7つのテーマに整理してお届けする。
+      <br><span class="src-note">&gt; source: ai_news/report/ — 15 reports analyzed</span>
+    </p>
+  </header>
+
+  <!-- ============ 1. AGENT ============ -->
+  <section class="section t-agent" id="agent">
+    <div class="section-header">
+      <span class="sec-no">01</span>
+      <h2>エージェンティックAI — SaaSの次へ</h2>
+      <span class="sec-line"></span>
+      <p>2026年最大の構造転換。AIは「答えるツール」から「実行する主体」へ。ソフトウェア産業のビジネスモデルそのものが書き換わりつつある。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">PARADIGM SHIFT</div>
+        <h3>SaaSからAIエージェントへ — 「記録のシステム」から「行動のシステム」へ</h3>
+        <p>画面を操作する人間を前提としたSaaSから、エージェントが直接APIを叩いて業務を完遂する「Headless SaaS」への移行が進行。座席(ID)課金に固執する企業は粗利益率が最大40%低下し、解約率が2.3倍になるという分析も。課金の単位は「人」から「成果」へ。</p>
+        <div class="src">AIエージェントへのシフトとハードウェア需要</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">OPEN SOURCE</div>
+        <h3>「OpenClaw」の衝撃 — AIエージェントのOSが生まれた</h3>
+        <p>Clawdbot / Moltbotとして知られたプロジェクトが「OpenClaw」として爆発的に普及。Claude、GPT、DeepSeekなどのLLMを、ローカルや自社サーバー上で動く自律的な作業主体に変えるオーケストレーション層として、事実上の「エージェントOS」の地位を確立しつつある。セキュリティ面ではNVIDIA NemoClaw等のガードレールが並走する。</p>
+        <div class="src">AIエージェントへのシフトとハードウェア需要</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">COMMERCE</div>
+        <h3>エージェンティックコマース — 「検索して買う」の終わり</h3>
+        <p>ECはユーザーが検索・決済する「静的な購買」から、AIエージェントが意思決定・交渉・決済まで代行する時代へ。韓国ファッション大手ムシンサは「検索窓を必要としない先回り提案」を展開。決済・交渉のオープンプロトコル標準化が業界の主戦場になっている。</p>
+        <div class="src">エージェンティックAIトレンド分析 / AI産業シフトと未来戦略レポート</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">DEV TOOLS</div>
+        <h3>自律型AIソフトウェアエンジニアの実戦投入 — Devin vs Manus</h3>
+        <p>コード生成の次は「開発の自律遂行」。DevinやManusに代表される自律型AIエンジニアが実務に浸透し、開発ライフサイクル(SDLC)は人間による工程管理から、複数エージェントを指揮する「オーケストレーション」へ移行。MCPやA2Aなどエージェント間プロトコルの標準化も進む。</p>
+        <div class="src">自律型AIとフィジカルAIの動向 / 2026年AI技術の未来予測</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SELF-IMPROVEMENT</div>
+        <h3>自己改良するAI — Darwin Gödel Machineの実証</h3>
+        <p>AIが自らコードを書き、後継モデルを設計・評価する「自律的AI組織」の研究が加速。自己改良ループの数学的基礎や、進化的にエージェントを改良するDarwin Gödel Machine(DGM)の実証が進み、「AIがAIを開発する」時代のガバナンスが現実の論点になった。</p>
+        <div class="src">自律型AIの技術と戦略</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">OPERATIONS</div>
+        <h3>Zero-Human Ops — 人間ゼロのオペレーションが現実に</h3>
+        <p>ECの返品物流(リバースロジスティクス)の完全自律化、中堅企業向け融資審査、精密農業でのフェデレーテッドラーニング×ロボティクス連携など、「顧客接点からバックオフィスまで」の本格組み込みが進行。行政分野でも権限を限定した「Bounded Autonomy(境界付き自律性)」の枠組みで自律手続きが始まっている。</p>
+        <div class="src">エージェンティックAIトレンド分析</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. JAPAN ============ -->
+  <section class="section t-japan" id="japan">
+    <div class="section-header">
+      <span class="sec-no">02</span>
+      <h2>国内企業の実装最前線</h2>
+      <span class="sec-line"></span>
+      <p>PoC(実証実験)の時代は終わった。日本企業がAIエージェントを基幹業務に組み込む事例が続々と登場している。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">NTT DATA</div>
+        <h3>150秒で新商品を企画するAI — 商品開発の常識を破壊</h3>
+        <p>NTTデータが2026年7月に提供開始した商品企画特化型AIエージェントは、従来6〜9ヶ月かかっていた市場分析〜商品コンセプト立案をわずか150秒に短縮。「Smart AI Agent」基盤上のマルチエージェントとRAGの融合で、食品・飲料・消費財業界の企画業務を民主化しつつある。</p>
+        <div class="src">AIによる人材・調達・企業価値再定義</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">MEGABANKS</div>
+        <h3>みずほ「AI大部屋」とSMBC「kAIgentic」— メガバンクの攻防</h3>
+        <p>みずほはコンプラ・リスク管理・法務の専門AIエージェントが常駐し行員の問い合わせに24時間応答する「大部屋」構想を推進。対するSMBCは2025年後半にシンガポールで「kAIgentic Pte Ltd」を設立し、Agentic AIソリューションを金融業界全体へ外販する攻めの戦略に出た。</p>
+        <div class="src">自律型AIとフィジカルAI導入ロードマップ</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SOFTBANK</div>
+        <h3>AIスマホ — 「アプリ中心」から「インテント中心」へ</h3>
+        <p>ソフトバンクのAIスマホは、ユーザーがアプリを操作するのではなく、意図(インテント)を伝えればAIがアプリ横断で処理を完遂する設計へ再構築。端末内AIとクラウドAIのハイブリッド構成で、ポストスマートフォン時代のインターフェース覇権を狙う。AIスマートグラス市場の激変も並走する。</p>
+        <div class="src">AIによる人材・調達・企業価値再定義 / エージェンティックAIトレンド分析</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">MANUFACTURING</div>
+        <h3>トヨタ・Fanuc・ヤマト — 現場の自律化が進む</h3>
+        <p>トヨタは「カイゼン」のデジタル化でTPSを進化させ、FanucはNVIDIAと組み産業用ロボットを知能化、ヤマト運輸はラストワンマイル配送の自律化を推進。SCSKはデジタルツインで「Sim-to-Real」ギャップを克服する製造業DXを展開し、2030年問題(労働力不足)への物理的な解答を示しつつある。</p>
+        <div class="src">自律型AIとフィジカルAI導入ロードマップ / 自律型AIとフィジカルAIの動向</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">HEALTHCARE</div>
+        <h3>医療現場に浸透するアンビエント・インテリジェンス</h3>
+        <p>診察室の会話を自動で記録・構造化する仮想アシスタントなど、医療従事者の認知負荷を下げる「アンビエント(環境調和型)」AIの実装が転換点に。一方で医療データのガバナンスや制度面の課題も浮き彫りになっている。</p>
+        <div class="src">AIによる人材・調達・企業価値再定義</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SIEMENS</div>
+        <h3>シーメンスの自律型工場 — 物理世界のエージェント</h3>
+        <p>製造の巨人シーメンスは、物理世界で動く自律型エージェントによる「自律型工業システム」を推進。設計から製造ラインの制御までをAIが最適化する自律型工場は、製造業のパラダイムシフトの象徴となっている。</p>
+        <div class="src">AI産業シフトと未来戦略レポート</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. PHYSICAL ============ -->
+  <section class="section t-physical" id="physical">
+    <div class="section-header">
+      <span class="sec-no">03</span>
+      <h2>フィジカルAI — 物理世界への進出</h2>
+      <span class="sec-line"></span>
+      <p>デジタル空間に閉じていた生成AIが、身体を持って現実世界に出てきた。ロボティクス、自動運転、世界基盤モデルの最前線。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">SONY AI</div>
+        <h3>卓球AI「Ace」がNature表紙に — プロ級の身体性を実証</h3>
+        <p>2026年4月、Sony AIが開発したフィジカルAI「Ace」が科学誌Natureの表紙を飾った。THKと共同開発した8関節の高速ロボットアームとカメラネットワークで、エリート卓球選手5人中3人に勝利、プロ選手からも1ゲームを奪取。「反射神経型」エッジAIの到達点を示した。</p>
+        <div class="src">Physical and Sovereign AI Trends</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">HUMANOID</div>
+        <h3>純国産ヒューマノイドへ — ソニーら「KyoHA」設立</h3>
+        <p>ソニーは2025年、早稲田大学などと連携し純国産ヒューマノイドロボット開発を目指す「KyoHA(京都ヒューマノイドアソシエーション)」を設立。高精度部品とセンシングモジュールの供給でキープレイヤーの座を狙う。構造改革で得た資本をフィジカルAIに集中投資する戦略の中核だ。</p>
+        <div class="src">Physical and Sovereign AI Trends</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">NVIDIA</div>
+        <h3>NVIDIA Cosmos — 物理世界を「計算」する世界基盤モデル</h3>
+        <p>物理AI開発のための包括プラットフォーム。映像データから物理法則を学習した世界基盤モデル(WFM)により、物理現象を理解・予測・生成する。Cosmos Predict(物理シミュレーション)、Cosmos Reason(身体化された推論)、Cosmos Tokenizer(時空間圧縮)の3本柱でロボット学習の基盤となりつつある。</p>
+        <div class="src">フィジカルAIと推論時スケーリング</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">REASONING × ROBOTICS</div>
+        <h3>推論時スケーリングが物理世界へ — 「考えてから動く」ロボット</h3>
+        <p>LLMで実証された「推論時に計算を積むほど賢くなる」原理がロボティクスに波及。自動運転で因果推論を行うAlpamayo-R1、高速反応と熟慮を両立するFiS-VLA、行動前に世界モデル上で結果をシミュレーションする「Generate-then-Verify」ループなど、物理空間で思考する機械が現実になってきた。</p>
+        <div class="src">フィジカルAIと推論時スケーリング</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">ECONOMY</div>
+        <h3>エンボディドAIが製造・ロボティクス産業の経済を変える</h3>
+        <p>AI市場は「期待」から「実装・収益化」へ構造転換。インフラ投資(CapEx)のピークアウト後はROIの追求が主題となり、エンボディドAIによる製造現場の自動化が経済インパクトの中心に。産業用ロボットで強い日本企業の競争優位性が再評価されている。</p>
+        <div class="src">AI実装・収益化とロボティクス未来</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. SOVEREIGN ============ -->
+  <section class="section t-sovereign" id="sovereign">
+    <div class="section-header">
+      <span class="sec-no">04</span>
+      <h2>ソブリンAI — 国家戦略としてのAI</h2>
+      <span class="sec-line"></span>
+      <p>AIは国家の主権の問題になった。データ・計算資源・モデルを自国で持つ「ソブリンAI」を巡り、日欧が動く。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">GOV TECH</div>
+        <h3>政府専用AI「源内」— 日本のガバメントAIが始動</h3>
+        <p>デジタル庁を中心に政府専用AI「源内(げんない)」の整備が段階的に進行中。行政サービスの効率化と、公文書・機微データの海外流出リスク排除が狙い。国産LLM(NTTの「tsuzumi 2」、PFNらの「PLaMo 2.0 Prime」など)がデジタル庁に選定され、公共セクターのソブリンAI実装の象徴となっている。</p>
+        <div class="src">Physical and Sovereign AI Trends</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">NTT</div>
+        <h3>IOWN AI Fund — 「NVIDIAモデル」への挑戦</h3>
+        <p>NTTは光通信技術IOWNを核にAIエコシステムを構築するファンドを組成。電力を大量消費するGPU集中型データセンターに対し、光技術による低消費電力の「分散型光AIデータセンター」で対抗する構想だ。東京一極集中の限界を光通信で打破する「ワット・ビット連携」も進む。</p>
+        <div class="src">Physical and Sovereign AI Trends / AI浸透と社会基盤の未来</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">GEOPOLITICS</div>
+        <h3>フロンティアAIが安全保障の対象に — GPT-5.6公開制限</h3>
+        <p>最先端モデルの能力が国家安全保障に直結する水準に達し、GPT-5.6は公開制限付きでのリリースに。OpenAIの「Frontier Governance Framework」や責任あるスケーリング政策(RSP)など、フロンティアAIのガバナンス枠組みが地政学の焦点となっている。</p>
+        <div class="src">Physical and Sovereign AI Trends / 自律型AIの技術と戦略</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">MULTI-MODEL</div>
+        <h3>1つのモデルに依存しない — マルチモデル戦略の標準化</h3>
+        <p>地政学リスクや規制で特定モデルが使えなくなる事態に備え、企業はLLMルーター(Gateway)で複数モデルを使い分けるマルチモデル・アーキテクチャへ移行。用途とリスクに応じたトポロジー設計、長大な文脈を扱うContext Engineeringが新しい設計課題になっている。</p>
+        <div class="src">エージェンティックAIトレンド分析</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. INFRA ============ -->
+  <section class="section t-infra" id="infra">
+    <div class="section-header">
+      <span class="sec-no">05</span>
+      <h2>インフラ・半導体 — 物理的限界との戦い</h2>
+      <span class="sec-line"></span>
+      <p>AIの制約は資本からワット(電力)へ。データセンター、チップ、冷却——物理世界がAIの成長速度を決め始めた。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">ENERGY</div>
+        <h3>「ギガワットの天井」— 電力がAI最大の制約に</h3>
+        <p>データセンターの電力消費は2030年までに2023年比175%増(Goldman Sachs予測)。もはや資金ではなく「電力網への接続権」が最大の競争優位となる時代に突入した。原子力・再エネへの優先アクセス確保が、AI企業の経営アジェンダの最上位に上がっている。</p>
+        <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化とデータセンター課題レポート</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SEMICONDUCTOR</div>
+        <h3>GPUからASICへ — 推論の時代のチップ戦争</h3>
+        <p>学習中心から推論中心の時代に移り、汎用GPUより電力効率に優れるカスタムチップ(ASIC)への移行が加速。AI ASIC市場は約130億ドルから2030年に1,500億ドル超へ、年率約50%で成長する見通し。「メモリの壁」の克服と液冷への強制移行も並行して進む。</p>
+        <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化と経済・社会変革予測</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">DECENTRALIZE</div>
+        <h3>データセンターの地方分散 — 東京一極集中の限界</h3>
+        <p>電力リスクを抱える東京一極集中から、再エネの豊富な地方への分散配置へ。NTTのIOWN APN(オールフォトニクス・ネットワーク)が距離の壁を打破し、発電地に計算資源を置く「ワット・ビット連携」が現実解として浮上。経済安全保障の観点からソブリンクラウドの整備も進む。</p>
+        <div class="src">AI浸透と社会基盤の未来</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SUSTAINABILITY</div>
+        <h3>持続可能なAI — 環境負荷との両立を探る</h3>
+        <p>計算資源の急増に伴う電力消費・環境負荷が社会問題化し、モデルの小型化・蒸留、効率的な推論、液冷・廃熱利用などの「持続可能なAI」技術がトレンドに。AIの性能競争と持続可能性の両立が、2026年以降の技術開発の評価軸になりつつある。</p>
+        <div class="src">AI実装・収益化とロボティクス未来 / AI進化とデータセンター課題レポート</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. SOCIETY ============ -->
+  <section class="section t-society" id="society">
+    <div class="section-header">
+      <span class="sec-no">06</span>
+      <h2>経済・社会・働き方の再定義</h2>
+      <span class="sec-line"></span>
+      <p>AIの浸透は経済指標、雇用、マーケティング、調達の常識を根底から揺さぶっている。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">TALENT</div>
+        <h3>「人材」の再定義 — 実行する人から、意図を設計する人へ</h3>
+        <p>認知作業の多くをAIに外部化できるようになり、プロフェッショナルの価値は「実行スキル」から「意図の設計(何を、なぜやるかの定義)」へ移動。AIエージェントとの共生を前提とした職能再設計と全社リスキリングが、2026年の人事戦略の中心テーマとなった。</p>
+        <div class="src">AIによる人材・調達・企業価値再定義 / AI産業シフトと未来戦略レポート</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">SEARCH</div>
+        <h3>ゼロクリック検索の時代 — SEOからAEO・GEOへ</h3>
+        <p>ユーザーがAIの回答だけで完結しサイトを訪れない「ゼロクリック検索」が主流化し、検索トラフィックが消失。マーケティングはSEOから、AIに引用されるための回答エンジン最適化(AEO)・生成エンジン最適化(GEO)へ。文脈・構造・信頼が情報設計の三本柱になった。</p>
+        <div class="src">2026年AI技術の未来予測 / AI産業シフトと未来戦略レポート</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">PROCUREMENT</div>
+        <h3>「Wishful Software」— IT調達は成果連動型へ</h3>
+        <p>「こう動いてほしい」という希望を伝えればAIがソフトウェアを実装する時代になり、IT調達は仕様書ベースの一括契約から、成果に連動して支払う継続的ガバナンス型へ転換。調達部門の役割はベンダー管理から「AIという動的な知的財産を育てる」ことへ変わりつつある。</p>
+        <div class="src">AIによる人材・調達・企業価値再定義</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">ECONOMICS</div>
+        <h3>ハイパーデフレの経済学 — GDPが測れなくなる</h3>
+        <p>AIによって知的サービスの生産コストが急落する「ハイパーデフレ」が進行するという分析が登場。無料・超低価格で提供される価値がGDP統計に反映されず、経済指標の再定義が政策課題に。トランスフォーマー以降の次世代アーキテクチャ研究も、コスト構造をさらに変えようとしている。</p>
+        <div class="src">AI進化と経済・社会変革予測</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">WORKPLACE</div>
+        <h3>「監視社会」のパラドックス — 人間中心アプローチの模索</h3>
+        <p>AIエージェントとの協働が広がる一方、労働者には「AIに評価・監視される」心理的緊張が生まれている。デンソーテクノやWorkdayなどは人間中心(People-Centric)アプローチを掲げ、AIを人の能力拡張に振り向ける企業戦略を模索。共生の設計が競争力の分水嶺になる。</p>
+        <div class="src">AI浸透と社会基盤の未来</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. SECURITY ============ -->
+  <section class="section t-security" id="security">
+    <div class="section-header">
+      <span class="sec-no">07</span>
+      <h2>セキュリティ・ガバナンス</h2>
+      <span class="sec-line"></span>
+      <p>自律的に動くAIは、新しい種類の脅威と統治の課題を生む。信頼できるエージェントの条件とは。</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="kicker">THREAT</div>
+        <h3>Goal Hijacking — エージェント時代の新型攻撃</h3>
+        <p>プロンプトインジェクションの進化形として、エージェントの「目標」自体を乗っ取るGoal Hijackingが新たな脅威に。エージェントがツールや決済権限を持つ分、被害は従来のチャットボットと桁違いになる。A2A(エージェント間通信)プロトコルの安全性設計が急務となっている。</p>
+        <div class="src">自律型AIとフィジカルAI導入ロードマップ</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">MARKET</div>
+        <h3>サイバーセキュリティ市場、2035年へ向け構造転換</h3>
+        <p>自律型エージェントが攻撃・防御の双方に使われる時代に入り、セキュリティ市場は2035年に向けて大幅な拡大と構造転換が予測される。人間のアナリストによる監視から、防御側エージェントが攻撃側エージェントと対峙する「機械対機械」の構図へ移行しつつある。</p>
+        <div class="src">AI産業シフトと未来戦略レポート / AI進化とデータセンター課題レポート</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">TRANSPARENCY</div>
+        <h3>「思考が見えない」問題 — 解釈可能性研究が進展</h3>
+        <p>自律エージェントの意思決定プロセスの不透明性が実装の最大の障壁に。モデル内部の回路を解析するメカニスティック・インタープリタビリティ(機械論的解釈可能性)の研究が進み、EU AI Actや国内ガイドラインと合わせて「説明できるAI」への制度・技術の両輪が回り始めた。</p>
+        <div class="src">AI浸透と社会基盤の未来</div>
+      </div>
+      <div class="news-card">
+        <div class="kicker">IDENTITY</div>
+        <h3>エージェントに「身分証」を — 法的責任と認可の境界線</h3>
+        <p>人間の代わりに契約・決済まで行うエージェントには、アイデンティティ管理と権限の境界設計が不可欠に。「誰が委任し、どこまで許可し、失敗の責任を誰が負うのか」という法理的な整理と、自律性を段階的に許可するTiered Autonomy(段階的自律性)の枠組みづくりが進んでいる。</p>
+        <div class="src">自律型AIの技術と戦略 / 自律型AIとフィジカルAI導入ロードマップ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <div class="cta-back">
+    <a class="to-index" href="index.html">← AI HISTORY 全体年表</a>
+    <a class="to-gen" href="generative.html">生成AIの時代 詳細年表 →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="logo">AI NEWS FEED</div>
+  <div>COMPILED FROM 15 RESEARCH REPORTS · ai_news/report · 2026.07</div>
+</footer>
+
+<script>
+/* ===== Neural network background (green tint) ===== */
+const canvas = document.getElementById('neural-bg');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const NODE_COUNT = Math.min(90, Math.floor(window.innerWidth / 16));
+const COLORS = ['0,255,163', '0,229,255', '139,92,246', '255,181,71'];
+
+for (let i = 0; i < NODE_COUNT; i++) {
+  nodes.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 1.8 + 0.8,
+    c: COLORS[Math.floor(Math.random() * COLORS.length)]
+  });
+}
+
+const mouse = { x: -9999, y: -9999 };
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const LINK = 140;
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    a.x += a.vx; a.y += a.vy;
+    if (a.x < 0 || a.x > W) a.vx *= -1;
+    if (a.y < 0 || a.y > H) a.vy *= -1;
+    for (let j = i + 1; j < nodes.length; j++) {
+      const b = nodes[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < LINK) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${a.c},${(1 - d / LINK) * 0.2})`;
+        ctx.lineWidth = 0.6;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+    const mdx = a.x - mouse.x, mdy = a.y - mouse.y;
+    const md = Math.sqrt(mdx * mdx + mdy * mdy);
+    if (md < 180) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(0,255,163,${(1 - md / 180) * 0.4})`;
+      ctx.lineWidth = 0.8;
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(${a.c},0.85)`;
+    ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ===== Scroll reveal ===== */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.news-card').forEach(el => observer.observe(el));
+
+/* ===== Progress bar ===== */
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = p + '%';
+}, { passive: true });
+</script>
+
+</body>
+</html>

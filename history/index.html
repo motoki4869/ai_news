@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI HISTORY — 人工知能の歴史</title>
+<meta name="description" content="1950年代のチューリングテストから生成AI時代まで、人工知能70年の歴史をたどるインタラクティブ・タイムライン">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05060f;
+  --bg-2: #0a0d1f;
+  --cyan: #00e5ff;
+  --magenta: #ff2ee6;
+  --violet: #8b5cf6;
+  --green: #00ffa3;
+  --amber: #ffb547;
+  --text: #e6ecff;
+  --text-dim: #8a94b8;
+  --card: rgba(20, 25, 55, 0.55);
+  --border: rgba(0, 229, 255, 0.18);
+  --glow-cyan: 0 0 24px rgba(0, 229, 255, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+/* ===== Neural network canvas ===== */
+#neural-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+/* ===== Grid overlay ===== */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 75%);
+}
+
+.content { position: relative; z-index: 2; }
+
+/* ===== Nav ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(5, 6, 15, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links { display: flex; gap: 26px; }
+
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+
+.nav-links a:hover { color: var(--cyan); text-shadow: 0 0 12px rgba(0,229,255,0.7); }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 24px 60px;
+  position: relative;
+}
+
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--green);
+  border: 1px solid rgba(0, 255, 163, 0.35);
+  border-radius: 999px;
+  padding: 6px 20px;
+  margin-bottom: 28px;
+  background: rgba(0, 255, 163, 0.06);
+  animation: pulse-border 3s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,255,163,0.25); }
+  50% { box-shadow: 0 0 22px rgba(0,255,163,0.55); }
+}
+
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 45%, var(--magenta) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero h2 {
+  margin-top: 18px;
+  font-weight: 300;
+  font-size: clamp(1rem, 2.6vw, 1.5rem);
+  color: var(--text-dim);
+  letter-spacing: 0.35em;
+}
+
+.hero-desc {
+  margin-top: 30px;
+  max-width: 620px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+.typewriter {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyan);
+  margin-top: 34px;
+  font-size: 0.9rem;
+  min-height: 1.6em;
+}
+
+.typewriter::after {
+  content: '▊';
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  animation: float-hint 2.2s ease-in-out infinite;
+}
+
+@keyframes float-hint {
+  0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
+  50% { transform: translate(-50%, 10px); opacity: 1; }
+}
+
+/* ===== Stats bar ===== */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 6vw, 80px);
+  flex-wrap: wrap;
+  padding: 48px 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 13, 31, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.stat { text-align: center; }
+
+.stat-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  margin-top: 4px;
+}
+
+/* ===== Section headers ===== */
+.section { max-width: 1080px; margin: 0 auto; padding: 90px 24px 30px; }
+
+.section-header { text-align: center; margin-bottom: 60px; }
+
+.era-chip {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 5px 18px;
+  border-radius: 999px;
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.3rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.section-header p {
+  color: var(--text-dim);
+  max-width: 640px;
+  margin: 14px auto 0;
+  font-size: 0.92rem;
+}
+
+/* era accent colors */
+.era-dawn .era-chip { color: var(--amber); border: 1px solid rgba(255,181,71,0.4); background: rgba(255,181,71,0.07); }
+.era-dawn .section-header h2 { color: var(--amber); }
+.era-winter .era-chip { color: #7dd3fc; border: 1px solid rgba(125,211,252,0.4); background: rgba(125,211,252,0.07); }
+.era-winter .section-header h2 { color: #7dd3fc; }
+.era-ml .era-chip { color: var(--green); border: 1px solid rgba(0,255,163,0.4); background: rgba(0,255,163,0.07); }
+.era-ml .section-header h2 { color: var(--green); }
+.era-dl .era-chip { color: var(--violet); border: 1px solid rgba(139,92,246,0.4); background: rgba(139,92,246,0.07); }
+.era-dl .section-header h2 { color: var(--violet); }
+.era-gen .era-chip { color: var(--magenta); border: 1px solid rgba(255,46,230,0.4); background: rgba(255,46,230,0.07); }
+.era-gen .section-header h2 { color: var(--magenta); }
+
+/* ===== Timeline ===== */
+.timeline { position: relative; padding: 10px 0; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, var(--cyan) 8%, var(--violet) 55%, var(--magenta) 92%, transparent);
+  opacity: 0.5;
+}
+
+.tl-item {
+  position: relative;
+  width: 50%;
+  padding: 18px 48px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.tl-item.visible { opacity: 1; transform: translateY(0); }
+
+.tl-item:nth-child(odd) { left: 0; text-align: right; }
+.tl-item:nth-child(even) { left: 50%; text-align: left; }
+
+.tl-dot {
+  position: absolute;
+  top: 34px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--cyan);
+  box-shadow: 0 0 14px rgba(0,229,255,0.8);
+  z-index: 3;
+}
+
+.tl-item:nth-child(odd) .tl-dot { right: -8px; }
+.tl-item:nth-child(even) .tl-dot { left: -8px; }
+
+.tl-card {
+  display: inline-block;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 26px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  max-width: 100%;
+}
+
+.tl-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 229, 255, 0.55);
+  box-shadow: 0 8px 40px rgba(0, 229, 255, 0.15);
+}
+
+.tl-year {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+}
+
+.tl-card h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin: 6px 0 8px;
+  color: var(--text);
+}
+
+.tl-card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.75; }
+
+.tl-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+}
+
+/* tag color variants */
+.tag-cyan { color: var(--cyan); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.3); }
+.tag-magenta { color: var(--magenta); background: rgba(255,46,230,0.08); border: 1px solid rgba(255,46,230,0.3); }
+.tag-violet { color: #b79bff; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); }
+.tag-green { color: var(--green); background: rgba(0,255,163,0.07); border: 1px solid rgba(0,255,163,0.3); }
+.tag-amber { color: var(--amber); background: rgba(255,181,71,0.07); border: 1px solid rgba(255,181,71,0.3); }
+
+/* era dot colors */
+.era-dawn .tl-dot { border-color: var(--amber); box-shadow: 0 0 14px rgba(255,181,71,0.8); }
+.era-dawn .tl-year { color: var(--amber); }
+.era-winter .tl-dot { border-color: #7dd3fc; box-shadow: 0 0 14px rgba(125,211,252,0.8); }
+.era-winter .tl-year { color: #7dd3fc; }
+.era-ml .tl-dot { border-color: var(--green); box-shadow: 0 0 14px rgba(0,255,163,0.8); }
+.era-ml .tl-year { color: var(--green); }
+.era-dl .tl-dot { border-color: var(--violet); box-shadow: 0 0 14px rgba(139,92,246,0.8); }
+.era-dl .tl-year { color: #b79bff; }
+.era-gen .tl-dot { border-color: var(--magenta); box-shadow: 0 0 14px rgba(255,46,230,0.8); }
+.era-gen .tl-year { color: var(--magenta); }
+
+/* ===== Detail CTA button ===== */
+.detail-cta { text-align: center; padding: 44px 24px 10px; }
+
+.detail-cta a {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  color: var(--magenta);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255,46,230,0.45);
+  border-radius: 999px;
+  padding: 13px 36px;
+  background: rgba(255,46,230,0.06);
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+  animation: pulse-magenta 3s ease-in-out infinite;
+}
+
+.detail-cta a:hover {
+  transform: translateY(-3px);
+  background: rgba(255,46,230,0.14);
+  box-shadow: 0 0 30px rgba(255,46,230,0.45);
+}
+
+.detail-cta .cta-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+@keyframes pulse-magenta {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,46,230,0.2); }
+  50% { box-shadow: 0 0 24px rgba(255,46,230,0.5); }
+}
+
+/* ===== Winter banner ===== */
+.winter-banner {
+  max-width: 860px;
+  margin: 30px auto 0;
+  padding: 26px 32px;
+  border-radius: 14px;
+  border: 1px dashed rgba(125,211,252,0.4);
+  background: rgba(125,211,252,0.04);
+  text-align: center;
+  color: #a8d8f0;
+  font-size: 0.88rem;
+}
+
+.winter-banner .snow { font-size: 1.4rem; letter-spacing: 0.5em; }
+
+/* ===== Future section ===== */
+.future {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 90px 24px 110px;
+  text-align: center;
+}
+
+.future h2 {
+  font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 22px;
+}
+
+.future p { color: var(--text-dim); font-size: 0.95rem; max-width: 640px; margin: 0 auto 14px; }
+
+.future-cursor {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--green);
+  margin-top: 30px;
+  font-size: 0.95rem;
+}
+
+.future-cursor::after { content: '▊'; animation: blink 0.9s step-end infinite; }
+
+/* ===== Footer ===== */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 34px 24px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  background: rgba(5, 6, 15, 0.8);
+}
+
+footer .logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* ===== Progress bar ===== */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+  z-index: 200;
+  box-shadow: 0 0 12px rgba(0,229,255,0.7);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .timeline::before { left: 18px; }
+  .tl-item, .tl-item:nth-child(odd), .tl-item:nth-child(even) {
+    width: 100%;
+    left: 0;
+    text-align: left;
+    padding: 14px 12px 14px 52px;
+  }
+  .tl-item:nth-child(odd) .tl-dot, .tl-item:nth-child(even) .tl-dot { left: 11px; right: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<canvas id="neural-bg"></canvas>
+<div class="grid-overlay"></div>
+
+<nav>
+  <div class="nav-logo">AI HISTORY</div>
+  <div class="nav-links">
+    <a href="#dawn">黎明期</a>
+    <a href="#winter">冬の時代</a>
+    <a href="#ml">機械学習</a>
+    <a href="#dl">深層学習</a>
+    <a href="#gen">生成AI</a>
+    <a href="#future">未来</a>
+    <a href="generative.html" style="color: var(--magenta); border: 1px solid rgba(255,46,230,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(255,46,230,0.06);">生成AI詳細 ▶</a>
+    <a href="news.html" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
+  </div>
+</nav>
+
+<div class="content">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-tag">SYSTEM ONLINE — 1950 ▸ 2026</div>
+    <h1>AI HISTORY</h1>
+    <h2>人工知能の歴史</h2>
+    <p class="hero-desc">
+      チューリングの問い「機械は考えることができるか」から、
+      誰もが生成AIと対話する時代まで。
+      70年を超える人工知能の進化を、5つの時代でたどる。
+    </p>
+    <div class="typewriter" id="typewriter"></div>
+    <div class="scroll-hint">SCROLL ▼</div>
+  </header>
+
+  <!-- ============ STATS ============ -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" data-count="76">0</div>
+      <div class="stat-label">YEARS OF AI</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-count="2">0</div>
+      <div class="stat-label">AI WINTERS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-count="5">0</div>
+      <div class="stat-label">ERAS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-count="24">0</div>
+      <div class="stat-label">MILESTONES</div>
+    </div>
+  </div>
+
+  <!-- ============ ERA 1: DAWN ============ -->
+  <section class="section era-dawn" id="dawn">
+    <div class="section-header">
+      <span class="era-chip">ERA 01 — 1950s / 1960s</span>
+      <h2>黎明期 — AIの誕生</h2>
+      <p>「考える機械」という夢が学問になった時代。チューリングの問いかけに始まり、ダートマス会議で「人工知能」という言葉が生まれた。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1950</div>
+          <h3>チューリングテスト</h3>
+          <p>アラン・チューリングが論文『計算する機械と知性』を発表。「機械は考えることができるか」という問いを、対話によって人間と区別できるかというテストに置き換えた。AI研究の原点。</p>
+          <span class="tl-tag tag-amber">FOUNDATION</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1956</div>
+          <h3>ダートマス会議 — "Artificial Intelligence" の誕生</h3>
+          <p>ジョン・マッカーシーらが開催した夏季研究会で「人工知能（Artificial Intelligence）」という言葉が初めて使われた。AIが独立した研究分野として正式にスタートした瞬間。</p>
+          <span class="tl-tag tag-amber">BIRTH OF AI</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1958</div>
+          <h3>パーセプトロン</h3>
+          <p>フランク・ローゼンブラットが、脳の神経細胞を模した学習モデル「パーセプトロン」を考案。現代のニューラルネットワークの原型であり、ディープラーニングへ続く系譜の出発点。</p>
+          <span class="tl-tag tag-amber">NEURAL NET</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1966</div>
+          <h3>ELIZA — 世界初のチャットボット</h3>
+          <p>ジョセフ・ワイゼンバウムが開発した対話プログラム。単純なパターンマッチングながら、カウンセラーのような応答で多くの人が「理解されている」と感じた。ChatGPTの遠い祖先。</p>
+          <span class="tl-tag tag-amber">CHATBOT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ERA 2: WINTER ============ -->
+  <section class="section era-winter" id="winter">
+    <div class="section-header">
+      <span class="era-chip">ERA 02 — 1970s / 1980s</span>
+      <h2>冬の時代と第二次ブーム</h2>
+      <p>期待が先行しすぎた反動で研究資金が凍りついた「AIの冬」。その中でも、エキスパートシステムや誤差逆伝播法など、次の時代の種は着実に育っていた。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1969</div>
+          <h3>パーセプトロンの限界の指摘</h3>
+          <p>ミンスキーとパパートが著書『パーセプトロン』で単層パーセプトロンの理論的限界（XOR問題など）を証明。ニューラルネット研究への期待が急速にしぼみ、第一次AIの冬の引き金となった。</p>
+          <span class="tl-tag tag-cyan">1st AI WINTER</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1972</div>
+          <h3>MYCIN — エキスパートシステム</h3>
+          <p>スタンフォード大学で開発された感染症診断システム。専門家の知識をルールとして蓄積し推論する「エキスパートシステム」が確立され、1980年代の第二次AIブームを牽引した。</p>
+          <span class="tl-tag tag-cyan">EXPERT SYSTEM</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1982</div>
+          <h3>第五世代コンピュータ計画</h3>
+          <p>日本の通産省が主導した国家プロジェクト。推論マシンの開発を目指し世界に衝撃を与えたが、目標達成には至らず。それでも並列処理や論理プログラミングの研究に大きな遺産を残した。</p>
+          <span class="tl-tag tag-cyan">JAPAN</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1986</div>
+          <h3>誤差逆伝播法（バックプロパゲーション）</h3>
+          <p>ラメルハート、ヒントン、ウィリアムズが多層ニューラルネットワークの学習法を普及させた。単層の限界を突破する鍵であり、後のディープラーニング革命の理論的土台となった。</p>
+          <span class="tl-tag tag-cyan">BACKPROP</span>
+        </div>
+      </div>
+    </div>
+    <div class="winter-banner">
+      <div class="snow">❄ ❄ ❄</div>
+      <p>過剰な期待 → 失望 → 資金凍結。AIは二度の「冬」を経験した。<br>しかし冬の間も研究者たちは歩みを止めず、その蓄積が次の春を呼んだ。</p>
+    </div>
+  </section>
+
+  <!-- ============ ERA 3: ML ============ -->
+  <section class="section era-ml" id="ml">
+    <div class="section-header">
+      <span class="era-chip">ERA 03 — 1990s / 2000s</span>
+      <h2>機械学習の台頭</h2>
+      <p>ルールを書くのではなく、データから学ぶ。統計的機械学習とインターネットの爆発的普及が、AIを実用の道具へと変えていった。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1997</div>
+          <h3>Deep Blue、チェス世界王者に勝利</h3>
+          <p>IBMのDeep Blueがチェス世界チャンピオンのガルリ・カスパロフを破る。「機械が人間の知性の象徴を超えた」瞬間として世界中に報道され、AIの存在感を一気に高めた。</p>
+          <span class="tl-tag tag-green">MILESTONE</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">1998</div>
+          <h3>LeNet — 畳み込みニューラルネットワーク</h3>
+          <p>ヤン・ルカンらが手書き数字認識CNN「LeNet-5」を実用化。銀行の小切手読み取りに使われ、ニューラルネットが現実世界で働けることを証明した。</p>
+          <span class="tl-tag tag-green">CNN</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2006</div>
+          <h3>「ディープラーニング」の提唱</h3>
+          <p>ジェフリー・ヒントンらが深層ネットワークの効率的な事前学習法を発表し、「Deep Learning」という言葉が広まる。GPUの進化とビッグデータの蓄積が、爆発の条件を整えつつあった。</p>
+          <span class="tl-tag tag-green">DEEP LEARNING</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2011</div>
+          <h3>IBM Watson、クイズ王に勝利</h3>
+          <p>米クイズ番組「Jeopardy!」でIBM Watsonが歴代チャンピオン2人を破る。自然言語の質問を理解して答えるという、対話型AIの実力を世界に示した。</p>
+          <span class="tl-tag tag-green">NLP</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ERA 4: DL ============ -->
+  <section class="section era-dl" id="dl">
+    <div class="section-header">
+      <span class="era-chip">ERA 04 — 2012 / 2019</span>
+      <h2>深層学習革命</h2>
+      <p>AlexNetの衝撃から始まった第三次AIブーム。画像認識、ゲーム、翻訳——あらゆる分野でディープラーニングが人間の性能に迫り、追い越していった。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2012</div>
+          <h3>AlexNet — 画像認識の革命</h3>
+          <p>画像認識コンペILSVRCで、ヒントン研のAlexNetが従来手法を圧倒的な差で破る。GPU×深層CNNの威力が証明され、世界中の研究がディープラーニングに雪崩れ込んだ。第三次AIブームの号砲。</p>
+          <span class="tl-tag tag-violet">BREAKTHROUGH</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2014</div>
+          <h3>GAN — 敵対的生成ネットワーク</h3>
+          <p>イアン・グッドフェローが考案。生成者と識別者を競わせて学習するアイデアは「存在しない人の顔」を生み出し、生成AIという概念を世に知らしめた先駆けとなった。</p>
+          <span class="tl-tag tag-violet">GENERATIVE</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2016</div>
+          <h3>AlphaGo、囲碁でイ・セドルに勝利</h3>
+          <p>DeepMindのAlphaGoが世界トップ棋士イ・セドルに4勝1敗。「あと10年は不可能」と言われた囲碁での勝利は、深層強化学習の可能性と「直感さえ学習できる」ことを示した。</p>
+          <span class="tl-tag tag-violet">REINFORCEMENT</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2017</div>
+          <h3>Transformer — "Attention Is All You Need"</h3>
+          <p>Googleの研究チームが発表したアーキテクチャ。Attention機構だけで文脈を捉える設計は並列学習と大規模化を可能にし、GPT・BERT・Claude——現代のすべてのLLMの基盤となった。</p>
+          <span class="tl-tag tag-violet">TRANSFORMER</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2018</div>
+          <h3>BERT と GPT — 事前学習の時代へ</h3>
+          <p>大量のテキストで事前学習し、少ないデータで各タスクに適応する手法が主流に。OpenAIのGPT、GoogleのBERTが相次いで登場し、「大きいほど賢い」スケーリングの時代が幕を開けた。</p>
+          <span class="tl-tag tag-violet">PRE-TRAINING</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ERA 5: GENERATIVE ============ -->
+  <section class="section era-gen" id="gen">
+    <div class="section-header">
+      <span class="era-chip">ERA 05 — 2020 / PRESENT</span>
+      <h2>生成AIの時代</h2>
+      <p>AIが「認識する」から「創造する」へ。文章、画像、コード、動画——生成AIは道具から相棒へと変わり、社会のあり方そのものを問い直している。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2020</div>
+          <h3>GPT-3 — 1750億パラメータの衝撃</h3>
+          <p>OpenAIが発表した超大規模言語モデル。例を数個見せるだけで翻訳も要約もこなす「文脈内学習」能力を示し、スケーリング則の威力を決定づけた。</p>
+          <span class="tl-tag tag-magenta">LLM</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2022</div>
+          <h3>画像生成AIの爆発 — Stable Diffusion / Midjourney</h3>
+          <p>拡散モデルによる画像生成が一般公開され、誰もが言葉から絵を生み出せるように。「生成AI」という言葉が一般社会に浸透し、クリエイティブの定義を揺さぶった。</p>
+          <span class="tl-tag tag-magenta">DIFFUSION</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2022</div>
+          <h3>ChatGPT — 史上最速で1億ユーザーへ</h3>
+          <p>11月30日公開。わずか2ヶ月で月間ユーザー1億人に到達し、史上最速で普及したサービスとなった。AIとの対話が日常になり、世界中で「AIをどう使うか」が一斉に問われ始めた。</p>
+          <span class="tl-tag tag-magenta">CHATGPT</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2023</div>
+          <h3>GPT-4 / Claude / Gemini — マルチモーダル競争</h3>
+          <p>OpenAI、Anthropic、Googleが最先端モデルを次々投入。テキストに加え画像も理解するマルチモーダル化が進み、司法試験合格レベルの推論力が現実となった。</p>
+          <span class="tl-tag tag-magenta">MULTIMODAL</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2024</div>
+          <h3>動画生成と推論モデル</h3>
+          <p>Soraが言葉から高品質な動画を生成し、o1系の「考えてから答える」推論モデルが登場。ノーベル物理学賞・化学賞をAI研究者が受賞し、AIは科学の中心に躍り出た。</p>
+          <span class="tl-tag tag-magenta">REASONING</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2025</div>
+          <h3>AIエージェントの時代へ</h3>
+          <p>対話するだけでなく、コードを書き、ツールを操作し、複数ステップのタスクを自律的にこなすAIエージェントが実用化。人間とAIの協働が、働き方の新しい標準になりつつある。</p>
+          <span class="tl-tag tag-magenta">AGENTS</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <div class="tl-card">
+          <div class="tl-year">2026</div>
+          <h3>Mythos級モデルと規制の時代</h3>
+          <p>AnthropicがOpusの上位ティア「Mythos級」のClaude Fable 5を、OpenAIがGPT-5.6を投入。一方で米政府による輸出規制や限定提供も始まり、フロンティアAIは安全保障の対象となった。性能競争と統治の両立が新しい主題に。</p>
+          <span class="tl-tag tag-magenta">FRONTIER</span>
+        </div>
+      </div>
+    </div>
+    <div class="detail-cta">
+      <a href="generative.html">▶ 生成AIの時代を深掘りする — 詳細年表へ</a>
+      <div class="cta-note">GPT / Claude / Gemini / オープンモデルの系譜、メディア生成、技術革新の全記録</div>
+    </div>
+  </section>
+
+  <!-- ============ FUTURE ============ -->
+  <section class="future" id="future">
+    <h2>NEXT TOKEN: 未来</h2>
+    <p>チューリングが問いを立ててから76年。「機械は考えることができるか」という問いは、いま「機械とともに何を考えるか」へと変わった。</p>
+    <p>AIの歴史は、期待と失望の波を繰り返しながらも、確実に前へ進んできた。次の10年に何が起こるかは、まだ誰も知らない——この歴史の続きを書くのは、いまを生きる私たちだ。</p>
+    <div class="future-cursor" id="future-typer"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="logo">AI HISTORY</div>
+  <div>1950 — 2026 · A TIMELINE OF ARTIFICIAL INTELLIGENCE</div>
+</footer>
+
+<script>
+/* ===== Neural network background ===== */
+const canvas = document.getElementById('neural-bg');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const NODE_COUNT = Math.min(90, Math.floor(window.innerWidth / 16));
+const COLORS = ['0,229,255', '255,46,230', '139,92,246', '0,255,163'];
+
+for (let i = 0; i < NODE_COUNT; i++) {
+  nodes.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 1.8 + 0.8,
+    c: COLORS[Math.floor(Math.random() * COLORS.length)]
+  });
+}
+
+const mouse = { x: -9999, y: -9999 };
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const LINK = 140;
+
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    a.x += a.vx; a.y += a.vy;
+    if (a.x < 0 || a.x > W) a.vx *= -1;
+    if (a.y < 0 || a.y > H) a.vy *= -1;
+
+    for (let j = i + 1; j < nodes.length; j++) {
+      const b = nodes[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < LINK) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${a.c},${(1 - d / LINK) * 0.22})`;
+        ctx.lineWidth = 0.6;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    // mouse link
+    const mdx = a.x - mouse.x, mdy = a.y - mouse.y;
+    const md = Math.sqrt(mdx * mdx + mdy * mdy);
+    if (md < 180) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(0,229,255,${(1 - md / 180) * 0.4})`;
+      ctx.lineWidth = 0.8;
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(${a.c},0.85)`;
+    ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ===== Typewriter ===== */
+function typewrite(el, phrases, speed = 55, pause = 2200) {
+  let pi = 0, ci = 0, deleting = false;
+  function tick() {
+    const phrase = phrases[pi];
+    el.textContent = phrase.slice(0, ci);
+    if (!deleting) {
+      if (ci < phrase.length) { ci++; setTimeout(tick, speed); }
+      else { deleting = true; setTimeout(tick, pause); }
+    } else {
+      if (ci > 0) { ci--; setTimeout(tick, 24); }
+      else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 400); }
+    }
+  }
+  tick();
+}
+
+typewrite(document.getElementById('typewriter'), [
+  '> Can machines think? — A. Turing, 1950',
+  '> Attention Is All You Need — 2017',
+  '> Hello, I am a generative AI.',
+  '> Predicting the next token of history...'
+]);
+
+typewrite(document.getElementById('future-typer'), [
+  '> generating future...',
+  '> the next chapter is yours to write.'
+], 60, 2600);
+
+/* ===== Scroll reveal ===== */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.tl-item').forEach(el => observer.observe(el));
+
+/* ===== Counter animation ===== */
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.count;
+    const dur = 1400, start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.floor(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    statObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+
+/* ===== Progress bar ===== */
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = p + '%';
+}, { passive: true });
+</script>
+
+</body>
+</html>
