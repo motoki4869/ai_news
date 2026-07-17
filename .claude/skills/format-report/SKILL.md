@@ -1,6 +1,6 @@
 ---
 name: format-report
-description: Reformats a dense, hard-to-read report file under ai_news/report/ (typically pasted as one giant unbroken line) into clean, well-structured Markdown — headings, paragraphs, bullet lists, and tables — without changing any wording or content. Use when the user asks to make a report readable/整形/きれいにして, e.g. "reportの中身をわかりやすくして".
+description: ai_news/report/ 配下にある、読みにくい調査レポートファイル（生成AIの出力がほぼ改行なしの1〜数行の塊としてそのまま貼り付けられていることが多い）を、文言を一切変更せずに、見出し・段落・箇条書き・表を備えた整形済みMarkdownへ組み直すスキル。ユーザーが「reportを整形して/わかりやすくして/きれいにして」のように依頼したとき、例えば「reportの中身をわかりやすくして」と言われたときに使う。
 ---
 
 # ai_news レポート整形
