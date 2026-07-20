@@ -1,7 +1,7 @@
 #!/bin/bash
 set -uo pipefail
 
-REPO_DIR="/Users/motoki/Desktop/GitHub/ai_news"
+REPO_DIR="/Users/motoki/Desktop/GitHub/03_自動化・定期実行/ai_news"
 PROMPT_FILE="$REPO_DIR/scripts/daily_news_prompt.txt"
 CLAUDE_BIN="/opt/homebrew/bin/claude"
 
