@@ -31,6 +31,15 @@
       return `<section class="rpt-section">${html}</section>`;
     });
     body.innerHTML = sections.join('<hr class="rpt-divider">');
+    if (window.renderMathInElement) {
+      window.renderMathInElement(body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      });
+    }
     modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
     body.scrollTop = 0;

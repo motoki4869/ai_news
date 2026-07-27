@@ -15,6 +15,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
 <style>
 :root {
   --bg: #05060f;
@@ -371,11 +374,11 @@ nav {
 .report-modal-body .rpt-divider { border-top: 1px solid var(--border); margin: 36px 0; }
 .report-modal-body .rpt-missing { color: var(--coral); }
 .report-modal-body .rpt-formula {
-  white-space: pre-wrap; font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem; color: var(--amber);
-  background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;
-  margin-bottom: 14px;
+  color: var(--text);
+  background: rgba(255,255,255,0.04); padding: 18px 14px; border-radius: 8px;
+  margin-bottom: 14px; text-align: center; overflow-x: auto;
 }
+.report-modal-body .rpt-formula .katex { font-size: 1.15em; }
 .rpt-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
 .rpt-table th, .rpt-table td {
   border: 1px solid rgba(255,255,255,0.12); padding: 8px 10px;
