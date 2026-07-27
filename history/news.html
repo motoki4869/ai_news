@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00e5ff">
-<meta name="description" content="調査レポート16本から抽出した、2026年時点の直近AIトレンド。エージェンティックAI、フィジカルAI、ソブリンAI、インフラ、経済・社会、セキュリティ。">
+<meta name="description" content="調査レポート18本から抽出した、2026年時点の直近AIトレンド。エージェンティックAI、フィジカルAI、ソブリンAI、インフラ、経済・社会、セキュリティ。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -315,6 +315,74 @@ nav {
 }
 .src::before { content: '📄 SOURCE: '; color: rgba(255,255,255,0.35); }
 
+/* ===== Report modal (news-card タップで全文表示) ===== */
+.news-card.tappable { cursor: pointer; }
+.news-card.tappable:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.news-card.tappable .src::after { content: ' · タップで全文 →'; color: var(--green); opacity: 0.75; }
+
+.report-modal { position: fixed; inset: 0; z-index: 1000; }
+.report-modal[hidden] { display: none; }
+.report-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(2, 3, 10, 0.78);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.report-modal-panel {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  max-width: 760px; width: min(92vw, 760px);
+  max-height: 84vh;
+  margin: 6vh auto 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.report-modal-header {
+  flex: 0 0 auto;
+  display: flex; justify-content: flex-end;
+  padding: 14px 14px 0;
+}
+.report-modal-close {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(5,6,15,0.85);
+  color: var(--text); font-size: 1.1rem; line-height: 1;
+  cursor: pointer;
+}
+.report-modal-close:hover { color: var(--green); border-color: var(--green); }
+.report-modal-body {
+  flex: 1 1 auto; overflow-y: auto;
+  padding: 0 32px 48px;
+}
+.report-modal-body h2 {
+  font-family: 'Orbitron', sans-serif; font-size: 1.15rem;
+  color: var(--green); margin: 20px 0 12px; line-height: 1.5;
+}
+.report-modal-body h2:first-child { margin-top: 0; }
+.report-modal-body h3 { font-size: 1rem; color: var(--cyan); margin: 22px 0 10px; line-height: 1.5; }
+.report-modal-body h4 { font-size: 0.92rem; color: var(--text); margin: 16px 0 8px; }
+.report-modal-body p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 14px; }
+.report-modal-body strong { color: var(--text); }
+.report-modal-body ul { margin: 0 0 14px 20px; }
+.report-modal-body li { font-size: 0.86rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 6px; }
+.report-modal-body hr { border: none; border-top: 1px dashed rgba(255,255,255,0.12); margin: 24px 0; }
+.report-modal-body .rpt-divider { border-top: 1px solid var(--border); margin: 36px 0; }
+.report-modal-body .rpt-missing { color: var(--coral); }
+.report-modal-body .rpt-formula {
+  white-space: pre-wrap; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: var(--amber);
+  background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;
+  margin-bottom: 14px;
+}
+.rpt-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
+.rpt-table th, .rpt-table td {
+  border: 1px solid rgba(255,255,255,0.12); padding: 8px 10px;
+  text-align: left; color: var(--text-dim); line-height: 1.6;
+}
+.rpt-table th { color: var(--text); background: rgba(255,255,255,0.04); }
+
 /* ===== CTA / footer ===== */
 .cta-back { text-align: center; padding: 80px 24px 100px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
 .cta-back a {
@@ -395,7 +463,7 @@ footer .logo {
 <div class="ticker-wrap">
   <div class="ticker-label">BREAKING</div>
   <div class="ticker">
-    オープンソースエージェント基盤「OpenClaw」が爆発的普及、AIエージェントのOSへ +++ 政府専用AI「源内」の実装が段階的に進行中 +++ SMBC、シンガポールに「kAIgentic」設立でAgentic AIを外販へ +++ データセンター電力、2030年に向け「ギガワットの天井」が最大の制約に +++ AI ASIC市場、2030年に1,500億ドル超へ — GPUからの移行が加速 +++ SaaSのID課金モデルが終焉へ、成果連動型への移行が加速 +++ NAVER、AI安全性を「サービス全体」で管理する「ASF 2.0」を発表 +++ Google AI Threat Defenseが脆弱性修正を2分未満に短縮 +++
+    AI ASIC市場、2030年に1,500億ドル超へ — GPUからの移行が加速 +++ SaaSのID課金モデルが終焉へ、成果連動型への移行が加速 +++ NAVER、AI安全性を「サービス全体」で管理する「ASF 2.0」を発表 +++ Google AI Threat Defenseが脆弱性修正を2分未満に短縮 +++ TSMC、2026年CapExを620億ドルへ引き上げ・2nm N2量産始動 +++ 3M「Novec」生産終了でデータセンター液冷の冷媒転換が加速 +++ キオクシア時価総額2,750億ドルでトヨタ超え、AI向けSSD特需で日本株トップに +++ OpenAI、評価額8,520億ドルで1,220億ドル調達 — 過去最大の資金調達 +++
   </div>
 </div>
 
@@ -408,8 +476,8 @@ footer .logo {
     <h2>直近のAIトレンド — 7つの潮流</h2>
     <p class="hero-desc">
       いまAIの世界で何が起きているのか。
-      調査レポート16本を横断して抽出した直近のトレンドを、7つのテーマに整理してお届けする。
-      <br><span class="src-note">&gt; source: ai_news/report/ — 16 reports analyzed</span>
+      調査レポート18本を横断して抽出した直近のトレンドを、7つのテーマに整理してお届けする。
+      <br><span class="src-note">&gt; source: ai_news/report/ — 18 reports analyzed</span>
     </p>
     <div class="quick-filters">
       <span class="qf-label">QUICK FILTER:</span>
@@ -435,12 +503,6 @@ footer .logo {
       <a class="rel-link" href="generative.html#y2025">背景: 年表 2025「エージェント元年」→</a>
     </div>
     <div class="news-grid">
-      <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要">
-        <div class="kicker">PARADIGM SHIFT</div>
-        <h3>SaaSからAIエージェントへ — 「記録のシステム」から「行動のシステム」へ</h3>
-        <p>画面を操作する人間を前提としたSaaSから、エージェントが直接APIを叩いて業務を完遂する「Headless SaaS」への移行が進行。座席(ID)課金に固執する企業は粗利益率が最大40%低下し、解約率が2.3倍になるという分析も。課金の単位は「人」から「成果」へ。</p>
-        <div class="src">AIエージェントへのシフトとハードウェア需要</div>
-      </div>
       <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要">
         <div class="kicker">OPEN SOURCE</div>
         <h3>「OpenClaw」の衝撃 — AIエージェントのOSが生まれた</h3>
@@ -471,6 +533,12 @@ footer .logo {
         <p>ECの返品物流(リバースロジスティクス)の完全自律化、中堅企業向け融資審査、精密農業でのフェデレーテッドラーニング×ロボティクス連携など、「顧客接点からバックオフィスまで」の本格組み込みが進行。行政分野でも権限を限定した「Bounded Autonomy(境界付き自律性)」の枠組みで自律手続きが始まっている。</p>
         <div class="src">エージェンティックAIトレンド分析</div>
       </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">ADOPTION</div>
+        <h3>AIエージェント、本番運用の平均ROIは171% — 企業アプリの80%に標準搭載へ</h3>
+        <p>2026年第1四半期に新規出荷・更新された企業向けアプリケーションの約80%に少なくとも1つのAIエージェントが組み込まれ、2024年の33%から急拡大。全世界企業の31%が本番環境でAIエージェントを稼働させ(金融・保険は47%)、本番運用に到達したプロジェクトの平均ROIは171%(米国企業は192%)に達している。一方でMITの調査ではパイロットの95%が定量的成果を挙げられず終了しており、実装の巧拙が企業間で二極化している。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
+      </div>
     </div>
   </section>
 
@@ -483,18 +551,6 @@ footer .logo {
       <p>PoC(実証実験)の時代は終わった。日本企業がAIエージェントを基幹業務に組み込む事例が続々と登場している。</p>
     </div>
     <div class="news-grid">
-      <div class="news-card" data-added="2026-07-05" data-report="自律型AIとフィジカルAI導入ロードマップ">
-        <div class="kicker">MEGABANKS</div>
-        <h3>みずほ「AI大部屋」とSMBC「kAIgentic」— メガバンクの攻防</h3>
-        <p>みずほはコンプラ・リスク管理・法務の専門AIエージェントが常駐し行員の問い合わせに24時間応答する「大部屋」構想を推進。対するSMBCは2025年後半にシンガポールで「kAIgentic Pte Ltd」を設立し、Agentic AIソリューションを金融業界全体へ外販する攻めの戦略に出た。</p>
-        <div class="src">自律型AIとフィジカルAI導入ロードマップ</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義 / エージェンティックAIトレンド分析">
-        <div class="kicker">SOFTBANK</div>
-        <h3>AIスマホ — 「アプリ中心」から「インテント中心」へ</h3>
-        <p>ソフトバンクのAIスマホは、ユーザーがアプリを操作するのではなく、意図(インテント)を伝えればAIがアプリ横断で処理を完遂する設計へ再構築。端末内AIとクラウドAIのハイブリッド構成で、ポストスマートフォン時代のインターフェース覇権を狙う。AIスマートグラス市場の激変も並走する。</p>
-        <div class="src">AIによる人材・調達・企業価値再定義 / エージェンティックAIトレンド分析</div>
-      </div>
       <div class="news-card" data-added="2026-07-05" data-report="自律型AIとフィジカルAI導入ロードマップ / 自律型AIとフィジカルAIの動向">
         <div class="kicker">MANUFACTURING</div>
         <h3>トヨタ・Fanuc・ヤマト — 現場の自律化が進む</h3>
@@ -518,6 +574,18 @@ footer .logo {
         <h3>竹中工務店「BSAP」— 軽量Gemini×IoTでビル空調を47.92%省エネ化</h3>
         <p>竹中工務店が「竹中セントラルビル サウス」で試験稼働する空間分析基盤「BSAP」は、Vertex AI上のGemini 1.5 Flashと専用エージェント「AirLake Smart Building Agent」を組み合わせ、実オフィス実証「OfficeInTheLoop」で空調エネルギーを最大47.92%削減しつつ、入居者快適性を26.36%向上させた。</p>
         <div class="src">AI安全と技術トレンドの分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-19" data-report="生成AIの本格的実戦導入と垂直統合型AIの勃興">
+        <div class="kicker">HEALTHCARE AI</div>
+        <h3>Ubie導入で九州大学病院が年6,500万円の収益改善 — 恵寿総合病院はサマリ作成42.5%減</h3>
+        <p>医療現場特化のカルテ作成・要約AI「Ubie」の導入が国内病院に広がっている。九州大学病院ではDPCコーディング最適化支援を通じ年間6,500万円以上の収益改善を見込み、恵寿総合病院では退院時看護サマリの作成時間が42.5%削減、看護師の心理的負担も27.2%軽減された。画像診断支援でも肺結節検知による読影時間の30%以上短縮が報告されており、人手不足に直面する医療機関の基盤技術になりつつある。</p>
+        <div class="src">生成AIの本格的実戦導入と垂直統合型AIの勃興</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">GEO</div>
+        <h3>NTT「Tsuzumi」とGEO施策、Webメディアの引用率70%を達成</h3>
+        <p>NTTの日本語特化型軽量LLM「Tsuzumi」はセキュリティ重視の国内企業への基幹業務適用を進める一方、企業メディア運用(note運用等)ではGEO(Generative Engine Optimization)施策が導入され、AI検索回答内での自社コンテンツ引用率が70%まで向上した。省電力・オンプレミス型モデルと検索最適化の両輪で、国内企業のAI実務組み込みが進んでいる。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
       </div>
     </div>
   </section>
@@ -561,6 +629,12 @@ footer .logo {
         <h3>エンボディドAIが製造・ロボティクス産業の経済を変える</h3>
         <p>AI市場は「期待」から「実装・収益化」へ構造転換。インフラ投資(CapEx)のピークアウト後はROIの追求が主題となり、エンボディドAIによる製造現場の自動化が経済インパクトの中心に。産業用ロボットで強い日本企業の競争優位性が再評価されている。</p>
         <div class="src">AI実装・収益化とロボティクス未来</div>
+      </div>
+      <div class="news-card" data-added="2026-07-19" data-report="生成AIの本格的実戦導入と垂直統合型AIの勃興">
+        <div class="kicker">PREDICTIVE MAINTENANCE</div>
+        <h3>航空機エンジンの故障検知96.3% — Lockheed Martinがセンサー×AIで予知保全へ</h3>
+        <p>世界で約71万人規模の航空整備士不足が見込まれる中、Lockheed Martin(Sikorsky)は将来型垂直離着陸機RAIDER XやDEFIANT Xに100以上の予知保全アルゴリズムと健康管理システムHUMSを統合し、時間基準整備から状態基準整備(CBM)へ移行している。ハイブリッドCNN-LSTMモデルはエンジン故障検知で96.3%の精度・誤警報率6.2%を達成。英国王立海軍の「Motherlode V3」は2026年に固定翼機へ適用を拡大し、米大手航空会社では計画外駐機が18%削減された。</p>
+        <div class="src">生成AIの本格的実戦導入と垂直統合型AIの勃興</div>
       </div>
     </div>
   </section>
@@ -612,29 +686,41 @@ footer .logo {
       <p>AIの制約は資本からワット(電力)へ。データセンター、チップ、冷却——物理世界がAIの成長速度を決め始めた。</p>
     </div>
     <div class="news-grid">
-      <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要 / AI進化とデータセンター課題レポート">
-        <div class="kicker">ENERGY</div>
-        <h3>「ギガワットの天井」— 電力がAI最大の制約に</h3>
-        <p>データセンターの電力消費は2030年までに2023年比175%増(Goldman Sachs予測)。もはや資金ではなく「電力網への接続権」が最大の競争優位となる時代に突入した。原子力・再エネへの優先アクセス確保が、AI企業の経営アジェンダの最上位に上がっている。</p>
-        <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化とデータセンター課題レポート</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要 / AI進化と経済・社会変革予測">
-        <div class="kicker">SEMICONDUCTOR</div>
-        <h3>GPUからASICへ — 推論の時代のチップ戦争</h3>
-        <p>学習中心から推論中心の時代に移り、汎用GPUより電力効率に優れるカスタムチップ(ASIC)への移行が加速。AI ASIC市場は約130億ドルから2030年に1,500億ドル超へ、年率約50%で成長する見通し。「メモリの壁」の克服と液冷への強制移行も並行して進む。</p>
-        <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化と経済・社会変革予測</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="AI浸透と社会基盤の未来">
-        <div class="kicker">DECENTRALIZE</div>
-        <h3>データセンターの地方分散 — 東京一極集中の限界</h3>
-        <p>電力リスクを抱える東京一極集中から、再エネの豊富な地方への分散配置へ。NTTのIOWN APN(オールフォトニクス・ネットワーク)が距離の壁を打破し、発電地に計算資源を置く「ワット・ビット連携」が現実解として浮上。経済安全保障の観点からソブリンクラウドの整備も進む。</p>
-        <div class="src">AI浸透と社会基盤の未来</div>
-      </div>
       <div class="news-card" data-added="2026-07-05" data-report="AI実装・収益化とロボティクス未来 / AI進化とデータセンター課題レポート">
         <div class="kicker">SUSTAINABILITY</div>
         <h3>持続可能なAI — 環境負荷との両立を探る</h3>
         <p>計算資源の急増に伴う電力消費・環境負荷が社会問題化し、モデルの小型化・蒸留、効率的な推論、液冷・廃熱利用などの「持続可能なAI」技術がトレンドに。AIの性能競争と持続可能性の両立が、2026年以降の技術開発の評価軸になりつつある。</p>
         <div class="src">AI実装・収益化とロボティクス未来 / AI進化とデータセンター課題レポート</div>
+      </div>
+      <div class="news-card" data-added="2026-07-19" data-report="生成AIの本格的実戦導入と垂直統合型AIの勃興 / 生成AI実装とインフラ需要分析">
+        <div class="kicker">FOUNDRY</div>
+        <h3>TSMC、2026年CapExを620億ドルへ引き上げ — N2量産と背面給電A16始動</h3>
+        <p>TSMCは2026年の設備投資ガイドラインを当初の520億〜560億ドルから600億〜640億ドル(中間値620億ドル)へ上方修正し、2025年実績の409億ドルから50%以上増額した。2nm世代「N2」は2025年第4四半期に量産を開始し25件以上のテープアウトが進行中。2027年には電源ラインをウェハ裏面に分離する「Super Power Rail」を統合したA16が、2028年には性能15%向上・消費電力30%削減を実現するA14が量産に入る計画だ。</p>
+        <div class="src">生成AIの本格的実戦導入と垂直統合型AIの勃興 / 生成AI実装とインフラ需要分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-19" data-report="生成AIの本格的実戦導入と垂直統合型AIの勃興">
+        <div class="kicker">COOLING</div>
+        <h3>データセンター液冷、OCP標準化が加速 — 3M「Novec」生産終了で冷媒転換迫る</h3>
+        <p>AIプロセッサの1,000Wクラス化でラック密度が50〜100kWに達し、空冷の限界(15〜30kW)を突破する液冷が生存条件に。OCP/ASHRAEはコールドプレートの年間故障率0.3%以下、二次冷却ループのpH8.0〜10.5維持、CDUの100psi耐圧などを標準仕様として整備している。二相式液浸冷却の定番だった3M社のフッ素系冷媒「Novec」がPFAS規制により2025年末で生産終了となり、非フッ素系HFEや合成エステルオイルへの転換が世界の液冷データセンターで進行中だ。</p>
+        <div class="src">生成AIの本格的実戦導入と垂直統合型AIの勃興</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">PACKAGING</div>
+        <h3>CoWoSが最大のボトルネックに — TSMC先端パッケージング、2026年末まで完売</h3>
+        <p>AIチップ出荷を左右する先端パッケージング「CoWoS」の年間需要は、2024年の約37万枚から2025年に67万枚、2026年には約100万枚へ急増。TSMCの製造枠は2026年末まで完全に埋まり、リードタイムは52〜78週間に達している。NVIDIA1社が全容量の約60%(約59.5万枚)を占有し、NVIDIA・Broadcom・AMDの上位3社で85%超を専有する寡占構造が、後発AI半導体企業の出荷を制限する要因となっている。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">MEMORY</div>
+        <h3>キオクシア、時価総額2,750億ドルでトヨタ超え — AI向けSSD特需が半導体地図を塗り替える</h3>
+        <p>AIデータセンター向け高容量エンタープライズSSD(NANDフラッシュ)の需要急増を追い風に、日本の半導体大手キオクシアの時価総額が一時約2,750億ドルに達し、トヨタ自動車を上回って日本株トップに躍り出た。主要メモリベンダーがHBM増産へリソースを振り向けた結果、汎用NAND供給が逼迫。AMDもメモリ最適化スタートアップMEXTを買収し、NANDフラッシュをDRAMのように扱う技術でメモリボトルネック解消を図っている。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">NUCLEAR POWER</div>
+        <h3>Microsoft・Amazon・Google・Meta、原子力への直接契約を加速 — 24/7安定電源の争奪戦</h3>
+        <p>世界のデータセンター電力消費は2026年に1,000〜1,050TWhへ倍増し、米国のデータセンター電力需要も2025年の31GWから2026年に41GW、2027年には66GWへ拡大する見通し。太陽光・風力だけではギガワット級AIデータセンターの24時間稼働を賄えないため、Microsoftはコンステレーション・エナジーとの20年PPAでスリーマイル島原発1号機の835MWを確保し、Amazonは小型モジュール炉のX-energyへ5億ドル超を出資、GoogleはKairos Powerと最大500MW、Metaは総額6.6GWの原子力電力確保計画を公表した。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
       </div>
     </div>
   </section>
@@ -648,29 +734,11 @@ footer .logo {
       <p>AIの浸透は経済指標、雇用、マーケティング、調達の常識を根底から揺さぶっている。</p>
     </div>
     <div class="news-grid">
-      <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義 / AI産業シフトと未来戦略レポート">
-        <div class="kicker">TALENT</div>
-        <h3>「人材」の再定義 — 実行する人から、意図を設計する人へ</h3>
-        <p>認知作業の多くをAIに外部化できるようになり、プロフェッショナルの価値は「実行スキル」から「意図の設計(何を、なぜやるかの定義)」へ移動。AIエージェントとの共生を前提とした職能再設計と全社リスキリングが、2026年の人事戦略の中心テーマとなった。</p>
-        <div class="src">AIによる人材・調達・企業価値再定義 / AI産業シフトと未来戦略レポート</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="2026年AI技術の未来予測 / AI産業シフトと未来戦略レポート">
+      <div class="news-card" data-added="2026-07-05" data-report="2026年AI技術の未来予測 / AI産業シフトと未来戦略レポート / 生成AI実装とインフラ需要分析">
         <div class="kicker">SEARCH</div>
         <h3>ゼロクリック検索の時代 — SEOからAEO・GEOへ</h3>
         <p>ユーザーがAIの回答だけで完結しサイトを訪れない「ゼロクリック検索」が主流化し、検索トラフィックが消失。マーケティングはSEOから、AIに引用されるための回答エンジン最適化(AEO)・生成エンジン最適化(GEO)へ。文脈・構造・信頼が情報設計の三本柱になった。</p>
-        <div class="src">2026年AI技術の未来予測 / AI産業シフトと未来戦略レポート</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義">
-        <div class="kicker">PROCUREMENT</div>
-        <h3>「Wishful Software」— IT調達は成果連動型へ</h3>
-        <p>「こう動いてほしい」という希望を伝えればAIがソフトウェアを実装する時代になり、IT調達は仕様書ベースの一括契約から、成果に連動して支払う継続的ガバナンス型へ転換。調達部門の役割はベンダー管理から「AIという動的な知的財産を育てる」ことへ変わりつつある。</p>
-        <div class="src">AIによる人材・調達・企業価値再定義</div>
-      </div>
-      <div class="news-card" data-added="2026-07-05" data-report="AI進化と経済・社会変革予測">
-        <div class="kicker">ECONOMICS</div>
-        <h3>ハイパーデフレの経済学 — GDPが測れなくなる</h3>
-        <p>AIによって知的サービスの生産コストが急落する「ハイパーデフレ」が進行するという分析が登場。無料・超低価格で提供される価値がGDP統計に反映されず、経済指標の再定義が政策課題に。トランスフォーマー以降の次世代アーキテクチャ研究も、コスト構造をさらに変えようとしている。</p>
-        <div class="src">AI進化と経済・社会変革予測</div>
+        <div class="src">2026年AI技術の未来予測 / AI産業シフトと未来戦略レポート / 生成AI実装とインフラ需要分析</div>
       </div>
       <div class="news-card" data-added="2026-07-05" data-report="AI浸透と社会基盤の未来">
         <div class="kicker">WORKPLACE</div>
@@ -683,6 +751,24 @@ footer .logo {
         <h3>Google Cloud「Cloud Atelier」— Gemini×Veo 3.1でファッションの試着体験を再構築</h3>
         <p>Google CloudのマルチエージェントアーキテクチャCloud Atelierは、Gemini FlashやNano Banana 2、Veo 3.1を組み合わせ、旅行プランや体型データから実在庫を検索し高精細な試着画像・30〜60秒のランウェイ動画を自動生成。AI小売市場は2025年の21.5億ドルから2034年に223.1億ドル(CAGR 34%)へ拡大する見通し。</p>
         <div class="src">AI安全と技術トレンドの分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-19" data-report="生成AIの本格的実戦導入と垂直統合型AIの勃興">
+        <div class="kicker">MARKET FORECAST</div>
+        <h3>生成AI市場、2035年に9,884億ドルへ — フィジカルAIは2040年に55兆円規模</h3>
+        <p>世界の生成AI市場は2025年の537億ドルから2035年に9,884億ドル(CAGR31.6%)、企業向けエージェンティックAI市場は2035年に1,057億ドルへ拡大する見通し。バーティカルSaaS市場は2026年の1,434億ドルから2035年に4,994億ドルへ、データセンター向け液冷市場は27.5億ドルから418億ドル(CAGR31.28%)へ急成長する。日本政府が国家戦略に位置づける「フィジカルAI」市場は2035年の12.5兆円から2040年には55兆円(CAGR34.4%)に達すると試算されている。</p>
+        <div class="src">生成AIの本格的実戦導入と垂直統合型AIの勃興</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">UNIT ECONOMICS</div>
+        <h3>推論トークン単価、2年で85%超下落 — MoE化がコスト構造を書き換える</h3>
+        <p>フロンティアモデルの100万トークンあたり推論コストは2023年から2025/2026年にかけて85%以上下落した。Alibabaの「Qwen」は総パラメータ2,350億のうち1トークンあたり220億のみを活性化するMixture of Experts(MoE)構造で計算コストを1/10近くに圧縮。単価下落は支出減ではなく「ジェヴォンズのパラドックス」を招き、企業は数千〜数万トークンを消費する高度なエージェント型ワークフローを経済的に実行できるようになった結果、総トークン消費量とAI関連支出はむしろ増大している。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
+      </div>
+      <div class="news-card" data-added="2026-07-26" data-report="生成AI実装とインフラ需要分析">
+        <div class="kicker">FUNDING</div>
+        <h3>OpenAI、評価額8,520億ドルで1,220億ドルを調達 — Fortune 500の92%が業務導入</h3>
+        <p>OpenAIは2026年初頭、評価額8,520億ドルで1,220億ドルという過去最大規模の資金調達を完了した。Fortune 500企業の92%が同社の製品を実務に組み込んでおり、圧倒的な市場シェアを保持。ProfoundのようなB2BベンチャーもWalmartやU.S. BankなどFortune 500の10%以上に導入され、AI検索内でのブランド可視性最適化(GEO/LLMO)を担う新たなエコシステムを形成している。</p>
+        <div class="src">生成AI実装とインフラ需要分析</div>
       </div>
     </div>
   </section>
@@ -746,9 +832,11 @@ footer .logo {
 
 <footer>
   <div class="logo">AI NEWS FEED</div>
-  <div>COMPILED FROM 16 RESEARCH REPORTS · ai_news/report · 2026.07</div>
+  <div>COMPILED FROM 18 RESEARCH REPORTS · ai_news/report · 2026.07</div>
 </footer>
 
+<script src="reports-data.js"></script>
+<script src="report-modal.js"></script>
 <script>
 /* ===== Neural network background (green tint) ===== */
 const canvas = document.getElementById('neural-bg');

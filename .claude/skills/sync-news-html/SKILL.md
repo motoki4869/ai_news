@@ -12,7 +12,7 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 ## 前提
 - `history/news.html` は7つの固定テーマセクションを持つ: `#agent`(エージェンティックAI) `#japan`(国内実装) `#physical`(フィジカルAI) `#sovereign`(ソブリンAI) `#infra`(インフラ) `#society`(経済・社会) `#security`(セキュリティ)。新しいテーマは追加しない。
 - 各セクションの `.news-card` 上限は6枚。
-- 各 `.news-card` は `data-added="YYYY-MM-DD"`(追加日)と `data-report="ファイル名"`(出典)を持つ。
+- 各 `.news-card` は `data-added="YYYY-MM-DD"`(追加日)と `data-report="ファイル名"`(出典)を持つ。この `data-report` は `history/reports-data.js` の `window.REPORTS` オブジェクトのキー(拡張子なしファイル名)と一致している必要がある。一致していれば、ユーザーがカードをタップした際に `history/report-modal.js` が自動的に元レポート全文をモーダル表示する(カード側のHTML構造・追加のマークアップは不要)。
 - `history/archive.html` は同じ7テーマ・同じidを持つ「過去ログ」ページ。カード循環時のみ更新する。
 
 ## 手順
@@ -38,4 +38,5 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 7. `history/news.html` の `hero-desc` 内「調査レポートN本を横断」と footer の「COMPILED FROM N RESEARCH REPORTS」の N を、`report/` 配下の実ファイル数(`ls report/*.md | wc -l` 相当)に更新する。
 8. `.ticker` 内のテキストを更新する。今回追加した新規カードの見出しを要約したブレイキングニュース文を1〜2件、末尾に ` +++ ` 区切りで追記する。区切り件数が8件を超える場合は先頭(最も古い)の項目から削除し、総数をおおむね8件に保つ。
 9. `history/news.html`(および循環が発生した場合は `history/archive.html`)を上書き保存する。
-10. 作業内容を1〜2文で要約報告する: 追加したカード(セクション名・見出し)、循環して `history/archive.html` に移したカード、更新した統計値(レポート本数)。ファイル全文は貼り直さない。
+10. `python3 scripts/generate_reports_data.py` を実行し、`report/` 配下の全 `.md` から `history/reports-data.js` を再生成する(新規レポートの全文タップ表示に必要。既存レポートも含め毎回全件再生成するので、対象を絞る必要はない)。
+11. 作業内容を1〜2文で要約報告する: 追加したカード(セクション名・見出し)、循環して `history/archive.html` に移したカード、更新した統計値(レポート本数)。ファイル全文は貼り直さない。

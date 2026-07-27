@@ -152,6 +152,74 @@ nav {
 }
 .src::before { content: '📄 SOURCE: '; color: rgba(255,255,255,0.35); }
 
+/* ===== Report modal (news-card タップで全文表示) ===== */
+.news-card.tappable { cursor: pointer; }
+.news-card.tappable:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.news-card.tappable .src::after { content: ' · タップで全文 →'; color: var(--green); opacity: 0.75; }
+
+.report-modal { position: fixed; inset: 0; z-index: 1000; }
+.report-modal[hidden] { display: none; }
+.report-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(2, 3, 10, 0.78);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.report-modal-panel {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  max-width: 760px; width: min(92vw, 760px);
+  max-height: 84vh;
+  margin: 6vh auto 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.report-modal-header {
+  flex: 0 0 auto;
+  display: flex; justify-content: flex-end;
+  padding: 14px 14px 0;
+}
+.report-modal-close {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(5,6,15,0.85);
+  color: var(--text); font-size: 1.1rem; line-height: 1;
+  cursor: pointer;
+}
+.report-modal-close:hover { color: var(--green); border-color: var(--green); }
+.report-modal-body {
+  flex: 1 1 auto; overflow-y: auto;
+  padding: 0 32px 48px;
+}
+.report-modal-body h2 {
+  font-family: 'Orbitron', sans-serif; font-size: 1.15rem;
+  color: var(--green); margin: 20px 0 12px; line-height: 1.5;
+}
+.report-modal-body h2:first-child { margin-top: 0; }
+.report-modal-body h3 { font-size: 1rem; color: var(--cyan); margin: 22px 0 10px; line-height: 1.5; }
+.report-modal-body h4 { font-size: 0.92rem; color: var(--text); margin: 16px 0 8px; }
+.report-modal-body p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 14px; }
+.report-modal-body strong { color: var(--text); }
+.report-modal-body ul { margin: 0 0 14px 20px; }
+.report-modal-body li { font-size: 0.86rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 6px; }
+.report-modal-body hr { border: none; border-top: 1px dashed rgba(255,255,255,0.12); margin: 24px 0; }
+.report-modal-body .rpt-divider { border-top: 1px solid var(--border); margin: 36px 0; }
+.report-modal-body .rpt-missing { color: var(--coral); }
+.report-modal-body .rpt-formula {
+  white-space: pre-wrap; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: var(--amber);
+  background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;
+  margin-bottom: 14px;
+}
+.rpt-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
+.rpt-table th, .rpt-table td {
+  border: 1px solid rgba(255,255,255,0.12); padding: 8px 10px;
+  text-align: left; color: var(--text-dim); line-height: 1.6;
+}
+.rpt-table th { color: var(--text); background: rgba(255,255,255,0.04); }
+
 .archive-empty { color: var(--text-dim); font-size: 0.85rem; grid-column: 1 / -1; }
 
 .cta-back { text-align: center; padding: 60px 24px 100px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
@@ -217,7 +285,12 @@ footer .logo {
     <span class="sec-line"></span>
   </div>
   <div class="news-grid">
-    <p class="archive-empty">まだアーカイブされたカードはありません。</p>
+    <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要">
+      <div class="kicker">PARADIGM SHIFT</div>
+      <h3>SaaSからAIエージェントへ — 「記録のシステム」から「行動のシステム」へ</h3>
+      <p>画面を操作する人間を前提としたSaaSから、エージェントが直接APIを叩いて業務を完遂する「Headless SaaS」への移行が進行。座席(ID)課金に固執する企業は粗利益率が最大40%低下し、解約率が2.3倍になるという分析も。課金の単位は「人」から「成果」へ。</p>
+      <div class="src">AIエージェントへのシフトとハードウェア需要</div>
+    </div>
   </div>
 </section>
 
@@ -233,6 +306,18 @@ footer .logo {
       <h3>150秒で新商品を企画するAI — 商品開発の常識を破壊</h3>
       <p>NTTデータが2026年7月に提供開始した商品企画特化型AIエージェントは、従来6〜9ヶ月かかっていた市場分析〜商品コンセプト立案をわずか150秒に短縮。「Smart AI Agent」基盤上のマルチエージェントとRAGの融合で、食品・飲料・消費財業界の企画業務を民主化しつつある。</p>
       <div class="src">AIによる人材・調達・企業価値再定義</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="自律型AIとフィジカルAI導入ロードマップ">
+      <div class="kicker">MEGABANKS</div>
+      <h3>みずほ「AI大部屋」とSMBC「kAIgentic」— メガバンクの攻防</h3>
+      <p>みずほはコンプラ・リスク管理・法務の専門AIエージェントが常駐し行員の問い合わせに24時間応答する「大部屋」構想を推進。対するSMBCは2025年後半にシンガポールで「kAIgentic Pte Ltd」を設立し、Agentic AIソリューションを金融業界全体へ外販する攻めの戦略に出た。</p>
+      <div class="src">自律型AIとフィジカルAI導入ロードマップ</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義 / エージェンティックAIトレンド分析">
+      <div class="kicker">SOFTBANK</div>
+      <h3>AIスマホ — 「アプリ中心」から「インテント中心」へ</h3>
+      <p>ソフトバンクのAIスマホは、ユーザーがアプリを操作するのではなく、意図(インテント)を伝えればAIがアプリ横断で処理を完遂する設計へ再構築。端末内AIとクラウドAIのハイブリッド構成で、ポストスマートフォン時代のインターフェース覇権を狙う。AIスマートグラス市場の激変も並走する。</p>
+      <div class="src">AIによる人材・調達・企業価値再定義 / エージェンティックAIトレンド分析</div>
     </div>
   </div>
 </section>
@@ -266,7 +351,24 @@ footer .logo {
     <span class="sec-line"></span>
   </div>
   <div class="news-grid">
-    <p class="archive-empty">まだアーカイブされたカードはありません。</p>
+    <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要 / AI進化とデータセンター課題レポート">
+      <div class="kicker">ENERGY</div>
+      <h3>「ギガワットの天井」— 電力がAI最大の制約に</h3>
+      <p>データセンターの電力消費は2030年までに2023年比175%増(Goldman Sachs予測)。もはや資金ではなく「電力網への接続権」が最大の競争優位となる時代に突入した。原子力・再エネへの優先アクセス確保が、AI企業の経営アジェンダの最上位に上がっている。</p>
+      <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化とデータセンター課題レポート</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="AIエージェントへのシフトとハードウェア需要 / AI進化と経済・社会変革予測">
+      <div class="kicker">SEMICONDUCTOR</div>
+      <h3>GPUからASICへ — 推論の時代のチップ戦争</h3>
+      <p>学習中心から推論中心の時代に移り、汎用GPUより電力効率に優れるカスタムチップ(ASIC)への移行が加速。AI ASIC市場は約130億ドルから2030年に1,500億ドル超へ、年率約50%で成長する見通し。「メモリの壁」の克服と液冷への強制移行も並行して進む。</p>
+      <div class="src">AIエージェントへのシフトとハードウェア需要 / AI進化と経済・社会変革予測</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="AI浸透と社会基盤の未来">
+      <div class="kicker">DECENTRALIZE</div>
+      <h3>データセンターの地方分散 — 東京一極集中の限界</h3>
+      <p>電力リスクを抱える東京一極集中から、再エネの豊富な地方への分散配置へ。NTTのIOWN APN(オールフォトニクス・ネットワーク)が距離の壁を打破し、発電地に計算資源を置く「ワット・ビット連携」が現実解として浮上。経済安全保障の観点からソブリンクラウドの整備も進む。</p>
+      <div class="src">AI浸透と社会基盤の未来</div>
+    </div>
   </div>
 </section>
 
@@ -277,7 +379,24 @@ footer .logo {
     <span class="sec-line"></span>
   </div>
   <div class="news-grid">
-    <p class="archive-empty">まだアーカイブされたカードはありません。</p>
+    <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義 / AI産業シフトと未来戦略レポート">
+      <div class="kicker">TALENT</div>
+      <h3>「人材」の再定義 — 実行する人から、意図を設計する人へ</h3>
+      <p>認知作業の多くをAIに外部化できるようになり、プロフェッショナルの価値は「実行スキル」から「意図の設計(何を、なぜやるかの定義)」へ移動。AIエージェントとの共生を前提とした職能再設計と全社リスキリングが、2026年の人事戦略の中心テーマとなった。</p>
+      <div class="src">AIによる人材・調達・企業価値再定義 / AI産業シフトと未来戦略レポート</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="AIによる人材・調達・企業価値再定義">
+      <div class="kicker">PROCUREMENT</div>
+      <h3>「Wishful Software」— IT調達は成果連動型へ</h3>
+      <p>「こう動いてほしい」という希望を伝えればAIがソフトウェアを実装する時代になり、IT調達は仕様書ベースの一括契約から、成果に連動して支払う継続的ガバナンス型へ転換。調達部門の役割はベンダー管理から「AIという動的な知的財産を育てる」ことへ変わりつつある。</p>
+      <div class="src">AIによる人材・調達・企業価値再定義</div>
+    </div>
+    <div class="news-card" data-added="2026-07-05" data-report="AI進化と経済・社会変革予測">
+      <div class="kicker">ECONOMICS</div>
+      <h3>ハイパーデフレの経済学 — GDPが測れなくなる</h3>
+      <p>AIによって知的サービスの生産コストが急落する「ハイパーデフレ」が進行するという分析が登場。無料・超低価格で提供される価値がGDP統計に反映されず、経済指標の再定義が政策課題に。トランスフォーマー以降の次世代アーキテクチャ研究も、コスト構造をさらに変えようとしている。</p>
+      <div class="src">AI進化と経済・社会変革予測</div>
+    </div>
   </div>
 </section>
 
@@ -301,6 +420,9 @@ footer .logo {
   <div class="logo">AI NEWS ARCHIVE</div>
   <div>CIRCULATED FROM history/news.html</div>
 </footer>
+
+<script src="reports-data.js"></script>
+<script src="report-modal.js"></script>
 
 </body>
 </html>
