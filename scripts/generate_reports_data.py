@@ -74,7 +74,7 @@ def md_to_html(md: str) -> str:
             closing_idx = stripped.find("$$", 2)
             if closing_idx != -1:
                 # 開始・終了の $$ が同一行にある単一行formula
-                out.append(f'<pre class="rpt-formula">{stripped[2:closing_idx].strip()}</pre>')
+                out.append(f'<div class="rpt-formula">$${stripped[2:closing_idx].strip()}$$</div>')
                 i += 1
                 continue
             formula = [stripped.lstrip("$")]
@@ -85,7 +85,7 @@ def md_to_html(md: str) -> str:
             if i < len(lines):
                 formula.append(lines[i].strip().rstrip("$"))
                 i += 1
-            out.append(f'<pre class="rpt-formula">{"".join(f for f in formula if f)}</pre>')
+            out.append(f'<div class="rpt-formula">$${"".join(f for f in formula if f)}$$</div>')
             continue
 
         m = re.match(r"^(#{1,4})\s+(.*)$", stripped)
