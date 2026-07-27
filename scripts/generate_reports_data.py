@@ -71,6 +71,12 @@ def md_to_html(md: str) -> str:
 
         if stripped.startswith("$$"):
             flush_list()
+            closing_idx = stripped.find("$$", 2)
+            if closing_idx != -1:
+                # 開始・終了の $$ が同一行にある単一行formula
+                out.append(f'<pre class="rpt-formula">{stripped[2:closing_idx].strip()}</pre>')
+                i += 1
+                continue
             formula = [stripped.lstrip("$")]
             i += 1
             while i < len(lines) and "$$" not in lines[i]:
