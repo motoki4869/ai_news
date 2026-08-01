@@ -14,6 +14,7 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 - 各セクションの `.news-card` 上限は6枚。
 - 各 `.news-card` は `data-added="YYYY-MM-DD"`(追加日)と `data-report="ファイル名"`(出典)を持つ。この `data-report` は `history/reports-data.js` の `window.REPORTS` オブジェクトのキー(拡張子なしファイル名)と一致している必要がある。一致していれば、ユーザーがカードをタップした際に `history/report-modal.js` が自動的に元レポート全文をモーダル表示する(カード側のHTML構造・追加のマークアップは不要)。
 - `history/archive.html` は同じ7テーマ・同じidを持つ「過去ログ」ページ。カード循環時のみ更新する。
+- `history/daily.html`(AI DAILY LOG)は `everyday_news/*.md` を出典とする別系統のページで、`scripts/generate_daily_data.py` が生成する `history/daily-data.js` だけを読む。このスキルの対象外なので触らない。
 
 ## 手順
 
