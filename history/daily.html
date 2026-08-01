@@ -526,11 +526,84 @@ function renderCalendar() {
 prevBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, -1); renderCalendar(); });
 nextBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, 1); renderCalendar(); });
 
+const dayHead = document.getElementById('day-head');
+const cardGrid = document.getElementById('card-grid');
+
+/* 出典URLのホスト名をキッカー表示用に整える。 */
+function hostOf(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '').toUpperCase();
+  } catch (e) {
+    return 'SOURCE';
+  }
+}
+
+function renderDay() {
+  const items = DATA[selected] || [];
+  const [y, m, d] = selected.split('-').map(Number);
+  const dow = DOW[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+
+  dayHead.innerHTML =
+    '<h2>' + selected + '（' + dow + '）</h2>'
+    + '<span class="day-count">' + items.length + '件</span>'
+    + '<span class="day-line"></span>';
+
+  cardGrid.innerHTML = items.map(item =>
+    '<article class="news-card">'
+    + '<div class="kicker">' + hostOf(item.url) + '</div>'
+    + '<h3>' + item.title + '</h3>'
+    + '<p>' + item.body + '</p>'
+    + '<a class="card-src" href="' + item.url + '" target="_blank" rel="noopener">出典を読む →</a>'
+    + '</article>'
+  ).join('');
+
+  // 再描画のたびにフェードインさせる
+  requestAnimationFrame(() => {
+    cardGrid.querySelectorAll('.news-card').forEach(c => c.classList.add('visible'));
+  });
+}
+
+function select(date, opts) {
+  if (!DATA[date]) return;
+  selected = date;
+  viewMonth = ym(date);
+  renderCalendar();
+  renderDay();
+  history.replaceState(null, '', '#' + date);
+  if (opts && opts.scroll) {
+    dayHead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+calGrid.addEventListener('click', e => {
+  const cell = e.target.closest('.cal-cell.has-news');
+  if (cell) select(cell.dataset.date, { scroll: true });
+});
+
+latestBtn.addEventListener('click', () => select(LATEST, { scroll: true }));
+
+/* ← → でニュースのある前後の日へジャンプする */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const tag = document.activeElement ? document.activeElement.tagName : '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  const i = DATES.indexOf(selected);
+  const next = e.key === 'ArrowLeft' ? DATES[i - 1] : DATES[i + 1];
+  if (next) { e.preventDefault(); select(next); }
+});
+
+window.addEventListener('hashchange', () => {
+  const h = location.hash.slice(1);
+  if (DATA[h] && h !== selected) select(h);
+});
+
+/* ===== 初期化 ===== */
 if (!DATES.length) {
   emptyState.hidden = false;
   document.querySelector('.cal-wrap').hidden = true;
 } else {
-  renderCalendar();
+  const fromHash = location.hash.slice(1);
+  select(DATA[fromHash] ? fromHash : LATEST);
 }
 </script>
 
