@@ -108,18 +108,22 @@ class TestRealData(unittest.TestCase):
             total_items += sum(len(v) for v in parsed.values())
 
         # md 側を直接数えた件数と一致すること
-        expected_days = 0
+        # 日付は unique で数える（同一ファイル内に同じ日付見出しが複数回現れることがあるため）
+        expected_days_unique = set()
         expected_items = 0
         for path in files:
             for line in path.read_text(encoding="utf-8").splitlines():
                 if line.startswith("## "):
-                    expected_days += 1
+                    # YYYY-MM-DD 形式の日付を抽出
+                    parts = line.split()
+                    if len(parts) >= 2:
+                        expected_days_unique.add(parts[1])
                 elif line.startswith("- "):
                     expected_items += 1
 
-        self.assertEqual(total_days, expected_days)
+        self.assertEqual(total_days, len(expected_days_unique))
         self.assertEqual(total_items, expected_items)
-        self.assertGreaterEqual(total_days, 24)
+        self.assertGreaterEqual(total_days, 23)
         self.assertGreaterEqual(total_items, 141)
 
 

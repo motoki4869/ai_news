@@ -34,6 +34,8 @@ def parse_daily_markdown(text: str, source: str) -> dict:
     """1ファイル分の Markdown を {日付: [項目, ...]} に変換する。
 
     項目は {"title": str, "body": str, "url": str}。
+    同一ファイル内に同じ日付見出しが複数回現れた場合は、1つの日付にマージする
+    （日次ジョブが同じ日に2回走ることがあるため）。
     想定形式に一致しない行があれば ParseError を送出する。
     """
     result: dict = {}
