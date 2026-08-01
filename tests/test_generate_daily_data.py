@@ -2,14 +2,17 @@
 
 実行: python3 -m unittest discover -s tests -v
 """
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from generate_daily_data import ParseError, parse_daily_markdown, render_inline
+from generate_daily_data import ParseError, parse_daily_markdown, render_inline, main
 
 
 class TestRenderInline(unittest.TestCase):
@@ -123,8 +126,123 @@ class TestRealData(unittest.TestCase):
 
         self.assertEqual(total_days, len(expected_days_unique))
         self.assertEqual(total_items, expected_items)
-        self.assertGreaterEqual(total_days, 23)
+        self.assertGreaterEqual(total_days, 24)
         self.assertGreaterEqual(total_items, 141)
+
+
+class TestMain(unittest.TestCase):
+    """main() 関数の安全性テスト"""
+
+    def test_main_with_no_input_files(self):
+        """入力ファイル0件時は exit 1 で出力ファイルを書き換えない"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            src_dir = Path(tmpdir) / "empty_news"
+            src_dir.mkdir()
+            out_file = Path(tmpdir) / "output.js"
+            out_file.write_text("old content")
+
+            with mock.patch("generate_daily_data.SRC_DIR", src_dir):
+                with mock.patch("generate_daily_data.OUT_FILE", out_file):
+                    result = main()
+
+            self.assertEqual(result, 1)
+            self.assertEqual(out_file.read_text(), "old content")
+
+    def test_main_with_duplicate_dates_across_files(self):
+        """ファイル間で日付が重複時は exit 1 で出力ファイルを書き換えない"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            src_dir = Path(tmpdir) / "news"
+            src_dir.mkdir()
+            out_file = Path(tmpdir) / "output.js"
+            out_file.write_text("old content")
+
+            # 同じ日付を持つ2つのファイルを作成
+            (src_dir / "file1.md").write_text(
+                "## 2026-08-01\n- **News1**: text1（[出典](https://example.com/1)）。\n",
+                encoding="utf-8"
+            )
+            (src_dir / "file2.md").write_text(
+                "## 2026-08-01\n- **News2**: text2（[出典](https://example.com/2)）。\n",
+                encoding="utf-8"
+            )
+
+            with mock.patch("generate_daily_data.SRC_DIR", src_dir):
+                with mock.patch("generate_daily_data.OUT_FILE", out_file):
+                    result = main()
+
+            self.assertEqual(result, 1)
+            self.assertEqual(out_file.read_text(), "old content")
+
+    def test_main_with_duplicate_dates_within_file(self):
+        """ファイル内で日付が重複時は exit 0 で警告を出力、項目はマージ"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            src_dir = Path(tmpdir) / "news"
+            src_dir.mkdir()
+            out_file = Path(tmpdir) / "output.js"
+
+            # 同じ日付が2回現れるファイル
+            (src_dir / "news.md").write_text(
+                "## 2026-08-01\n"
+                "- **News1**: text1（[出典](https://example.com/1)）。\n"
+                "## 2026-08-01\n"
+                "- **News2**: text2（[出典](https://example.com/2)）。\n",
+                encoding="utf-8"
+            )
+
+            with mock.patch("generate_daily_data.SRC_DIR", src_dir):
+                with mock.patch("generate_daily_data.OUT_FILE", out_file):
+                    result = main()
+
+            self.assertEqual(result, 0)
+            # ファイルが作成されていること
+            self.assertTrue(out_file.exists())
+            content = out_file.read_text()
+            self.assertIn("window.DAILY_NEWS", content)
+            # 両方のニュースが含まれていること
+            self.assertIn("News1", content)
+            self.assertIn("News2", content)
+            # 1日分のデータとして扱われていること（JSON内に1つの日付キーがあること）
+            import json
+            js_content = content.replace("window.DAILY_NEWS = ", "").strip()
+            if js_content.endswith(";"):
+                js_content = js_content[:-1]
+            data = json.loads(js_content)
+            self.assertEqual(len(data), 1)
+            self.assertEqual(len(data["2026-08-01"]), 2)
+
+    def test_main_success_case(self):
+        """正常系：出力ファイルが正しく生成される"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            src_dir = Path(tmpdir) / "news"
+            src_dir.mkdir()
+            out_file = Path(tmpdir) / "output.js"
+
+            (src_dir / "news.md").write_text(
+                "# 2026年8月 AIニュースまとめ\n"
+                "## 2026-08-01\n"
+                "- **NewsA**: textA（[出典](https://example.com/a)）。\n"
+                "## 2026-08-02\n"
+                "- **NewsB**: textB（[出典](https://example.com/b)）。\n",
+                encoding="utf-8"
+            )
+
+            with mock.patch("generate_daily_data.SRC_DIR", src_dir):
+                with mock.patch("generate_daily_data.OUT_FILE", out_file):
+                    result = main()
+
+            self.assertEqual(result, 0)
+            self.assertTrue(out_file.exists())
+            content = out_file.read_text()
+            self.assertIn("window.DAILY_NEWS", content)
+            # JSON 内容を検証
+            import json
+            js_content = content.replace("window.DAILY_NEWS = ", "").strip()
+            if js_content.endswith(";"):
+                js_content = js_content[:-1]
+            data = json.loads(js_content)
+            self.assertEqual(len(data), 2)
+            self.assertIn("2026-08-01", data)
+            self.assertIn("2026-08-02", data)
 
 
 if __name__ == "__main__":
