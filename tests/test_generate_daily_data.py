@@ -2,6 +2,8 @@
 
 実行: python3 -m unittest discover -s tests -v
 """
+import contextlib
+import io
 import os
 import sys
 import tempfile
@@ -143,7 +145,12 @@ class TestMain(unittest.TestCase):
 
             with mock.patch("generate_daily_data.SRC_DIR", src_dir):
                 with mock.patch("generate_daily_data.OUT_FILE", out_file):
-                    result = main()
+                    # stdout/stderr をキャプチャ
+                    stdout_buf = io.StringIO()
+                    stderr_buf = io.StringIO()
+                    with contextlib.redirect_stdout(stdout_buf):
+                        with contextlib.redirect_stderr(stderr_buf):
+                            result = main()
 
             self.assertEqual(result, 1)
             self.assertEqual(out_file.read_text(), "old content")
@@ -168,7 +175,12 @@ class TestMain(unittest.TestCase):
 
             with mock.patch("generate_daily_data.SRC_DIR", src_dir):
                 with mock.patch("generate_daily_data.OUT_FILE", out_file):
-                    result = main()
+                    # stdout/stderr をキャプチャ
+                    stdout_buf = io.StringIO()
+                    stderr_buf = io.StringIO()
+                    with contextlib.redirect_stdout(stdout_buf):
+                        with contextlib.redirect_stderr(stderr_buf):
+                            result = main()
 
             self.assertEqual(result, 1)
             self.assertEqual(out_file.read_text(), "old content")
@@ -191,9 +203,21 @@ class TestMain(unittest.TestCase):
 
             with mock.patch("generate_daily_data.SRC_DIR", src_dir):
                 with mock.patch("generate_daily_data.OUT_FILE", out_file):
-                    result = main()
+                    # stdout/stderr をキャプチャして警告を検証
+                    stdout_buf = io.StringIO()
+                    stderr_buf = io.StringIO()
+                    with contextlib.redirect_stdout(stdout_buf):
+                        with contextlib.redirect_stderr(stderr_buf):
+                            result = main()
+                    stderr_output = stderr_buf.getvalue()
 
             self.assertEqual(result, 0)
+            # 警告メッセージが出力されていること
+            self.assertIn("警告:", stderr_output)
+            self.assertIn("news.md", stderr_output)
+            self.assertIn("2026-08-01", stderr_output)
+            self.assertIn("複数回出現", stderr_output)
+
             # ファイルが作成されていること
             self.assertTrue(out_file.exists())
             content = out_file.read_text()
@@ -228,7 +252,12 @@ class TestMain(unittest.TestCase):
 
             with mock.patch("generate_daily_data.SRC_DIR", src_dir):
                 with mock.patch("generate_daily_data.OUT_FILE", out_file):
-                    result = main()
+                    # stdout/stderr をキャプチャ
+                    stdout_buf = io.StringIO()
+                    stderr_buf = io.StringIO()
+                    with contextlib.redirect_stdout(stdout_buf):
+                        with contextlib.redirect_stderr(stderr_buf):
+                            result = main()
 
             self.assertEqual(result, 0)
             self.assertTrue(out_file.exists())
