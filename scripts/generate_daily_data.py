@@ -6,6 +6,7 @@ scripts/daily_news_prompt.txt の手順9(commit直前)で毎朝実行される�
 形式に合わない行を見つけたら stderr に出して終了コード1で落ち、
 daily-data.js は書き換えない(壊れた形式で項目を黙って取りこぼさないため)。
 """
+import datetime
 import json
 import os
 import re
@@ -61,7 +62,16 @@ def parse_daily_markdown(text: str, source: str) -> dict:
 
         matched_date = DATE_RE.match(line)
         if matched_date:
-            current = matched_date.group(1)
+            date_str = matched_date.group(1)
+            # 書式だけでなく実在する暦日かどうかも検証する
+            # (2026-13-45 や 2026-02-31 がカレンダー表示を壊すため)
+            try:
+                datetime.date.fromisoformat(date_str)
+            except ValueError:
+                raise ParseError(
+                    f"{source}:{lineno}: 実在しない日付です: {line}"
+                )
+            current = date_str
             if current in seen_dates:
                 result.duplicate_dates.add(current)
             seen_dates.add(current)
@@ -87,7 +97,7 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                 )
             result[current].append(
                 {
-                    "title": render_inline(title),
+                    "title": title,
                     "body": render_inline(SOURCE_RE.sub("", rest).strip()),
                     "url": matched_src.group(1),
                 }
