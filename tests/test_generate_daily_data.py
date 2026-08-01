@@ -96,6 +96,22 @@ class TestParseDailyMarkdown(unittest.TestCase):
         with self.assertRaises(ParseError):
             parse_daily_markdown(md, "202608.md")
 
+    def test_title_is_not_rendered_as_strong(self):
+        """title には render_inline を適用しない（daily.html が textContent で描画するため）"""
+        md = (
+            "## 2026-08-01\n"
+            "- **A**と**B**: 本文です（[出典](https://example.com/a)）。\n"
+        )
+        item = parse_daily_markdown(md, "202608.md")["2026-08-01"][0]
+        self.assertNotIn("<strong>", item["title"])
+
+    def test_raises_on_invalid_calendar_date(self):
+        """書式は正しくても実在しない暦日なら ParseError"""
+        md = "## 2026-02-30\n- **見出し**: 本文（[出典](https://example.com/a)）。\n"
+        with self.assertRaises(ParseError) as cm:
+            parse_daily_markdown(md, "202602.md")
+        self.assertIn("実在しない日付", str(cm.exception))
+
 
 class TestRealData(unittest.TestCase):
     """本番の everyday_news/*.md が例外なくパースできることを保証する回帰テスト。"""
