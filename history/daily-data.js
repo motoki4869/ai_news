@@ -751,5 +751,42 @@ window.DAILY_NEWS = {
       "body": "7月30〜31日開催のイベントで、両社が共同開発したヒューマノイドにGoogleの音声対話モデル「Gemini 3.1 Flash Live」を統合し、声のトーンや感情まで汲み取ったリアルタイム接客デモを披露した。従来API経由で数秒あった応答遅延を解消し、小売・医療福祉・観光など人手不足が深刻な現場への実用投入を見据えた「フィジカルAI」の国産事例として注目される",
       "url": "https://newsroom.kddi.com/news/detail/kddi_nr-1109_4637.html"
     }
+  ],
+  "2026-08-02": [
+    {
+      "title": "DeepSeek、「V4-Flash-0731」を正式公開し自社フラッグシップ超えの性能を主張",
+      "body": "7月31日、アーキテクチャ（284BのMoE、アクティブ13B）を変えずに再ポストトレーニングのみで仕上げた最新版を公開し、公表された9つのエージェント／コーディング系ベンチマークすべてで上位モデルV4-Pro-Previewを上回った。出力100万トークン0.28ドルとV4-Proの約3分の1の価格でMITライセンス公開されており、「安価な中国製オープンモデル」がフロンティア企業の価格設定を直接圧迫し続けていることを示す",
+      "url": "https://www.marktechpost.com/2026/07/31/deepseek-upgrades-deepseek-v4-flash-0731-with-major-agentic-and-coding-gains/"
+    },
+    {
+      "title": "MiniMax、ネイティブ音声付き2K動画を生成するオムニモーダルモデル「H3（Hailuo 3.0）」を公開",
+      "body": "7月31日、テキスト・画像・動画・音声を入力として受け取り、最長15秒・2560×1440解像度のクリップをステレオ音声付きで生成するモデルをAPIと消費者向けHailuo AIアプリで提供開始した。モーション転送や生成的動画編集にも対応し、価格は2Kで1秒あたり0.13ドル。広告・EC・ゲーム制作などの映像制作コストを一段と押し下げる一方、学習データを巡る著作権訴訟が影を落としている",
+      "url": "https://www.marktechpost.com/2026/08/01/minimax-releases-minimax-h3-an-omni-modal-video-model-that-generates-15-second-2k-clips-with-native-stereo-audio/"
+    },
+    {
+      "title": "Y Combinator、社内全社運用のマルチエージェント基盤「QM」をMITライセンスでオープンソース化",
+      "body": "7月31日、経理・法務・イベント・エンジニアリングまで全部門で実運用しているエージェントハーネスを公開した。個人単位・ルーム単位でメモリ、ファイル、権限、cron、サンドボックスを分離し、Slackとweb UIに標準対応、Claude Code・Codex・OpenCodeなどを差し替えて使える。「個人アシスタント」ではなく「会社単位のマルチテナント運用」を前提に設計された点が新しく、企業がエージェントを業務に組み込む際の設計テンプレートとして参考になる",
+      "url": "https://x.com/ycombinator/status/2083243960684908768"
+    },
+    {
+      "title": "欧州委員会、8月2日からAI Actの執行と透明性義務の適用を開始すると発表",
+      "body": "7月31日の発表で、AI Officeと各国当局による執行が8月2日に始まり、チャットボットはAIであることの明示、ディープフェイクのラベル表示、AI生成コンテンツへの機械可読な標識付与が法的義務になると明らかにした。違反時の制裁金は最大1500万ユーロまたは全世界年間売上高の3%で、EU向けにAI機能を提供する企業は表示・電子透かし対応を実装レベルで完了させる必要がある",
+      "url": "https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1714"
+    },
+    {
+      "title": "トランプ政権のAI大統領令、8月1日に「対象フロンティアモデル」枠組みの60日期限が到来",
+      "body": "6月の大統領令14409で財務省・NSA・CISA・NISTに課された、政府への事前提出対象となるフロンティアモデルの定義と自主的枠組みの策定期限が8月1日に到来した。同時に中国製オープンウェイトモデルの規制・禁止を巡る論争が激化し、サム・アルトマン氏やジェンスン・フアン氏ら業界トップが異例の足並みで禁止案に反対してワシントンでロビー活動を展開している",
+      "url": "https://www.cnbc.com/2026/07/31/trump-ai-executive-order-nears-key-deadline-regulation-debate-heats-up.html"
+    },
+    {
+      "title": "AWSの受注残が4960億ドルに到達、Amazonは2026年の設備投資を2200億ドルへ引き上げ",
+      "body": "決算でAWSの売上高が前年同期比37%増と2021年以来の高成長を記録し、受注残は4960億ドルに膨らんだ。メモリ価格の上昇を主因に通期の設備投資計画は約2000億ドルから2200億ドルへ増額されたが、ジャシーCEOは「2026年も需要をすべて満たす容量は確保できない」と述べており、AI計算資源の供給制約が2027年まで続く前提で各社が調達戦略を組む必要があることを示す",
+      "url": "https://www.techtimes.com/articles/322572/20260731/aws-backlog-hits-496b-amazon-raises-ai-spend-220b-capacity-runs-short.htm"
+    },
+    {
+      "title": "Google DeepMindの「Gemini Robotics 2」、Apptronikのヒューマノイドで全身制御の自律動作を実演",
+      "body": "足先から指先までを単一のポリシーで協調させる全身制御と、五本指ハンドによる高難度作業、異種ロボット間の連携を可能にする新モデル群を発表し、7月31日にApptronikのApollo 2による実演が公開された。「じょうろを下段の緑の箱に入れて」といった自然言語指示から、歩行・しゃがみ込み・物体操作までを自律実行でき、フィジカルAIが単腕マニピュレーションから「現場を歩いて働くロボット」の段階へ進んだことを示す",
+      "url": "https://roboticsandautomationnews.com/2026/07/31/google-deepmind-unveils-gemini-robotics-2-as-apptronik-humanoid-demonstrates-whole-body-ai/103802/"
+    }
   ]
 };
