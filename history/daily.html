@@ -458,6 +458,80 @@ window.addEventListener('scroll', () => {
   const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById('progress').style.width = p + '%';
 }, { passive: true });
+
+/* ===== 日次ログデータ ===== */
+const DATA = window.DAILY_NEWS || {};
+const DATES = Object.keys(DATA).sort();
+const LATEST = DATES.length ? DATES[DATES.length - 1] : null;
+const DOW = ['日', '月', '火', '水', '木', '金', '土'];
+
+const calTitle = document.getElementById('cal-title');
+const calGrid = document.getElementById('cal-grid');
+const prevBtn = document.getElementById('cal-prev');
+const nextBtn = document.getElementById('cal-next');
+const latestBtn = document.getElementById('cal-latest');
+const emptyState = document.getElementById('empty-state');
+
+function ym(dateStr) { return dateStr.slice(0, 7); }
+
+const MONTHS = [...new Set(DATES.map(ym))].sort();
+const MIN_MONTH = MONTHS[0] || null;
+const MAX_MONTH = MONTHS.length ? MONTHS[MONTHS.length - 1] : null;
+
+let selected = null;
+let viewMonth = LATEST ? ym(LATEST) : null;
+
+/* "YYYY-MM" を delta か月ずらす。年またぎは Date に任せる。 */
+function shiftMonth(month, delta) {
+  const [y, m] = month.split('-').map(Number);
+  const d = new Date(Date.UTC(y, m - 1 + delta, 1));
+  return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0');
+}
+
+function renderCalendar() {
+  if (!viewMonth) return;
+  const [y, m] = viewMonth.split('-').map(Number);
+  calTitle.textContent = y + '年 ' + m + '月';
+  prevBtn.disabled = viewMonth <= MIN_MONTH;
+  nextBtn.disabled = viewMonth >= MAX_MONTH;
+
+  const lead = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
+  const dayCount = new Date(Date.UTC(y, m, 0)).getUTCDate();
+
+  const cells = DOW.map((name, i) => {
+    const tone = i === 0 ? ' sun' : (i === 6 ? ' sat' : '');
+    return '<div class="cal-dow' + tone + '">' + name + '</div>';
+  });
+
+  for (let i = 0; i < lead; i++) cells.push('<div class="cal-cell empty"></div>');
+
+  for (let d = 1; d <= dayCount; d++) {
+    const key = viewMonth + '-' + String(d).padStart(2, '0');
+    const items = DATA[key];
+    if (!items) {
+      cells.push('<div class="cal-cell">' + d + '</div>');
+      continue;
+    }
+    const sel = key === selected ? ' selected' : '';
+    cells.push(
+      '<button type="button" class="cal-cell has-news' + sel + '"'
+      + ' data-date="' + key + '" aria-label="' + key + ' ' + items.length + '件">'
+      + d + '<span class="cal-count">' + items.length + '</span></button>'
+    );
+  }
+
+  calGrid.innerHTML = cells.join('');
+}
+
+prevBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, -1); renderCalendar(); });
+nextBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, 1); renderCalendar(); });
+
+if (!DATES.length) {
+  emptyState.hidden = false;
+  document.querySelector('.cal-wrap').hidden = true;
+} else {
+  renderCalendar();
+}
 </script>
 
 </body>
