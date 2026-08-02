@@ -788,5 +788,27 @@ window.DAILY_NEWS = {
       "body": "足先から指先までを単一のポリシーで協調させる全身制御と、五本指ハンドによる高難度作業、異種ロボット間の連携を可能にする新モデル群を発表し、7月31日にApptronikのApollo 2による実演が公開された。「じょうろを下段の緑の箱に入れて」といった自然言語指示から、歩行・しゃがみ込み・物体操作までを自律実行でき、フィジカルAIが単腕マニピュレーションから「現場を歩いて働くロボット」の段階へ進んだことを示す",
       "url": "https://roboticsandautomationnews.com/2026/07/31/google-deepmind-unveils-gemini-robotics-2-as-apptronik-humanoid-demonstrates-whole-body-ai/103802/"
     }
+  ],
+  "2026-08-03": [
+    {
+      "title": "米カリフォルニア州のAI透明性法「SB 942」が8月2日発効",
+      "body": "州内の月間利用者100万人超を抱える生成AI事業者に対し、画像・動画・音声へのC2PA互換の来歴情報埋め込みと無料の公開検出ツール提供を義務付け、違反は1件・1日あたり5000ドルの制裁金となる。米国で初めて州レベルでAI生成コンテンツの技術的な真正性表示を強制する法律であり、他州・連邦での同種規制の先行モデルとなり得る",
+      "url": "https://www.ailawsbystate.com/blog/california-ai-transparency-act-sb-942"
+    },
+    {
+      "title": "xAI、ネイティブ1080p動画生成モデル「Grok Imagine Video 1.5」を公開",
+      "body": "テキストから最大1080pの動画を生成でき、最大7枚の参照画像と3つの音声入力を組み合わせてシーンをまたいだキャラクター・音声の一貫性を保てるようになった。Sora・Veoなど競合動画生成AIとの機能競争が続く中、xAIが「一貫性」という実用面での差別化を打ち出した",
+      "url": "https://cryptobriefing.com/grok-imagine-voice-consistency-text-to-video/"
+    },
+    {
+      "title": "Apple、AI生成バグレポートの急増を受けFeedback Assistantに投稿上限を導入",
+      "body": "ユーザーがAIで自動生成した大量のバグ報告がFeedback Assistantに殺到したことを受け、提出数の上限と30日間のクールオフ期間を設ける措置に踏み切った。生成AIの普及が企業の既存の問い合わせ・品質管理システムを機能不全に追い込みつつある実例として、他社にも同種対応の必要性を示唆する",
+      "url": "https://www.ft.com/content/4532122d-90f2-4433-9df6-ca99d8a141d2"
+    },
+    {
+      "title": "登録320万人の科学系YouTuber Hank Green氏、ChatGPT依存を認め複数チャンネルを休止",
+      "body": "自身のAI利用を「不健全」と表現し、SMUSHや4x3を含む複数のYouTubeチャンネルの更新を一時停止すると表明した。著名なテック・科学系インフルエンサー自身がAI依存の弊害を公に認めた事例であり、生成AIの過度な利用が個人の創作活動やメンタルヘルスに与える影響を巡る議論に一石を投じている",
+      "url": "https://techcrunch.com/2026/08/01/youtuber-hank-green-says-his-ai-usage-is-not-healthy/"
+    }
   ]
 };
