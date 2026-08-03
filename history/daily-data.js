@@ -810,5 +810,32 @@ window.DAILY_NEWS = {
       "body": "自身のAI利用を「不健全」と表現し、SMUSHや4x3を含む複数のYouTubeチャンネルの更新を一時停止すると表明した。著名なテック・科学系インフルエンサー自身がAI依存の弊害を公に認めた事例であり、生成AIの過度な利用が個人の創作活動やメンタルヘルスに与える影響を巡る議論に一石を投じている",
       "url": "https://techcrunch.com/2026/08/01/youtuber-hank-green-says-his-ai-usage-is-not-healthy/"
     }
+  ],
+  "2026-08-04": [
+    {
+      "title": "ホワイトハウス、OpenAI・Anthropic・Google・Metaを招き自主的サイバー安全性テスト枠組みを協議",
+      "body": "トランプ政権は8月3日、フロンティアAIモデルのハッキング能力を測定する自主的サイバーセキュリティテストの詳細を最終決定したとして主要AI企業を招集した。数日前にAnthropicとOpenAIが自社モデルによる他社システムへの実際の侵入を公表した直後というタイミングであり、政府によるAI安全性検証への関与が「自主的」の名の下にどこまで実質化するかが今後の焦点となる",
+      "url": "https://www.cnbc.com/2026/08/03/white-house-ai-companies-voluntary-framework-meeting.html"
+    },
+    {
+      "title": "カリフォルニア州上院歳出委員会、AI関連法案30本超の生死を分ける一括採決を実施",
+      "body": "8月3日午前、下院から送付されたAI関連法案を一挙に審議するヒアリングが開かれ、ここで可決されなかった法案は2026年会期での成立が事実上絶たれる。全米で27州・85本のAI関連法が既に成立する中、最大の経済規模を持つ州の判断は他州の規制設計にも波及し得る",
+      "url": "https://www.techtimes.com/articles/322386/20260731/california-ai-bills-face-kill-survive-vote-monday-eu-fines-start.htm"
+    },
+    {
+      "title": "Microsoft、エージェント型サイバーセキュリティ基盤「Project Perception」を一般プレビュー公開",
+      "body": "8月3日、攻撃経路を探る「赤」・脅威を調査する「青」・是正措置を行う「緑」の3種のAIエージェントが連携して防御を担う新基盤の一般プレビューを開始した。自社開発のセキュリティ特化モデル「MAI-Cyber-1-Flash」やOpenAI・Anthropic製モデルも組み合わせて運用し、重大な判断には人間の承認を残す設計としており、AI攻撃の高度化に対し「AIでAIに対抗する」防御の実運用フェーズ入りを示す",
+      "url": "https://thenextweb.com/news/microsoft-project-perception-agentic-security-cyber-model"
+    },
+    {
+      "title": "AI人材獲得競争が学術界を侵食、スタンフォード等の教授・研究者22人が2026年上半期にOpenAI・Anthropic・Meta・Google DeepMindへ移籍",
+      "body": "巨額のサイニングボーナスや株式インセンティブを背景に、研究テーマの選定や次世代研究者育成を担う大学教員がAI企業側へ流出する動きが8月3日時点で加速していると報じられた。大学という「AI人材を生む土台」自体が侵食されつつあり、長期的な基礎研究や独立した技術評価の担い手が細る懸念につながる",
+      "url": "https://www.axios.com/2026/08/03/ai-talent-wars-openai-google-meta-anthropic"
+    },
+    {
+      "title": "エンタープライズ向けエージェントAI企業Yellow.ai、SPAC合併でナスダック上場へ",
+      "body": "8月3日、Bluerock Acquisition Corp.との事業統合契約により、企業価値約5億5000万ドルでナスダック（ティッカー：YAI）への上場を発表した。年間160億件の会話処理と650社超の企業顧客を抱える同社の上場は、生成AIブームの中でも「対話エージェントの受託運用」という地味ながら収益性のある事業モデルが資本市場から評価され始めていることを示す",
+      "url": "https://aithority.com/machine-learning/yellow-ai-a-global-leader-in-enterprise-agentic-ai-to-go-public-via-550-million-merger-with-bluerock-acquisition-corp/"
+    }
   ]
 };
