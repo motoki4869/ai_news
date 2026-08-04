@@ -837,5 +837,32 @@ window.DAILY_NEWS = {
       "body": "8月3日、Bluerock Acquisition Corp.との事業統合契約により、企業価値約5億5000万ドルでナスダック（ティッカー：YAI）への上場を発表した。年間160億件の会話処理と650社超の企業顧客を抱える同社の上場は、生成AIブームの中でも「対話エージェントの受託運用」という地味ながら収益性のある事業モデルが資本市場から評価され始めていることを示す",
       "url": "https://aithority.com/machine-learning/yellow-ai-a-global-leader-in-enterprise-agentic-ai-to-go-public-via-550-million-merger-with-bluerock-acquisition-corp/"
     }
+  ],
+  "2026-08-05": [
+    {
+      "title": "アリババ、2.4兆パラメータの新フラッグシップ「Qwen3.8-Max」を発表",
+      "body": "8月3日、スパースMoE構成で推論時アクティブパラメータ約950億、最大100万トークンのコンテキストウィンドウを持つ最上位モデルを公開し、16日間の自律コーディングで265件のコミットを生成する性能を実演、来週にはオープンウェイト版も公開予定と明らかにした。中国発オープンモデルがOpenAIやAnthropicのフロンティア級性能に急速に迫っていることを改めて示し、日本でも8月4日に広く報じられた",
+      "url": "https://gigazine.net/news/20260804-alibaba-qwen-3-8-max/"
+    },
+    {
+      "title": "Palantir、2025年第2四半期決算が急伸し株価一時30%近く急騰",
+      "body": "8月4日発表の決算で売上高が前年同期比93%増の19.4億ドルとなり市場予想を大きく上回った。カープCEOは成長の原動力を「AIソブリンティ（自社データを外部フロンティアAI企業任せにしない需要）」と説明しており、企業のAI活用の焦点が「モデル利用」から「データ主権を保ったAI統合」へ移りつつあることを示す",
+      "url": "https://www.cnbc.com/2026/08/04/palantir-2q-earnings-ai-sovereign-tools.html"
+    },
+    {
+      "title": "OpenAI、Appleの営業秘密訴訟に「Appleは間違っている」と公式反論",
+      "body": "AIハードウェア開発を巡りAppleから提訴されていた問題について、8月4日夜のブログ投稿で疑惑を全面的に否定し反証があると主張した。かつて緊密に提携していた両社の対立が公開の場での応酬に発展しており、AI企業とハードウェア大手の間での人材・技術流出を巡る摩擦が業界全体の緊張材料になっていることを浮き彫りにする",
+      "url": "https://fortune.com/2026/08/04/sam-altman-openai-lawsuit-apple-is-getting-this-wrong/"
+    },
+    {
+      "title": "OpenAI出資のThrive Holdings傘下企業、会計事務所48社を買収する「AIロールアップ」を加速",
+      "body": "8月4日の報道で、会計プラットフォームCurrentが地域の会計事務所を次々買収し自社開発AIで業務を作り替える戦略を進めていることが明らかになった。従来のPEによる買収と異なり、顧客接点を維持したまま裏側の業務をAIで置き換える新たな企業買収モデルであり、労働集約型サービス業のあり方を変える可能性がある",
+      "url": "https://www.pymnts.com/news/artificial-intelligence/2026/buy-the-firm-then-rebuild-it-with-ai/"
+    },
+    {
+      "title": "「Ai4 2026」開幕、Hinton氏・Ng氏がAIの実存リスクを巡り公開討論へ",
+      "body": "8月4日、ラスベガスで開幕した北米最大級のAI応用カンファレンスで、絶滅リスクを10〜20%と主張するジェフリー・ヒントン氏と「人類絶滅への現実的な道筋はない」と主張するアンドリュー・ン氏が同じ壇上に立つ討論が最大の目玉となった。AI業界のトップ研究者間でリスク認識が真っ二つに割れている現状が公の場で可視化されることで、今後の規制論議の前提そのものへの影響が注目される",
+      "url": "https://www.techtimes.com/articles/322674/20260802/ai4-2026-opens-tuesday-hinton-and-ng-face-off-ais-existential-stakes.htm"
+    }
   ]
 };
