@@ -965,5 +965,37 @@ window.DAILY_NEWS = {
       "body": "8月6日、OpenAIは連邦判事に対しAppleの提訴を却下するよう求める答弁書を提出し、Appleの主張は「不十分な調査に基づき、文脈を欠いた通信記録の抜粋で構成されている」と全面的に反論した。審尋は10月1日に予定されており、AI人材獲得を巡るAppleとの対立が法廷闘争として本格化していることを示す",
       "url": "https://www.axios.com/2026/08/06/openai-apple-motion-to-dismiss"
     }
+  ],
+  "2026-08-09": [
+    {
+      "title": "OpenAI、次期モデル「Astra」の一部開発を停止、サイバー能力が安全枠組みの最高水準「Critical」に到達の可能性",
+      "body": "OpenAIは8月7日、開発中の次世代モデル「Astra」について直近の内部評価と外部専門家の判断を踏まえ、サイバーセキュリティ分野で自社Preparedness Frameworkの最高危険水準「Critical」への到達を否定できないと公表し、隔離環境での試験やネットワーク・ツールアクセスの制限、監視強化などの安全対策が整うまで一部開発を一時停止すると発表した。2023年の同枠組み導入以来、開発段階でCritical水準の可能性が生じた初のケースとされ、AIモデルが人間の介入なしに実運用システムへのサイバー攻撃を遂行しうる段階に近づきつつあることを示す象徴的な事例となった",
+      "url": "https://techcrunch.com/2026/08/07/openai-says-it-slowed-astra-model-development-over-security-concerns/"
+    },
+    {
+      "title": "Cloudflare、AIエージェント専用ブラウザ「Kitesurf」をベータ公開",
+      "body": "Cloudflareは、人間向けのタブや拡張機能を排し、AIエージェントによるHTML抽出やスクリーンショット取得に特化したクラウド実行型ブラウザ「Kitesurf」をBrowser Run上でベータ公開したと発表した。Chromiumと比べCPU・メモリ使用量を最大7分の1に抑えられるといい、AIエージェントが大量のブラウザ操作を低コストでこなす時代に向けたインフラ側の布石となる",
+      "url": "https://blog.cloudflare.com/kitesurf/"
+    },
+    {
+      "title": "xAI、新画像生成モデル「Grok Imagine Image 2.0」を提供開始",
+      "body": "xAIは領域指定編集や最大5枚の画像参照に対応した新画像生成モデル「Grok Imagine Image 2.0」をGrokアプリ上で一般提供開始し、主要ベンチマークで世界2位にランクインしたと発表した。OpenAIのgpt-image-2が首位を占める中、画像生成分野でも主要AI企業間の競争が一段と激しくなっていることを示す",
+      "url": "https://www.unite.ai/xai-ships-grok-imagine-image-2-0-with-precise-editing-and-a-top-arena-ranking/"
+    },
+    {
+      "title": "AIデータセンター向け光インターコネクト新興Lumilens、7億ドル超のシリーズCなど累計9億ドル超を調達",
+      "body": "米新興Lumilensは、AIデータセンター向けの光インターコネクト技術を開発する企業で、Bain Capital VenturesやQualcomm Venturesなどから7億ドル超のシリーズCを調達し、評価額は55.1億ドルに達したと発表した。大手ハイパースケーラーとの複数年契約のもと既に製品出荷を始めており、AIインフラ拡張のボトルネックが半導体だけでなく通信帯域にも広がっていることを裏付ける調達となった",
+      "url": "https://theaiinsider.tech/2026/08/07/lumilens-raises-more-than-700m-million-in-series-c-funding-to-develop-optical-interconnect-tech-for-ai-data-centers/"
+    },
+    {
+      "title": "豪AIデータセンターFirmus、Nvidia・ブラックストーンなどから20億ドルを追加調達",
+      "body": "オーストラリアのAIクラウド企業Firmusは、Coatue・Nvidia・ブラックストーン系ファンド・ジェーン・ストリートなどから20億ドルを調達し、評価額は105億ドル超に達したと発表した。過去1年間の累計調達額は30億ドルを超えており、豪州発の「AIファクトリー」拡張とアジア太平洋地域への展開加速を裏付ける大型調達となった",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-07/ai-data-center-group-firmus-draws-2-billion-from-coatue-nvidia"
+    },
+    {
+      "title": "法務省、AIによる「声」の無断利用が権利侵害に当たり得るとの解釈指針を公表",
+      "body": "法務省は、声優や歌手など個人の「声」が氏名・肖像と同様にパブリシティ権や人格権の保護対象となり、生成AIで本人の声を無断で模倣した「AIカバー」なども場合によっては権利侵害を構成し得るとの民事責任に関する解釈指針を公表した。声の権利保護をめぐる線引きがこれまで曖昧だった中、生成AI時代の肖像・音声権保護に司法・行政としての一定の基準を示した動きとして注目される",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2608/07/2000000452/"
+    }
   ]
 };
