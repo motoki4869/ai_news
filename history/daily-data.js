@@ -1024,5 +1024,37 @@ window.DAILY_NEWS = {
       "body": "TSMCは2026年の設備投資額を従来見通しの520億〜560億ドルから600億〜640億ドルへ引き上げ、投資の7〜8割を先端プロセスに振り向ける方針であることが8月9日までに報じられた。3nmは第4四半期序盤に月産18万枚へ増産、1.4nm工場（Fab 25）の量産開始も従来予想より前倒しする見通しで、Nvidia・AMD・Broadcomなどの旺盛な受注が受託製造の設備投資計画そのものを押し上げている",
       "url": "https://www.zaikei.co.jp/article/20260809/865026.html"
     }
+  ],
+  "2026-08-11": [
+    {
+      "title": "Meta、30Bパラメータのオープンウェイト・エージェントAI「Muse Glimmer」を公開",
+      "body": "Metaは8月10日、単一のコンシューマー向けGPU（24〜32GB VRAM）で動作するApache 2.0ライセンスのオープンウェイトモデル「Muse Glimmer」（300億パラメータ）を公開した。ローカル環境でのエージェント的タスクやコーディングに特化し、13.1万トークンのコンテキストと100以上の言語に対応する。クラウド依存を前提としないローカル完結型AIエージェントの実用水準を引き上げるものであり、オープンモデル競争の戦線が「ローカル動作」へと広がっていることを示す",
+      "url": "https://techcrunch.com/2026/08/10/metas-new-glimmer-ai-model-offers-a-hint-at-zuckerbergs-personal-intelligence-vision/"
+    },
+    {
+      "title": "OpenAI、サイバー攻防特化モデル「GPT-5.6-Cyber」公開、研究者向け「Daybreak」を2階層に拡張",
+      "body": "OpenAIは8月10日、既存の安全ガードレールを外した「Daybreak Blue」と、ゼロデイ脆弱性発見や攻撃チェーン検証まで踏み込める新モデル「GPT-5.6-Cyber」を使える「Daybreak Red」の2階層でDaybreakプログラムを拡張し、9月1日からハードウェアセキュリティキーの携行を必須化すると発表した。攻撃側のAI活用が加速する中、防御側に強力な脆弱性発見能力を先んじて渡す賭けであり、AIのデュアルユース性がサイバーセキュリティの最前線で実運用レベルに達したことを象徴する",
+      "url": "https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows/"
+    },
+    {
+      "title": "Nvidia、Wall Street大手と5000億ドル規模のAIインフラ投資枠組みを協議",
+      "body": "Bloombergは8月10日、Nvidiaがアポロ・ブラックストーン・ブラックロック・ブルックフィールドなど大手投資会社と、AIデータセンター向けに最大5000億ドル規模の資金調達枠組みを協議していると報じた。OpenAIやSKグループ関連プロジェクトへの資金供給も視野に入るとされる。AIインフラ投資の規模が国家予算級に達し、半導体メーカー自らが金融機関と組んでベンダーファイナンスを拡大する構図が鮮明になった一方、バランスシートへの負荷を懸念してNvidia株は下落した",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-10/nvidia-to-team-with-wall-street-on-500-billion-package-ft-says"
+    },
+    {
+      "title": "Anthropic、Macquarie・GICと合弁「Theseus Infrastructure」設立、AIデータセンターを大規模開発へ",
+      "body": "Anthropicは8月10日、資産運用大手Macquarie Asset Managementおよびシンガポールの政府系ファンドGICと共同で、米国を皮切りにAIデータセンターを開発・運営する新会社「Theseus Infrastructure」の設立を発表した。MacquarieとGICが大半の出資を担い、Anthropicは長期契約でアンカーテナントとなるほか周辺の電気料金上昇分の負担も約束した。自社で計算インフラを保有せず金融機関と組んで賄う「アセットライト」型の拡張モデルが主要AIラボ間で一段と定着しつつあることを示す",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-10/anthropic-macquarie-and-gic-form-venture-for-ai-data-centers"
+    },
+    {
+      "title": "Intel、150億ドル規模の株式売り出しを発表、AI・ファウンドリ投資に充当",
+      "body": "Intelは8月10日、AI需要拡大による株価上昇を追い風に150億ドル規模の普通株式売り出し計画を発表し、調達資金を先端プロセス「14A」のファウンドリ投資や年間最大200億ドル規模の設備投資に充てる方針を示した。経営再建中のIntelがAI関連需要を背景に大型増資に踏み切った形で、半導体投資競争の裾野拡大を示す一方、発表直後に株価は下落し希薄化への懸念も表面化した",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-10/intel-selling-15-billion-in-common-stock-to-fund-growth"
+    },
+    {
+      "title": "カリフォルニア州、AIを活用した「AIサイバー防衛プログラム」を始動",
+      "body": "ニューサム知事は8月10日、州の重要インフラや自治体を対象にAIを活用したサイバー脅威の検知・防御体制を強化する、全米初とされる「AIサイバー防衛プログラム」の創設を発表した。AIが攻撃側・防御側双方の能力を押し上げる中、州レベルで先行してAI防御体制の制度化に動いた事例であり、他州や連邦の政策形成にも影響し得る",
+      "url": "https://www.gov.ca.gov/2026/08/10/governor-newsom-announces-new-ai-cyber-defense-program-to-protect-californias-critical-infrastructure/"
+    }
   ]
 };
