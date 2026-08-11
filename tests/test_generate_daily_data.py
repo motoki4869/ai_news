@@ -195,6 +195,37 @@ class TestParseDailyMarkdown(unittest.TestCase):
             parse_daily_markdown(md, "202608.md")
         self.assertIn("導入文", str(cm.exception))
 
+    def test_old_format_line_ending_in_bold_is_not_misparsed_as_new_header(self):
+        """本文末尾が**強調**で終わる旧形式行は、NEW_HEADER_RE に誤マッチせず
+        ITEM_RE 側で旧形式として正しくパースされること（Important Issue 1 回帰）。"""
+        md = (
+            "## 2026-08-01\n"
+            "- **見出し**: 本文の**強調**（[出典](https://example.com/a)）。\n"
+        )
+        item = parse_daily_markdown(md, "202608.md")["2026-08-01"][0]
+        self.assertEqual(
+            item,
+            {
+                "title": "見出し",
+                "intro": "本文の<strong>強調</strong>",
+                "points": [],
+                "url": "https://example.com/a",
+            },
+        )
+
+    def test_raises_when_intro_continues_past_two_lines(self):
+        """新形式の導入文が2行を超えて続く場合は ParseError（Important Issue 2 回帰）。"""
+        md = (
+            "## 2026-08-12\n"
+            "- **見出し**（[出典](https://example.com/x)）\n"
+            "  1行目の導入文。\n"
+            "  2行目に続く導入文。\n"
+            "  3行目は許されない地の文。\n"
+        )
+        with self.assertRaises(ParseError) as cm:
+            parse_daily_markdown(md, "202608.md")
+        self.assertIn("導入文は2行までです", str(cm.exception))
+
 
 class TestRealData(unittest.TestCase):
     """本番の everyday_news/*.md が例外なくパースできることを保証する回帰テスト。"""
