@@ -255,6 +255,7 @@ nav {
 .news-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.55; }
 .news-card p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; flex: 1; }
 .news-card strong { color: var(--text); }
+.news-card:has(.point-list) p { flex: 0 0 auto; }
 
 .news-card .point-list {
   list-style: none;
@@ -262,6 +263,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 .news-card .point-list li {
   font-size: 0.83rem;
