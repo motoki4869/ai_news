@@ -19,7 +19,7 @@ OUT_FILE = REPO_ROOT / "history" / "daily-data.js"
 
 DATE_RE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s*$")
 ITEM_RE = re.compile(r"^-\s+\*\*(.+?)\*\*[:：]\s*(.+)$")
-NEW_HEADER_RE = re.compile(r"^-\s+\*\*(.+?)\*\*\s*[（(]\[出典\]\((https?://[^)]+)\)[）)]\s*[。．.]?\s*$")
+NEW_HEADER_RE = re.compile(r"^-\s+\*\*([^*]+?)\*\*\s*[（(]\[出典\]\((https?://[^)]+)\)[）)]\s*[。．.]?\s*$")
 POINT_RE = re.compile(r"^・\s*\*\*(.+?)\*\*[:：]\s*(.+)$")
 SOURCE_RE = re.compile(r"[（(]\[出典\]\((https?://[^)]+)\)[）)]\s*[。．.]?\s*$")
 BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
@@ -115,6 +115,7 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                     "points": [],
                     "url": matched_new_header.group(2),
                     "_lineno": lineno,
+                    "_intro_lines": 0,
                 }
                 result[current_date].append(current_item)
                 continue
@@ -138,6 +139,7 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                 "points": [],
                 "url": matched_src.group(1),
                 "_lineno": lineno,
+                "_intro_lines": 0,
             }
             result[current_date].append(current_item)
             continue
@@ -145,11 +147,14 @@ def parse_daily_markdown(text: str, source: str) -> dict:
         # 新形式の見出し行に続く導入文（地の文）
         if current_item is None:
             raise ParseError(f"{source}:{lineno}: 解釈できない行です: {line}")
+        if current_item["intro"] is not None and current_item["_intro_lines"] >= 2:
+            raise ParseError(f"{source}:{lineno}: 導入文は2行までです: {line}")
         rendered = render_inline(line)
         if current_item["intro"] is None:
             current_item["intro"] = rendered
         else:
             current_item["intro"] += " " + rendered
+        current_item["_intro_lines"] += 1
 
     for date, items in result.items():
         for item in items:
@@ -158,6 +163,7 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                     f"{source}:{item['_lineno']}: 見出し行の次に導入文がありません: {item['title']}"
                 )
             del item["_lineno"]
+            del item["_intro_lines"]
 
     return result
 
