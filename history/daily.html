@@ -256,6 +256,19 @@ nav {
 .news-card p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; flex: 1; }
 .news-card strong { color: var(--text); }
 
+.news-card .point-list {
+  list-style: none;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.news-card .point-list li {
+  font-size: 0.83rem;
+  color: var(--text-dim);
+  line-height: 1.75;
+}
+
 .card-src {
   margin-top: 14px; padding-top: 10px; width: 100%;
   border-top: 1px dashed rgba(255,255,255,0.12);
@@ -599,10 +612,21 @@ function renderDay() {
     const h3 = document.createElement('h3');
     h3.textContent = item.title;
 
-    // body だけは <strong> 強調を許可するため innerHTML を使うが、
+    // intro だけは <strong> 強調を許可するため innerHTML を使うが、
     // escapeExceptStrong() でそれ以外の記号を無害化してから渡す。
     const p = document.createElement('p');
-    p.innerHTML = escapeExceptStrong(item.body);
+    p.innerHTML = escapeExceptStrong(item.intro);
+
+    let pointList = null;
+    if (item.points && item.points.length) {
+      pointList = document.createElement('ul');
+      pointList.className = 'point-list';
+      item.points.forEach(pt => {
+        const li = document.createElement('li');
+        li.innerHTML = '<strong>' + escapeExceptStrong(pt.label) + '</strong>: ' + escapeExceptStrong(pt.text);
+        pointList.appendChild(li);
+      });
+    }
 
     const a = document.createElement('a');
     a.className = 'card-src';
@@ -617,7 +641,11 @@ function renderDay() {
       a.setAttribute('aria-disabled', 'true');
     }
 
-    article.append(kicker, h3, p, a);
+    if (pointList) {
+      article.append(kicker, h3, p, pointList, a);
+    } else {
+      article.append(kicker, h3, p, a);
+    }
     cardGrid.appendChild(article);
   });
 
