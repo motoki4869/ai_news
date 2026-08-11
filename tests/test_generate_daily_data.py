@@ -26,7 +26,7 @@ class TestRenderInline(unittest.TestCase):
 
 
 class TestParseDailyMarkdown(unittest.TestCase):
-    def test_splits_item_into_title_body_and_url(self):
+    def test_splits_item_into_title_intro_points_and_url(self):
         md = (
             "# 2026年8月 AIニュースまとめ\n"
             "\n"
@@ -41,7 +41,8 @@ class TestParseDailyMarkdown(unittest.TestCase):
                 "2026-08-01": [
                     {
                         "title": "OpenAI、廉価モデルを値下げ",
-                        "body": "7月30日に最大80%値下げした",
+                        "intro": "7月30日に最大80%値下げした",
+                        "points": [],
                         "url": "https://example.com/a",
                     }
                 ]
@@ -66,13 +67,13 @@ class TestParseDailyMarkdown(unittest.TestCase):
         self.assertEqual([i["title"] for i in result["2026-07-05"]], ["一件目", "二件目"])
         self.assertEqual(len(result["2026-07-09"]), 1)
 
-    def test_converts_bold_inside_body(self):
+    def test_converts_bold_inside_intro(self):
         md = (
             "## 2026-08-01\n"
             "- **見出し**: これは**強調**を含む本文（[出典](https://example.com/b)）。\n"
         )
-        body = parse_daily_markdown(md, "x.md")["2026-08-01"][0]["body"]
-        self.assertEqual(body, "これは<strong>強調</strong>を含む本文")
+        intro = parse_daily_markdown(md, "x.md")["2026-08-01"][0]["intro"]
+        self.assertEqual(intro, "これは<strong>強調</strong>を含む本文")
 
     def test_raises_when_item_has_no_bold_title(self):
         md = "## 2026-08-01\n- 見出しが太字でない（[出典](https://example.com/c)）。\n"
@@ -111,6 +112,88 @@ class TestParseDailyMarkdown(unittest.TestCase):
         with self.assertRaises(ParseError) as cm:
             parse_daily_markdown(md, "202602.md")
         self.assertIn("実在しない日付", str(cm.exception))
+
+    def test_parses_new_format_header_intro_and_points(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **【事件の裏側】三大巨頭の自律ハック事件、実は単一設定エラーだったことが判明**"
+            "（[出典](https://example.com/new)）\n"
+            "  本日未明、三社が共同声明を発表し原因が確定した。\n"
+            "  ・**背景**: 数週間前から兆候があった。\n"
+            "  ・**影響**: 業界全体の監査体制が見直される。\n"
+        )
+        item = parse_daily_markdown(md, "202608.md")["2026-08-12"][0]
+        self.assertEqual(
+            item,
+            {
+                "title": "【事件の裏側】三大巨頭の自律ハック事件、実は単一設定エラーだったことが判明",
+                "intro": "本日未明、三社が共同声明を発表し原因が確定した。",
+                "points": [
+                    {"label": "背景", "text": "数週間前から兆候があった。"},
+                    {"label": "影響", "text": "業界全体の監査体制が見直される。"},
+                ],
+                "url": "https://example.com/new",
+            },
+        )
+
+    def test_new_format_intro_can_span_two_lines(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **見出し**（[出典](https://example.com/x)）\n"
+            "  1行目の導入文。\n"
+            "  2行目に続く導入文。\n"
+            "  ・**ラベル**: 説明。\n"
+        )
+        item = parse_daily_markdown(md, "202608.md")["2026-08-12"][0]
+        self.assertEqual(item["intro"], "1行目の導入文。 2行目に続く導入文。")
+
+    def test_new_format_and_old_format_items_share_same_date(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **旧形式**: 本文（[出典](https://example.com/old)）。\n"
+            "- **新形式**（[出典](https://example.com/new)）\n"
+            "  導入文。\n"
+            "  ・**ラベル**: 説明。\n"
+        )
+        items = parse_daily_markdown(md, "202608.md")["2026-08-12"]
+        self.assertEqual(items[0]["points"], [])
+        self.assertEqual(items[1]["points"], [{"label": "ラベル", "text": "説明。"}])
+
+    def test_new_format_title_is_not_rendered_as_strong(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **【A】と【B】**（[出典](https://example.com/x)）\n"
+            "  導入文。\n"
+        )
+        item = parse_daily_markdown(md, "202608.md")["2026-08-12"][0]
+        self.assertNotIn("<strong>", item["title"])
+
+    def test_raises_when_point_line_before_any_item(self):
+        md = "## 2026-08-12\n  ・**ラベル**: 説明。\n"
+        with self.assertRaises(ParseError) as cm:
+            parse_daily_markdown(md, "202608.md")
+        self.assertIn("202608.md:2", str(cm.exception))
+
+    def test_raises_when_point_line_is_malformed(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **見出し**（[出典](https://example.com/x)）\n"
+            "  導入文。\n"
+            "  ・ラベルが太字でない: 説明。\n"
+        )
+        with self.assertRaises(ParseError) as cm:
+            parse_daily_markdown(md, "202608.md")
+        self.assertIn("・**ラベル**", str(cm.exception))
+
+    def test_raises_when_new_format_header_has_no_intro(self):
+        md = (
+            "## 2026-08-12\n"
+            "- **見出し**（[出典](https://example.com/x)）\n"
+            "  ・**ラベル**: 説明。\n"
+        )
+        with self.assertRaises(ParseError) as cm:
+            parse_daily_markdown(md, "202608.md")
+        self.assertIn("導入文", str(cm.exception))
 
 
 class TestRealData(unittest.TestCase):

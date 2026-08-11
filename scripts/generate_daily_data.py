@@ -19,6 +19,8 @@ OUT_FILE = REPO_ROOT / "history" / "daily-data.js"
 
 DATE_RE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s*$")
 ITEM_RE = re.compile(r"^-\s+\*\*(.+?)\*\*[:：]\s*(.+)$")
+NEW_HEADER_RE = re.compile(r"^-\s+\*\*(.+?)\*\*\s*[（(]\[出典\]\((https?://[^)]+)\)[）)]\s*[。．.]?\s*$")
+POINT_RE = re.compile(r"^・\s*\*\*(.+?)\*\*[:：]\s*(.+)$")
 SOURCE_RE = re.compile(r"[（(]\[出典\]\((https?://[^)]+)\)[）)]\s*[。．.]?\s*$")
 BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 
@@ -42,12 +44,14 @@ def render_inline(text: str) -> str:
 def parse_daily_markdown(text: str, source: str) -> dict:
     """1ファイル分の Markdown を {日付: [項目, ...]} に変換する。
 
-    項目は {"title": str, "body": str, "url": str}。
+    項目は {"title": str, "intro": str, "points": list[dict], "url": str}。
+    旧形式（1行完結）は points が空リストになる。
     同一ファイル内に同じ日付見出しが複数回現れた場合は、1つの日付にマージする。
     想定形式に一致しない行があれば ParseError を送出する。
     """
     result = ParseResult()
-    current = None
+    current_date = None
+    current_item = None
     seen_dates = set()
 
     for lineno, raw in enumerate(text.split("\n"), 1):
@@ -71,22 +75,55 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                 raise ParseError(
                     f"{source}:{lineno}: 実在しない日付です: {line}"
                 )
-            current = date_str
-            if current in seen_dates:
-                result.duplicate_dates.add(current)
-            seen_dates.add(current)
-            result.setdefault(current, [])
+            current_date = date_str
+            current_item = None
+            if current_date in seen_dates:
+                result.duplicate_dates.add(current_date)
+            seen_dates.add(current_date)
+            result.setdefault(current_date, [])
+            continue
+
+        if line.startswith("・"):
+            if current_item is None:
+                raise ParseError(
+                    f"{source}:{lineno}: 見出し行より前に箇条書き行があります: {line}"
+                )
+            matched_point = POINT_RE.match(line)
+            if not matched_point:
+                raise ParseError(
+                    f"{source}:{lineno}: '・**ラベル**: 説明' の形式ではありません: {line}"
+                )
+            current_item["points"].append(
+                {
+                    "label": render_inline(matched_point.group(1).strip()),
+                    "text": render_inline(matched_point.group(2).strip()),
+                }
+            )
             continue
 
         if line.startswith("- "):
-            if current is None:
+            if current_date is None:
                 raise ParseError(
                     f"{source}:{lineno}: 日付見出し(## YYYY-MM-DD)より前に項目行があります: {line}"
                 )
+
+            matched_new_header = NEW_HEADER_RE.match(line)
+            if matched_new_header:
+                current_item = {
+                    "title": matched_new_header.group(1).strip(),
+                    "intro": None,
+                    "points": [],
+                    "url": matched_new_header.group(2),
+                    "_lineno": lineno,
+                }
+                result[current_date].append(current_item)
+                continue
+
             matched_item = ITEM_RE.match(line)
             if not matched_item:
                 raise ParseError(
-                    f"{source}:{lineno}: '- **見出し**: 本文' の形式ではありません: {line}"
+                    f"{source}:{lineno}: '- **見出し**: 本文' または "
+                    f"'- **見出し**（[出典](URL)）' の形式ではありません: {line}"
                 )
             title = matched_item.group(1).strip()
             rest = matched_item.group(2).strip()
@@ -95,16 +132,32 @@ def parse_daily_markdown(text: str, source: str) -> dict:
                 raise ParseError(
                     f"{source}:{lineno}: 末尾の（[出典](URL)）が見つかりません: {line}"
                 )
-            result[current].append(
-                {
-                    "title": title,
-                    "body": render_inline(SOURCE_RE.sub("", rest).strip()),
-                    "url": matched_src.group(1),
-                }
-            )
+            current_item = {
+                "title": title,
+                "intro": render_inline(SOURCE_RE.sub("", rest).strip()),
+                "points": [],
+                "url": matched_src.group(1),
+                "_lineno": lineno,
+            }
+            result[current_date].append(current_item)
             continue
 
-        raise ParseError(f"{source}:{lineno}: 解釈できない行です: {line}")
+        # 新形式の見出し行に続く導入文（地の文）
+        if current_item is None:
+            raise ParseError(f"{source}:{lineno}: 解釈できない行です: {line}")
+        rendered = render_inline(line)
+        if current_item["intro"] is None:
+            current_item["intro"] = rendered
+        else:
+            current_item["intro"] += " " + rendered
+
+    for date, items in result.items():
+        for item in items:
+            if item["intro"] is None:
+                raise ParseError(
+                    f"{source}:{item['_lineno']}: 見出し行の次に導入文がありません: {item['title']}"
+                )
+            del item["_lineno"]
 
     return result
 
