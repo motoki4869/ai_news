@@ -1332,5 +1332,102 @@ window.DAILY_NEWS = {
       ],
       "url": "https://stateofsurveillance.org/news/daily-surveillance-briefing-august-11-2026/"
     }
+  ],
+  "2026-08-13": [
+    {
+      "title": "【技術】Google、「Pixel 11」発表とともにAIアシスタント「Gemini Intelligence」を本格投入",
+      "intro": "Googleは8月12日、ニューヨークで開催した年次イベント「Made by Google」で新型スマートフォン「Pixel 11」シリーズとPixel Watch 5を発表し、複数手順のタスクや視覚情報の理解までこなす新AIアシスタント「Gemini Intelligence」を全機種に搭載した。",
+      "points": [
+        {
+          "label": "製品",
+          "text": "Pixel 11／11 Pro／11 Pro XL／11 Pro Foldの4機種とPixel Watch 5、初のトラッカー「Pixel Tag」を披露し、全機種がTSMC製2nmプロセスの新チップ「Tensor G6」とAndroid 17を搭載する。"
+        },
+        {
+          "label": "AI機能",
+          "text": "Gemini Intelligenceは端末上で複数ステップのタスク処理や視覚的文脈の理解を行い、ユーザーに代わって店舗へ電話をかけ在庫確認や購入まで完了できるエージェント機能を備える。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "スマホのAI機能競争が「応答」から「代理実行（エージェント）」の段階へ移行しつつあることを象徴する発表で、ハードウェアとAIの一体化戦略をGoogleが前面に押し出した。"
+        }
+      ],
+      "url": "https://www.androidcentral.com/phones/live/made-by-google-2026-launch-live-pixel-11-pixel-11-pro-fold-pixel-watch-5-gemini-and-all-the-news"
+    },
+    {
+      "title": "【資金調達】AIコーディング企業Cognition、3カ月足らずで評価額400億ドル超への追加調達を協議",
+      "intro": "AIコーディングエージェント「Devin」を手がける米Cognitionが、8月12日までに評価額400億ドル以上での新規資金調達に向けて投資家と初期協議を進めていることが報じられた。5月に評価額260億ドルで10億ドルを調達したばかりで、わずか3カ月で評価額が5割以上跳ね上がる計算になる。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "年換算収益（ARR）が前回調達時のほぼ倍となる10億ドル規模に迫っており、急成長する収益がバリュエーション上昇の主因とされる。"
+        },
+        {
+          "label": "構図",
+          "text": "Peter Thiel氏のFounders FundやGeneral Catalystなど大手VCが既に出資しており、今回も10億ドル超の調達が見込まれるが、最終的に調達を見送る可能性も残る。"
+        },
+        {
+          "label": "意義",
+          "text": "基盤モデル企業だけでなく、その上位レイヤーであるコーディングエージェント企業にも数十億ドル規模の資金が流入しており、AI投資の熱狂が応用層にも波及している実態を示す。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/12/ai-coding-startup-cognition-reportedly-already-in-talks-to-raise-at-40b-valuation/"
+    },
+    {
+      "title": "【ビジネス】OpenAI出資のThrive Holdings、20億ドルを調達しAI主導の企業買収戦略を拡大",
+      "intro": "OpenAIの主要投資家Thrive Capitalから昨年スピンアウトしたThrive Holdingsは8月12日、SoftBankやD1 Capital、Altimeter Capitalなどから評価額120億ドルで20億ドルを調達したと発表した。会計事務所やIT企業などの伝統的企業を買収し、AIで業務を再構築する「AI版プライベートエクイティ」の拡大を加速する。",
+      "points": [
+        {
+          "label": "実績",
+          "text": "会計部門「Current」（50社超・2000人超）とIT部門「Shield」（約20社）を合わせ70社超をプラットフォーム上で運営し、税務AIエージェント「TaxAI」は7000件超の申告処理を98%の精度でこなし、作業時間を3割超短縮したという。"
+        },
+        {
+          "label": "展開",
+          "text": "新たな調達資金で、データセンターや製造施設向けの規制対応サービスを扱う第3の事業領域への展開も計画している。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "OpenAIが出資先企業を通じて既存産業へのAI実装を主導する動きであり、モデル開発企業が実業への垂直統合を進める新たな収益化モデルとして注目される。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/12/openai-backed-thrive-holdings-raises-2b-to-bring-ai-to-the-enterprise/"
+    },
+    {
+      "title": "【規制・倫理】AI界の重鎮3人、Ai4カンファレンスでオープンソースAIの安全性を巡り激論",
+      "intro": "ディープラーニングの先駆者ジェフリー・ヒントン氏、スタンフォード大のフェイフェイ・リー氏、教育者アンドリュー・ン氏の3人が8月12日、AIカンファレンス「Ai4」の壇上でオープンソースAIのリスクと規制のあり方について意見を戦わせた。",
+      "points": [
+        {
+          "label": "対立点",
+          "text": "ヒントン氏はモデルの重みを公開すればサイバー攻撃など悪用への転用を容易にすると警鐘を鳴らした一方、ン氏はオープンウェイトが技術革新と競争に不可欠だと反論し、リー氏は用途とリスクに応じて透明性の水準を判断すべきだと折衷案を示した。"
+        },
+        {
+          "label": "背景",
+          "text": "ヒントン氏はAIが5〜20年以内に人間の知能を超える可能性に言及する一方、ン氏は破局的リスクの強調が公開研究や競争を萎縮させかねないと指摘するなど、リスク評価そのものでも意見が割れた。"
+        },
+        {
+          "label": "意義",
+          "text": "AI業界を代表する研究者間でも安全性とオープン性のバランスについて統一見解がなく、オープンウェイトモデルの規制を巡る政策論議が一段と複雑化している実情を浮き彫りにした。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/12/as-ai-safety-concerns-mount-three-pioneers-make-the-case-for-staying-open/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】米AIデータセンター向け電力需要、7割超が「幻の需要」とWood Mackenzieが試算",
+      "intro": "調査会社Wood Mackenzieは8月12日までに、米国でAIデータセンター向けに要求されている合計1066ギガワットの電力のうち、送電網事業者が実際に供給を確約するのは約28%にとどまるとの試算を公表した。",
+      "points": [
+        {
+          "label": "要因",
+          "text": "開発業者が複数の電力会社に同時申請し好条件を探る「相見積もり」的行動が横行しており、実現の見込みが薄い投機的・重複的な申請が接続待ち行列を膨らませていると分析している。"
+        },
+        {
+          "label": "リスク",
+          "text": "送電網事業者が申請を額面通りに受け止めて送電インフラに投資した場合、実際には現れない顧客のために数十億ドル規模の設備を建設するリスクがあり、そのコストは最終的に一般利用者の電気料金に転嫁されかねない。"
+        },
+        {
+          "label": "影響",
+          "text": "AIインフラ拡張の規模を巡る「数字先行」の実態が明らかになったことで、電力会社や規制当局が今後のデータセンター向け電力供給計画をより慎重に精査する動きにつながる可能性がある。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-08-12/most-electricity-sought-for-ai-data-centers-in-us-will-never-materialize"
+    }
   ]
 };
