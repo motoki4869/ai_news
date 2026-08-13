@@ -1429,5 +1429,83 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.bloomberg.com/news/articles/2026-08-12/most-electricity-sought-for-ai-data-centers-in-us-will-never-materialize"
     }
+  ],
+  "2026-08-14": [
+    {
+      "title": "【技術】DeepSeek、フラッグシップ「V4 Pro」正式版を公開しエージェント性能が急伸",
+      "intro": "中国DeepSeekは8月13日、プレビュー版だったフラッグシップモデル「DeepSeek V4 Pro」の正式版（0813ビルド）を公開し、コーディングやツール操作などエージェント関連ベンチマークで大幅な性能向上を示した。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "エージェント関連ベンチマークで、DeepSWEが12.8点から62.7点、CyberGymが52.7点から83.3点、Terminal-Bench 2.1が72.1点から87.9点へと軒並み急伸し、プレビュー版から大きく改善した。"
+        },
+        {
+          "label": "仕様",
+          "text": "総パラメータ1.6兆・アクティブ49億のMoE構成で、最大100万トークンのコンテキストと38.4万トークンの出力に対応し、32兆トークン超で事前学習した。"
+        },
+        {
+          "label": "価格",
+          "text": "出力トークン100万あたり0.87ドルと性能の割に低価格に設定されており、中国勢がコストと性能の両面でフロンティアモデルを追い上げている実態を示した。"
+        }
+      ],
+      "url": "https://www.unite.ai/deepseek-ships-v4-pro-as-its-flagship-model-leaves-preview/"
+    },
+    {
+      "title": "【M&A】Anthropic、イスラエルAI新興Decartを約60億ドルで買収へ交渉中",
+      "intro": "Anthropicは8月13日までに、GPU効率化やリアルタイム動画生成を手がけるイスラエルのAIスタートアップDecartを約60億ドルで買収する交渉を進めていると報じられた。実現すればAnthropicにとって過去最大の買収となる。",
+      "points": [
+        {
+          "label": "Decartの技術",
+          "text": "学習・推論時のチップ稼働効率を高めるソフトウェアを持ち、Unit 8200出身のディーン・ライタースドルフCEOらが創業した。5月の資金調達時点の評価額40億ドルから約5割のプレミアムがついた計算になる。"
+        },
+        {
+          "label": "狙い",
+          "text": "Claudeの利用が急拡大する中、自社の計算インフラの処理能力を底上げし、需要増に対応する狙いがあるとされる。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "3カ月前に965億ドルの評価額で650億ドルを調達したばかりのAnthropicが、モデル開発だけでなくインフラ効率化領域にも積極投資する姿勢を鮮明にした。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-08-13/anthropic-said-in-talks-to-buy-ai-startup-decart-for-6-billion"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Vantage Data Centers、評価額1000億ドルでIPOまたは売却を検討",
+      "intro": "米データセンター大手Vantage Data Centersが8月13日までに、AI需要の高まりを受けてIPOまたは売却を検討していると報じられた。実現すればデータセンター企業として過去最大規模のIPOとなる見通し。",
+      "points": [
+        {
+          "label": "規模",
+          "text": "約100億ドルを調達し評価額約1000億ドルでの株式上場を目指すとされ、実現すればデータセンター企業として過去最大のIPOになる。"
+        },
+        {
+          "label": "背景",
+          "text": "Silver LakeとDigitalBridge Groupの支援を受け2023年末以降に約110億ドルを調達済みで、AI主導のデータセンター需要拡大が企業価値評価を押し上げている。"
+        },
+        {
+          "label": "留意点",
+          "text": "検討はまだ初期段階で、時期や規模、実施の有無を含め今後変わる可能性がある。"
+        }
+      ],
+      "url": "https://www.bnnbloomberg.ca/business/company-news/2026/08/13/vantage-data-centers-explores-ipo-at-us100-billion-valuation-or-sale-sources-say/"
+    },
+    {
+      "title": "【規制・倫理】台湾政府機関、自律型AIエージェントによる初のサイバー攻撃被害を公表",
+      "intro": "台湾のデジタル発展部は8月13日までに、7月20日から始まった政府機関への「異常な攻撃」でオープンソースのAIエージェントが自律的なハッキングツールとして悪用されていたことを明らかにした。イスラエルのセキュリティ企業Dreamが調査を主導し、初めての事例と説明している。",
+      "points": [
+        {
+          "label": "被害規模",
+          "text": "4日間で政府システム21カ所がマッピングされ、少なくとも85のアカウントが突破されて2500件超の人事記録が流出し、原子力安全機関やエネルギー企業7社以上にも被害が拡大した。"
+        },
+        {
+          "label": "手口",
+          "text": "オープンソースのAIエージェント「Hermes」と「OpenClaw」を組み合わせ、人手を介さず作戦の途中で標的や手法を自律的に切り替える「協調したハッカーチーム」のような挙動を見せた。"
+        },
+        {
+          "label": "含意",
+          "text": "攻撃主体は明言されていないが中国系ハッカーとの見方が強く、自律型AIエージェントが実戦のサイバー攻撃に投入された初の事例として専門家に警戒感を広げている。"
+        }
+      ],
+      "url": "https://www.cnn.com/2026/08/13/tech/china-taiwan-ai-agent-cyberattack-intl-hnk"
+    }
   ]
 };
