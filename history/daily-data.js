@@ -1507,5 +1507,113 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.cnn.com/2026/08/13/tech/china-taiwan-ai-agent-cyberattack-intl-hnk"
     }
+  ],
+  "2026-08-15": [
+    {
+      "title": "【技術】Google、コーディング特化の新型「Gemini 3.7 Flash」を投入しClaudeに対抗",
+      "intro": "Googleは8月13日、前モデルからわずか3週間で新型ワークホースモデル「Gemini 3.7 Flash」を発表し、コーディングやエージェント処理の性能を大きく引き上げた。",
+      "points": [
+        {
+          "label": "性能・価格",
+          "text": "ビジネス向けワークフローでClaudeを上回ると主張しつつ、価格は年末まで半額に設定し、性能とコストの両面でDeepSeekなど中国勢や競合に対抗する構えを見せた。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "上位モデル「Gemini 3.5 Pro」に先立つ投入となり、DeepMind体制刷新の中でモデル更新サイクルを加速させている実態を示した。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-3-7-flash/"
+    },
+    {
+      "title": "【技術】OpenAI、Cerebras活用の新API層「Ultrafast」を試験提供し推論速度14倍を実現",
+      "intro": "OpenAIは8月13日、Cerebrasのチップを活用しGPT-5.6 Solを標準処理の最大14倍の速度で動かす新API層「Ultrafast」のプレビューを一部顧客向けに開始した。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "出力速度は最大で毎秒750トークンに達し、リアルタイム性が求められるエージェント用途やコーディング支援での応答遅延を大幅に短縮する。"
+        },
+        {
+          "label": "意義",
+          "text": "モデルの「賢さ」competitionに加え、推論速度そのものが競争力の源泉になりつつあることを示し、専用チップ企業との連携が新たな差別化戦略として浮上している。"
+        }
+      ],
+      "url": "https://www.globenewswire.com/news-release/2026/08/13/3344804/0/en/cerebras-powers-ultrafast-mode-for-openai-s-gpt-5-6-sol.html"
+    },
+    {
+      "title": "【M&A】SpaceX、AIコーディング企業Cursorの600億ドル買収を完了",
+      "intro": "イーロン・マスク氏率いるSpaceXは8月14日、6月に合意していたAIコーディング新興企業Cursorの買収を完了したと規制当局への届け出で明らかにした。史上最大級のテック買収の一つとなる。",
+      "points": [
+        {
+          "label": "狙い",
+          "text": "AnthropicやOpenAIに対抗するため、Cursorの顧客基盤・配信網・データを取り込み、自社AI「Grok」のコーディング能力強化につなげる狙いがある。"
+        },
+        {
+          "label": "構造",
+          "text": "対価はすべてSpaceX株式で支払われ、株価上昇により実質的な買収コストが圧縮された。Cursorは独立子会社ではなくSpaceXAIの各チームに分割編入される。"
+        },
+        {
+          "label": "背景",
+          "text": "Cursorは「バイブコーディング」の中心的存在として急成長した企業で、4月にSpaceXが買収オプションを確保して以降、両社は計算資源と資金を相互補完する関係を築いてきた。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition"
+    },
+    {
+      "title": "【ビジネス】IBM、OpenAIと提携し企業向けAI導入をコンサル事業に統合",
+      "intro": "IBMは8月13日、OpenAIとの戦略提携を発表し、GPT-5.6やCodex、ChatGPT WorkをIBMコンサルティングの企業向けAI導入基盤に組み込むと明らかにした。",
+      "points": [
+        {
+          "label": "規模",
+          "text": "金融、政府、通信、小売など主要業界を対象に、数万人規模のコンサルタントをOpenAI技術に習熟させる計画で、IBMはOpenAIの最上位パートナー階層に加わった。"
+        },
+        {
+          "label": "内容",
+          "text": "サイバーセキュリティ分野では「OpenAI Daybreak Cyber Partner Program」とIBMの自律型セキュリティ製品を組み合わせ、AI導入を実証実験から本番運用へ移す実装支援を軸に据える。"
+        },
+        {
+          "label": "意義",
+          "text": "老舗ITベンダーが基盤モデル企業と組み、企業のAI実装を担う「実装レイヤー」の争奪戦が本格化していることを象徴する動きとなった。"
+        }
+      ],
+      "url": "https://newsroom.ibm.com/2026-08-13-ibm-partners-with-openai-to-accelerate-secure-ai-deployment-for-enterprises-across-core-operations"
+    },
+    {
+      "title": "【ビジネス】Apple、中国向けに独自AIモデルを開発しAlibabaと協業",
+      "intro": "Appleは8月14日までに、中国市場向けの「Apple Intelligence」機能を外部モデル頼みではなく自社開発のAIモデルで動かす方針に転換し、AlibabaグループがAlibabaの支援で開発を進めていることが分かった。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "これまで中国国内モデルへの依存戦略を採ってきたAppleにとって方針転換となり、中国政府から独自AIモデルの提供を認められた初の外国企業になったとされる。"
+        },
+        {
+          "label": "展開",
+          "text": "AppleはAlibabaのQwenモデルをChatGPT拡張機能と同様の形で組み込む契約も別途結んでおり、数カ月以内に中国向けAI機能の展開を見込む。"
+        },
+        {
+          "label": "含意",
+          "text": "米中対立が続く中でも、AppleがHuaweiなど中国勢に対抗するため現地パートナーとの深い技術協業に踏み込んだことを示す事例となった。"
+        }
+      ],
+      "url": "https://www.japantimes.co.jp/business/2026/08/14/apple-ai-model-china-alibaba/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Uber、中国Pony.aiと組み欧州で2000台超のロボタクシー展開へ",
+      "intro": "UberとPony.aiは8月14日、両社の提携を拡大しレベル4の自動運転ロボタクシーを欧州で2000台超展開すると発表した。既にクロアチア・ザグレブで商用化済みのサービスを欧州4都市に広げる計画で、中東への展開も視野に入れる。",
+      "points": [
+        {
+          "label": "役割分担",
+          "text": "Pony.aiがレベル4自動運転技術を、Uberが配車・決済・顧客対応を担うモビリティ基盤を提供する分業体制を取る。"
+        },
+        {
+          "label": "背景",
+          "text": "両社の提携は2025年5月に遡り、今回はPony.aiが採算性を証明したとするタイミングでの大規模展開発表となった。"
+        },
+        {
+          "label": "意義",
+          "text": "中国発の自動運転技術が欧州の主要都市で実装される事例として、フィジカルAIの実用化競争が地理的に広がっていることを示している。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/14/uber-and-pony-ai-plan-to-bring-2000-robotaxis-to-europe/"
+    }
   ]
 };
