@@ -1615,5 +1615,67 @@ window.DAILY_NEWS = {
       ],
       "url": "https://techcrunch.com/2026/08/14/uber-and-pony-ai-plan-to-bring-2000-robotaxis-to-europe/"
     }
+  ],
+  "2026-08-16": [
+    {
+      "title": "【技術】Alibaba、ローカル環境で動く新型オープンモデル「Qwen3.8-27B」を公開",
+      "intro": "Alibabaのモデル開発チームQwenは8月15日（日本時間、UTC8月14日15時）、パラメータ数278億のマルチモーダル密モデル「Qwen3.8-27B」の重みをApache 2.0ライセンスで公開した。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "前世代Qwen3.6-27Bと比べコーディングやエージェント処理のベンチマークが軒並み向上し、10〜15倍の規模を持つモデルに匹敵する性能を、24GB VRAMという一般的な消費者向けGPUでも動かせる設計に仕上げた。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "ネイティブで26万トークン超のコンテキストを備え、クラウド依存を減らしローカル実行を重視する路線を鮮明にすることで、中国勢によるオープンモデル競争の主戦場をコスト・省リソース性能に移しつつある。"
+        }
+      ],
+      "url": "https://huggingface.co/Qwen/Qwen3.8-27B"
+    },
+    {
+      "title": "【技術】中国Zhipu AI、サイバー攻防能力を打ち出した新型「GLM-5.3」を公開しCursorの脆弱性を発見",
+      "intro": "Zhipu AI（Z.ai）は8月14日、コーディング性能を前モデルから50%引き上げたと主張するオープンウェイトモデル「GLM-5.3」を自社のコーディングサービス経由で公開した。",
+      "points": [
+        {
+          "label": "能力",
+          "text": "サイバーセキュリティ関連ベンチマーク「CyberGym」で84.5%を記録し、実際に269件のオープンソースプロジェクトから2,436件の脆弱性を発見、その過程でAIコーディングツール「Cursor」自体の深刻な脆弱性も発見しCursor側と非公開で連携して修正を進めている。"
+        },
+        {
+          "label": "含意",
+          "text": "モデルの重み自体は安全性レビューを経て2週間後に公開予定とされ、AIモデルが攻撃・防御双方の能力を急速に獲得する中で、開発企業側が公開前のセキュリティ審査を重視し始めている実態を示す。"
+        }
+      ],
+      "url": "https://venturebeat.com/technology/glm-5-3-is-here-with-advanced-cyber-capabilities-and-reportedly-already-found-a-serious-vulnerability-in-cursor"
+    },
+    {
+      "title": "【倫理・規制】Anthropic、Claudeの「見えない透かし」の仕組みを詳細公開しユーザーの懸念に応答",
+      "intro": "Anthropicは8月14日（現地時間）付のブログ記事で、今週発表したClaude生成テキストへの統計的な見えない透かし機能の技術的な仕組みを改めて説明し、ユーザー間で起きていた懸念や誤解の沈静化を図った。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "透かしは生成後に付加するのではなく、モデルが単語を選択する過程そのものに統計的な偏りを織り込む方式で、テキストがコピーされても痕跡が残るよう設計されている。"
+        },
+        {
+          "label": "背景",
+          "text": "EU AI Actの透明性規範への対応としてOpenAI・Googleに続きAnthropicも導入したものだが、生成物の質や検閲への懸念からユーザーの反発が起きており、詳細開示によって透明性を高める狙いがある。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/15/anthropic-shares-more-details-about-how-claudes-new-watermarks-will-work/"
+    },
+    {
+      "title": "【ビジネス・規制】OpenAI、欧州向けChatGPT広告導入に向けオプトイン同意ベースのプライバシーポリシー改定を通知",
+      "intro": "OpenAIは8月15日、欧州のChatGPTユーザーに対し「プライバシーポリシー更新」と題するメールを送付し、無料版・Go版に今月中広告を導入する方針とその法的根拠の変更を通知した。",
+      "points": [
+        {
+          "label": "内容",
+          "text": "広告は無料版とGo版のみに表示され、Plus・Pro・Business・Enterprise・Education版は引き続き広告非表示とするほか、広告主はユーザーの会話履歴や個人情報・メモリー機能の内容にアクセスできないと説明している。"
+        },
+        {
+          "label": "意義",
+          "text": "パーソナライズ広告の法的根拠を「正当な利益」ではなく明示的な「オプトイン同意」に置くと明言しており、GDPRの厳格な規律の下でAIチャットに広告を組み込む欧州向けモデルケースとなる。"
+        }
+      ],
+      "url": "https://botcrawl.com/openai-privacy-policy-email/"
+    }
   ]
 };
