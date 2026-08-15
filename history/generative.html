@@ -412,11 +412,15 @@ footer .logo {
 }
 
 @media (max-width: 768px) {
+  nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
+  .nav-logo { order: 1; }
   .nav-links a:not(.back-btn) { display: none; }
+  .nav-links { order: 2; flex-wrap: wrap; }
   .ctx-label { width: 105px; font-size: 0.62rem; }
   .ctx-val { width: 70px; font-size: 0.62rem; }
-  .nav-search { width: 130px; font-size: 0.7rem; }
+  .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   #search-count { right: 14px; }
+  .hero { padding-top: 170px; }
 }
 </style>
 </head>

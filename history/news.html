@@ -435,8 +435,12 @@ footer .logo {
 }
 
 @media (max-width: 768px) {
+  nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
+  .nav-logo { order: 1; }
   .nav-links a:not(.back-btn) { display: none; }
-  .hero { padding-top: 140px; }
+  .nav-links { order: 2; flex-wrap: wrap; }
+  .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
+  .hero { padding-top: 170px; }
 }
 </style>
 </head>
