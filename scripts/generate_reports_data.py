@@ -3,6 +3,7 @@
 news.html / archive.html の news-card タップ時モーダル表示用データ。
 sync-news-html スキルの一手順として、レポート追加のたびに全件再生成する想定。
 """
+import html
 import json
 import re
 from pathlib import Path
@@ -77,7 +78,7 @@ def md_to_html(md: str) -> str:
                 block.append(lines[i])
                 i += 1
             i += 1  # 閉じ```を読み飛ばす
-            block_text = "\n".join(block)
+            block_text = html.escape("\n".join(block))
             out.append(f'<pre class="rpt-pre">{block_text}</pre>')
             continue
 
