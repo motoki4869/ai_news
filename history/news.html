@@ -356,7 +356,7 @@ nav {
 }
 .report-modal-close:hover { color: var(--green); border-color: var(--green); }
 .report-modal-body {
-  flex: 1 1 auto; overflow-y: auto;
+  flex: 1 1 auto; overflow-x: hidden; overflow-y: auto;
   padding: 0 32px 48px;
 }
 .report-modal-body h2 {
@@ -366,10 +366,10 @@ nav {
 .report-modal-body h2:first-child { margin-top: 0; }
 .report-modal-body h3 { font-size: 1rem; color: var(--cyan); margin: 22px 0 10px; line-height: 1.5; }
 .report-modal-body h4 { font-size: 0.92rem; color: var(--text); margin: 16px 0 8px; }
-.report-modal-body p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 14px; }
+.report-modal-body p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.9; margin-bottom: 14px; overflow-wrap: anywhere; }
 .report-modal-body strong { color: var(--text); }
 .report-modal-body ul { margin: 0 0 14px 20px; }
-.report-modal-body li { font-size: 0.86rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 6px; }
+.report-modal-body li { font-size: 0.86rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 6px; overflow-wrap: anywhere; }
 .report-modal-body hr { border: none; border-top: 1px dashed rgba(255,255,255,0.12); margin: 24px 0; }
 .report-modal-body .rpt-divider { border-top: 1px solid var(--border); margin: 36px 0; }
 .report-modal-body .rpt-missing { color: var(--coral); }
@@ -379,10 +379,11 @@ nav {
   margin-bottom: 14px; text-align: center; overflow-x: auto;
 }
 .report-modal-body .rpt-formula .katex { font-size: 1.15em; }
-.rpt-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
+.rpt-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
 .rpt-table th, .rpt-table td {
   border: 1px solid rgba(255,255,255,0.12); padding: 8px 10px;
   text-align: left; color: var(--text-dim); line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 .rpt-table th { color: var(--text); background: rgba(255,255,255,0.04); }
 
