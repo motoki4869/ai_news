@@ -379,11 +379,11 @@ nav {
   margin-bottom: 14px; text-align: center; overflow-x: auto;
 }
 .report-modal-body .rpt-formula .katex { font-size: 1.15em; }
-.rpt-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 18px; font-size: 0.8rem; }
+.rpt-table-wrap { overflow-x: auto; margin-bottom: 18px; -webkit-overflow-scrolling: touch; }
+.rpt-table { min-width: 100%; border-collapse: collapse; margin-bottom: 0; font-size: 0.8rem; }
 .rpt-table th, .rpt-table td {
   border: 1px solid rgba(255,255,255,0.12); padding: 8px 10px;
   text-align: left; color: var(--text-dim); line-height: 1.6;
-  overflow-wrap: anywhere;
 }
 .rpt-table th { color: var(--text); background: rgba(255,255,255,0.04); }
 

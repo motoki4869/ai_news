@@ -31,6 +31,12 @@
       return `<section class="rpt-section">${html}</section>`;
     });
     body.innerHTML = sections.join('<hr class="rpt-divider">');
+    body.querySelectorAll('table.rpt-table').forEach(table => {
+      const wrap = document.createElement('div');
+      wrap.className = 'rpt-table-wrap';
+      table.parentNode.insertBefore(wrap, table);
+      wrap.appendChild(table);
+    });
     if (window.renderMathInElement) {
       window.renderMathInElement(body, {
         delimiters: [
