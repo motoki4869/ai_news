@@ -40,5 +40,5 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 8. `.ticker` 内のテキストを更新する。今回追加した新規カードの見出しを要約したブレイキングニュース文を1〜2件、末尾に ` +++ ` 区切りで追記する。区切り件数が8件を超える場合は先頭(最も古い)の項目から削除し、総数をおおむね8件に保つ。
 9. `history/news.html`(および循環が発生した場合は `history/archive.html`)を上書き保存する。
 10. `python3 scripts/generate_reports_data.py` を実行し、`report/` 配下の全 `.md` から `history/reports-data.js` を再生成する(新規レポートの全文タップ表示に必要。既存レポートも含め毎回全件再生成するので、対象を絞る必要はない)。
-11. 変更したファイル(`history/news.html`、循環時は `history/archive.html`、`history/reports-data.js`、対象レポートが新規追加なら `report/*.md` 本体)を `git add` し、`"YYYY-MM-DD のAIニュースを追加"`(本日日付、既存コミットメッセージと同形式)で `git commit` する。続けて `git push` する。ai_newsはVercelとGit連携済みで、`main` へのpushが `history/` の本番デプロイ(https://ai-news-sandy-seven.vercel.app)を自動トリガーするため、pushまで完了させて初めて更新がユーザーに反映される。
+11. 変更したファイル(`history/news.html`、循環時は `history/archive.html`、`history/reports-data.js`、対象レポートが新規追加なら `report/*.md` 本体)を `git add` し、`"YYYY-MM-DD のAIニュースを追加"`(本日日付、既存コミットメッセージと同形式)で `git commit` する。続けて `git push` する。ai_newsはVercelとGit連携済みで、`main` へのpushが `history/` の本番デプロイ(https://ai-news-sandy-seven.vercel.app)を自動トリガーするため、pushまで完了させて初めて更新がユーザーに反映される。本スキルの手順11は「サイトを更新して」という依頼自体にpushの実行が含まれている(commitだけでは未完了)。
 12. 作業内容を1〜2文で要約報告する: 追加したカード(セクション名・見出し)、循環して `history/archive.html` に移したカード、更新した統計値(レポート本数)、push完了とデプロイトリガー済みである旨。ファイル全文は貼り直さない。
