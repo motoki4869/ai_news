@@ -69,6 +69,18 @@ def md_to_html(md: str) -> str:
             out.append(parse_table(table_lines))
             continue
 
+        if stripped.startswith("```"):
+            flush_list()
+            i += 1
+            block = []
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                block.append(lines[i])
+                i += 1
+            i += 1  # 閉じ```を読み飛ばす
+            block_text = "\n".join(block)
+            out.append(f'<pre class="rpt-pre">{block_text}</pre>')
+            continue
+
         if stripped.startswith("$$"):
             flush_list()
             closing_idx = stripped.find("$$", 2)
