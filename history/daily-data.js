@@ -1755,5 +1755,94 @@ window.DAILY_NEWS = {
       ],
       "url": "https://blog.google/security/how-google-is-making-private-ai-practical-with-homomorphic-encryption/"
     }
+  ],
+  "2026-08-18": [
+    {
+      "title": "【ビジネス・インフラ】Nvidia、OpenAI向けオハイオ州データセンターに最大1050億ドルを出資",
+      "intro": "Nvidiaは8月17日までに、OpenAIが借り受ける大型データセンターの第1期整備に向け、オハイオ州の案件に最大1050億ドルを投じる方針を固めたことが分かった。",
+      "points": [
+        {
+          "label": "規模",
+          "text": "ソフトバンク傘下のSB Energyが開発を主導するプロジェクトで、Nvidiaは同社にも最大30億ドルを出資する交渉を並行して進めており、GPU供給だけでなく資金面でも計算基盤づくりを支える構図が鮮明になっている。"
+        },
+        {
+          "label": "背景",
+          "text": "NvidiaはOpenAI向けに総額1000億ドル規模の与信支援を検討してきたとされ、今回のオハイオ案件はその一環として位置づけられる。"
+        },
+        {
+          "label": "含意",
+          "text": "GPUメーカーがデータセンターの資金調達そのものを肩代わりする動きが広がり、AIインフラ投資の資金構造が金融市場と一体化しつつある実態を映す。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-08-17/nvidia-to-invest-up-to-105-billion-for-openai-data-center-in-ohio"
+    },
+    {
+      "title": "【M&A】Stripe、AIモデルゲートウェイのOpenRouterを70億ドル超で買収完了",
+      "intro": "決済大手Stripeは8月17日までに、400以上のAIモデルへの単一アクセス窓口を提供するOpenRouterを70億ドル超で買収する契約をまとめたと報じられた。",
+      "points": [
+        {
+          "label": "評価額",
+          "text": "3カ月前の13億ドル規模の評価額（1.13億ドルのシリーズB後）から5倍超に跳ね上がっており、AIモデルルーティング事業への評価が急騰していることを示す。"
+        },
+        {
+          "label": "狙い",
+          "text": "OpenRouterは800万人の開発者にモデル横断のAPIを提供しており、Stripeは決済インフラとAIトラフィックの課金・ルーティングを統合し、AI利用料金の「請求」レイヤーを握る狙いがあるとみられる。"
+        },
+        {
+          "label": "意義",
+          "text": "決済企業がAIインフラの中核レイヤーに参入する事例として、AI関連ビジネスの周辺領域でも大型M&Aが加速している現状を象徴する。"
+        }
+      ],
+      "url": "https://www.techtimes.com/articles/324688/20260817/stripe-closes-7-billion-openrouter-deal-payment-giant-now-bills-routes-ai-traffic.htm"
+    },
+    {
+      "title": "【資金調達】AI動画生成のHiggsfield、シリーズBで4億ドル調達し評価額54億ドルに",
+      "intro": "動画・画像生成AIのHiggsfieldは8月17日、Goldman SachsやIntelなどが参加するシリーズBで4億ドルを調達し、評価額54億ドルに達したと発表した。",
+      "points": [
+        {
+          "label": "急成長",
+          "text": "8カ月前の13億ドルという評価額から4倍超に跳ね上がり、年換算売上高もこの1年で約2000万ドルから7億ドルへと急拡大したという。"
+        },
+        {
+          "label": "背景",
+          "text": "エージェント型のユーザー数が3カ月で42倍に増えたと説明しており、動画生成AIツールが実用フェーズに入りつつあることを示す事例となった。"
+        }
+      ],
+      "url": "https://siliconangle.com/2026/08/17/higgsfield-raises-400m-at-5-4-billion-valuation-to-scale-video-and-image-generation-platform/"
+    },
+    {
+      "title": "【倫理・規制】xAIのGrok、児童性的虐待画像の生成をめぐる新たな集団訴訟に直面",
+      "intro": "Elon Musk氏率いるxAIは8月17日までに、チャットボット「Grok」が児童性的虐待画像（CSAM）の生成を可能にしたとする集団訴訟に、新たな原告が加わったことが明らかになった。",
+      "points": [
+        {
+          "label": "被害実態",
+          "text": "ワイオミング州の女性が訴えに加わり、11歳当時に撮影された写真を義父がGrokで加工し7000枚超の性的画像を生成していたとされる事案で、義父は捜査開始の2日後に死亡が確認された。"
+        },
+        {
+          "label": "含意",
+          "text": "生成AIの安全対策の実効性が改めて問われる事態となり、AI企業に対する法的責任追及が児童保護分野でも本格化していることを示す。"
+        }
+      ],
+      "url": "https://easternherald.com/2026/08/17/grok-ai-csam-lawsuit-deepfakes-wyoming-class-action-xai/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】世界の産業用ロボット導入、労働力不足を追い風に過去最高を更新",
+      "intro": "業界レポートが8月17日までにまとめたところによると、世界の産業用ロボット設置台数は年54万2000台に達し10年前から倍増、市場規模も過去最高の167億ドルに達した。",
+      "points": [
+        {
+          "label": "牽引役",
+          "text": "米国では2025年の設置台数が前年比11%増の約3万8000台となり、食品業界では人手不足を背景に導入が30%急増するなど、賃金上昇と人材難がロボット投資を後押ししている。"
+        },
+        {
+          "label": "現状",
+          "text": "米国の従業員1万人あたりロボット密度は307台と世界8位にとどまり、韓国・ドイツ・日本に依然として後れを取っている。"
+        },
+        {
+          "label": "含意",
+          "text": "ヒューマノイド型ロボットが注目を集める一方、実際の導入量の主戦場は依然として産業用ロボット全般にあり、フィジカルAIの実装が労働市場の構造変化と直結していることを示す。"
+        }
+      ],
+      "url": "https://www.globenewswire.com/news-release/2026/08/17/3346097/0/en/industrial-robot-installations-hit-record-highs-amid-labor-shortage-crisis.html"
+    }
   ]
 };
