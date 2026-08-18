@@ -1844,5 +1844,121 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.globenewswire.com/news-release/2026/08/17/3346097/0/en/industrial-robot-installations-hit-record-highs-amid-labor-shortage-crisis.html"
     }
+  ],
+  "2026-08-19": [
+    {
+      "title": "【プロダクト・倫理】OpenAI、13〜17歳向け「ChatGPT for Teens」の提供を開始",
+      "intro": "OpenAIは8月18日、13〜17歳のティーンエイジャー専用の「ChatGPT for Teens」を提供開始したと発表した。未成年ユーザーの利用実態が既に大きく広がっていた中での、後追い的な安全対策強化となる。",
+      "points": [
+        {
+          "label": "保護者管理機能",
+          "text": "保護者はアカウントを紐付けたうえで利用時間の制限や特定機能のオフ設定などができる保護者ダッシュボードを利用できる。"
+        },
+        {
+          "label": "コンテンツ制限の強化",
+          "text": "自殺・自傷、性的・恋愛的なロールプレイ、グラフィックな暴力表現などについて、成人向けより厳格な制限を年齢に応じて自動適用する。"
+        },
+        {
+          "label": "背景",
+          "text": "未成年の安全性を巡っては訴訟や社会的批判が相次いでいたとされ、対応の遅れを指摘する声も出ている。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/18/openai-launches-a-safer-chatgpt-for-teens-years-after-teens-started-using-it/"
+    },
+    {
+      "title": "【資金調達】AI推論チップのEtched、1カ月で評価額倍増の210億ドルに",
+      "intro": "AI推論向け専用チップを手がける米Etchedは8月18日、Jane Street主導で7億ドルを調達し評価額210億ドルに達したと発表した。7月のシリーズCから1カ月足らずでの倍増となる。",
+      "points": [
+        {
+          "label": "急騰の経緯",
+          "text": "昨年12月時点の評価額50億ドルから7月のシリーズCで103億ドルに、そして今回210億ドルへと、半年余りで4倍以上に膨らんだ。"
+        },
+        {
+          "label": "事業内容",
+          "text": "汎用GPUではなく推論特化の「フロンティア推論クラスタ」を自社設計しており、プリフィル向けの低電圧チップや新方式のメモリ・インターコネクト技術を投入している。"
+        },
+        {
+          "label": "顧客実績",
+          "text": "出資したJane Streetは実際にチップを検証・購入した上で投資しており、Etchedは既に10億ドル超の顧客契約を確保しているという。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Pony.ai、ロボタクシー収益が前年比7.9倍に急増",
+      "intro": "中国の自動運転企業Pony.aiは8月18日、2026年第2四半期決算を発表し、ロボタクシー事業の収益が前年比691.2%増の1210万ドルに達したことを明らかにした。",
+      "points": [
+        {
+          "label": "事業規模",
+          "text": "総収益は前年比68.8%増の3620万ドルで、ロボタクシー車両数は1975台まで拡大、年内に3500台超への到達を目指す。"
+        },
+        {
+          "label": "海外展開",
+          "text": "Uberとの提携で欧州に2000台超のロボタクシーを配備する契約を含め、海外市場での交渉中の車両数は合計4000台超に膨らんでいる。"
+        },
+        {
+          "label": "含意",
+          "text": "中国発の自動運転企業が採算性を伴いながら海外展開を加速させており、ロボタクシーが実証段階から事業として立ち上がりつつあることを示す。"
+        }
+      ],
+      "url": "https://www.globenewswire.com/news-release/2026/08/18/3346631/0/en/pony-ai-inc-reports-second-quarter-2026-financial-results-total-revenues-up-68-8-yoy-to-us-36-2-mm-with-robotaxi-services-revenue-up-691-2-to-us-12-1-mm.html"
+    },
+    {
+      "title": "【倫理・規制】ByteDanceとハリウッドのMPA、生成AIの著作権保護で覚書締結",
+      "intro": "ByteDanceと米映画大手が加盟するMotion Picture Association（MPA）は8月18日までに、動画・画像生成AI「Seedance」「Seedream」などにおける著作権保護の国際的な枠組みで覚書を締結したと発表した。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "MPAは今年2月、Seedream・Seedanceが著作権キャラクターや著名人の肖像を無断生成できる懸念を理由に、ByteDanceへ停止要求書を送付していた。"
+        },
+        {
+          "label": "合意の中身",
+          "text": "TikTokやCapCut、Dreaminaなど関連サービス全体を対象とする安全策の強化で合意したが、対価が発生するライセンス契約ではなく、あくまで自主的な「休戦」的合意にとどまる。"
+        },
+        {
+          "label": "意義",
+          "text": "生成AIと著作権者の対立が続く中、対価なしのガードレール整備という妥協的な解決モデルが、他の生成AI企業との交渉にも波及する可能性がある。"
+        }
+      ],
+      "url": "https://variety.com/2026/biz/news/motion-picture-association-deal-bytedance-ip-ai-seedance-1236836240/"
+    },
+    {
+      "title": "【プロダクト】Reddit、投稿をAI音声動画に変換する「Play」モードをスマホアプリに拡大",
+      "intro": "Redditはテキスト投稿と主要コメントをAI音声で読み上げる動画に変換する新機能「Play」モードについて、8月17日のウェブ版公開に続き、8月18日にiOS・Android版でも展開を始めた。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "AI音声が投稿本文と選ばれたコメントを読み上げ、テキストが同期してハイライトされる形式で、「Read」「Play」の切り替えボタンで従来のテキスト表示とも行き来できる。"
+        },
+        {
+          "label": "適用範囲",
+          "text": "現時点では英語の一部投稿・コミュニティに限定した実験で、対象はReddit側が手動で選定している。"
+        },
+        {
+          "label": "狙い",
+          "text": "サードパーティのクリエイターがTikTokやInstagramでRedditの音声動画を勝手に作り人気を集めている流れを、公式機能として取り込む狙いがある。"
+        }
+      ],
+      "url": "https://techbriefly.com/2026/08/18/reddit-audio-video-posts/"
+    },
+    {
+      "title": "【障害・ビジネス】Claudeが大規模障害、急成長のAnthropicにインフラの綻び",
+      "intro": "Anthropicは8月18日、Claudeの複数モデル・サービスでエラーが急増していることを認め調査を開始した。障害追跡サービスDowndetectorには4000件超の報告が寄せられた。",
+      "points": [
+        {
+          "label": "影響範囲",
+          "text": "最新のMythos 5・Fable 5から、Opus 5、Sonnet 5、Haiku 4.5まで主力モデル全体に及び、特にコーディングエージェント「Claude Code」への不満が集中した。"
+        },
+        {
+          "label": "背景",
+          "text": "障害発生の直前、Anthropicの年換算収益は7月末時点で650億ドルに達し前年の約7倍に急成長していたと報じられたばかりで、急拡大する需要に処理能力の増強が追いついていない可能性を示唆する。"
+        },
+        {
+          "label": "利用者の反応",
+          "text": "著名投資家からは「今日のClaudeは実用に耐えない」との声も上がり、推論能力の増強を急がなければ顧客離れを招きかねないとの指摘が出ている。"
+        }
+      ],
+      "url": "https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-confirms-claude-is-down-in-major-outage-affecting-multiple-services/"
+    }
   ]
 };
