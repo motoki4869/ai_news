@@ -2173,5 +2173,140 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.gsmarena.com/the_google_pixel_11_series_is_now_on_sale-news-74266.php"
     }
+  ],
+  "2026-08-22": [
+    {
+      "title": "【フィジカルAI・産業インフラ】ネバダ州がテスラ・ウェイモ・ウーバーにロボタクシー営業許可、ラスベガス圏で最大8000台体制へ",
+      "intro": "ネバダ州運輸当局は8月20日、テスラ・ウェイモ・ウーバーの3社に自律走行車ネットワーク事業者としての許可を一斉に発行し、クラーク郡（ラスベガス圏）での有償ロボタクシー営業を認めた。",
+      "points": [
+        {
+          "label": "配車枠",
+          "text": "テスラに最大5000台、ウェイモとウーバーにそれぞれ最大1000台の展開上限が与えられ、合計で最大8000台規模の許可となった。当初テスラは10台まで、時速45マイル制限、空港送迎禁止という厳しい制約を課されていたが、大幅に緩和された。"
+        },
+        {
+          "label": "現実との差",
+          "text": "テスラ側の担当エンジニアは、上限はあくまで天井であり「今後1年で2500台程度に到達できれば十分満足」と述べており、許可台数と実際の稼働台数には大きな開きがあると説明している。"
+        },
+        {
+          "label": "意義",
+          "text": "単一州が複数の自動運転事業者に大規模な商業展開を同時に認めた事例として、ロボタクシーが実証段階から都市インフラの一部として本格運用される段階に移りつつあることを示す。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/20/tesla-uber-and-waymo-all-get-the-ok-to-operate-thousands-of-robotaxis-in-nevada/"
+    },
+    {
+      "title": "【ビジネス】Broadcom、Anthropic向けAIチップ供給を支えるため最大1000億ドル規模の負債調達を協議",
+      "intro": "Broadcomは8月20日までに、AnthropicなどへのAIチップ供給を賄うため、Blackstone・Apollo Global Managementなど複数の貸し手と600億ドル超の負債調達について協議していると報じられた。",
+      "points": [
+        {
+          "label": "構造",
+          "text": "優先担保付債務が約600〜700億ドル、劣後債務が約300億ドルとされ、全体では最大1000億ドル規模に膨らむ可能性があり、Broadcom自身が優先債務の一部を保証する案も検討されている。"
+        },
+        {
+          "label": "背景",
+          "text": "Broadcomは6月にもApollo・Blackstoneと約350億ドル規模のAI向けXPU金融プラットフォームを設立済みで、今回はその拡張にあたる。"
+        },
+        {
+          "label": "含意",
+          "text": "AI企業が自社の貸借対照表に負担を負わせずにチップ供給を確保する「オフバランス型」の資金調達がAIインフラ投資の主流手法になりつつあることを示す。"
+        }
+      ],
+      "url": "https://finance.yahoo.com/technology/ai/articles/broadcom-repoirtedly-seeking-raise-over-204953745.html"
+    },
+    {
+      "title": "【技術】Nvidia、AI開発スタートアップPoolsideに60億ドルのライセンス供与と10億ドル出資を実施",
+      "intro": "Nvidiaは8月20日までに、モデル開発ソフト「Model Factory」を手がけるPoolsideに対し、60億ドル規模のライセンス供与契約と評価額120億ドルでの10億ドル出資を組み合わせた取引を発表した。",
+      "points": [
+        {
+          "label": "構造",
+          "text": "買収でもアクハイアでもなく、Poolsideは独立企業として存続する形を取りつつ、オープンソースモデル「Laguna」の開発に携わった従業員109人にNvidiaが個別に採用オファーを出す点が特徴的。"
+        },
+        {
+          "label": "狙い",
+          "text": "自社GPUの需要を支えるモデル開発・学習ソフトウェア層への関与を強め、チップ販売だけでなく上流のAI開発基盤にも影響力を広げる狙いがあるとみられる。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "Nvidiaが投資・ライセンス供与・人材獲得を組み合わせた「買収に見えない買収」的な手法でAIスタートアップとの関係を深める動きが続いていることを示す一例。"
+        }
+      ],
+      "url": "https://www.pymnts.com/news/artificial-intelligence/2026/nvidia-pays-6-billion-to-license-poolside-ai-model-development-software/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】アリババ系ロボティクス新興Dexmal、評価額約3000億円規模の新規資金調達を協議",
+      "intro": "中国・深圳拠点の身体性AI（エンボディドAI）スタートアップDexmalが8月21日までに、約200億元（約30億ドル）の評価額での新規資金調達を協議していると報じられた。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "昨年アリババとNIO Capitalが主導したラウンドで計約1億3800万ドルを調達済みで、その後中国AIラボZ.AI（Zhipu）も出資に加わっている。"
+        },
+        {
+          "label": "事業",
+          "text": "異なる現場・機体構成をまたいで動作するロボット向けのソフトウェア・ハードウェアを開発しており、創業から1年半に満たない企業に大型資金が集中している。"
+        },
+        {
+          "label": "含意",
+          "text": "中国国内で身体性AI・ロボティクス分野への投資熱が続いており、米中の産業ロボット競争が資本市場の面でも激化していることを示す。"
+        }
+      ],
+      "url": "https://www.pymnts.com/news/investment-tracker/2026/robotics-ai-firm-dexmal-seeks-3-billion-valuation-in-new-funding-round/"
+    },
+    {
+      "title": "【ビジネス】エンタープライズAI企業Skan AI、6300万ドルを調達し業務の「文脈グラフ」基盤を一般提供開始",
+      "intro": "企業の業務プロセスをグラフ化する「Context Graph」技術を持つSkan AIは8月21日、Cathay InnovationとDell Technologies Capitalが共同主導する6300万ドルの資金調達と、新プラットフォーム「Skan AI Blueprint」「Skan AI Agents」の一般提供開始を同時に発表した。",
+      "points": [
+        {
+          "label": "投資家",
+          "text": "Citi Ventures、Bloomberg Beta、State Farm Ventures、Wipro Venturesなど事業会社系ベンチャーキャピタルが名を連ねており、業務プロセス理解へのニーズの高まりがうかがえる。"
+        },
+        {
+          "label": "狙い",
+          "text": "企業内で実際に業務がどう遂行されているかを可視化する文脈情報を、生成AIエージェントに与えることで導入効果を高める狙いがある。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "汎用モデルの性能競争だけでなく、企業固有の業務文脈をAIに接続する「ラストマイル」領域への投資が引き続き活発であることを示す。"
+        }
+      ],
+      "url": "https://theaiinsider.tech/2026/08/21/skan-ai-secures-63m-to-give-enterprise-ai-the-context-its-missing-how-work-actually-gets-done/"
+    },
+    {
+      "title": "【倫理・規制】Apple Music、AI生成楽曲への「Made With AI」表示ラベルを全コンテンツ提供者に義務化へ",
+      "intro": "Appleは8月21日、Apple Musicにおいて生成AIで実質的に制作された楽曲に「Made With AI」ラベルを表示する仕組みを年内に導入すると発表した。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "今年3月にレーベルや配信事業者向けに任意提供していた「AI透明性タグ」を、生成AIが楽曲の主要部分を作った場合の申告として全コンテンツ提供者に義務化する。"
+        },
+        {
+          "label": "運用",
+          "text": "どの楽曲にラベルを付けるかの最終判断はレコード会社側に委ねられており、Apple自身が個々の楽曲を検証する仕組みにはなっていない。"
+        },
+        {
+          "label": "含意",
+          "text": "音楽ストリーミング分野でもAI生成コンテンツの開示を求める動きが業界標準になりつつあり、カリフォルニア州のAI透明性法など各地の法規制の流れとも軌を一にする。"
+        }
+      ],
+      "url": "https://macdailynews.com/2026/08/21/apple-music-to-introduce-made-with-ai-labels-for-ai-generated-music-later-this-year/"
+    },
+    {
+      "title": "【注目ツール・実用プロダクト】Anthropic、AI活用を学べる無償学習サイト「Claude Academy」を公開",
+      "intro": "Anthropicは8月20日、AIをこれから学ぶ人からチーム導入担当者まで幅広い層に向けて、Claudeをはじめとする生成AIを安全かつ効果的に使うための無償学習サイト「Claude Academy」を公開した。",
+      "points": [
+        {
+          "label": "内容",
+          "text": "初心者向けのチャット活用から、チーム導入担当者向けの事例、エージェント運用まで、職種や目的別のユースケースを網羅したコースとチュートリアルを提供する。"
+        },
+        {
+          "label": "狙い",
+          "text": "企業導入が加速する一方でAIリテラシーの底上げが追いついていない現状に対応し、利用者教育をAnthropic自身が直接担う姿勢を示した。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "モデル性能競争に加え、利用者教育・啓発というソフト面での差別化にAI企業が力を入れ始めていることを示す事例といえる。"
+        }
+      ],
+      "url": "https://gigazine.net/news/20260821-anthropic-claude-academy/"
+    }
   ]
 };
