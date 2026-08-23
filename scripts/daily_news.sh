@@ -48,7 +48,7 @@ if [ "$STATUS" -eq 0 ]; then
       LINE_MSG="$(mark_as_codex_fallback "$(cat "$LINE_MSG_FILE")")"
       send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$LINE_MSG"
     fi
-    osascript -e "display notification \"$SUMMARY_ESCAPED（Codex経由）\" with title \"AIニュース更新\" sound name \"Glass\"" || true
+    osascript -e "display notification \"${SUMMARY_ESCAPED}（Codex経由）\" with title \"AIニュース更新\" sound name \"Glass\"" || true
   else
     osascript -e "display notification \"$SUMMARY_ESCAPED\" with title \"AIニュース更新\" sound name \"Glass\"" || true
   fi
