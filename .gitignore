@@ -1,4 +1,5 @@
 .claude/settings.local.json
+.codex/config.toml
 logs/
 everyday_news/line_message.txt
 .superpowers/

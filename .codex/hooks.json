@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/motoki/Desktop/GitHub/03_自動化・定期実行/ai_news/.codex/hooks/line_notify.sh' 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
