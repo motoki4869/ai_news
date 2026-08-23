@@ -13,6 +13,8 @@ source "$REPO_DIR/scripts/lib/codex_fallback.sh"
 
 LINE_MSG_MTIME_BEFORE=0
 [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_BEFORE=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
+LINE_MSG_HASH_BEFORE=""
+[ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_BEFORE=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
 
 OUTPUT="$("$CLAUDE_BIN" -p "$(cat "$PROMPT_FILE")" \
   --allowedTools "Read Write Edit WebSearch Bash" 2>&1)"
@@ -38,7 +40,9 @@ if [ "$STATUS" -eq 0 ]; then
   if [ "$IS_FALLBACK" -eq 1 ]; then
     LINE_MSG_MTIME_AFTER=0
     [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_AFTER=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
-    if [ "$LINE_MSG_MTIME_AFTER" -gt "$LINE_MSG_MTIME_BEFORE" ] && [ -s "$LINE_MSG_FILE" ]; then
+    LINE_MSG_HASH_AFTER=""
+    [ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_AFTER=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
+    if [ -s "$LINE_MSG_FILE" ] && { [ "$LINE_MSG_MTIME_AFTER" -gt "$LINE_MSG_MTIME_BEFORE" ] || [ "$LINE_MSG_HASH_AFTER" != "$LINE_MSG_HASH_BEFORE" ]; }; then
       # Codex実行時はline_message.txtの更新を検知するPostToolUseフック(.claude/hooks/line_notify.sh)が
       # 発火しないため、ここで明示的にLINE通知を送る。Claude成功時はフックに任せるため送らない。
       LINE_MSG="$(mark_as_codex_fallback "$(cat "$LINE_MSG_FILE")")"
