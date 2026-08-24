@@ -2521,5 +2521,121 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.nbcnews.com/tech/tech-news/chinese-humanoid-robot-lightning-beats-human-100m-world-record-rcna593869"
     }
+  ],
+  "2026-08-25": [
+    {
+      "title": "【ビジネス】Hugging Faceが130億ドルでの売却を検討——「AIのGitHub」に買い手が殺到",
+      "intro": "オープンソースAIモデルの共有基盤を運営するHugging Faceが、130億ドル以上の評価額での身売りを模索していると8月24日までに報じられた。同社は入札評価のため複数の銀行と接触しているという。",
+      "points": [
+        {
+          "label": "評価額",
+          "text": "130億ドルは2023年のシリーズD時点の45億ドルをほぼ3倍にする水準。一方で年間売上は1億ドル超と推定されており、収益規模よりもエコシステム上の位置づけが評価されている。"
+        },
+        {
+          "label": "買い手候補",
+          "text": "2023年ラウンドはSalesforce Venturesが主導し、Google・Amazon・NVIDIA・Intel・IBM・Qualcomm・AMDが参加していた。これら既存投資家が有力な買い手候補と見られているが、交渉相手も価格も確定していない。"
+        },
+        {
+          "label": "業界文脈",
+          "text": "StripeによるOpenRouterの70億ドル買収に続く動きで、モデルそのものではなく「AIの流通・配布インフラ」を押さえる争奪戦が本格化していることを示す。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/24/hugging-face-reportedly-in-talks-to-be-acquired-for-13b/"
+    },
+    {
+      "title": "【資金調達】General Intuitionが60億ドル評価で調達交渉——数週間前の2.3倍に急騰",
+      "intro": "空間と時間の中を動く汎用AIエージェントの基盤モデルを開発するニューヨークのGeneral Intuitionが、プレマネー60億ドルの評価額で新規調達を交渉中であることが8月24日に報じられた。",
+      "points": [
+        {
+          "label": "投資家",
+          "text": "新規にValor Ventures、Point72 Ventures、Seven Seven Sixが参加し、既存のKhosla VenturesとGeneral Catalystも継続出資する。ラウンドは応募超過の状態にあるという。"
+        },
+        {
+          "label": "評価額の跳ね上がり",
+          "text": "同社はわずか数週間前に23億ドル評価で3.2億ドルを調達したばかりで、短期間で評価額が2.6倍に膨らんだ計算になる。"
+        },
+        {
+          "label": "用途",
+          "text": "調達資金は汎用モデルのロボット身体（embodiment）向け強化、計算基盤への投資、人材採用に充てるとしており、フィジカルAIへの資金集中の激しさを象徴する案件となっている。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/"
+    },
+    {
+      "title": "【産業インフラ】IBMが2nm次世代メインフレームチップを公開——ArmとZの命令セットを同一コアで実行",
+      "intro": "IBMは8月24日、半導体学会Hot Chipsで次世代メインフレーム向けプロセッサを発表した。1つのコアがナノ秒単位でIBM Z命令セットとArmアーキテクチャを切り替える、業界初の設計となる。",
+      "points": [
+        {
+          "label": "仕様",
+          "text": "2nmプロセスで11コアを実装し、ベース動作周波数は5.7GHz超。オンチップのAI推論アクセラレータに加え、大規模言語モデル向けの次世代Spyreアクセラレータカードを組み合わせる二層構成をとる。"
+        },
+        {
+          "label": "狙い",
+          "text": "世界の規制対象金融取引の大半はIBMのs390xアーキテクチャ上で処理される一方、エンタープライズAIツールの大半はArmネイティブという断絶があった。同一シリコン上でArm Linuxアプリを無改変で動かせるようにすることでこの溝を埋める。"
+        },
+        {
+          "label": "時期",
+          "text": "4月に締結したIBMとArmの戦略提携から生まれた最初のハードウェア成果で、製品としての投入は2028年前後が見込まれている。"
+        }
+      ],
+      "url": "https://venturebeat.com/infrastructure/ibms-next-gen-mainframe-chip-is-the-first-to-run-arm-and-z-workloads-on-the-same-cores"
+    },
+    {
+      "title": "【フィジカルAI】日本精工とアトムが提携、国産ヒューマノイドAIロボットの一貫開発体制へ",
+      "intro": "ベアリング大手の日本精工（NSK）とロボットベンチャーのアトムは8月24日、国産ヒューマノイドAIロボットの開発・実装に向けた包括的パートナーシップの基本合意書（MOU）を締結したと発表した。",
+      "points": [
+        {
+          "label": "役割分担",
+          "text": "NSKが精密部品の開発・量産ノウハウを、アトムがAI・ロボット技術を担当し、部品調達から実装までを国内で完結させる体制を目指す。"
+        },
+        {
+          "label": "背景",
+          "text": "日本のヒューマノイド産業は部品の生産・調達を海外に依存しており、安定供給と量産化の両面が課題となっていた。国内一貫体制はこのボトルネックへの直接的な対処にあたる。"
+        },
+        {
+          "label": "含意",
+          "text": "中国勢が台数と実証の面で先行するなか、日本は精密機械の製造基盤を武器に「AI領域に必要な実データの効率的収集」まで含めた垂直統合で巻き返しを図る構図が鮮明になった。"
+        }
+      ],
+      "url": "https://response.jp/article/2026/08/24/415640.html"
+    },
+    {
+      "title": "【ツール】Anthropicが「Claude Tag」を更新、Slackの会話全体を読んで自ら割り込むAIへ",
+      "intro": "Anthropicは8月24日、Slackチャンネル内に常駐するエージェント「Claude Tag」を更新し、メッセージを1件ずつ評価するのではなく会話全体の文脈を読み取る方式に変更したと明らかにした。",
+      "points": [
+        {
+          "label": "改善点",
+          "text": "文脈全体を踏まえることで、いつ会話に割り込むべきか——そして重要なことに、いつ割り込むべきでないか——の判断精度が約30%向上したとしている。"
+        },
+        {
+          "label": "思想",
+          "text": "エンタープライズ製品責任者のScott White氏は、単一ユーザーとチャットボットという構図から、チームをまたいで組織の文脈を読み、求められる前に自ら動く「マルチプレイヤーAI」への移行だと位置づけている。"
+        },
+        {
+          "label": "論点",
+          "text": "呼ばれずに発言するエージェントは業務効率を上げうる一方、社内会話への恒常的なアクセスと自律的介入をどこまで許容するかという運用設計の議論を新たに生む。"
+        }
+      ],
+      "url": "https://venturebeat.com/orchestration/anthropics-new-claude-tag-update-lets-its-slack-agent-read-the-full-conversation-and-jump-in-unprompted"
+    },
+    {
+      "title": "【倫理・セキュリティ】個人AIアシスタント「Instinct」に懸念噴出——利用規約が入力データの永続ライセンスを付与",
+      "intro": "メールやメッセージ、カレンダー、端末の音声・位置・画面まで接続して動作する個人向けAIエージェント「Instinct」について、テスターからセキュリティ設計と利用規約への懸念が相次いでいると8月24日に報じられた。",
+      "points": [
+        {
+          "label": "規約の内容",
+          "text": "広く定義された入力・出力に対し、モデル訓練を含む用途で永続的・取消不能・譲渡可能・サブライセンス可能なライセンスを同社に付与する条項がある。Google WorkspaceのAPI経由データは訓練対象外とされる一方、Microsoftのデータやメッセージアプリ、画面キャプチャ、音声、位置情報には同等の除外規定が明記されていない。"
+        },
+        {
+          "label": "攻撃面",
+          "text": "広範な権限を持つアシスタントは攻撃者にとって格好の標的で、アカウント1つの侵害でメール・銀行・カレンダーなどAIが触れられるすべてに到達されうる。"
+        },
+        {
+          "label": "波及",
+          "text": "Union Square VenturesのGPは、この種の製品が消費者のセキュリティ規範そのものを変え、人々が仕組みを理解しないまま第三者アプリにパスワードを預けるようになると指摘している。同サービスはまだ限定テスト段階にある。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/"
+    }
   ]
 };
