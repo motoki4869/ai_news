@@ -2637,5 +2637,140 @@ window.DAILY_NEWS = {
       ],
       "url": "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/"
     }
+  ],
+  "2026-08-26": [
+    {
+      "title": "【産業インフラ】NVIDIAが推論専用チップ「Groq 3 LPX」を量産開始——エージェント応答を4倍速に",
+      "intro": "NVIDIAは半導体学会Hot Chips 2026に合わせ、対話型AI推論に特化したアクセラレータ「Groq 3 LPX」がフル生産に入ったと発表した。2025年12月に200億ドルで取得したGroqの資産に由来する技術が、ついに製品として市場に出る。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "Artificial Analysisのベンチマークで、オープンモデルGemma 4 31Bを10万トークンの文脈長で動かし、出力3,400トークン/秒という同モデル史上最速を記録した。エージェントのコーディング作業を数時間から数分に短縮し、遅延に敏感なワークロードで競合基盤比4倍の応答性を主張する。"
+        },
+        {
+          "label": "設計",
+          "text": "1つのLPXラックにGroq 3チップを256基搭載し、ダイ上に500MBのSRAMを直接載せることで、他の推論アクセラレータの足を引っ張るメモリ帯域のボトルネックを回避する。製造はSamsungが担う。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "同日NVIDIAは、次世代ラックVera Rubin NVL72がエージェント型ワークロードでGB300 NVL72比「メガワットあたり最大30倍のスループット」「トークンコスト35分の1」を達成したとも公表した。測定にはSemiAnalysisのAgentXワークロード（実際のエージェントコーディング記録）を用いており、競争軸が生の演算性能から電力あたりの仕事量へ移りつつあることを示す。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/news/nvidia-groq-3-lpx-now-in-full-production-with-world-class-speed-for-agentic-ai"
+    },
+    {
+      "title": "【フィジカルAI】SpaceXAIがNVIDIA Vera CPUを全面採用——AI衛星「Starmind」で軌道上データセンターへ",
+      "intro": "NVIDIAは8月24日、SpaceXAIが次世代のエージェント型AIワークロード向けにVera CPUを採用すると発表した。地上のGrok基盤だけでなく、宇宙空間へ計算資源を持ち出す構想までが同時に示された。",
+      "points": [
+        {
+          "label": "CPU採用の理由",
+          "text": "エージェント型アプリはモデル呼び出しの合間にツール実行・コード実行・データ処理・シミュレーションを回すため、CPU側がボトルネックになりやすい。Veraはこの周辺処理を高速化し、GPUを遊ばせずに使い切る役割を担う。SpaceXAIはギガワット級の計算容量へ拡張中とされる。"
+        },
+        {
+          "label": "Vera CPUの中身",
+          "text": "同じHot Chipsで公開された仕様によれば、TSMC 3nmの単一コンピュートダイに独自「Olympus」コアを88基集積し、空間マルチスレッディングで176スレッドを扱う。メモリ・I/Oは別チップレットに分離し、SOCAMM2 LPDDR5Xで最大1.5TBを接続する。"
+        },
+        {
+          "label": "宇宙展開",
+          "text": "第1世代のAI衛星「Starmind」は、軌道環境向けに最適化したVera Rubin NVL72を搭載する。大気による冷却が使えない熱管理、放射線耐性、現地保守が不可能という制約に両社が共同で対処するとしており、AIインフラの立地そのものを地球外へ広げる試みとなる。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/news/spacexai-adopts-nvidia-vera-cpu-to-accelerate-agentic-ai-at-massive-scale"
+    },
+    {
+      "title": "【技術】Metaが初の学習専用チップ「MTIA 300」を公開——NIC12基をダイに内蔵し通信の競合を排除",
+      "intro": "Metaは推薦・ランキングモデルの学習に最適化した自社チップMTIA 300の技術詳細を公開した。ネットワーク機能をチップパッケージ内に取り込んだ点が最大の特徴となる。",
+      "points": [
+        {
+          "label": "構成",
+          "text": "800Gbpsで動作するEthernetベースのRDMA NICを12基内蔵し、合計1.2TB/sのI/O帯域を確保する。さらに16基の専用メッセージエンジンが計算グリッドから独立して通信を処理し、各エンジンはRISC-Vコアとメモリ近傍の演算ブロックを持つ。"
+        },
+        {
+          "label": "効果",
+          "text": "GPUでは通信カーネルが計算資源と奪い合いになり20%超の性能低下が生じるのに対し、MTIA 300は大規模行列演算と通信を同時実行しても劣化を0.5%未満に抑えると主張する。150億パラメータの本番推薦モデルで通信が3.9倍高速になった。"
+        },
+        {
+          "label": "含意",
+          "text": "ハイパースケーラーが推論だけでなく学習でも自社シリコンに踏み込み、NVIDIA一極依存から距離を取る流れを象徴する。MTIAシリーズはRISC-VベースでBroadcomと共同開発、製造はTSMCが担当している。"
+        }
+      ],
+      "url": "https://engineering.fb.com/2026/08/24/networking-traffic/mtia-300-meta-training-chip-built-in-nics/"
+    },
+    {
+      "title": "【資金調達】XPengのロボティクス部門が9億ドル超を調達——中国フィジカルAI最大の単独ラウンド",
+      "intro": "中国EV大手XPeng（小鵬汽車）のロボティクス事業が、ポストマネー63億ドル超の評価額で9億ドル以上を調達したと発表した。調達額・評価額の両面で、中国のフィジカルAI業界における過去最大の単独ラウンドとなる。",
+      "points": [
+        {
+          "label": "投資家構成",
+          "text": "IDG Capitalがリードし、Gaorong Venturesが参加。TencentとAlibabaが戦略投資家として支援する。9億ドルのうち約6億ドルが外部投資家、約2億ドルがXPeng子会社、1億ドルが経営陣からの出資という内訳になっている。"
+        },
+        {
+          "label": "製品",
+          "text": "資金は次世代ヒューマノイド「IRON」に投じられる。全身76自由度、片手あたり21自由度を持ち、2026年末までに自社店舗・拠点向けから量産を開始、2027年に中国および海外での正式販売を計画する。"
+        },
+        {
+          "label": "目標規模",
+          "text": "月産1,000台超の生産能力を当面の目標に据え、2030年までに累計100万台という数字も掲げる。ただし現時点でIRONの外部販売実績はまだゼロで、期待先行の色合いも濃い。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/xpeng-robotics-business-raises-over-us900-million-at-a-post-money-valuation-of-over-us6-3-billion-accelerating-physical-ai-deployment-302858203.html"
+    },
+    {
+      "title": "【資金調達】自動運転トラックのGatikが2億ドルを調達——カタール投資庁が主導、累計5億ドルに",
+      "intro": "短中距離の商用貨物輸送に特化した自動運転企業Gatikが8月25日、シリーズDで2億ドルを調達したと発表した。同社にとって過去最大のラウンドで、累計調達額は約5億ドルに達する。",
+      "points": [
+        {
+          "label": "投資家",
+          "text": "カタール投資庁（QIA）とKoch Disruptive Technologiesが共同でリードし、Millennium Management、ARK Invest、Intact Private Capitalなどが参加した。"
+        },
+        {
+          "label": "実績",
+          "text": "契約済み収益は6億ドル超、完全無人での配送完了は8万5,000件、定時到着率99%とされる。テキサス・アリゾナ・アーカンソー・カナダで、Fortune 50級の小売・食品企業向けに配送センターと店舗間の輸送を日常運行している。"
+        },
+        {
+          "label": "背景",
+          "text": "2か月前に締結したPepsiCoとの複数年契約が今回の調達を後押しした。2026年末までに無人トラック100台超の稼働を目指しており、ロボタクシーより先に商用貨物で自動運転の採算が立ちつつあることを示す事例となっている。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/25/self-driving-truck-startup-gatik-raises-200m-following-pepsico-deal/"
+    },
+    {
+      "title": "【倫理・プライバシー】Microsoft PaintとPhotos、ローカル生成画像にサーバー発行の不可視IDを埋め込み",
+      "intro": "Copilot+ PC上のPaintとPhotosがローカル生成したAI画像に、サーバーが発行したGUID（16バイトの一意識別子）を不可視の透かしとして埋め込んでいることを、研究者のリバースエンジニアリングが明らかにした。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "画像生成自体はローカルのONNXモデルで完結する一方、プロンプトのモデレーションはMicrosoftのサーバーに送信される。そこで発行されたGUIDが画素に符号化され、ユーザーが設定できる「可視の透かし」のオン・オフとは無関係に常に埋め込まれる。"
+        },
+        {
+          "label": "技術的背景",
+          "text": "この識別子はC2PAコンテンツ来歴の枠組みに沿った署名付きアサーション「Microsoft InvisMark」として記録される。来歴追跡という正当な目的の技術だが、実装の詳細がユーザーに開示されていなかった点が問題視されている。"
+        },
+        {
+          "label": "懸念",
+          "text": "Microsoftがサーバー側でプロンプトと送信ユーザーの対応を保持していれば、流通した画像から生成者を特定できることになる。同社が実際にその紐付けを保存しているかは公表されておらず、AI生成物の来歴表示と個人追跡の境界をどこに引くかという論点を突きつけている。"
+        }
+      ],
+      "url": "https://www.theregister.com/ai-and-ml/2026/08/25/microsoft-ai-watermarks-in-paint-and-photos-are-linked-to-user-ids-researcher-finds/5292034"
+    },
+    {
+      "title": "【ツール】OpenAIのGPT-5.6三兄弟がAWSの開発環境Kiroに——完了タスクのコストを約82%削減",
+      "intro": "OpenAIとAWSは、GPT-5.6のSol・Terra・Lunaの3モデルを、AWSの仕様駆動型開発環境Kiroで利用可能にしたと発表した。同時にAmazon Bedrockでも一般提供が始まっている。",
+      "points": [
+        {
+          "label": "モデルの棲み分け",
+          "text": "3モデルはそれぞれ性能とコストのカーブ上で異なる位置に調整されており、IDE・CLI・Webの各面から用途に応じて選べる。まずはKiro Pro以上の契約者に、米国東部（バージニア北部）と欧州（フランクフルト）リージョンで段階的に展開される。"
+        },
+        {
+          "label": "費用対効果",
+          "text": "両社の共同検証では、Terminal-Bench 2.1において完了タスクあたりのコストが約82%削減されたと報告されている。エージェント型コーディングの実用性を左右するのが精度よりも単価であることを裏づける数字となる。"
+        },
+        {
+          "label": "構図",
+          "text": "AWSが自社の開発ツールにOpenAIの最新モデルを載せるという、クラウドとモデル提供者の関係が排他的ではなくなってきたことを示す動きでもある。"
+        }
+      ],
+      "url": "https://openai.com/index/gpt-5-6-in-kiro/"
+    }
   ]
 };
