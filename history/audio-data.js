@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-19": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-19.m4a",
+    "label": "2026-08-19のAIニュース音声",
+    "title": "AIの成長痛とインフラの限界"
+  },
   "2026-08-20": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-20.m4a",
     "label": "2026-08-20のAIニュース音声",
