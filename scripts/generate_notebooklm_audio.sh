@@ -8,6 +8,7 @@ TARGET_DATE="${1:-$(date +%F)}"
 SOURCE_TITLE="AIニュース日次: $TARGET_DATE"
 AUDIO_DIR="$REPO_DIR/history/audio"
 AUDIO_FILE="$AUDIO_DIR/$TARGET_DATE.m4a"
+AUDIO_TITLE_FILE="$REPO_DIR/history/audio-titles.json"
 
 log() {
   printf '[notebooklm-audio] %s\n' "$*"
@@ -151,12 +152,58 @@ if candidates:
 ' "$BEFORE_IDS" "$1"
 }
 
+extract_artifact_title() {
+  python3 -c '
+import json
+import sys
+try:
+    payload = json.loads(sys.argv[1])
+except Exception:
+    raise SystemExit(0)
+artifact_id = sys.argv[2]
+items = payload if isinstance(payload, list) else payload.get("artifacts", []) if isinstance(payload, dict) else []
+for item in items:
+    if not isinstance(item, dict):
+        continue
+    item_id = item.get("id") or item.get("artifact_id")
+    title = item.get("title")
+    if item_id == artifact_id and isinstance(title, str) and title.strip():
+        print(title.strip())
+        break
+' "$1" "$2"
+}
+
+update_audio_title() {
+  python3 - "$AUDIO_TITLE_FILE" "$TARGET_DATE" "$1" <<'PY'
+import json
+import os
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+date_str = sys.argv[2]
+title = sys.argv[3]
+titles = {}
+if path.exists():
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(value, dict):
+        titles.update({key: value[key] for key in value if isinstance(key, str) and isinstance(value[key], str)})
+titles[date_str] = title
+path.parent.mkdir(parents=True, exist_ok=True)
+temporary = path.parent / f".{path.name}.tmp"
+temporary.write_text(json.dumps(dict(sorted(titles.items())), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+os.replace(temporary, path)
+PY
+}
+
 ARTIFACT_ID=""
+ARTIFACT_TITLE=""
 DEADLINE=$((SECONDS + AUDIO_MAX_WAIT_SECONDS))
 while (( SECONDS < DEADLINE )); do
   ARTIFACTS_NOW=$("$NLM_BIN" studio status "$NOTEBOOKLM_NOTEBOOK_ID" --json 2>/dev/null || true)
   ARTIFACT_ID=$(extract_new_audio_id "$ARTIFACTS_NOW")
   if [[ -n "$ARTIFACT_ID" ]]; then
+    ARTIFACT_TITLE=$(extract_artifact_title "$ARTIFACTS_NOW" "$ARTIFACT_ID")
     break
   fi
   sleep "$AUDIO_POLL_SECONDS"
@@ -179,6 +226,14 @@ fi
 mkdir -p "$AUDIO_DIR"
 mv "$DOWNLOAD_TMP" "$AUDIO_FILE"
 log "音声を保存しました: $AUDIO_FILE"
+
+if [[ -n "$ARTIFACT_TITLE" ]]; then
+  if ! update_audio_title "$ARTIFACT_TITLE"; then
+    log "警告: NotebookLM音声タイトルを保存できませんでした" >&2
+  fi
+else
+  log "警告: NotebookLM音声タイトルを取得できませんでした。日付タイトルを使用します" >&2
+fi
 
 if ! "$NLM_BIN" source delete "$SOURCE_ID" --confirm >/dev/null 2>&1; then
   log "警告: 一時ソースを削除できませんでした: $SOURCE_ID" >&2

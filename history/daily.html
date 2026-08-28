@@ -583,6 +583,7 @@ const dayHead = document.getElementById('day-head');
 const cardGrid = document.getElementById('card-grid');
 const audioPanel = document.getElementById('audio-panel');
 const audioPlayer = document.getElementById('audio-player');
+const audioTitleHeading = document.getElementById('audio-title');
 const audioLabel = document.getElementById('audio-label');
 
 /* 出典URLのホスト名をキッカー表示用に整える。 */
@@ -652,11 +653,15 @@ function renderDay() {
   const audio = AUDIO[selected];
   const audioSrc = audio && safeAudioSrc(audio.src);
   if (audioSrc) {
+    const title = audio.title || audio.label || (selected + 'のAIニュース音声');
     audioPanel.hidden = false;
-    audioLabel.textContent = audio.label || (selected + 'のAIニュース音声');
+    audioTitleHeading.textContent = title;
+    audioLabel.textContent = selected + 'のNotebookLM音声';
     audioPlayer.src = audioSrc;
-    audioPlayer.setAttribute('aria-label', selected + 'のAIニュース音声を再生');
+    audioPlayer.setAttribute('aria-label', title + 'を再生');
   } else {
+    audioTitleHeading.textContent = '今日のニュースを音声で聴く';
+    audioLabel.textContent = '';
     audioPlayer.removeAttribute('src');
     audioPlayer.load();
     audioPanel.hidden = true;

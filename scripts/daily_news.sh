@@ -40,14 +40,19 @@ if [ "$STATUS" -eq 0 ]; then
   AUDIO_SCRIPT="${NOTEBOOKLM_AUDIO_SCRIPT:-$REPO_DIR/scripts/generate_notebooklm_audio.sh}"
   AUDIO_DATA_SCRIPT="$REPO_DIR/scripts/generate_audio_data.py"
   AUDIO_DATA_FILE="$REPO_DIR/history/audio-data.js"
+  AUDIO_TITLE_FILE="$REPO_DIR/history/audio-titles.json"
   AUDIO_DATE="$(date +%Y-%m-%d)"
   if [ -x "$AUDIO_SCRIPT" ]; then
     "$AUDIO_SCRIPT" "$AUDIO_DATE" || true
-    if ! python3 "$AUDIO_DATA_SCRIPT" --audio-dir "$REPO_DIR/history/audio" --output "$AUDIO_DATA_FILE"; then
+    if ! python3 "$AUDIO_DATA_SCRIPT" --audio-dir "$REPO_DIR/history/audio" --titles-file "$AUDIO_TITLE_FILE" --output "$AUDIO_DATA_FILE"; then
       echo "NotebookLM音声一覧の生成に失敗しました。ニュース更新は継続します。" >&2
     else
-      if ! git diff --quiet -- history/audio "$AUDIO_DATA_FILE" || [ -n "$(git ls-files --others --exclude-standard -- history/audio "$AUDIO_DATA_FILE")" ]; then
-        git add history/audio "$AUDIO_DATA_FILE"
+      AUDIO_PATHS=(history/audio "$AUDIO_DATA_FILE")
+      if [ -f "$AUDIO_TITLE_FILE" ]; then
+        AUDIO_PATHS+=("$AUDIO_TITLE_FILE")
+      fi
+      if ! git diff --quiet -- "${AUDIO_PATHS[@]}" || [ -n "$(git ls-files --others --exclude-standard -- "${AUDIO_PATHS[@]}")" ]; then
+        git add "${AUDIO_PATHS[@]}"
         if git diff --cached --quiet; then
           echo "NotebookLM音声の変更はありません"
         elif git commit -m "$AUDIO_DATE のAIニュース音声を追加"; then

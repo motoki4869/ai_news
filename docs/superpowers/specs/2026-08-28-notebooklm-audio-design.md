@@ -91,12 +91,13 @@ flowchart LR
 window.DAILY_AUDIO = {
   "2026-08-28": {
     "src": "audio/2026-08-28.m4a",
-    "type": "audio/mp4"
+    "label": "2026-08-28のAIニュース音声",
+    "title": "NotebookLMが生成した音声タイトル"
   }
 };
 ```
 
-`audio-data.js` は `history/audio/` に存在する音声ファイルだけを対象に生成する。音声が無い日付はデータに含めない。
+`audio-data.js` は `history/audio/` に存在する音声ファイルだけを対象に生成する。NotebookLMの生成結果から取得したタイトルは `history/audio-titles.json` で日付と対応付ける。タイトルが取得できない場合は日付ベースのフォールバックを使い、音声が無い日付はデータに含めない。
 
 ## ページ側の変更
 
@@ -104,7 +105,8 @@ window.DAILY_AUDIO = {
 
 - `DAILY_AUDIO[selected]` がある場合だけ音声UIを表示する。
 - HTML標準の `<audio controls preload="metadata">` を使う。
-- 音声の説明として「🎧 この日のニュースを聴く」を表示する。
+- NotebookLMが生成した音声タイトルをプレイヤーの見出しとアクセシビリティ名に表示する。
+- タイトルが無い古いメタデータでは、日付ベースのフォールバックを表示する。
 - 日付を切り替えたら、選択中の日付の音声に差し替える。
 - 自動再生は行わない。
 - 音声URLは生成済みの相対パスだけを許可する。
@@ -144,6 +146,7 @@ window.DAILY_AUDIO = {
 | 変更 | `scripts/daily_news.sh` | ニュース更新成功後に音声処理を呼び出し、音声失敗を分離 |
 | 変更 | `history/daily.html` | 音声データの読み込みと日付ごとのプレイヤー表示 |
 | 追加 | `history/audio-data.js` | 日付と音声ファイルの対応データ |
+| 追加 | `history/audio-titles.json` | NotebookLMが生成した日付別音声タイトル |
 | 追加 | `history/audio/*.m4a` | NotebookLMから取得した日次音声 |
 | 変更 | `.gitignore` | `everyday_news/.daily_audio_source.md` 等の一時設定を除外 |
 | 追加 | `scripts/notebooklm_audio.env.example` | NotebookLM専用ノートID設定の雛形 |

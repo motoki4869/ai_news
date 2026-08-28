@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 
 DATE_HEADER_RE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s*$")
@@ -44,9 +45,32 @@ def extract_daily_section(markdown: str, date_str: str) -> str:
     return section + "\n"
 
 
-def build_audio_data(audio_dir: Path) -> dict[str, dict[str, str]]:
+def load_audio_titles(path: Path | None) -> dict[str, str]:
+    """NotebookLMが返した日付別タイトルを読み込む。"""
+    if path is None or not path.exists():
+        return {}
+
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"音声タイトルはJSONオブジェクトで指定してください: {path}")
+
+    titles: dict[str, str] = {}
+    for date_str, title in value.items():
+        if not isinstance(date_str, str) or not isinstance(title, str):
+            continue
+        if title.strip():
+            _validate_date(date_str)
+            titles[date_str] = title.strip()
+    return titles
+
+
+def build_audio_data(
+    audio_dir: Path,
+    titles: Mapping[str, str] | None = None,
+) -> dict[str, dict[str, str]]:
     """音声ディレクトリから日付別の再生メタデータを作る。"""
     data: dict[str, dict[str, str]] = {}
+    titles = titles or {}
     if not audio_dir.exists():
         return data
 
@@ -59,6 +83,7 @@ def build_audio_data(audio_dir: Path) -> dict[str, dict[str, str]]:
         data[date_str] = {
             "src": f"audio/{path.name}",
             "label": f"{date_str}のAIニュース音声",
+            "title": titles.get(date_str, f"{date_str}のAIニュース音声"),
         }
     return {date: data[date] for date in sorted(data)}
 
@@ -90,6 +115,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode.add_argument("--extract-date", metavar="YYYY-MM-DD")
     mode.add_argument("--audio-dir", type=Path)
     parser.add_argument("--source-file", type=Path)
+    parser.add_argument("--titles-file", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     return parser.parse_args(argv)
 
@@ -105,7 +131,9 @@ def main(argv: list[str] | None = None) -> int:
                 args.extract_date,
             )
         else:
-            content = render_audio_data(build_audio_data(args.audio_dir))
+            content = render_audio_data(
+                build_audio_data(args.audio_dir, load_audio_titles(args.titles_file))
+            )
         write_atomic(args.output, content)
     except (OSError, ValueError) as error:
         print(f"エラー: {error}", file=sys.stderr)

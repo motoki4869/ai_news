@@ -57,17 +57,34 @@ class TestBuildAudioData(unittest.TestCase):
         self.assertEqual(actual["2026-08-28"]["src"], "audio/2026-08-28.m4a")
         self.assertEqual(actual["2026-08-28"]["label"], "2026-08-28のAIニュース音声")
 
+    def test_uses_notebooklm_title_when_available(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            audio_dir = Path(temp_dir)
+            (audio_dir / "2026-08-28.m4a").write_bytes(b"today")
+
+            actual = generate_audio_data.build_audio_data(
+                audio_dir,
+                {"2026-08-28": "脱走したAIとローラースケートのアヒル"},
+            )
+
+        self.assertEqual(
+            actual["2026-08-28"]["title"],
+            "脱走したAIとローラースケートのアヒル",
+        )
+
     def test_render_uses_daily_audio_global_and_safe_json(self):
         rendered = generate_audio_data.render_audio_data({
             "2026-08-28": {
                 "src": "audio/2026-08-28.m4a",
                 "label": "<今日>の\"音声\"",
+                "title": "<NotebookLM>の\"タイトル\"",
             }
         })
 
         self.assertTrue(rendered.startswith("window.DAILY_AUDIO = "))
         self.assertTrue(rendered.endswith(";\n"))
         self.assertNotIn("<今日>", rendered)
+        self.assertNotIn("<NotebookLM>", rendered)
         self.assertIn("\\\"音声\\\"", rendered)
 
 

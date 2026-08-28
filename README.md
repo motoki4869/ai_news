@@ -44,7 +44,7 @@ bash scripts/daily_news.sh
 
 ## NotebookLM音声
 
-日次ニュースの更新に成功すると、専用NotebookLMノートブックへ当日分のニュースセクションだけを渡して日本語の音声概要を生成します。生成された音声は `history/audio/YYYY-MM-DD.m4a` に保存され、`history/daily.html` の日付選択画面から再生できます。
+日次ニュースの更新に成功すると、専用NotebookLMノートブックへ当日分のニュースセクションだけを渡して日本語の音声概要を生成します。生成された音声は `history/audio/YYYY-MM-DD.m4a` に保存され、NotebookLMが付けた音声タイトルとともに `history/daily.html` の日付選択画面から再生できます。タイトルは `history/audio-titles.json` に保存され、音声一覧の再生成時に `history/audio-data.js` へ反映されます。
 
 初回だけ、`scripts/notebooklm_audio.env.example` を `scripts/notebooklm_audio.env` にコピーし、`NOTEBOOKLM_NOTEBOOK_ID` に「AIニュース音声」用ノートブックのIDを設定してください。NotebookLM Tools CLI (`nlm`) のログイン状態も必要です。
 
