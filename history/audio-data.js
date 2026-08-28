@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-18": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-18.m4a",
+    "label": "2026-08-18のAIニュース音声",
+    "title": "社会インフラを丸呑みするAI"
+  },
   "2026-08-19": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-19.m4a",
     "label": "2026-08-19のAIニュース音声",
