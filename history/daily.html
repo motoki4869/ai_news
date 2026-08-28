@@ -629,10 +629,12 @@ function safeHref(url) {
   }
 }
 
-/* 音声一覧は生成スクリプトが作る相対パスだけを再生対象にする。 */
+/* 音声は生成スクリプトが作るGitHub Releases（タグ: audio）のURLか、ローカル配置の相対パスだけを再生対象にする。 */
+const AUDIO_SRC_RE = /^(?:audio\/|https:\/\/github\.com\/motoki4869\/ai_news\/releases\/download\/audio\/)\d{4}-\d{2}-\d{2}\.m4a$/;
+
 function safeAudioSrc(src) {
   const value = String(src || '');
-  return /^audio\/\d{4}-\d{2}-\d{2}\.m4a$/.test(value) ? value : null;
+  return AUDIO_SRC_RE.test(value) ? value : null;
 }
 
 function renderDay() {
