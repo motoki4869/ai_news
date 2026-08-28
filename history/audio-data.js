@@ -53,5 +53,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-28.m4a",
     "label": "2026-08-28のAIニュース音声",
     "title": "脱走したAIとローラースケートのアヒル"
+  },
+  "2026-08-29": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-29.m4a",
+    "label": "2026-08-29のAIニュース音声",
+    "title": "ソフトウェアを超え物理戦へ突入したAI"
   }
 };
