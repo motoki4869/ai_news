@@ -3,3 +3,5 @@
 logs/
 everyday_news/line_message.txt
 .superpowers/
+scripts/notebooklm_audio.env
+everyday_news/.daily_audio_source.md
