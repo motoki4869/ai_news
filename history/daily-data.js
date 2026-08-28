@@ -3068,5 +3068,116 @@ window.DAILY_NEWS = {
       ],
       "url": "https://the-decoder.com/claude-cowork-now-runs-its-own-browser-inside-the-desktop-app/"
     }
+  ],
+  "2026-08-29": [
+    {
+      "title": "【ビジネス】Nvidia、AIモデル共有基盤Hugging Faceを1.9兆円で買収へ交渉入り",
+      "intro": "8月27日、NvidiaがオープンソースAIモデルの共有プラットフォーム「Hugging Face」を約129億ドルで買収する交渉に入ったと複数の米メディアが報じた。正式契約はまだ結ばれておらず交渉が破談する可能性も残るが、実現すればオープンモデルの「標準的な入り口」がGPU最大手の傘下に入ることになる。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "Nvidiaは昨年末にも評価額70億ドルでの5億ドル出資を提案したがHugging Face側が拒否した経緯があり、今回はその2倍近い評価額での再アプローチとなる。"
+        },
+        {
+          "label": "意義",
+          "text": "チップ・クラウド・資金調達に続き、モデル流通の入り口までもGPU企業が押さえにいく動きであり、オープンソースAIエコシステムの中立性を巡る懸念が業界内で浮上している。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/08/27/nvidia-hugging-face-acquisition.html"
+    },
+    {
+      "title": "【ビジネス】Salesforce×Anthropic、「Claudeforce」提携を発表し株価12%急伸",
+      "intro": "8月26日、SalesforceとAnthropicは既存提携を拡大した新戦略「Claudeforce」を発表し、Claudeの推論能力とSalesforceの業務データ・ワークフローを相互に接続すると明らかにした。発表と同時期の四半期決算が市場予想を上回ったこともあり、Salesforce株は時間外取引で一時12%上昇した。",
+      "points": [
+        {
+          "label": "中身",
+          "text": "ClaudeがSalesforce内で推論モデルとして動く一方、Salesforce自体もClaude上で37種の商談支援スキルを備えたプラグインとして機能する「双方向型」の統合になっている。"
+        },
+        {
+          "label": "象徴性",
+          "text": "Salesforceが自社の「force」ブランドを他社製品名に付けたのは今回が初めてで、CRM大手が特定モデルへの依存を強める姿勢を鮮明にした。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/08/26/salesforce-anthropic-partnership-claudeforce.html"
+    },
+    {
+      "title": "【規制・政策】連邦判事、国防総省によるAnthropicの「サプライチェーンリスク」指定を違法と判断",
+      "intro": "カリフォルニア州の連邦判事リタ・リン氏は8月27日夜、国防総省がAnthropicを「サプライチェーンリスク」に指定した措置は違法だったとして指定の撤回を命じた。Anthropicが軍事利用向けにClaudeの安全ガードレール（自律兵器・大規模監視への転用禁止）の撤廃を拒んだことが対立の発端だった。",
+      "points": [
+        {
+          "label": "判断理由",
+          "text": "リン判事は国防総省の措置を「憲法修正第1条に違反する不当な報復」と認定し、事前の適正手続き（修正第5条）も欠いていたと指摘した。"
+        },
+        {
+          "label": "根拠",
+          "text": "指定後も政府の他部門がAnthropicと通常通り協議を続けていた事実を挙げ、「ソフトウェアに害意を仕込む破壊工作員」への本気の警戒とは整合しないと断じた。"
+        },
+        {
+          "label": "今後",
+          "text": "ワシントンD.C.の裁判所では関連する別訴訟が係争中で、AI企業と軍事機関との間で安全設計方針を巡る対立が続く見通し。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/28/anthropic-gets-its-first-court-win-over-the-pentagons-supply-chain-risk-label/"
+    },
+    {
+      "title": "【規制・政策】OpenAI・Anthropic・Googleなど100社超、AIサイバー攻撃への共同防衛を呼びかける公開書簡",
+      "intro": "8月27日、OpenAI・Anthropic・Google・Microsoftに加えCrowdStrikeやOktaなど100社を超える企業が連名で公開書簡を発表し、AIを悪用したサイバー攻撃への官民一体の防衛体制構築を呼びかけた。",
+      "points": [
+        {
+          "label": "主張",
+          "text": "「今後数カ月でAIによるサイバー攻撃はモデルの能力向上に伴い一段と広範かつ高度になる」と警告し、新たな防御手法の採用を促した。"
+        },
+        {
+          "label": "要請",
+          "text": "地方・国・国際の各レベルの政府に対し協調した対応を求めており、AI企業自身が攻撃側の能力向上を公に認めた形となる。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/"
+    },
+    {
+      "title": "【技術】謎のステルスモデル「Ox Alpha」の正体はZ.aiの新型「GLM-5.3-Flash」と判明",
+      "intro": "8月20日から開発元不明のまま無償公開され話題を呼んでいた高性能モデル「Ox Alpha」について、中国Z.aiは8月26日、自社の新型「GLM-5.3-Flash」を匿名でテストしていたものだったと公式に認めた。",
+      "points": [
+        {
+          "label": "仕様",
+          "text": "総パラメータ3200億・アクティブ180億のMoE構成で、1Mトークンのコンテキストとマルチモーダル対応を持ちながらMITライセンスで重みを公開、価格は入力100万トークン0.15ドルと破格の水準。"
+        },
+        {
+          "label": "インフラ",
+          "text": "公開試験期間中は1日あたり約100兆トークンを処理しており、その計算基盤は完全に中国製AIチップ（Huawei Ascend系とみられる）で賄われていたとされ、対米チップ規制下でも大規模運用が可能なことを示した。"
+        }
+      ],
+      "url": "https://wccftech.com/zhipu-z-ai-unmasks-the-mystery-ox-alpha-model-as-glm-5-3-flash-revealing-that-it-was-run-entirely-on-chinese-gpus-while-serving-100-trillion-tokens-day/"
+    },
+    {
+      "title": "【倫理・規制】英俳優ら、AI音声クローン規制を求める新キャンペーン「Save Our Voices Now」始動",
+      "intro": "8月28日、ニコラ・コフラン氏やヒュー・ボネヴィル氏ら英俳優約80人が、本人の同意なくAIで声を複製・使用する行為への法的保護を求める公開書簡に署名し、英首相宛のキャンペーンを開始した。",
+      "points": [
+        {
+          "label": "要求",
+          "text": "声を氏名・肖像と同様に個人の法的な権利対象として認めるよう求める政府請願（Gov.uk）も同時に立ち上げた。"
+        },
+        {
+          "label": "背景",
+          "text": "出演者の1人は「法律・契約慣行・職業倫理・アーティストの権利保護がAI技術の進歩速度に追いついていない」と危機感を訴えており、映像・音声業界全体でのAI利用ルール整備の遅れが焦点となっている。"
+        }
+      ],
+      "url": "https://www.itv.com/news/2026-08-28/nicola-coughlan-and-matt-lucas-among-stars-backing-ai-voice-cloning-campaign"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】a16z、AIハードウェア専用「Machine Age Fund」に11億ドルを調達",
+      "intro": "ベンチャーキャピタルAndreessen Horowitz（a16z）は8月28日、AIを支える物理インフラに特化した初のファンド「Machine Age Fund」の設立と11億ドルの調達完了を発表した。",
+      "points": [
+        {
+          "label": "投資対象",
+          "text": "半導体・メモリ・ネットワーク機器・ストレージに加え、ロボティクスやデータセンターから家庭用AI機器まで、AIが実際に動く「物理層」全体を投資対象とする。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "ソフトウェア・モデル開発への投資が一巡し、AI普及を支えるハードウェア・製造能力そのものへ資金が向かい始めていることを示す動きで、フィジカルAI分野への機関投資家の関心の高まりを裏付ける。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/08/28/a16z-creates-a-1-1b-machine-age-fund-to-accelerate-the-physical-buildout-of-ai/"
+    }
   ]
 };
