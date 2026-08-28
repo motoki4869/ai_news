@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-21": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-21.m4a",
+    "label": "2026-08-21のAIニュース音声",
+    "title": "勝手に動き出すAIと管理のジレンマ"
+  },
   "2026-08-22": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-22.m4a",
     "label": "2026-08-22のAIニュース音声",
