@@ -146,7 +146,8 @@ for item in items:
         candidates.append((status, artifact_id))
 if candidates:
     ready = [item for item in candidates if item[0] in {"completed", "complete", "ready", "done"}]
-    print((ready or candidates)[-1][1])
+    if ready:
+        print(ready[-1][1])
 ' "$BEFORE_IDS" "$1"
 }
 
