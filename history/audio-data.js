@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-23": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-23.m4a",
+    "label": "2026-08-23のAIニュース音声",
+    "title": "現実の物理世界へ激突するAI"
+  },
   "2026-08-24": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-24.m4a",
     "label": "2026-08-24のAIニュース音声",
