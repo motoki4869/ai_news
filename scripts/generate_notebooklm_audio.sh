@@ -114,7 +114,7 @@ if [[ -z "$SOURCE_ID" ]]; then
   fail "追加した当日ソースのIDを特定できませんでした"
 fi
 
-ARTIFACTS_BEFORE=$("$NLM_BIN" list artifacts "$NOTEBOOKLM_NOTEBOOK_ID" --json 2>/dev/null || true)
+ARTIFACTS_BEFORE=$("$NLM_BIN" studio status "$NOTEBOOKLM_NOTEBOOK_ID" --json 2>/dev/null || true)
 BEFORE_IDS=$(printf '%s' "$ARTIFACTS_BEFORE" | extract_ids)
 
 CREATE_OUTPUT=$("$NLM_BIN" create audio "$NOTEBOOKLM_NOTEBOOK_ID" \
@@ -153,7 +153,7 @@ if candidates:
 ARTIFACT_ID=""
 DEADLINE=$((SECONDS + AUDIO_MAX_WAIT_SECONDS))
 while (( SECONDS < DEADLINE )); do
-  ARTIFACTS_NOW=$("$NLM_BIN" list artifacts "$NOTEBOOKLM_NOTEBOOK_ID" --json 2>/dev/null || true)
+  ARTIFACTS_NOW=$("$NLM_BIN" studio status "$NOTEBOOKLM_NOTEBOOK_ID" --json 2>/dev/null || true)
   ARTIFACT_ID=$(extract_new_audio_id "$ARTIFACTS_NOW")
   if [[ -n "$ARTIFACT_ID" ]]; then
     break
