@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-20": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-20.m4a",
+    "label": "2026-08-20のAIニュース音声",
+    "title": "身体を得たAIと訓練停止の衝撃"
+  },
   "2026-08-21": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-21.m4a",
     "label": "2026-08-21のAIニュース音声",
