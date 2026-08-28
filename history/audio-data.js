@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-17": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-17.m4a",
+    "label": "2026-08-17のAIニュース音声",
+    "title": "売上14倍のAIと700億ドルの時限爆弾"
+  },
   "2026-08-18": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-18.m4a",
     "label": "2026-08-18のAIニュース音声",
