@@ -257,6 +257,7 @@ nav {
 .news-card strong { color: var(--text); }
 .news-card:has(.point-list) p { flex: 0 0 auto; }
 
+
 .news-card .point-list {
   list-style: none;
   margin-top: 10px;
@@ -286,6 +287,25 @@ nav {
   font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
 }
 #empty-state[hidden] { display: none; }
+
+.audio-panel {
+  max-width: 1100px; margin: 26px auto 0; padding: 0 24px;
+}
+.audio-panel[hidden] { display: none; }
+.audio-inner {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 18px 22px; border: 1px solid rgba(0,229,255,0.28);
+  border-radius: 12px; background: rgba(0,229,255,0.06);
+  box-shadow: 0 0 26px rgba(0,229,255,0.08);
+}
+.audio-copy { flex: 1 1 220px; min-width: 0; }
+.audio-kicker {
+  color: var(--cyan); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.12em;
+}
+.audio-copy h3 { font-size: 0.98rem; margin-top: 3px; }
+.audio-copy p { color: var(--text-dim); font-size: 0.76rem; margin-top: 2px; }
+.audio-player { flex: 1 1 360px; min-width: 240px; width: 100%; height: 42px; }
 
 /* ===== CTA / footer ===== */
 .cta-back { text-align: center; padding: 70px 24px 100px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
@@ -339,6 +359,9 @@ footer .logo {
   .cal-nav { width: 30px; height: 30px; }
   .cal-latest { padding: 4px 10px; font-size: 0.62rem; }
   .news-grid { grid-template-columns: 1fr; }
+  .audio-panel { padding: 0 12px; }
+  .audio-inner { padding: 16px; gap: 12px; }
+  .audio-player { min-width: 100%; }
 }
 </style>
 </head>
@@ -377,6 +400,19 @@ footer .logo {
 
   <div class="day-head" id="day-head"></div>
 
+  <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
+    <div class="audio-inner">
+      <div class="audio-copy">
+        <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
+        <h3 id="audio-title">今日のニュースを音声で聴く</h3>
+        <p id="audio-label"></p>
+      </div>
+      <audio class="audio-player" id="audio-player" controls preload="metadata">
+        お使いのブラウザは音声再生に対応していません。
+      </audio>
+    </div>
+  </section>
+
   <div class="cards-wrap">
     <div class="news-grid" id="card-grid"></div>
   </div>
@@ -396,6 +432,7 @@ footer .logo {
 </footer>
 
 <script src="daily-data.js"></script>
+<script src="audio-data.js"></script>
 <script>
 /* ===== Neural network background (green tint) ===== */
 const canvas = document.getElementById('neural-bg');
@@ -476,6 +513,7 @@ window.addEventListener('scroll', () => {
 
 /* ===== 日次ログデータ ===== */
 const DATA = window.DAILY_NEWS || {};
+const AUDIO = window.DAILY_AUDIO || {};
 const DATES = Object.keys(DATA).sort();
 const LATEST = DATES.length ? DATES[DATES.length - 1] : null;
 const DOW = ['日', '月', '火', '水', '木', '金', '土'];
@@ -543,6 +581,9 @@ nextBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, 1); 
 
 const dayHead = document.getElementById('day-head');
 const cardGrid = document.getElementById('card-grid');
+const audioPanel = document.getElementById('audio-panel');
+const audioPlayer = document.getElementById('audio-player');
+const audioLabel = document.getElementById('audio-label');
 
 /* 出典URLのホスト名をキッカー表示用に整える。 */
 function hostOf(url) {
@@ -587,6 +628,12 @@ function safeHref(url) {
   }
 }
 
+/* 音声一覧は生成スクリプトが作る相対パスだけを再生対象にする。 */
+function safeAudioSrc(src) {
+  const value = String(src || '');
+  return /^audio\/\d{4}-\d{2}-\d{2}\.m4a$/.test(value) ? value : null;
+}
+
 function renderDay() {
   const items = DATA[selected] || [];
   const [y, m, d] = selected.split('-').map(Number);
@@ -600,7 +647,20 @@ function renderDay() {
   countSpan.textContent = items.length + '件';
   const lineSpan = document.createElement('span');
   lineSpan.className = 'day-line';
-  dayHead.append(h2, countSpan, lineSpan);
+ dayHead.append(h2, countSpan, lineSpan);
+
+  const audio = AUDIO[selected];
+  const audioSrc = audio && safeAudioSrc(audio.src);
+  if (audioSrc) {
+    audioPanel.hidden = false;
+    audioLabel.textContent = audio.label || (selected + 'のAIニュース音声');
+    audioPlayer.src = audioSrc;
+    audioPlayer.setAttribute('aria-label', selected + 'のAIニュース音声を再生');
+  } else {
+    audioPlayer.removeAttribute('src');
+    audioPlayer.load();
+    audioPanel.hidden = true;
+  }
 
   cardGrid.innerHTML = '';
   items.forEach(item => {
