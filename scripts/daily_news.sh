@@ -37,6 +37,29 @@ SUMMARY="${SUMMARY:-ニュースを更新しました}"
 SUMMARY_ESCAPED="$(printf '%s' "$SUMMARY" | cut -c1-200 | sed 's/\\/\\\\/g; s/"/\\"/g')"
 
 if [ "$STATUS" -eq 0 ]; then
+  AUDIO_SCRIPT="${NOTEBOOKLM_AUDIO_SCRIPT:-$REPO_DIR/scripts/generate_notebooklm_audio.sh}"
+  AUDIO_DATA_SCRIPT="$REPO_DIR/scripts/generate_audio_data.py"
+  AUDIO_DATA_FILE="$REPO_DIR/history/audio-data.js"
+  AUDIO_DATE="$(date +%Y-%m-%d)"
+  if [ -x "$AUDIO_SCRIPT" ]; then
+    "$AUDIO_SCRIPT" "$AUDIO_DATE" || true
+    if ! python3 "$AUDIO_DATA_SCRIPT" --audio-dir "$REPO_DIR/history/audio" --output "$AUDIO_DATA_FILE"; then
+      echo "NotebookLM音声一覧の生成に失敗しました。ニュース更新は継続します。" >&2
+    else
+      if ! git diff --quiet -- history/audio "$AUDIO_DATA_FILE" || [ -n "$(git ls-files --others --exclude-standard -- history/audio "$AUDIO_DATA_FILE")" ]; then
+        git add history/audio "$AUDIO_DATA_FILE"
+        if git diff --cached --quiet; then
+          echo "NotebookLM音声の変更はありません"
+        elif git commit -m "$AUDIO_DATE のAIニュース音声を追加"; then
+          git push origin main || echo "NotebookLM音声のpushに失敗しました。ニュース更新は継続します。" >&2
+        else
+          echo "NotebookLM音声のコミットに失敗しました。ニュース更新は継続します。" >&2
+        fi
+      fi
+    fi
+  else
+    echo "NotebookLM音声スクリプトがないため、音声更新をスキップします: $AUDIO_SCRIPT" >&2
+  fi
   if [ "$IS_FALLBACK" -eq 1 ]; then
     LINE_MSG_MTIME_AFTER=0
     [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_AFTER=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
