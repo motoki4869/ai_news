@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-24": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-24.m4a",
+    "label": "2026-08-24のAIニュース音声",
+    "title": "脱走したAIと謎の最強モデル"
+  },
   "2026-08-25": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-25.m4a",
     "label": "2026-08-25のAIニュース音声",
