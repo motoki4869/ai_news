@@ -1,21 +1,21 @@
 window.DAILY_AUDIO = {
   "2026-08-25": {
-    "src": "audio/2026-08-25.m4a",
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-25.m4a",
     "label": "2026-08-25のAIニュース音声",
     "title": "画面から這い出す自律型AI"
   },
   "2026-08-26": {
-    "src": "audio/2026-08-26.m4a",
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-26.m4a",
     "label": "2026-08-26のAIニュース音声",
     "title": "物理世界を動かすAIのコスト破壊"
   },
   "2026-08-27": {
-    "src": "audio/2026-08-27.m4a",
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-27.m4a",
     "label": "2026-08-27のAIニュース音声",
     "title": "NVIDIAを揺るがす中国の無料AI"
   },
   "2026-08-28": {
-    "src": "audio/2026-08-28.m4a",
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-28.m4a",
     "label": "2026-08-28のAIニュース音声",
     "title": "脱走したAIとローラースケートのアヒル"
   }

@@ -6,3 +6,5 @@ everyday_news/line_message.txt
 scripts/notebooklm_audio.env
 everyday_news/.daily_audio_source.md
 __pycache__/
+# 音声本体はGitHub Releases(タグ: audio)で配信するためGit管理しない
+history/audio/

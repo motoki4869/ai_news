@@ -5,6 +5,13 @@ REPO_DIR="/Users/motoki/Desktop/GitHub/03_自動化・定期実行/ai_news"
 PROMPT_FILE="$REPO_DIR/scripts/daily_news_prompt.txt"
 CODEX_PROMPT_FILE="$REPO_DIR/scripts/daily_news_prompt.codex.txt"
 CLAUDE_BIN="${CLAUDE_BIN:-/opt/homebrew/bin/claude}"
+# launchdは.zshrcを読まずPATHが/usr/bin等に限られるため、python3を明示的に解決する。
+PYTHON_BIN="${PYTHON_BIN:-$(command -v python3 || true)}"
+if [ ! -x "$PYTHON_BIN" ]; then
+  for candidate in /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3; do
+    [ -x "$candidate" ] && PYTHON_BIN="$candidate" && break
+  done
+fi
 LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 
 cd "$REPO_DIR"
@@ -41,13 +48,43 @@ if [ "$STATUS" -eq 0 ]; then
   AUDIO_DATA_SCRIPT="$REPO_DIR/scripts/generate_audio_data.py"
   AUDIO_DATA_FILE="$REPO_DIR/history/audio-data.js"
   AUDIO_TITLE_FILE="$REPO_DIR/history/audio-titles.json"
+  AUDIO_DIR="$REPO_DIR/history/audio"
   AUDIO_DATE="$(date +%Y-%m-%d)"
-  if [ -x "$AUDIO_SCRIPT" ]; then
+  # 音声本体（1本10〜40MB）はリポジトリを肥大化させるためGitには入れず、
+  # GitHub Releasesのアセットとして配信する。Gitに入れるのはJSONとJSの目録だけ。
+  AUDIO_REPO="${AUDIO_REPO:-motoki4869/ai_news}"
+  AUDIO_RELEASE_TAG="${AUDIO_RELEASE_TAG:-audio}"
+  AUDIO_BASE_URL="${AUDIO_BASE_URL:-https://github.com/$AUDIO_REPO/releases/download/$AUDIO_RELEASE_TAG}"
+  # ローカルの音声は保持日数を過ぎたら消す。本体はリリース側に残り続ける。0で無効。
+  AUDIO_LOCAL_RETENTION_DAYS="${AUDIO_LOCAL_RETENTION_DAYS:-7}"
+  GH_BIN="${GH_BIN:-$(command -v gh || true)}"
+  [ -x "$GH_BIN" ] || GH_BIN=/opt/homebrew/bin/gh
+
+  if [ ! -x "$AUDIO_SCRIPT" ]; then
+    echo "NotebookLM音声スクリプトがないため、音声更新をスキップします: $AUDIO_SCRIPT" >&2
+  elif [ ! -x "$GH_BIN" ]; then
+    echo "ghコマンドが見つからないため、音声更新をスキップします: $GH_BIN" >&2
+  else
     "$AUDIO_SCRIPT" "$AUDIO_DATE" || true
-    if ! python3 "$AUDIO_DATA_SCRIPT" --audio-dir "$REPO_DIR/history/audio" --titles-file "$AUDIO_TITLE_FILE" --output "$AUDIO_DATA_FILE"; then
+
+    if [ -s "$AUDIO_DIR/$AUDIO_DATE.m4a" ]; then
+      "$GH_BIN" release upload "$AUDIO_RELEASE_TAG" "$AUDIO_DIR/$AUDIO_DATE.m4a" \
+        --repo "$AUDIO_REPO" --clobber \
+        || echo "音声のリリースへのアップロードに失敗しました。ニュース更新は継続します。" >&2
+    fi
+
+    AUDIO_DATES_FILE="$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-assets.XXXXXX")"
+    if ! "$GH_BIN" release view "$AUDIO_RELEASE_TAG" --repo "$AUDIO_REPO" \
+         --json assets --jq '.assets[].name' > "$AUDIO_DATES_FILE" 2>/dev/null; then
+      echo "リリースのアセット一覧を取得できませんでした。ニュース更新は継続します。" >&2
+    elif ! "$PYTHON_BIN" "$AUDIO_DATA_SCRIPT" \
+         --dates-file "$AUDIO_DATES_FILE" \
+         --titles-file "$AUDIO_TITLE_FILE" \
+         --base-url "$AUDIO_BASE_URL" \
+         --output "$AUDIO_DATA_FILE"; then
       echo "NotebookLM音声一覧の生成に失敗しました。ニュース更新は継続します。" >&2
     else
-      AUDIO_PATHS=(history/audio "$AUDIO_DATA_FILE")
+      AUDIO_PATHS=("$AUDIO_DATA_FILE")
       if [ -f "$AUDIO_TITLE_FILE" ]; then
         AUDIO_PATHS+=("$AUDIO_TITLE_FILE")
       fi
@@ -62,8 +99,12 @@ if [ "$STATUS" -eq 0 ]; then
         fi
       fi
     fi
-  else
-    echo "NotebookLM音声スクリプトがないため、音声更新をスキップします: $AUDIO_SCRIPT" >&2
+    rm -f "$AUDIO_DATES_FILE"
+
+    if [ "$AUDIO_LOCAL_RETENTION_DAYS" -gt 0 ] && [ -d "$AUDIO_DIR" ]; then
+      find "$AUDIO_DIR" -type f -name '*.m4a' -mtime +"$AUDIO_LOCAL_RETENTION_DAYS" -delete \
+        || echo "ローカル音声の整理に失敗しました。ニュース更新は継続します。" >&2
+    fi
   fi
   if [ "$IS_FALLBACK" -eq 1 ]; then
     LINE_MSG_MTIME_AFTER=0

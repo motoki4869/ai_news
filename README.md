@@ -44,14 +44,30 @@ bash scripts/daily_news.sh
 
 ## NotebookLM音声
 
-日次ニュースの更新に成功すると、専用NotebookLMノートブックへ当日分のニュースセクションだけを渡して日本語の音声概要を生成します。生成された音声は `history/audio/YYYY-MM-DD.m4a` に保存され、NotebookLMが付けた音声タイトルとともに `history/daily.html` の日付選択画面から再生できます。タイトルは `history/audio-titles.json` に保存され、音声一覧の再生成時に `history/audio-data.js` へ反映されます。
+日次ニュースの更新に成功すると、専用NotebookLMノートブックへ当日分のニュースセクションだけを渡して日本語の音声概要を生成します。NotebookLMが付けた音声タイトルとともに `history/daily.html` の日付選択画面から再生できます。
 
-初回だけ、`scripts/notebooklm_audio.env.example` を `scripts/notebooklm_audio.env` にコピーし、`NOTEBOOKLM_NOTEBOOK_ID` に「AIニュース音声」用ノートブックのIDを設定してください。NotebookLM Tools CLI (`nlm`) のログイン状態も必要です。
+### 音声本体の置き場所（GitHub Releases）
+
+音声は1本10〜40MBあり、Gitに入れるとリポジトリが月1GB近く肥大化する（Gitは過去コミットのblobを保持し続けるため後から消しても縮まない）。またGitHub Pagesの公開サイズ上限1GBにも1ヶ月ほどで達する。そのため**音声本体はGit管理せず、GitHub Releases（タグ `audio`）のアセットとして配信する**。リリースアセットはリポジトリサイズにカウントされない。
+
+- 配信URL: `https://github.com/motoki4869/ai_news/releases/download/audio/YYYY-MM-DD.m4a`
+- Gitで管理するのは目録のみ: `history/audio-data.js`（再生メタデータ）と `history/audio-titles.json`（タイトル）
+- `history/audio/` は `.gitignore` 対象の一時置き場。`AUDIO_LOCAL_RETENTION_DAYS`（既定7日）を過ぎたローカルファイルは `daily_news.sh` が削除する。**この削除は復元できないが、音声本体はリリース側に残り続ける**
+- 保持日数を変えるなら `AUDIO_LOCAL_RETENTION_DAYS` を設定する（`0` で削除を無効化）
+
+### 実行時の前提
+
+初回だけ、`scripts/notebooklm_audio.env.example` を `scripts/notebooklm_audio.env` にコピーし、`NOTEBOOKLM_NOTEBOOK_ID` に「AIニュース音声」用ノートブックのIDを設定してください。NotebookLM Tools CLI (`nlm`) のログイン状態と、`gh` の認証（`repo` スコープ）も必要です。
 
 ```bash
 cp scripts/notebooklm_audio.env.example scripts/notebooklm_audio.env
 # scripts/notebooklm_audio.env のNOTEBOOKLM_NOTEBOOK_IDを編集
 nlm login --check
+gh auth status
 ```
 
-音声生成は時間がかかる場合があります。NotebookLMの認証・通信・生成に失敗しても、ニュース更新自体は成功扱いで継続します。過去の音声は削除せず保持し、音声関連の差分だけを別コミットで `main` にpushします。手動で試す場合は `bash scripts/generate_notebooklm_audio.sh YYYY-MM-DD` を実行してください。
+### launchd実行時の注意
+
+launchdは `.zshrc` を読まないためPATHが `/usr/bin:/bin:/usr/sbin:/sbin` に限られ、`python3` はmacOS標準の3.9系に解決される。スクリプト側は `PYTHON_BIN` / `GH_BIN` で実行ファイルを明示的に解決し、`generate_audio_data.py` は `from __future__ import annotations` で3.9でも動くようにしてある。**Pythonスクリプトに3.10以降の記法を足す場合はこの制約に注意すること**（手動実行ではHomebrewの新しいPythonが使われるため気づけない）。
+
+音声生成は時間がかかる場合があります。NotebookLMの認証・通信・生成に失敗しても、ニュース更新自体は成功扱いで継続します。手動で試す場合は `bash scripts/generate_notebooklm_audio.sh YYYY-MM-DD` を実行してください。

@@ -31,6 +31,13 @@ fi
 # shellcheck disable=SC1090
 source "$CONFIG_FILE"
 NLM_BIN="${NLM_BIN:-$HOME/.local/bin/nlm}"
+# launchdは.zshrcを読まずPATHが/usr/bin等に限られるため、python3を明示的に解決する。
+PYTHON_BIN="${PYTHON_BIN:-$(command -v python3 || true)}"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  for candidate in /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3; do
+    [[ -x "$candidate" ]] && PYTHON_BIN="$candidate" && break
+  done
+fi
 AUDIO_MAX_WAIT_SECONDS="${AUDIO_MAX_WAIT_SECONDS:-1200}"
 AUDIO_POLL_SECONDS="${AUDIO_POLL_SECONDS:-15}"
 
@@ -53,7 +60,7 @@ SOURCE_TMP=$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-source.XXXXXX.md")
 DOWNLOAD_TMP=$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-download.XXXXXX.m4a")
 trap 'rm -f "$SOURCE_TMP" "$DOWNLOAD_TMP"' EXIT
 
-if ! python3 "$AUDIO_DATA_SCRIPT" \
+if ! "$PYTHON_BIN" "$AUDIO_DATA_SCRIPT" \
   --extract-date "$TARGET_DATE" \
   --source-file "$SOURCE_FILE" \
   --output "$SOURCE_TMP"; then
@@ -65,7 +72,7 @@ if ! "$NLM_BIN" login --check >/dev/null 2>&1; then
 fi
 
 extract_ids() {
-  python3 -c '
+  "$PYTHON_BIN" -c '
 import json, sys
 try:
     value = json.load(sys.stdin)
@@ -81,7 +88,7 @@ for item in items:
 }
 
 extract_matching_source_id() {
-  python3 -c '
+  "$PYTHON_BIN" -c '
 import json
 import sys
 try:
@@ -127,7 +134,7 @@ CREATE_OUTPUT=$("$NLM_BIN" create audio "$NOTEBOOKLM_NOTEBOOK_ID" \
 log "音声生成を開始しました: $SOURCE_TITLE"
 
 extract_new_audio_id() {
-  python3 -c '
+  "$PYTHON_BIN" -c '
 import json
 import sys
 before = set(filter(None, sys.argv[1].splitlines()))
@@ -153,7 +160,7 @@ if candidates:
 }
 
 extract_artifact_title() {
-  python3 -c '
+  "$PYTHON_BIN" -c '
 import json
 import sys
 try:
@@ -174,7 +181,7 @@ for item in items:
 }
 
 update_audio_title() {
-  python3 - "$AUDIO_TITLE_FILE" "$TARGET_DATE" "$1" <<'PY'
+  "$PYTHON_BIN" - "$AUDIO_TITLE_FILE" "$TARGET_DATE" "$1" <<'PY'
 import json
 import os
 import sys
