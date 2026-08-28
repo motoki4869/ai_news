@@ -56,9 +56,13 @@ if [[ ! -f "$SOURCE_FILE" ]]; then
   fail "当日のニュースファイルがありません: $SOURCE_FILE"
 fi
 
-SOURCE_TMP=$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-source.XXXXXX.md")
-DOWNLOAD_TMP=$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-download.XXXXXX.m4a")
-trap 'rm -f "$SOURCE_TMP" "$DOWNLOAD_TMP"' EXIT
+# macOSのmktempはXが末尾にないと置換しない（"XXXXXX.md"のような拡張子付きテンプレートは
+# 固定ファイル名になり、他プロセスとの同時実行で衝突する）。Xが末尾のディレクトリ名で
+# ユニーク性を確保し、拡張子付きファイルはその中に置く。
+AUDIO_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/ai-news-audio.XXXXXX")
+SOURCE_TMP="$AUDIO_TMP_DIR/source.md"
+DOWNLOAD_TMP="$AUDIO_TMP_DIR/download.m4a"
+trap 'rm -rf "$AUDIO_TMP_DIR"' EXIT
 
 if ! "$PYTHON_BIN" "$AUDIO_DATA_SCRIPT" \
   --extract-date "$TARGET_DATE" \
