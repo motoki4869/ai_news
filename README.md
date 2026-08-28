@@ -52,8 +52,9 @@ bash scripts/daily_news.sh
 
 - 配信URL: `https://github.com/motoki4869/ai_news/releases/download/audio/YYYY-MM-DD.m4a`
 - Gitで管理するのは目録のみ: `history/audio-data.js`（再生メタデータ）と `history/audio-titles.json`（タイトル）
-- `history/audio/` は `.gitignore` 対象の一時置き場。`AUDIO_LOCAL_RETENTION_DAYS`（既定7日）を過ぎたローカルファイルは `daily_news.sh` が削除する。**この削除は復元できないが、音声本体はリリース側に残り続ける**
-- 保持日数を変えるなら `AUDIO_LOCAL_RETENTION_DAYS` を設定する（`0` で削除を無効化）
+- `history/audio/` は `.gitignore` 対象の一時置き場。**リリースへのアップロードを確認できた音声はローカルから毎回削除する**（本体はリリース側に残るので聴取に支障はない）
+- アップロードに失敗した分だけが手元に残り、翌日の実行でリトライ対象になる
+- ローカルに音声を残さないため、当日分が生成済みかどうかの判定もリリースのアセット一覧で行う
 
 ### 実行時の前提
 

@@ -55,8 +55,6 @@ if [ "$STATUS" -eq 0 ]; then
   AUDIO_REPO="${AUDIO_REPO:-motoki4869/ai_news}"
   AUDIO_RELEASE_TAG="${AUDIO_RELEASE_TAG:-audio}"
   AUDIO_BASE_URL="${AUDIO_BASE_URL:-https://github.com/$AUDIO_REPO/releases/download/$AUDIO_RELEASE_TAG}"
-  # ローカルの音声は保持日数を過ぎたら消す。本体はリリース側に残り続ける。0で無効。
-  AUDIO_LOCAL_RETENTION_DAYS="${AUDIO_LOCAL_RETENTION_DAYS:-7}"
   GH_BIN="${GH_BIN:-$(command -v gh || true)}"
   [ -x "$GH_BIN" ] || GH_BIN=/opt/homebrew/bin/gh
 
@@ -65,15 +63,22 @@ if [ "$STATUS" -eq 0 ]; then
   elif [ ! -x "$GH_BIN" ]; then
     echo "ghコマンドが見つからないため、音声更新をスキップします: $GH_BIN" >&2
   else
-    "$AUDIO_SCRIPT" "$AUDIO_DATE" || true
+    # ローカルに音声を残さない運用のため、生成済みかどうかはリリース側で判定する。
+    AUDIO_DATES_FILE="$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-assets.XXXXXX")"
+    if "$GH_BIN" release view "$AUDIO_RELEASE_TAG" --repo "$AUDIO_REPO" \
+       --json assets --jq '.assets[].name' > "$AUDIO_DATES_FILE" 2>/dev/null \
+       && grep -qx "$AUDIO_DATE.m4a" "$AUDIO_DATES_FILE"; then
+      echo "本日の音声は既にリリースにあるため生成をスキップします: $AUDIO_DATE"
+    else
+      "$AUDIO_SCRIPT" "$AUDIO_DATE" || true
 
-    if [ -s "$AUDIO_DIR/$AUDIO_DATE.m4a" ]; then
-      "$GH_BIN" release upload "$AUDIO_RELEASE_TAG" "$AUDIO_DIR/$AUDIO_DATE.m4a" \
-        --repo "$AUDIO_REPO" --clobber \
-        || echo "音声のリリースへのアップロードに失敗しました。ニュース更新は継続します。" >&2
+      if [ -s "$AUDIO_DIR/$AUDIO_DATE.m4a" ]; then
+        "$GH_BIN" release upload "$AUDIO_RELEASE_TAG" "$AUDIO_DIR/$AUDIO_DATE.m4a" \
+          --repo "$AUDIO_REPO" --clobber \
+          || echo "音声のリリースへのアップロードに失敗しました。ニュース更新は継続します。" >&2
+      fi
     fi
 
-    AUDIO_DATES_FILE="$(mktemp "${TMPDIR:-/tmp}/ai-news-audio-assets.XXXXXX")"
     if ! "$GH_BIN" release view "$AUDIO_RELEASE_TAG" --repo "$AUDIO_REPO" \
          --json assets --jq '.assets[].name' > "$AUDIO_DATES_FILE" 2>/dev/null; then
       echo "リリースのアセット一覧を取得できませんでした。ニュース更新は継続します。" >&2
@@ -99,12 +104,16 @@ if [ "$STATUS" -eq 0 ]; then
         fi
       fi
     fi
-    rm -f "$AUDIO_DATES_FILE"
-
-    if [ "$AUDIO_LOCAL_RETENTION_DAYS" -gt 0 ] && [ -d "$AUDIO_DIR" ]; then
-      find "$AUDIO_DIR" -type f -name '*.m4a' -mtime +"$AUDIO_LOCAL_RETENTION_DAYS" -delete \
-        || echo "ローカル音声の整理に失敗しました。ニュース更新は継続します。" >&2
+    # リリースに上がっている音声のローカルコピーは残さない。
+    # 上げ損ねた分だけが手元に残り、翌日の実行でリトライ対象になる。
+    if [ -d "$AUDIO_DIR" ]; then
+      while IFS= read -r asset_name; do
+        case "$asset_name" in
+          *.m4a) rm -f "$AUDIO_DIR/$asset_name" ;;
+        esac
+      done < "$AUDIO_DATES_FILE"
     fi
+    rm -f "$AUDIO_DATES_FILE"
   fi
   if [ "$IS_FALLBACK" -eq 1 ]; then
     LINE_MSG_MTIME_AFTER=0
