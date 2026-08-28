@@ -51,7 +51,8 @@ class TestBuildAudioData(unittest.TestCase):
             (audio_dir / "2026-08-26.mp3").write_bytes(b"ignore")
             (audio_dir / "README.txt").write_text("ignore", encoding="utf-8")
 
-            actual = generate_audio_data.build_audio_data(audio_dir)
+            dates = generate_audio_data.collect_dates_from_dir(audio_dir)
+            actual = generate_audio_data.build_audio_data(dates)
 
         self.assertEqual(list(actual), ["2026-08-27", "2026-08-28"])
         self.assertEqual(actual["2026-08-28"]["src"], "audio/2026-08-28.m4a")
@@ -62,8 +63,9 @@ class TestBuildAudioData(unittest.TestCase):
             audio_dir = Path(temp_dir)
             (audio_dir / "2026-08-28.m4a").write_bytes(b"today")
 
+            dates = generate_audio_data.collect_dates_from_dir(audio_dir)
             actual = generate_audio_data.build_audio_data(
-                audio_dir,
+                dates,
                 {"2026-08-28": "脱走したAIとローラースケートのアヒル"},
             )
 

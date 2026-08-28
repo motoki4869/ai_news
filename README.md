@@ -55,6 +55,8 @@ bash scripts/daily_news.sh
 - `history/audio/` は `.gitignore` 対象の一時置き場。**リリースへのアップロードを確認できた音声はローカルから毎回削除する**（本体はリリース側に残るので聴取に支障はない）
 - アップロードに失敗した分だけが手元に残り、翌日の実行でリトライ対象になる
 - ローカルに音声を残さないため、当日分が生成済みかどうかの判定もリリースのアセット一覧で行う
+- `audio` リリース自体は初回セットアップ時に一度だけ手動で作成しておく必要がある（`gh release create audio --repo motoki4869/ai_news --title "AIニュース音声"` など）。`daily_news.sh` は既存リリースへのアップロード・アセット一覧取得のみを行い、リリース自体は作成しない
+- `AUDIO_REPO`/`AUDIO_RELEASE_TAG` 環境変数でリポジトリ・タグ名を変更できるが、`history/daily.html` の `AUDIO_SRC_RE`（再生を許可するURLの固定パターン）は `motoki4869/ai_news` + `audio` タグ決め打ちなので、変更する場合は両方を合わせて直すこと
 
 ### 実行時の前提
 
