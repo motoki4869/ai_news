@@ -1,4 +1,9 @@
 window.DAILY_AUDIO = {
+  "2026-08-22": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-22.m4a",
+    "label": "2026-08-22のAIニュース音声",
+    "title": "社会インフラへと変貌したAIの正体"
+  },
   "2026-08-23": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-23.m4a",
     "label": "2026-08-23のAIニュース音声",
