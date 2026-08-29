@@ -227,6 +227,7 @@ nav {
   font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
   font-size: clamp(1.05rem, 3vw, 1.45rem); font-weight: 600;
   letter-spacing: 0.05em; color: var(--green);
+  scroll-margin-top: 64px;
 }
 .day-head .day-count {
   font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-dim);
@@ -745,7 +746,8 @@ function select(date, opts) {
   renderDay();
   history.replaceState(null, '', '#' + date);
   if (opts && opts.scroll) {
-    dayHead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const dateHeading = dayHead.querySelector('h2');
+    if (dateHeading) dateHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
