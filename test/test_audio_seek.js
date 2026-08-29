@@ -53,3 +53,7 @@ test('音声パネルに1倍、1.5倍、2倍の操作ボタンを表示する', 
   assert.match(DAILY_HTML, /id="audio-speed-1-5"[^>]*data-audio-rate="1\.5"/);
   assert.match(DAILY_HTML, /id="audio-speed-2"[^>]*data-audio-rate="2"/);
 });
+
+test('再生速度ボタンは同じ幅で表示する', () => {
+  assert.match(DAILY_HTML, /\.audio-speed button\s*\{[^}]*min-width:\s*48px;/s);
+});
