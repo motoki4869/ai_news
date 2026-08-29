@@ -1,4 +1,29 @@
 window.DAILY_AUDIO = {
+  "2026-08-03": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-03.m4a",
+    "label": "2026-08-03のAIニュース音声",
+    "title": "完璧なAIが強いる人間の証"
+  },
+  "2026-08-04": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-04.m4a",
+    "label": "2026-08-04のAIニュース音声",
+    "title": "ホワイトハウスに呼ばれたAIハッカーの正体"
+  },
+  "2026-08-05": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-05.m4a",
+    "label": "2026-08-05のAIニュース音声",
+    "title": "知能の無料化とAI主権の争奪戦"
+  },
+  "2026-08-06": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-06.m4a",
+    "label": "2026-08-06のAIニュース音声",
+    "title": "AIの暴走はあなたの責任"
+  },
+  "2026-08-07": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-07.m4a",
+    "label": "2026-08-07のAIニュース音声",
+    "title": "物理世界へ脱走したAIの正体"
+  },
   "2026-08-10": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-10.m4a",
     "label": "2026-08-10のAIニュース音声",
