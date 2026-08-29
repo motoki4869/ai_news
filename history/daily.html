@@ -312,7 +312,19 @@ nav {
   font-size: 0.68rem; letter-spacing: 0.12em;
 }
 .audio-copy h3 { font-size: 0.98rem; margin-top: 3px; }
-.audio-copy p { color: var(--text-dim); font-size: 0.76rem; margin-top: 2px; }
+.audio-label-row { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
+.audio-copy p { color: var(--text-dim); font-size: 0.76rem; }
+.audio-speed { display: flex; gap: 4px; }
+.audio-speed button {
+  border: 1px solid rgba(0,229,255,0.28); border-radius: 999px;
+  padding: 3px 8px; background: transparent; color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  cursor: pointer; transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+.audio-speed button.is-active {
+  border-color: var(--cyan); background: rgba(0,229,255,0.12); color: var(--cyan);
+}
+.audio-speed button:disabled { opacity: 0.35; cursor: default; }
 .audio-controls {
   display: flex; align-items: center; gap: 10px;
   flex: 1 1 560px; min-width: 240px;
@@ -433,7 +445,13 @@ footer .logo {
       <div class="audio-copy">
         <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
         <h3 id="audio-title">今日のニュースを音声で聴く</h3>
-        <p id="audio-label"></p>
+        <div class="audio-label-row">
+          <p id="audio-label"></p>
+          <div class="audio-speed" role="group" aria-label="再生速度">
+            <button type="button" id="audio-speed-1" data-audio-rate="1" aria-pressed="true">1倍</button>
+            <button type="button" id="audio-speed-2" data-audio-rate="2" aria-pressed="false">2倍</button>
+          </div>
+        </div>
       </div>
       <div class="audio-controls" role="group" aria-label="音声の10秒操作">
         <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">↶ 10秒</button>
@@ -622,8 +640,10 @@ const audioPanel = document.getElementById('audio-panel');
 const audioPlayer = document.getElementById('audio-player');
 const audioRewindButton = document.getElementById('audio-rewind');
 const audioForwardButton = document.getElementById('audio-forward');
+const audioSpeedButtons = [...document.querySelectorAll('[data-audio-rate]')];
 const audioTitleHeading = document.getElementById('audio-title');
 const audioLabel = document.getElementById('audio-label');
+let selectedAudioRate = 1;
 
 /* 出典URLのホスト名をキッカー表示用に整える。 */
 function hostOf(url) {
@@ -681,12 +701,30 @@ function setAudioSkipEnabled(enabled) {
   audioForwardButton.disabled = !enabled;
 }
 
+function setAudioSpeedEnabled(enabled) {
+  audioSpeedButtons.forEach(button => { button.disabled = !enabled; });
+}
+
+function selectAudioSpeed(rate) {
+  if (!AudioSeek.setPlaybackRate(audioPlayer, rate)) return;
+  selectedAudioRate = Number(rate);
+  audioSpeedButtons.forEach(button => {
+    const isActive = Number(button.dataset.audioRate) === selectedAudioRate;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+}
+
 audioRewindButton.addEventListener('click', () => {
   AudioSeek.seekAudio(audioPlayer, -10);
 });
 
 audioForwardButton.addEventListener('click', () => {
   AudioSeek.seekAudio(audioPlayer, 10);
+});
+
+audioSpeedButtons.forEach(button => {
+  button.addEventListener('click', () => selectAudioSpeed(button.dataset.audioRate));
 });
 
 function renderDay() {
@@ -714,6 +752,8 @@ function renderDay() {
     audioPlayer.src = audioSrc;
     audioPlayer.setAttribute('aria-label', title + 'を再生');
     setAudioSkipEnabled(true);
+    setAudioSpeedEnabled(true);
+    selectAudioSpeed(selectedAudioRate);
   } else {
     audioTitleHeading.textContent = '今日のニュースを音声で聴く';
     audioLabel.textContent = '';
@@ -721,6 +761,7 @@ function renderDay() {
     audioPlayer.load();
     audioPanel.hidden = true;
     setAudioSkipEnabled(false);
+    setAudioSpeedEnabled(false);
   }
 
   cardGrid.innerHTML = '';

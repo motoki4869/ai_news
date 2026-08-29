@@ -1,7 +1,13 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
-const { seekAudio } = require('../history/audio-seek.js');
+const { seekAudio, setPlaybackRate } = require('../history/audio-seek.js');
+const DAILY_HTML = fs.readFileSync(
+  path.join(__dirname, '..', 'history', 'daily.html'),
+  'utf8',
+);
 
 test('10秒戻す操作で再生位置を0秒未満にしない', () => {
   const audio = { currentTime: 5, duration: 120 };
@@ -27,4 +33,20 @@ test('メタデータ読み込み前でも再生位置を進められる', () =>
 
   assert.equal(changed, true);
   assert.equal(audio.currentTime, 10);
+});
+
+test('再生速度は1倍と2倍だけ設定できる', () => {
+  const audio = { playbackRate: 1 };
+
+  assert.equal(setPlaybackRate(audio, 2), true);
+  assert.equal(audio.playbackRate, 2);
+  assert.equal(setPlaybackRate(audio, 1), true);
+  assert.equal(audio.playbackRate, 1);
+  assert.equal(setPlaybackRate(audio, 1.5), false);
+  assert.equal(audio.playbackRate, 1);
+});
+
+test('音声パネルに1倍と2倍の操作ボタンを表示する', () => {
+  assert.match(DAILY_HTML, /id="audio-speed-1"[^>]*data-audio-rate="1"/);
+  assert.match(DAILY_HTML, /id="audio-speed-2"[^>]*data-audio-rate="2"/);
 });

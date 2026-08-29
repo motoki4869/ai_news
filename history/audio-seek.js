@@ -14,5 +14,13 @@
     return true;
   }
 
-  return { seekAudio };
+  function setPlaybackRate(audio, rate) {
+    const value = Number(rate);
+    if (!audio || (value !== 1 && value !== 2)) return false;
+
+    audio.playbackRate = value;
+    return true;
+  }
+
+  return { seekAudio, setPlaybackRate };
 }));
