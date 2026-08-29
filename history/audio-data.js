@@ -7,7 +7,7 @@ window.DAILY_AUDIO = {
   "2026-08-11": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-11.m4a",
     "label": "2026-08-11のAIニュース音声",
-    "title": "AIニュース音声"
+    "title": "75兆円の要塞と手元のAI"
   },
   "2026-08-12": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-12.m4a",
