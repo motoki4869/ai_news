@@ -15,6 +15,7 @@ from pathlib import Path
 DATE_HEADER_RE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s*$")
 AUDIO_FILE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\.m4a$")
 DATE_ONLY_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})$")
+PLACEHOLDER_AUDIO_TITLES = frozenset({"AIニュース音声"})
 
 
 def _validate_date(date_str: str) -> None:
@@ -66,6 +67,28 @@ def load_audio_titles(path: Path | None) -> dict[str, str]:
             _validate_date(date_str)
             titles[date_str] = title.strip()
     return titles
+
+
+def extract_artifact_title(payload: str, artifact_id: str) -> str:
+    """生成済みアーティファクトから正式タイトルだけを取り出す。"""
+    try:
+        value = json.loads(payload)
+    except json.JSONDecodeError:
+        return ""
+
+    items = value if isinstance(value, list) else value.get("artifacts", []) if isinstance(value, dict) else []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        item_id = item.get("id") or item.get("artifact_id")
+        title = item.get("title")
+        if item_id != artifact_id or not isinstance(title, str):
+            continue
+        normalized = title.strip()
+        if not normalized or normalized in PLACEHOLDER_AUDIO_TITLES:
+            return ""
+        return normalized
+    return ""
 
 
 def collect_dates_from_dir(audio_dir: Path) -> list[str]:

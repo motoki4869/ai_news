@@ -40,6 +40,8 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
 fi
 AUDIO_MAX_WAIT_SECONDS="${AUDIO_MAX_WAIT_SECONDS:-1200}"
 AUDIO_POLL_SECONDS="${AUDIO_POLL_SECONDS:-15}"
+AUDIO_TITLE_MAX_WAIT_SECONDS="${AUDIO_TITLE_MAX_WAIT_SECONDS:-120}"
+AUDIO_TITLE_POLL_SECONDS="${AUDIO_TITLE_POLL_SECONDS:-5}"
 
 if [[ -z "${NOTEBOOKLM_NOTEBOOK_ID:-}" ]]; then
   fail "NOTEBOOKLM_NOTEBOOK_ID が設定されていません"
@@ -165,23 +167,13 @@ if candidates:
 
 extract_artifact_title() {
   "$PYTHON_BIN" -c '
-import json
+import importlib.util
 import sys
-try:
-    payload = json.loads(sys.argv[1])
-except Exception:
-    raise SystemExit(0)
-artifact_id = sys.argv[2]
-items = payload if isinstance(payload, list) else payload.get("artifacts", []) if isinstance(payload, dict) else []
-for item in items:
-    if not isinstance(item, dict):
-        continue
-    item_id = item.get("id") or item.get("artifact_id")
-    title = item.get("title")
-    if item_id == artifact_id and isinstance(title, str) and title.strip():
-        print(title.strip())
-        break
-' "$1" "$2"
+spec = importlib.util.spec_from_file_location("generate_audio_data", sys.argv[3])
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+print(module.extract_artifact_title(sys.argv[1], sys.argv[2]))
+' "$1" "$2" "$AUDIO_DATA_SCRIPT"
 }
 
 update_audio_title() {
@@ -214,7 +206,6 @@ while (( SECONDS < DEADLINE )); do
   ARTIFACTS_NOW=$("$NLM_BIN" studio status "$NOTEBOOKLM_NOTEBOOK_ID" --full --json 2>/dev/null || true)
   ARTIFACT_ID=$(extract_new_audio_id "$ARTIFACTS_NOW")
   if [[ -n "$ARTIFACT_ID" ]]; then
-    ARTIFACT_TITLE=$(extract_artifact_title "$ARTIFACTS_NOW" "$ARTIFACT_ID")
     break
   fi
   sleep "$AUDIO_POLL_SECONDS"
@@ -233,6 +224,20 @@ fi
 if [[ ! -s "$DOWNLOAD_TMP" ]]; then
   fail "ダウンロードされた音声ファイルが空です"
 fi
+
+# ダウンロード直前のステータスには仮タイトルが残ることがあるため、
+# ダウンロード完了後に最終タイトルを再確認し、正式タイトルになるまで再取得する。
+ARTIFACT_TITLE=""
+TITLE_DEADLINE=$((SECONDS + AUDIO_TITLE_MAX_WAIT_SECONDS))
+while (( SECONDS < TITLE_DEADLINE )); do
+  ARTIFACTS_FINAL=$("$NLM_BIN" studio status "$NOTEBOOKLM_NOTEBOOK_ID" --full --json 2>/dev/null || true)
+  ARTIFACT_TITLE=$(extract_artifact_title "$ARTIFACTS_FINAL" "$ARTIFACT_ID")
+  if [[ -n "$ARTIFACT_TITLE" ]]; then
+    break
+  fi
+  log "生成タイトルが仮タイトルまたは未確定のため、再取得します"
+  sleep "$AUDIO_TITLE_POLL_SECONDS"
+done
 
 mkdir -p "$AUDIO_DIR"
 mv "$DOWNLOAD_TMP" "$AUDIO_FILE"
