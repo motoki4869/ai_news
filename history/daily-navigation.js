@@ -21,7 +21,7 @@
     const deltaY = endY - startY;
 
     if (Math.abs(deltaX) < threshold || Math.abs(deltaX) <= Math.abs(deltaY)) return null;
-    return deltaX > 0 ? 'next' : 'previous';
+    return deltaX > 0 ? 'previous' : 'next';
   }
 
   return { getAdjacentDate, getSwipeDirection };

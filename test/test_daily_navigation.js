@@ -25,9 +25,9 @@ test('日付の端では隣の日付を返さない', () => {
   assert.equal(getAdjacentDate(DATES, '2026-08-29', 'next'), null);
 });
 
-test('右スワイプは次の日、左スワイプは前の日へ進む', () => {
-  assert.equal(getSwipeDirection(10, 100, 90, 110), 'next');
-  assert.equal(getSwipeDirection(90, 100, 10, 110), 'previous');
+test('右スワイプは前の日、左スワイプは次の日へ進む', () => {
+  assert.equal(getSwipeDirection(10, 100, 90, 110), 'previous');
+  assert.equal(getSwipeDirection(90, 100, 10, 110), 'next');
 });
 
 test('短い移動と縦方向の移動はスワイプにしない', () => {
