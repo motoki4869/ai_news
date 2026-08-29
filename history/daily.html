@@ -57,6 +57,13 @@ body {
 
 .content { position: relative; z-index: 2; }
 
+.daily-content {
+  max-width: 100%;
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
+  contain: layout;
+}
+
 /* ===== Nav ===== */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -398,6 +405,8 @@ footer .logo {
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
+  <div id="daily-content" class="daily-content" role="region" aria-label="日次ニュース。左右にスワイプして日付を切り替えられます。">
+
   <div class="day-head" id="day-head"></div>
 
   <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
@@ -419,6 +428,8 @@ footer .logo {
 
   <div id="empty-state" hidden>日次ニュースのデータがまだありません。</div>
 
+  </div>
+
   <div class="cta-back">
     <a class="to-news" href="news.html">テーマ別の最新トレンドを見る →</a>
     <a class="to-index" href="index.html">← AI HISTORY 全体年表</a>
@@ -433,6 +444,7 @@ footer .logo {
 
 <script src="daily-data.js"></script>
 <script src="audio-data.js"></script>
+<script src="daily-navigation.js"></script>
 <script>
 /* ===== Neural network background (green tint) ===== */
 const canvas = document.getElementById('neural-bg');
@@ -524,6 +536,7 @@ const prevBtn = document.getElementById('cal-prev');
 const nextBtn = document.getElementById('cal-next');
 const latestBtn = document.getElementById('cal-latest');
 const emptyState = document.getElementById('empty-state');
+const dailyContent = document.getElementById('daily-content');
 
 function ym(dateStr) { return dateStr.slice(0, 7); }
 
@@ -748,10 +761,49 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
   const tag = document.activeElement ? document.activeElement.tagName : '';
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-  const i = DATES.indexOf(selected);
-  const next = e.key === 'ArrowLeft' ? DATES[i - 1] : DATES[i + 1];
+  const direction = e.key === 'ArrowLeft' ? 'previous' : 'next';
+  const next = DailyNavigation.getAdjacentDate(DATES, selected, direction);
   if (next) { e.preventDefault(); select(next); }
 });
+
+/* 右スワイプで次の日、左スワイプで前の日へ移動する。 */
+let touchStart = null;
+
+dailyContent.addEventListener('touchstart', e => {
+  if (e.touches.length !== 1) {
+    touchStart = null;
+    return;
+  }
+
+  // カードの出典リンクや音声プレイヤーの操作を日付切り替えで奪わない。
+  if (e.target.closest('a, button, input, select, textarea, audio')) {
+    touchStart = null;
+    return;
+  }
+
+  const touch = e.touches[0];
+  touchStart = { x: touch.clientX, y: touch.clientY };
+}, { passive: true });
+
+dailyContent.addEventListener('touchend', e => {
+  if (!touchStart || e.changedTouches.length !== 1) return;
+
+  const touch = e.changedTouches[0];
+  const direction = DailyNavigation.getSwipeDirection(
+    touchStart.x,
+    touchStart.y,
+    touch.clientX,
+    touch.clientY,
+  );
+  touchStart = null;
+  if (!direction) return;
+
+  const next = DailyNavigation.getAdjacentDate(DATES, selected, direction);
+  if (next) {
+    e.preventDefault();
+    select(next, { scroll: true });
+  }
+}, { passive: false });
 
 window.addEventListener('hashchange', () => {
   const h = location.hash.slice(1);
