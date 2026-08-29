@@ -35,18 +35,21 @@ test('メタデータ読み込み前でも再生位置を進められる', () =>
   assert.equal(audio.currentTime, 10);
 });
 
-test('再生速度は1倍と2倍だけ設定できる', () => {
+test('再生速度は1倍、1.5倍、2倍だけ設定できる', () => {
   const audio = { playbackRate: 1 };
 
   assert.equal(setPlaybackRate(audio, 2), true);
   assert.equal(audio.playbackRate, 2);
+  assert.equal(setPlaybackRate(audio, 1.5), true);
+  assert.equal(audio.playbackRate, 1.5);
   assert.equal(setPlaybackRate(audio, 1), true);
   assert.equal(audio.playbackRate, 1);
-  assert.equal(setPlaybackRate(audio, 1.5), false);
+  assert.equal(setPlaybackRate(audio, 1.25), false);
   assert.equal(audio.playbackRate, 1);
 });
 
-test('音声パネルに1倍と2倍の操作ボタンを表示する', () => {
+test('音声パネルに1倍、1.5倍、2倍の操作ボタンを表示する', () => {
   assert.match(DAILY_HTML, /id="audio-speed-1"[^>]*data-audio-rate="1"/);
+  assert.match(DAILY_HTML, /id="audio-speed-1-5"[^>]*data-audio-rate="1\.5"/);
   assert.match(DAILY_HTML, /id="audio-speed-2"[^>]*data-audio-rate="2"/);
 });

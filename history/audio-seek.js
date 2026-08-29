@@ -16,7 +16,7 @@
 
   function setPlaybackRate(audio, rate) {
     const value = Number(rate);
-    if (!audio || (value !== 1 && value !== 2)) return false;
+    if (!audio || (value !== 1 && value !== 1.5 && value !== 2)) return false;
 
     audio.playbackRate = value;
     return true;
