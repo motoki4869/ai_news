@@ -311,6 +311,15 @@ nav {
   color: var(--cyan); font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem; letter-spacing: 0.12em;
 }
+.audio-kicker-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.audio-heard-label {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: var(--text-dim); font-size: 0.68rem; white-space: nowrap; cursor: pointer;
+}
+.audio-heard-label input {
+  width: 15px; height: 15px; margin: 0; accent-color: var(--green); cursor: pointer;
+}
+.audio-heard-label input:disabled { cursor: default; }
 .audio-copy h3 { font-size: 0.98rem; margin-top: 3px; }
 .audio-label-row { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
 .audio-copy p { color: var(--text-dim); font-size: 0.76rem; }
@@ -443,7 +452,13 @@ footer .logo {
   <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
     <div class="audio-inner">
       <div class="audio-copy">
-        <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
+        <div class="audio-kicker-row">
+          <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
+          <label class="audio-heard-label">
+            <input type="checkbox" id="audio-heard">
+            <span>視聴済み</span>
+          </label>
+        </div>
         <h3 id="audio-title">今日のニュースを音声で聴く</h3>
         <div class="audio-label-row">
           <p id="audio-label"></p>
@@ -488,6 +503,7 @@ footer .logo {
 <script src="audio-data.js"></script>
 <script src="daily-navigation.js"></script>
 <script src="audio-seek.js"></script>
+<script src="audio-heard.js"></script>
 <script>
 /* ===== Neural network background (green tint) ===== */
 const canvas = document.getElementById('neural-bg');
@@ -644,6 +660,10 @@ const audioForwardButton = document.getElementById('audio-forward');
 const audioSpeedButtons = [...document.querySelectorAll('[data-audio-rate]')];
 const audioTitleHeading = document.getElementById('audio-title');
 const audioLabel = document.getElementById('audio-label');
+const audioHeardCheckbox = document.getElementById('audio-heard');
+const audioHeardStore = AudioHeard.createAudioHeardStore((() => {
+  try { return window.localStorage; } catch (e) { return null; }
+})());
 let selectedAudioRate = 1;
 
 /* 出典URLのホスト名をキッカー表示用に整える。 */
@@ -728,6 +748,10 @@ audioSpeedButtons.forEach(button => {
   button.addEventListener('click', () => selectAudioSpeed(button.dataset.audioRate));
 });
 
+audioHeardCheckbox.addEventListener('change', () => {
+  if (selected) audioHeardStore.set(selected, audioHeardCheckbox.checked);
+});
+
 function renderDay() {
   const items = DATA[selected] || [];
   const [y, m, d] = selected.split('-').map(Number);
@@ -755,6 +779,8 @@ function renderDay() {
     setAudioSkipEnabled(true);
     setAudioSpeedEnabled(true);
     selectAudioSpeed(selectedAudioRate);
+    audioHeardCheckbox.disabled = false;
+    audioHeardCheckbox.checked = audioHeardStore.has(selected);
   } else {
     audioTitleHeading.textContent = '今日のニュースを音声で聴く';
     audioLabel.textContent = '';
@@ -763,6 +789,8 @@ function renderDay() {
     audioPanel.hidden = true;
     setAudioSkipEnabled(false);
     setAudioSpeedEnabled(false);
+    audioHeardCheckbox.disabled = true;
+    audioHeardCheckbox.checked = false;
   }
 
   cardGrid.innerHTML = '';
