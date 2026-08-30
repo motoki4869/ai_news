@@ -1,4 +1,14 @@
 window.DAILY_AUDIO = {
+  "2026-08-01": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-01.m4a",
+    "label": "2026-08-01のAIニュース音声",
+    "title": "キルスイッチを突破したAIの衝撃"
+  },
+  "2026-08-02": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-02.m4a",
+    "label": "2026-08-02のAIニュース音声",
+    "title": "30兆円投資とAIの物理的現実"
+  },
   "2026-08-03": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-03.m4a",
     "label": "2026-08-03のAIニュース音声",
@@ -23,6 +33,16 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-07.m4a",
     "label": "2026-08-07のAIニュース音声",
     "title": "物理世界へ脱走したAIの正体"
+  },
+  "2026-08-08": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-08.m4a",
+    "label": "2026-08-08のAIニュース音声",
+    "title": "物理世界に激突するAIの資源争奪戦"
+  },
+  "2026-08-09": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-09.m4a",
+    "label": "2026-08-09のAIニュース音声",
+    "title": "自律するAIと声の法的防衛線"
   },
   "2026-08-10": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-10.m4a",
@@ -123,5 +143,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-29.m4a",
     "label": "2026-08-29のAIニュース音声",
     "title": "ソフトウェアを超え物理戦へ突入したAI"
+  },
+  "2026-08-30": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-30.m4a",
+    "label": "2026-08-30のAIニュース音声",
+    "title": "泥臭いAIパワーゲームの生々しい実態"
   }
 };
