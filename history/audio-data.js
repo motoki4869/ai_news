@@ -153,5 +153,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-08-31.m4a",
     "label": "2026-08-31のAIニュース音声",
     "title": "10兆円のAI狂騒と現場の反発"
+  },
+  "2026-09-01": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-01.m4a",
+    "label": "2026-09-01のAIニュース音声",
+    "title": "AI企業がMac miniを買い漁る理由"
   }
 };
