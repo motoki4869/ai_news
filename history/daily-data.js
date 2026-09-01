@@ -3565,5 +3565,159 @@ window.DAILY_NEWS = {
       ],
       "url": "https://the-decoder.com/instagram-admits-users-often-cant-tell-ai-profiles-from-real-people/"
     }
+  ],
+  "2026-09-02": [
+    {
+      "title": "【技術】Anthropic、Claude Fable 5.1／Mythos 5.1を公開——エージェント型研究のスコアが2倍超、キャッシュ読み出しは4分の1に",
+      "intro": "9月1日、AnthropicがClaude Fable 5.1とMythos 5.1を公開した。コーディングと自律的な研究の性能を引き上げつつ、実質的な利用コストを下げる構成になっている。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "エージェント型の研究を測るTerminal-Bench-Science 0.1でFable 5の24.7%から52.6%へ倍増。エージェント型コーディングのTerminal-Bench 4.0ではFable 5.1が55.8%、Mythos 5.1が60.9%で、Fable 5の42.0%を上回る。Artificial Analysis Intelligence Indexでは66点とOpus 5の63点を抜いた。"
+        },
+        {
+          "label": "価格",
+          "text": "入出力の単価（100万トークンあたり10ドル／50ドル）は据え置きだが、キャッシュ読み出しを1ドルから0.25ドルへ引き下げた。一般的な用途で約25%、長いエージェント処理では最大45%の削減になるという。"
+        },
+        {
+          "label": "運用面の変更",
+          "text": "両モデルに透かしが標準で埋め込まれた。サイバーセキュリティ関連の過剰なフィルタリングによる誤検知が60%減り、Fable 5.1は初めてソフトウェアの脆弱性を指摘できるようになった。Fable 5.1はAWS・Google Cloud・Azureで即日提供、Mythos 5.1は米国組織向けの審査付き提供に留まる。"
+        }
+      ],
+      "url": "https://the-decoder.com/anthropics-claude-fable-5-1-promises-better-coding-and-research-at-up-to-45-percent-less/"
+    },
+    {
+      "title": "【技術・セキュリティ】OpenAI、サイバー能力が「重大」閾値に達した初のモデル「Astra」を予告——ゼロデイを自力で発見・悪用",
+      "intro": "9月1日、OpenAIが新モデルAstraについて、自社の準備フレームワークでサイバーセキュリティの「クリティカル」閾値に到達した初のLLMだと公表した。近く限定的に提供を始めるとしている。",
+      "points": [
+        {
+          "label": "能力",
+          "text": "既知の脆弱性に対する攻撃能力を測るExploitBenchで満点を記録。OpenAIが改変したテストでは、人間の誘導なしにゼロデイ脆弱性2件を発見し悪用まで到達した。"
+        },
+        {
+          "label": "安全策",
+          "text": "悪用検知の強化、リスクの高いアカウントへの機能制限、思考過程の追加監視、実行環境からの逸脱を防ぐテストを組み合わせる。高度なサイバー機能へのアクセスは審査を通した相手に限定する。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "同社は「これまでで最もアラインメントの取れたモデル」と説明する一方、攻撃能力そのものを公に認めた形になる。同種の懸念はAnthropicのMythosでも指摘されており、フロンティアモデルの攻撃転用リスクが具体的な運用課題になってきた。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/01/open-ais-astra-model-is-on-the-way-and-very-good-at-breaking-into-computer-systems/"
+    },
+    {
+      "title": "【規制・技術】Anthropic、Claude生成テキストの透かし検証APIを規制当局・報道機関・ファクトチェッカーに開放",
+      "intro": "9月1日、AnthropicがClaudeで生成された文章かどうかを判定できる透かし検証APIを、承認した組織向けに提供すると発表した。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "GoogleのSynthID方式を土台に、単語選択のランダム性を微調整して統計的に検出可能なパターンを埋め込む。ある程度の編集を経ても残るため、文体推定に頼る従来のAI検出器より安定するとされる。"
+        },
+        {
+          "label": "対象",
+          "text": "規制当局、法執行機関、報道機関、ファクトチェッカー、独立研究者、教育機関、EUの市民社会団体に加え、コンプライアンス目的の企業。順次拡大する方針。"
+        },
+        {
+          "label": "論点",
+          "text": "透かしの鍵に沿って同義語が選ばれることで文章品質が落ちるという批判がある。また「AI利用禁止」を定めた契約の履行確認や報酬交渉に検出結果が使われうる点も、透明性向上の裏側にある副作用として指摘されている。背景にはEU AI法が求める不可視透かしの義務がある。"
+        }
+      ],
+      "url": "https://the-decoder.com/anthropic-opens-claude-ai-text-detection-to-regulators-media-fact-checkers-and-others/"
+    },
+    {
+      "title": "【ツール】Runway、UIをコードではなく毎フレーム生成する「Solaris」を発表——インターフェースのワールドモデル",
+      "intro": "9月1日、Runwayがソフトウェアのユーザーインターフェースをリアルタイムに生成する「Interface World Model」Solarisを公開した。設計をコードへ翻訳するのではなく、画面そのものを720pで1フレームずつ描き出す。",
+      "points": [
+        {
+          "label": "動作",
+          "text": "クリック・ドラッグ・音声といった操作に直接反応し、言語モデルが画面の変化を決め、ワールドモデルが各フレームを描画する。動画モデルGen-4.5と汎用ワールドモデルGWM-1の延長線上にある。"
+        },
+        {
+          "label": "用途",
+          "text": "服の試着や家具の色・配置をその場で変えるといったEC用途、視覚的に手順を見せるチュートリアルなどを想定する。画面が固定されないため、サイトの差異に弱いAIエージェントの学習環境としても使えるという位置づけ。"
+        },
+        {
+          "label": "現状",
+          "text": "研究段階で、文字表示の安定性やスクリーンリーダー対応に課題が残る。提携先を募集しつつ、フォーム経由の早期アクセスを提供している。"
+        }
+      ],
+      "url": "https://the-decoder.com/runways-solaris-is-an-ai-system-that-generates-software-interfaces-in-real-time/"
+    },
+    {
+      "title": "【産業】OpenAI、ChatGPTを電子カルテEpicと接続——公的医療データベース9種の横断検索も追加",
+      "intro": "9月1日、OpenAIがChatGPT for Healthcareに電子カルテ最大手Epicとの連携を追加し、同時に公的医療データを横断検索する「Healthcare Public Data」を米国の対象ユーザーへ提供開始した。",
+      "points": [
+        {
+          "label": "Epic連携",
+          "text": "対応するEpic環境を持つ医療機関の認可された臨床医が、診察記録・検査結果・処方・専門医の書類などをChatGPT内、あるいはEpicのワークフロー内で参照できる。"
+        },
+        {
+          "label": "公的データ検索",
+          "text": "ClinicalTrials.gov、CMSの給付方針、RxNorm、DailyMed、PubMedなど9つの情報源を1か所で検索できる。読み取り専用で患者カルテには触れず、保護対象の医療情報を送らない運用が前提。"
+        },
+        {
+          "label": "流れ",
+          "text": "4月に臨床医向けのChatGPT for Cliniciansを開始して以降、紹介状作成や事前承認といった事務作業まで含めて医療現場への浸透を進めている。汎用チャットから業務システムへの統合が段階的に進む形になっている。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/01/chatgpt-health-adds-epic-integration-for-clinicians-to-import-patient-data/"
+    },
+    {
+      "title": "【ビジネス】Google DeepMind新責任者、「フロンティアにいること以外に重要なものはない」——自社が現状やや後れていることも認める",
+      "intro": "9月1日、Google DeepMindの新しい責任者に就いたコライ・カヴクチュオール氏が、最先端モデル競争から降りるという見方を明確に否定した。",
+      "points": [
+        {
+          "label": "発言",
+          "text": "「我々にとってフロンティアにいること以外に重要なものはない」と述べる一方、現在のモデルは「フロンティアよりやや下」にあると認め、人材と計算基盤で差は埋められるとした。"
+        },
+        {
+          "label": "方針",
+          "text": "ソフトウェア開発を中心としたAIエージェントに注力する。Gemini Flashの世代交代を「モデルからエージェントへの移行」と位置づけている。"
+        },
+        {
+          "label": "現況",
+          "text": "具体的な成果の発表は避け、Gemini 4を「最も野心的な学習」と呼ぶに留めた。延期されているGemini 3.5 Proは開発継続中とされる。"
+        }
+      ],
+      "url": "https://the-decoder.com/google-deepminds-new-chief-says-frontier-ai-leadership-is-the-only-thing-that-matters/"
+    },
+    {
+      "title": "【規制】独AlgorithmWatch、Googleの選挙関連AI要約を検証——表示率が政党で偏り、引用元は10ドメインに集中",
+      "intro": "9月1日、ドイツの監視団体AlgorithmWatchが、EUデジタルサービス法（DSA）に基づく研究者向けAPIを使ってGoogleの選挙関連AI Overviewsを分析した結果を公表した。2026年のドイツ東部州議会選挙に関する4480件の検索が対象。",
+      "points": [
+        {
+          "label": "主な数字",
+          "text": "選挙関連クエリでAI要約が表示されたのは39.1%で、非政治的な検索の65.3%を大きく下回った。政党別では極右AfDが24%、他党は45〜58%と差が出た。"
+        },
+        {
+          "label": "引用元の偏り",
+          "text": "引用ソースのほぼ半分が上位10ドメインに集中し、最も多く参照されたのはGoogle傘下のYouTubeだった。"
+        },
+        {
+          "label": "論点",
+          "text": "政治家の説明に「現実的」「市民に近い」といった主観的な表現が使われていた点も指摘された。同団体は透明性要件と責任の所在を定めるルールの強化を求めている。"
+        }
+      ],
+      "url": "https://the-decoder.com/googles-election-ai-overviews-are-opaque-rely-on-few-sources-and-sometimes-take-sides/"
+    },
+    {
+      "title": "【資金調達】Sequoiaがインキュベートした「Empirik」、2100万ドルで独立——障害が起きる前に予測するAI基盤運用",
+      "intro": "9月1日、Sequoia Capitalが2023年から社内で育ててきたEmpirikが、シードで2100万ドルを調達して独立企業として立ち上がった。出資はSequoia、Canapi、Alumni Venturesが参加した。",
+      "points": [
+        {
+          "label": "製品",
+          "text": "インフラへの変更を追跡し、その影響が全体へどう波及するかを推論する。リスクの低い変更は通し、大きな変更にはガードレールを設け、危険な更新は人間のレビューに回す「交通整理役」として動く。"
+        },
+        {
+          "label": "創業陣",
+          "text": "RubrikとVMwareでインフラを率いたAvon Puri氏、SequoiaのIT責任者Sudheer Dhurjati氏、Quantum MetricとSalesforce出身のKartik Chandrayana氏（CEO）。"
+        },
+        {
+          "label": "顧客",
+          "text": "S&P Global、Guardant Healthなどが既に採用している。エージェントが本番インフラを触る局面が増える中、事後の可観測性から事前の予測へ軸を移す動きの一例となる。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/01/sequoia-incubated-empirik-launches-with-21m-to-predict-outages-before-they-happen/"
+    }
   ]
 };
