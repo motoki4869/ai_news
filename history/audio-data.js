@@ -158,5 +158,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-01.m4a",
     "label": "2026-09-01のAIニュース音声",
     "title": "AI企業がMac miniを買い漁る理由"
+  },
+  "2026-09-02": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-02.m4a",
+    "label": "2026-09-02のAIニュース音声",
+    "title": "自律型AIエージェントがシステムを操る"
   }
 };
