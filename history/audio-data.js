@@ -168,5 +168,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-03.m4a",
     "label": "2026-09-03のAIニュース音声",
     "title": "現実を侵食するAIは武器か司書か"
+  },
+  "2026-09-04": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-04.m4a",
+    "label": "2026-09-04のAIニュース音声",
+    "title": "GPT-6 Astraと狂乱のAI投資"
   }
 };
