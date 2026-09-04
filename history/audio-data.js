@@ -173,5 +173,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-04.m4a",
     "label": "2026-09-04のAIニュース音声",
     "title": "GPT-6 Astraと狂乱のAI投資"
+  },
+  "2026-09-05": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-05.m4a",
+    "label": "2026-09-05のAIニュース音声",
+    "title": "Wikiに集い現実に溢れ出すAI"
   }
 };
