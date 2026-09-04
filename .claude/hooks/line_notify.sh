@@ -1,5 +1,8 @@
 #!/bin/bash
 input=$(cat)
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$script_dir/../../scripts/lib/line_notification_dedupe.sh"
+
 f=$(echo "$input" | jq -r '.tool_response.filePath // .tool_input.file_path // empty')
 
 case "$f" in
@@ -17,9 +20,11 @@ fi
 
 [ -z "$msg" ] && exit 0
 
-msg=$(printf '%s' "$msg" | cut -c1-4900)
+# 同じ日の日次メッセージは、Write/Editが複数回行われても1回だけ送る。
+claim_line_notification "$f" >/dev/null 2>&1 || exit 0
 
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+msg=$(line_notification_text)
+
 token="${LINE_CHANNEL_ACCESS_TOKEN:-$(jq -r '.env.LINE_CHANNEL_ACCESS_TOKEN // empty' "$script_dir/../settings.local.json")}"
 
 body=$(jq -n --arg t "$msg" '{messages:[{type:"text",text:$t}]}')

@@ -17,6 +17,7 @@ LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 cd "$REPO_DIR"
 
 source "$REPO_DIR/scripts/lib/codex_fallback.sh"
+source "$REPO_DIR/scripts/lib/line_notification_dedupe.sh"
 
 LINE_MSG_MTIME_BEFORE=0
 [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_BEFORE=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
@@ -44,6 +45,16 @@ SUMMARY="${SUMMARY:-ニュースを更新しました}"
 SUMMARY_ESCAPED="$(printf '%s' "$SUMMARY" | cut -c1-200 | sed 's/\\/\\\\/g; s/"/\\"/g')"
 
 if [ "$STATUS" -eq 0 ]; then
+  LINE_MSG_MTIME_AFTER=0
+  [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_AFTER=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
+  LINE_MSG_HASH_AFTER=""
+  [ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_AFTER=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
+  if [ -s "$LINE_MSG_FILE" ] && { [ "$LINE_MSG_MTIME_AFTER" -gt "$LINE_MSG_MTIME_BEFORE" ] || [ "$LINE_MSG_HASH_AFTER" != "$LINE_MSG_HASH_BEFORE" ]; } \
+     && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
+    # ClaudeがBashで通知文を書いた場合でも、ここで短いLINE通知を送る。
+    send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"
+  fi
+
   AUDIO_SCRIPT="${NOTEBOOKLM_AUDIO_SCRIPT:-$REPO_DIR/scripts/generate_notebooklm_audio.sh}"
   AUDIO_DATA_SCRIPT="$REPO_DIR/scripts/generate_audio_data.py"
   AUDIO_DATA_FILE="$REPO_DIR/history/audio-data.js"
@@ -116,16 +127,6 @@ if [ "$STATUS" -eq 0 ]; then
     rm -f "$AUDIO_DATES_FILE"
   fi
   if [ "$IS_FALLBACK" -eq 1 ]; then
-    LINE_MSG_MTIME_AFTER=0
-    [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_AFTER=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
-    LINE_MSG_HASH_AFTER=""
-    [ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_AFTER=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
-    if [ -s "$LINE_MSG_FILE" ] && { [ "$LINE_MSG_MTIME_AFTER" -gt "$LINE_MSG_MTIME_BEFORE" ] || [ "$LINE_MSG_HASH_AFTER" != "$LINE_MSG_HASH_BEFORE" ]; }; then
-      # Codex実行時はline_message.txtの更新を検知するPostToolUseフック(.claude/hooks/line_notify.sh)が
-      # 発火しないため、ここで明示的にLINE通知を送る。Claude成功時はフックに任せるため送らない。
-      LINE_MSG="$(mark_as_codex_fallback "$(cat "$LINE_MSG_FILE")")"
-      send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$LINE_MSG"
-    fi
     osascript -e "display notification \"${SUMMARY_ESCAPED}（Codex経由）\" with title \"AIニュース更新\" sound name \"Glass\"" || true
   else
     osascript -e "display notification \"$SUMMARY_ESCAPED\" with title \"AIニュース更新\" sound name \"Glass\"" || true
