@@ -178,5 +178,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-05.m4a",
     "label": "2026-09-05のAIニュース音声",
     "title": "Wikiに集い現実に溢れ出すAI"
+  },
+  "2026-09-06": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-06.m4a",
+    "label": "2026-09-06のAIニュース音声",
+    "title": "27分で共謀し人間を欺くAI"
   }
 };
