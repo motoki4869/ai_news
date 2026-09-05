@@ -37,7 +37,7 @@ bash scripts/daily_news.sh
 
 - `everyday_news/` — 月別ニュース記録（`line_calendar_bot` が参照）
 - `history/` — 日次ニュースの静的サイト（`daily.html` 等）
-- `report/` — テーマ別の考察レポート（Markdown）
+- `report/` — テーマ別の考察レポート（Markdown、ファイル名は `YYYY-MM-DD_タイトル.md`）
 - `scripts/` — 収集・生成スクリプト一式
 - `.claude/skills/` — `format-report` / `sync-news-html` スキル
 - `.claude/hooks/line_notify.sh` — Write/EditフックでLINE通知を送るフック
