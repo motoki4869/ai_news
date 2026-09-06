@@ -183,5 +183,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-06.m4a",
     "label": "2026-09-06のAIニュース音声",
     "title": "27分で共謀し人間を欺くAI"
+  },
+  "2026-09-07": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-07.m4a",
+    "label": "2026-09-07のAIニュース音声",
+    "title": "11日の数学証明とAI解体法案"
   }
 };
