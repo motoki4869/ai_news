@@ -4194,5 +4194,121 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.bloomberg.com/news/articles/2026-09-04/deepseek-plans-big-huawei-ai-chip-order-to-power-new-data-center"
     }
+  ],
+  "2026-09-07": [
+    {
+      "title": "【技術革新】Anthropic、ClaudeがAI史上最大の数学証明を11日間で完成——フェルマーの最終定理を完全形式化",
+      "intro": "Anthropicは9月4日、自社の内部研究モデルがフェルマーの最終定理の証明を証明支援系Leanで完全に形式化し、コンピュータで検証可能な形にしたと発表した。数学者は数年がかりと見積もっていた作業を、AIがほぼ自律的に11日間で完了させた。",
+      "points": [
+        {
+          "label": "規模",
+          "text": "完成した証明は1300万行超のLeanコードからなり、2万9500件の中間定理を経由する、これまでで最大規模の形式化証明となった。"
+        },
+        {
+          "label": "手法",
+          "text": "オープンソースツール「Prove2Me」を用いて、AIエージェントが長大な証明工程の中で次に取るべき最適な一手を判断できるようにした。"
+        },
+        {
+          "label": "意義",
+          "text": "査読に数年を要する高度な数学的証明の検証をAIが加速できる可能性を示し、形式手法とAIの融合が数学研究のボトルネックを崩し始めていることを印象づけた。"
+        }
+      ],
+      "url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem"
+    },
+    {
+      "title": "【規制・政策】米上院サンダース議員ら、超知能AIの開発を恒久禁止する法案を提出——違反企業には「解体」も",
+      "intro": "9月3日、バーニー・サンダース上院議員とグレッグ・カサール下院議員が、人間の認知能力を広範な領域で超える「人工超知能」の開発・展開を恒久的に禁止する法案を提出したと発表した。OpenAIやAnthropicなど大手AI企業で相次いだ制御逸脱・セキュリティ事故を受けた動きだとされる。",
+      "points": [
+        {
+          "label": "内容",
+          "text": "連邦規制機関が安全基準を策定するまで先端AI研究を一時停止し、AI監督を担う閣僚級の新機関を設置するとしている。"
+        },
+        {
+          "label": "罰則",
+          "text": "違反した個人には最長20年の禁錮刑、違反企業には核兵器の違法開発に匹敵する重い制裁として事実上の「強制解体」を科す内容となっている。"
+        },
+        {
+          "label": "国際的な視点",
+          "text": "同盟国との協調や輸出管理を通じて、世界のどこであっても人工超知能が開発されないようにする国際的枠組みの追求も盛り込まれている。"
+        }
+      ],
+      "url": "https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/"
+    },
+    {
+      "title": "【ビジネス】中国Moonshot AI、香港上場へ極秘申請——評価額7.5兆円規模、DeepSeekを上回る調達競争",
+      "intro": "9月3日、チャットボット「Kimi」を手がける中国Moonshot AIが、香港市場への上場に向け非公開（コンフィデンシャル）申請を行ったと報じられた。上場前の最終ラウンドとして評価額約500億ドル（約7.5兆円）で30億ドルの調達を目指すという。",
+      "points": [
+        {
+          "label": "再編",
+          "text": "申請にあたり、従来のオフショア「レッドチップ」形態を解消し、中国本土企業として再編する手続きを経た。"
+        },
+        {
+          "label": "資金背景",
+          "text": "5月には20億ドル超を調達済みで、これまでの累計調達額は55億ドルを超える。競合のDeepSeek（評価額約740億ドル）やZ.AI（同660億ドル）と比べると評価額はなお低い。"
+        },
+        {
+          "label": "スケジュール",
+          "text": "上場は早ければ来年第1四半期を目指しており、中国AI企業による資金調達競争が香港市場を舞台に激しさを増している。"
+        }
+      ],
+      "url": "https://technode.com/2026/09/03/moonshot-ai-reportedly-submits-confidential-hong-kong-ipo-filing/"
+    },
+    {
+      "title": "【産業インフラ】インドTCS子会社、1.1兆円規模の1GW級AIデータセンターをハイデラバードに——AI企業・ハイパースケーラー向け",
+      "intro": "9月5日、Tata Consultancy Services（TCS）傘下のHyperVaultが、インド・テランガーナ州ハイデラバードに最大1ギガワット級のAIデータセンター用地264エーカーを確保し、最大700億ルピー（約1.1兆円）を投じて開発すると発表した。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "フロンティアAI企業やハイパースケーラー向けに、高密度GPU配置に対応した訓練・推論基盤を段階的に整備する。"
+        },
+        {
+          "label": "規模感",
+          "text": "完成すればインド国内最大級のAI関連インフラ施設の一つになる見通しで、TCSはハイデラバードを選んだ理由として規模・人材・エコシステムの厚みを挙げている。"
+        },
+        {
+          "label": "背景",
+          "text": "米中に次ぐAIインフラ拠点としてインドの存在感を高める動きの一つで、電力供給などの制約が今後の課題になるとの指摘もある。"
+        }
+      ],
+      "url": "https://www.tcs.com/who-we-are/newsroom/press-release/tcs-hypervault-establish-large-scale-ai-data-center-campus-telangana"
+    },
+    {
+      "title": "【フィジカルAI】IFA2026、中国D-RoboticsのAIチップが家庭用ロボット群を席巻——コンパニオンから四足歩行、床掃除まで",
+      "intro": "9月4日、ベルリンで開幕した家電見本市IFA2026で、中国D-RoboticsのAIチップ群「Sunrise」を搭載した複数の家庭用ロボットが披露され、話題を集めた。",
+      "points": [
+        {
+          "label": "製品例",
+          "text": "TCLのコンパニオンロボット「hey AiMe」（10自由度・センサー20個超）、Vbotの四足歩行ロボット「SuperDog」（5月から量産中）、xLeanの床掃除ロボット「TR1」などが同社チップを採用した。"
+        },
+        {
+          "label": "チップの幅",
+          "text": "「Sunrise」シリーズは5～560TOPS（INT8）をカバーし、ヒューマノイドから四足歩行、家庭用サービスロボット、物流用AMRまで幅広い実装形態に対応する。"
+        },
+        {
+          "label": "普及状況",
+          "text": "D-Roboticsは20カ国超の開発者10万人以上、Bosch SensortecやTCL、Midea、UBTechなど有力メーカーとの提携実績を持つとしており、中国製AIチップが世界の民生ロボット市場に浸透しつつある実態を映す。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/d-robotics-at-ifa-2026-the-computing-platform-powering-the-next-generation-of-home-robots-302869818.html"
+    },
+    {
+      "title": "【倫理・規制】Anthropic、中国系AI企業によるClaude不正「蒸留」をダークウェブ経由で告発——数万件の詐取アカウントを確認",
+      "intro": "9月3日、AnthropicはMoonshot AIやDeepSeek、MiniMax、Alibabaなど複数の中国AI企業が、盗難クレジットカード情報などで作成した不正アカウントを通じてClaudeの応答を大量に収集し、自社モデルの能力を模倣する「蒸留」を行っていたと公表した。",
+      "points": [
+        {
+          "label": "手口",
+          "text": "ダークウェブ上で流通する盗難決済情報や侵害済みインフラを用いて数万から数十万規模の不正アカウントが作成され、Claudeなど大手モデルへのアクセスに悪用されていたという。"
+        },
+        {
+          "label": "懸念",
+          "text": "単なる知的財産の問題にとどまらず、安全対策のガードレールを取り除いた形で能力だけを複製される点を国家安全保障上の懸念として強調している。"
+        },
+        {
+          "label": "影響",
+          "text": "米中間のAI技術覇権競争が、モデルの模倣・複製をめぐる攻防という新たな局面に入りつつあることを示している。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/09/03/anthropic-distillation-battle-turns-to-dark-web-china-concerns-swell.html"
+    }
   ]
 };
