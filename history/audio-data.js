@@ -188,5 +188,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-07.m4a",
     "label": "2026-09-07のAIニュース音声",
     "title": "11日の数学証明とAI解体法案"
+  },
+  "2026-09-08": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-08.m4a",
+    "label": "2026-09-08のAIニュース音声",
+    "title": "AIの進化が現実を侵食し始めた"
   }
 };
