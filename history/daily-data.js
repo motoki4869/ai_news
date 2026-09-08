@@ -4445,5 +4445,90 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.latestly.com/social-viral/meta-ai-privacy-scare-us-mom-says-ai-revealed-her-childrens-names-photos-and-birth-details-video-7592761.html"
     }
+  ],
+  "2026-09-09": [
+    {
+      "title": "【資金調達】仏Mistral AI、欧州テック史上最大の30億ユーロ調達——サムスン主導で評価額210億ユーロ超に",
+      "intro": "9月8日、仏Mistral AIはサムスン電子主導のシリーズDラウンドで30億ユーロを調達し、ポストマネー評価額が210億ユーロを超えたと発表した。創業3年での調達額としては欧州テック企業史上最大級となる。",
+      "points": [
+        {
+          "label": "投資家",
+          "text": "サムスンに加え、EQTが運用するScaleup Europe Fundが共同主導し、Advent、BlackRock運用ファンド、ルクセンブルク大公国などが新規投資家として参加した。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "前回（2025年9月、ASML主導のシリーズC・評価額117億ユーロ）から1年で評価額はほぼ倍増し、米国勢に対抗する「主権AI」の欧州代表としての存在感を強めている。"
+        },
+        {
+          "label": "背景",
+          "text": "巨額の計算資源投資が続くAI業界で、欧州発企業が独自資本で規模を追いつつ独立性を保てるかが今後の焦点となる。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/08/mistral-raises-e3b-as-sovereign-ai-becomes-big-business/"
+    },
+    {
+      "title": "【資金調達】AIコーディング企業Cognition、20億ドル調達で評価額480億ドルに——3か月強で倍増",
+      "intro": "9月8日、Bloombergは、自律コーディングエージェント「Devin」を手がけるCognition AIが新たに20億ドルを調達し、評価額が480億ドルに達したと報じた。",
+      "points": [
+        {
+          "label": "成長ペース",
+          "text": "2026年5月に評価額260億ドルで10億ドルを調達したばかりで、わずか3か月強で評価額がほぼ倍増した格好となる。"
+        },
+        {
+          "label": "業界の温度感",
+          "text": "自律型コーディングエージェント分野には投資マネーが集中しており、開発者向けAIツール市場の評価額インフレが加速していることを示す一例となった。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/ai-startup-cognition-raises-2-billion-at-a-48-billion-value"
+    },
+    {
+      "title": "【インフラ】PyTorch Foundationにアリババクラウド・Cambriconがプラチナ会員として加入——Ant Groupもゴールド会員に",
+      "intro": "9月8日、上海で開催のPyTorch Conference Chinaにおいて、PyTorch Foundationはアリババクラウドと中国AIチップ設計企業Cambriconがプラチナ会員として、Ant Groupがゴールド会員として新たに加わったと発表した。",
+      "points": [
+        {
+          "label": "権限",
+          "text": "プラチナ会員となった両社はガバニングボードおよび技術諮問委員会にそれぞれ1議席を得て、PyTorchのハードウェア・アクセラレータ対応強化に取り組む。"
+        },
+        {
+          "label": "意味合い",
+          "text": "米中対立が続くAI半導体分野で、中国発のクラウド・チップ企業がオープンソースAIスタックの中核ガバナンスに参加する動きとなり、エコシステムの分断ではなく相互浸透が進んでいる一面を示した。"
+        }
+      ],
+      "url": "https://pytorch.org/blog/alibaba-cloud-ant-group-cambricon-and-huawei-come-together-in-shanghai-to-advance-the-open-source-ai-stack-at-pytorch-conference-china/"
+    },
+    {
+      "title": "【プロダクト】百度のXiaodu、AIエージェント搭載の新型スマート家電群を発表——見守りカメラは異常検知まで自律対応",
+      "intro": "9月8日、北京で開催された「Xiaodu AI Day」で、百度のスマートデバイス事業Xiaoduが、刷新版AIアシスタント「超能小度」を搭載したスマートディスプレイやスマートスピーカー、見守りカメラなど新型ハードウェアを発表した。",
+      "points": [
+        {
+          "label": "新機能",
+          "text": "第2世代のAI見守りエージェントをカメラに搭載し、ユーザーの指示を待たずにシーンを解釈して異常を検知・通知するなど、音声応答から自律的な家庭内モニタリングへと踏み出した。"
+        },
+        {
+          "label": "エコシステム統合",
+          "text": "発表した4機種はいずれも百度のエージェント基盤「百度大字」に接続されており、デバイス横断でのAIエージェント連携を進める狙いがある。"
+        }
+      ],
+      "url": "https://tech-ish.com/2026/09/08/baidu-wants-its-ai-agent-to-run-your-home/"
+    },
+    {
+      "title": "【技術革新】AIが発見したWeChatのゼロクリック脆弱性「WeWorm」、数億アカウント乗っ取りの恐れ——Tencentは既に修正済み",
+      "intro": "9月8日、セキュリティ企業CalifがAIを用いてWeChatのVoIPスタックに存在するメモリ破損の脆弱性を発見し、着信通話だけでアカウントを乗っ取り自己増殖する実証コード「WeWorm」を構築したと報じられた。",
+      "points": [
+        {
+          "label": "攻撃手法",
+          "text": "被害者が電話に出なくても着信があるだけでアカウントが乗っ取られ、連絡先に登録された友人へ自動的に発信・感染を広げる仕組みで、専門家は放置されていれば数時間で数億台規模の端末に感染しえたと指摘する。"
+        },
+        {
+          "label": "発見から対応まで",
+          "text": "AIが2026年7月にバグを発見し、研究チームが7月24日にTencentへ報告、Tencentは8月21日までにAndroid・iOS双方で修正版を配布し悪用の実例は確認されていない。"
+        },
+        {
+          "label": "意義",
+          "text": "AIによる脆弱性発見・攻撃実証が防御側の研究にも本格活用され始めたことを示す一方、同じ能力が攻撃側に渡った場合のリスクの大きさも改めて浮き彫りにした。"
+        }
+      ],
+      "url": "https://www.helpnetsecurity.com/2026/09/08/wechat-weworm-vulnerability-exploit-account-hijacking/"
+    }
   ]
 };
