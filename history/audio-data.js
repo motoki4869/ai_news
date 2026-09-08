@@ -193,5 +193,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-08.m4a",
     "label": "2026-09-08のAIニュース音声",
     "title": "AIの進化が現実を侵食し始めた"
+  },
+  "2026-09-09": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-09.m4a",
+    "label": "2026-09-09のAIニュース音声",
+    "title": "自律型AIが勝手に動き出す衝撃"
   }
 };
