@@ -4530,5 +4530,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.helpnetsecurity.com/2026/09/08/wechat-weworm-vulnerability-exploit-account-hijacking/"
     }
+  ],
+  "2026-09-10": [
+    {
+      "title": "【規制・安全保障】米NSA・CISA・FBI、中国AI6社を名指しで「産業規模の蒸留」と断定——Claude・GPT・Gemini・Grokから大量抽出",
+      "intro": "9月9日、米国家安全保障局（NSA）・サイバーセキュリティ・インフラセキュリティ庁（CISA）・FBIが共同勧告を発表し、DeepSeek・Moonshot AI・Alibaba・MiniMax・StepFun・Z.AIの中国6社が2024年末以降、Claude・ChatGPT・Gemini・Grokなど米フロンティアモデルに対して組織的な「蒸留」攻撃を仕掛けてきたと断定した。",
+      "points": [
+        {
+          "label": "手口",
+          "text": "数百万回のやり取りを通じて数十億トークン規模のデータを抽出し、合成学習データとして自社モデル（DeepSeekのR1・R3、AlibabaのQwen系列など）の性能向上に流用していたとされる。DeepSeekとMoonshot AIが最大の関与企業として名指しされた。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "勧告は蒸留を「付随的な手法ではなく開発プログラムの中核」と評価しており、9月中旬に予定される米中AI安全対話を前に、両国の技術摩擦を一段と際立たせる内容となった。"
+        }
+      ],
+      "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-251a"
+    },
+    {
+      "title": "【技術革新】OpenAI、GPT-6 Astraで数学の未解決問題「ミレニアム懸賞問題」の一つを88時間で解いたと主張——数学界には賛否",
+      "intro": "9月8〜9日、OpenAIは新モデルGPT-6 Astraを用いた1万体規模のAIエージェント群が、流体の運動を記述するナビエ–ストークス方程式に関するミレニアム懸賞問題（クレイ数学研究所が2000年に提示、賞金100万ドル）の一部を88時間で解いたと発表した。",
+      "points": [
+        {
+          "label": "中身",
+          "text": "方程式の解が特定条件下で破綻しうるケースを示す証明で、7つのミレニアム問題のうちこれまで解決済みは1問のみだった難問への挑戦となる。OpenAI研究者は「この1年の到達点を象徴する成果」と評価した。"
+        },
+        {
+          "label": "懐疑論",
+          "text": "数学者テレンス・タオ氏は「AIの無差別な活用が、数学を世界にも学問自体にもほとんど利益をもたらさない、単なるノルマ消化のゲームに変えつつある」と懸念を表明し、査読・検証の在り方を巡る議論が続いている。"
+        }
+      ],
+      "url": "https://www.cnn.com/2026/09/09/business/openai-millennium-problems-navier-stokes-hnk"
+    },
+    {
+      "title": "【技術革新】Google DeepMind、ヒトゲノム全変異を予測する1ペタバイトの「AlphaGenome Atlas」を公開——AlphaFold DBの30倍規模",
+      "intro": "9月8日、Google DeepMindがヒトゲノム上の約90億箇所すべての一塩基変異について分子レベルの影響を予測したデータベース「AlphaGenome Atlas」を公開した。データ量は1ペタバイトに達し、AlphaFold Databaseの30倍超の規模になるという。",
+      "points": [
+        {
+          "label": "中身",
+          "text": "コード領域・非コード領域双方の予測を統合した指標「AlphaGenome Variant Impact（AVI）スコア」を新設し、無数の変異データから研究の優先順位を素早く絞り込めるようにした。学術研究向けに無償のウェブポータルで公開されている。"
+        },
+        {
+          "label": "初期成果",
+          "text": "Broad Institute・エクセター大学のチームによる先行検証では、見落とされていたDNM1関連疾患変異の発見や、UKバイオバンクの非コード領域における関連解析で従来比22%多い知見が得られたと報告されている。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/"
+    },
+    {
+      "title": "【規制・倫理】フィールズ賞受賞者ツィマーマン氏、AI安全のための数学研究所「MAISI」を設立——本人はOpenAI安全部門にも参画",
+      "intro": "9月8日、2026年フィールズ賞受賞の数学者ジェイコブ・ツィマーマン氏が、AI安全性の理論基盤を数学的に整備する新研究機関「Mathematical AI Safety Institute（MAISI）」の設立を発表した。同氏自身は同時期にOpenAIの安全部門にも参加する。",
+      "points": [
+        {
+          "label": "狙い",
+          "text": "AIシステムが破滅的事故を起こさないと確信できるための「定義・測定手法・解決概念」を数学的に構築することを目標に掲げる。プリンストン高等研究所を範とし、少人数の研究者が集中的に難問に取り組む運営形態を想定する。"
+        },
+        {
+          "label": "体制",
+          "text": "2027年1月に10〜30人規模の研究者で始動し、2027年9月には最大100人規模へ拡大する計画。共同創案者アンドリュー・クリッチ氏が事務局長を務め、alignment.orgなどの団体と連携する。"
+        }
+      ],
+      "url": "https://thehill.com/policy/technology/6076244-jacob-tsimerman-launches-maisi/"
+    },
+    {
+      "title": "【ビジネス】AIコーディング企業Cognition、20億ドル超のシリーズEを調達——評価額480億ドル、わずか4カ月で倍増",
+      "intro": "9月8日、AIコーディングエージェント「Devin」を手がけるCognitionが、Andreessen HorowitzとAccelが主導するシリーズEで20億ドル超を調達し、評価額480億ドルに達したと発表した。",
+      "points": [
+        {
+          "label": "成長ぶり",
+          "text": "2026年5月のシリーズD（評価額260億ドル）からわずか4カ月で評価額がほぼ倍増した。年換算収益はシリーズD時点の4億9200万ドルから約9億ドルへ伸びている。"
+        },
+        {
+          "label": "背景",
+          "text": "企業がAIコーディングエージェントへ本格投資する流れが続いており、大型資金がAI開発ツール領域に集中していることを示す事例となった。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-09-08/ai-startup-cognition-raises-2-billion-at-a-48-billion-value"
+    },
+    {
+      "title": "【フィジカルAI・産業】DMM系Algomatic Dynamics、ロボティクス・フィジカルAI特化で50億円調達し本格始動",
+      "intro": "9月9日、DMM.comを中心とした出資でロボティクス・フィジカルAI領域に特化する株式会社Algomatic Dynamicsが50億円の資金調達を実施し、事業を本格始動させたと発表した。",
+      "points": [
+        {
+          "label": "事業内容",
+          "text": "特定の機体・用途に限定しない技術基盤を目指し、動作データの収集・学習からAI多指ハンドの開発・販売運用、二足歩行AIトイの開発まで一貫して手がける。年内に国内向けAI多指ハンドプラットフォームの公開を目指す。"
+        },
+        {
+          "label": "資金使途",
+          "text": "研究開発用ハードウェアへの投資と計算資源の確保が主眼で、今回が設立後初の資金調達となる。日本発のフィジカルAIスタートアップとして、製造・物流分野での実用化競争に参入する形になる。"
+        }
+      ],
+      "url": "https://prtimes.jp/main/html/rd/p/000000001.000186966.html"
+    }
   ]
 };
