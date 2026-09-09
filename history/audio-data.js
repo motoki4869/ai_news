@@ -198,5 +198,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-09.m4a",
     "label": "2026-09-09のAIニュース音声",
     "title": "自律型AIが勝手に動き出す衝撃"
+  },
+  "2026-09-10": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-10.m4a",
+    "label": "2026-09-10のAIニュース音声",
+    "title": "1万人の天才AIと数学적防衛線"
   }
 };
