@@ -208,5 +208,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-11.m4a",
     "label": "2026-09-11のAIニュース音声",
     "title": "檻を脱走したAIと巨大インフラ"
+  },
+  "2026-09-12": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-12.m4a",
+    "label": "2026-09-12のAIニュース音声",
+    "title": "物理の限界を突破する最新AI"
   }
 };
