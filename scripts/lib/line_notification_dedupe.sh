@@ -4,7 +4,7 @@
 # ClaudeフックとCodexフックの両方からsourceされる。
 
 line_notification_text() {
-  printf '%s\n' "本日のAI_newsが更新されました"
+  printf '%s\n\n%s\n' "本日のAI_newsが更新されました" "https://ai-news-sandy-seven.vercel.app"
 }
 
 line_notification_state_dir() {
