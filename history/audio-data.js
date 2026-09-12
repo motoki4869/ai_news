@@ -213,5 +213,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-12.m4a",
     "label": "2026-09-12のAIニュース音声",
     "title": "物理の限界を突破する最新AI"
+  },
+  "2026-09-13": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-13.m4a",
+    "label": "2026-09-13のAIニュース音声",
+    "title": "減速を叫びながら加速するAIの矛盾"
   }
 };
