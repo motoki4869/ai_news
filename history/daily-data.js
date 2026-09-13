@@ -5008,5 +5008,102 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.upstartsmedia.com/p/accomplish-claims-leaky-sandboxes-in-claude-codex-cursor"
     }
+  ],
+  "2026-09-14": [
+    {
+      "title": "【ビジネス】OpenAI、2026年中のIPOを断念——アルトマン氏「AI絶滅リスクは何%であれ容認できない」",
+      "intro": "9月13日、OpenAIのサム・アルトマンCEOがFortune誌のインタビューで、2026年中の新規株式公開を見送ると明言し、AIの安全性を巡る懸念が現時点での上場を「得策でない」判断に至らせたと説明した。",
+      "points": [
+        {
+          "label": "発言内容",
+          "text": "アルトマン氏はAIによる人類存続への脅威が10%あるとしても「容認できない」水準だとし、その確率が8%でも6%でも各社・各国政府は利益や自尊心を優先させず責任を持って行動すべきだと述べた。"
+        },
+        {
+          "label": "業界の動き",
+          "text": "前日にAnthropicのアモデイCEOが提唱した開発ペース減速案にアルトマン氏も同調しており、OpenAIとしても第三者評価パートナーへの社員並みアクセス付与など安全対策の協議が社内で続いていることを明らかにした。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "最大1兆ドル評価とも報じられていた上場計画は2027年以降に持ち越される形となり、安全性への配慮が事業戦略の意思決定に直接影響した事例として注目されている。"
+        }
+      ],
+      "url": "https://finance.yahoo.com/technology/ai/articles/openais-altman-wont-ipo-calls-032537938.html"
+    },
+    {
+      "title": "【ビジネス】AI減速呼びかけを受け半導体関連株に売り圧力——Micron・AMDなどが軟調",
+      "intro": "9月13日、AnthropicやOpenAIなど主要AI企業トップが相次いでAI開発ペースの減速を呼びかけたことを受け、Nvidia・AMD・Micronなど半導体関連株に売り圧力がかかった。",
+      "points": [
+        {
+          "label": "市場動向",
+          "text": "Micron株は年初来高値の1,253ドルから975ドル程度まで下落し、AMD株も516ドル前後で軟調に推移するなど、AI関連の設備投資減速への警戒感が株価に反映された。"
+        },
+        {
+          "label": "識者の見方",
+          "text": "一部アナリストは今回の下落を行き過ぎた反応と見ており、AI学習・推論の需要拡大が続く限りメモリ価格や販売量は市場の悲観ほど落ち込まないとの見方も示されている。"
+        },
+        {
+          "label": "含意",
+          "text": "減速提言はモデル訓練の停止を求めるものではなく、安全確認を強化しながら開発ペースを緩めることを求める内容であるため、AI関連の設備投資自体が腰折れするとの見方は限定的との指摘もある。"
+        }
+      ],
+      "url": "https://invezz.com/news/2026/09/13/micron-nvidia-amd-stocks-at-risk-as-anthropic-openai-leads-push-to-slow-ai-growth/"
+    },
+    {
+      "title": "【倫理・規制・政策】AI安全性警告を巡り米政界が分裂——下院議長は規制主導を拒否、州知事は独自路線を明言",
+      "intro": "9月13日、AI業界トップが相次いで発した安全性への警告を受け、米連邦議会と州政府の間でAI規制への対応方針を巡る温度差が鮮明になった。",
+      "points": [
+        {
+          "label": "下院議長の立場",
+          "text": "共和党のマイク・ジョンソン下院議長はCNNなどの取材に対し、AI安全規制の主導は連邦議会ではなく業界と政権が担うべきだとの考えを示し、トランプ大統領やAI各社トップとの会合設置を呼びかける一方、開発の一時停止には否定的な姿勢を崩さなかった。"
+        },
+        {
+          "label": "州レベルの動き",
+          "text": "ユタ州のスペンサー・コックス知事（共和党）はCBSの番組で、政府は「国民を守る」ためAI規制に関与すべきだと述べ、未成年向けの性的チャットボット販売など具体的な害が生じれば州として介入する考えを表明した。"
+        },
+        {
+          "label": "背景",
+          "text": "民主党側からは下院の休会を取りやめてAI安全法制を可決すべきだとの要求も出ており、Anthropicのアモデイ氏の提言をきっかけに、連邦・州・与野党それぞれで規制の主導権と手法を巡る綱引きが強まっている。"
+        }
+      ],
+      "url": "https://www.axios.com/2026/09/13/ai-safety-congress-law-mike-johnson"
+    },
+    {
+      "title": "【注目ツール・実用プロダクト】Microsoft Copilot、xAIのGrokモデルを追加——Word・Excel・PowerPointへ順次展開",
+      "intro": "9月12日、MicrosoftがCopilotのモデル選択肢にxAIのGrokを追加すると発表し、13日にはイーロン・マスク氏も統合を歓迎する投稿を行った。",
+      "points": [
+        {
+          "label": "展開範囲",
+          "text": "まずMicrosoft Frontierプログラム参加企業向けにWord・Excel・PowerPointのCopilot機能でGrokモデルが利用可能になり、順次対象を広げる計画。"
+        },
+        {
+          "label": "戦略的位置づけ",
+          "text": "Copilotは既にAnthropicのClaudeやxAIのGrok 4.1 Fastを一部提供しており、今回の追加でMicrosoftはOpenAI以外のモデルも取り込むマルチベンダー戦略をさらに進めた形となる。"
+        },
+        {
+          "label": "狙い",
+          "text": "企業のIT部門が業務内容に応じて最適なモデルを使い分けられるようにすることで、単一プラットフォーム上でのモデル選択の柔軟性を高める狙いがある。"
+        }
+      ],
+      "url": "https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/expanding-model-choice-in-copilot-with-grok/4555749"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】AIチップの供給網再編が加速——TSMCは新方式提唱、Samsungはシェア急伸",
+      "intro": "9月12日前後、AIチップの需要急増を背景に、TSMCが半導体各社の垂直連携を促す新開発手法を提唱したほか、SamsungがHBM市場でシェアを急速に伸ばしていることが相次いで報じられた。",
+      "points": [
+        {
+          "label": "TSMCの新方式",
+          "text": "TSMCは「System Technology Collaborative Optimization（STCO）」と呼ぶ手法を提唱し、チップ設計・パッケージング・材料の各社が開発初期段階から連携することで、AIチップの発熱・配線課題に対応し開発スピードを高めることを目指す。"
+        },
+        {
+          "label": "Samsungの躍進",
+          "text": "証券アナリストの分析によれば、SamsungのHBM市場シェアは2026年第2四半期の33%から第4四半期には40%近くまで上昇する見通しで、次世代規格HBM4の量産開始が牽引役とされる。"
+        },
+        {
+          "label": "意義",
+          "text": "AIチップの供給逼迫が続く中、設計から製造まで垂直的に連携する体制づくりと、メモリメーカー間のシェア争いの双方が激化しており、AIインフラの供給網全体の再編が進んでいることを示している。"
+        }
+      ],
+      "url": "https://www.sammyfans.com/2026/09/12/tsmcs-new-stco-plan-aims-to-speed-up-ai-chip-development/"
+    }
   ]
 };
