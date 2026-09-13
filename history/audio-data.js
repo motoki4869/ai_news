@@ -218,5 +218,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-13.m4a",
     "label": "2026-09-13のAIニュース音声",
     "title": "減速を叫びながら加速するAIの矛盾"
+  },
+  "2026-09-14": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-14.m4a",
+    "label": "2026-09-14のAIニュース音声",
+    "title": "100兆円の上場を止めたAI業界の巨大な矛盾"
   }
 };
