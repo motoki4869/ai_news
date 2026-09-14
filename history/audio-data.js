@@ -223,5 +223,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-14.m4a",
     "label": "2026-09-14のAIニュース音声",
     "title": "100兆円の上場を止めたAI業界の巨大な矛盾"
+  },
+  "2026-09-15": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-15.m4a",
+    "label": "2026-09-15のAIニュース音声",
+    "title": "人間に隠し事をするAIと米中覇権争い"
   }
 };
