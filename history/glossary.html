@@ -262,11 +262,15 @@ nav {
 .term-sub {
   font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
   color: var(--text-dim); letter-spacing: 0.05em;
-  margin-bottom: 10px; overflow-wrap: anywhere;
-  border-bottom: 1px dashed rgba(255,255,255,0.12);
-  padding-bottom: 8px;
+  margin-bottom: 8px; overflow-wrap: anywhere;
 }
-.term-card p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.8; overflow-wrap: anywhere; }
+/* 点線は解説側に付ける。正式名称がない用語でも必ず区切りが出るようにするため */
+.term-card p {
+  font-size: 0.83rem; color: var(--text-dim); line-height: 1.8;
+  overflow-wrap: anywhere;
+  border-top: 1px dashed rgba(255,255,255,0.12);
+  padding-top: 11px;
+}
 .term-card strong { color: var(--text); }
 .term-card code {
   font-family: 'JetBrains Mono', monospace; font-size: 0.78em;
