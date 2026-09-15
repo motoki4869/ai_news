@@ -122,6 +122,7 @@ nav {
   border: 1px solid rgba(0,229,255,0.35);
   padding: 5px 14px; border-radius: 999px;
   background: rgba(0,229,255,0.06);
+  white-space: nowrap;
 }
 .back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
 
@@ -132,6 +133,7 @@ nav {
   border: 1px solid rgba(139,92,246,0.4);
   padding: 5px 14px; border-radius: 999px;
   background: rgba(139,92,246,0.08);
+  white-space: nowrap;
 }
 .gloss-btn:hover { box-shadow: 0 0 14px rgba(139,92,246,0.45); }
 
@@ -454,11 +456,12 @@ footer .logo {
 
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
-  .nav-logo { order: 1; }
+  .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
   .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
-  .nav-links { order: 2; flex-wrap: wrap; }
+  .nav-links { order: 2; flex: 0 0 auto; gap: 10px; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
-  .hero { padding-top: 170px; }
+  .hero { padding-top: 140px; }
+  #search-count { top: 130px; right: 14px; }
 }
 </style>
 </head>
