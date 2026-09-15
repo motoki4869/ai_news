@@ -5240,5 +5240,102 @@ window.DAILY_NEWS = {
       ],
       "url": "https://openai.com/index/perplexity-improving-accuracy-with-astra/"
     }
+  ],
+  "2026-09-16": [
+    {
+      "title": "【技術革新】Apple、次世代「Siri AI」のベータ提供を開始——2年越しの刷新、パーソナル情報を横断理解",
+      "intro": "9月15日、Appleが新しいApple Intelligence基盤に刷新した「Siri AI」のベータ提供を開始し、2年間に及んだ刷新計画がようやく実装段階に入った。",
+      "points": [
+        {
+          "label": "機能",
+          "text": "メッセージ・メール・写真など個人データを横断的に理解し、より高度な文脈把握に基づく応答を可能にする設計で、iPhone・iPad・Mac・Apple Watch・Vision Pro全体に統合される。"
+        },
+        {
+          "label": "展開範囲",
+          "text": "ベータは英語のみで先行し、フランス語・日本語・韓国語・ポルトガル語・スペイン語は10月に追加予定。"
+        },
+        {
+          "label": "地域制限",
+          "text": "規制対応の関係で中国では当面提供されず、EUでもMacとVision Pro限定でiPhone・iPad・Apple Watchでは当面利用できないなど、地域ごとの提供格差が浮き彫りになっている。"
+        }
+      ],
+      "url": "https://dataconomy.com/2026/09/15/apple-ios-27-siri-ai-update/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Agility Robotics、人と隔離なしで働ける新型ヒューマノイド「Digit 5」を発表",
+      "intro": "9月15日、Agility RoboticsがヒューマノイドロボットDigit の第5世代モデルを発表し、物理的な安全柵を必要とせず人と同じ空間で作業できる初のモデルと位置づけた。",
+      "points": [
+        {
+          "label": "安全設計",
+          "text": "独自のAIアルゴリズムと複数センサーで周囲の人を常時検知し、回避・停止・着座姿勢を取るなどの反応を行うほか、視覚・聴覚的な合図で自身の動作意図を周囲に伝える。"
+        },
+        {
+          "label": "性能向上",
+          "text": "新設計の脚部（サイクロイド減速機採用）によりペイロードを40%向上させ、最大50ポンド（約23kg）の荷物を繰り返し持ち上げられる。"
+        },
+        {
+          "label": "事業状況",
+          "text": "既に3億ドル超の複数年顧客受注を獲得しており、2027年上半期に早期提供、2027年末までに製造・倉庫向けに一般提供を開始する計画。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/agility-robotics-unveils-humanoid-designed-to-work-safely-alongside-humans"
+    },
+    {
+      "title": "【ビジネス】韓国メモリ株、米半導体売りに逆行して上昇——Samsung・SK Hynixは2027年まで生産枠完売",
+      "intro": "9月15日、前週末にAI開発減速論を巡り米国の半導体株が軒並み急落する中、韓国のSamsung電子とSK Hynixはこれに逆行して上昇し、市場の受け止め方の違いが浮き彫りになった。",
+      "points": [
+        {
+          "label": "株価動向",
+          "text": "米国株が最大6%規模で下落した局面で、Samsungは0.7%高、SK Hynixは1.82%高となり、KOSPI全体もほぼ横ばいで踏みとどまった。"
+        },
+        {
+          "label": "需給の実態",
+          "text": "Samsung・SK Hynix・Micronの主要3社は2027年分までメモリの生産枠が完売しており、SamsungはHBM（広帯域メモリ）の長期供給契約を2031年まで確保済みとされる。"
+        },
+        {
+          "label": "含意",
+          "text": "フロンティアモデル開発の減速論が語られても、AI推論用途の旺盛な需要がメモリ価格・受注残に直結しているため、半導体株の悲観的な反応は米国発の投資マインドの問題であり、実需そのものは崩れていないとの見方を裏付けている。"
+        }
+      ],
+      "url": "https://invezz.com/news/2026/09/15/samsung-and-sk-hynix-defy-a-6-us-chip-rout-what-is-korea-seeing-differently/"
+    },
+    {
+      "title": "【倫理・規制・政策】Cloudflare、広告収益ページで「混合型」AIクローラーの標準ブロックを開始",
+      "intro": "9月15日、Cloudflareが7月に予告していた方針を実行に移し、検索インデックス作成・AI学習・エージェント検索を兼ねる「混合型」クローラーを、広告が表示されるページからデフォルトでブロックする運用を開始した。",
+      "points": [
+        {
+          "label": "対象範囲",
+          "text": "学習用・エージェント用のクローラーは広告付きページで遮断される一方、検索専用のクローラーは引き続き許可され、新規顧客・新規サイト・既存の無料プラン顧客に適用される。"
+        },
+        {
+          "label": "狙い",
+          "text": "AIアシスタントがコンテンツを要約してチャット内で完結させることで、元の発行元が広告収入やアフィリエイト収益、購読誘導の機会を失う問題に対処する狙いがある。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "検索エンジン最大手のインフラ層を担うCloudflareが標準設定として実装したことで、パブリッシャーとAI企業の間のコンテンツ利用を巡る力関係に構造的な変化をもたらす可能性がある。"
+        }
+      ],
+      "url": "https://gagadget.com/en/717137-cloudflare-will-block-mixed-ai-crawlers-from-ad-supported-sites-starting-september-15/"
+    },
+    {
+      "title": "【注目ツール・実用プロダクト】xAI、AIエージェントによる製品開発を公開実験する3日間イベント「Grok Bot Galaxy」を開始",
+      "intro": "9月15日、xAIがサンフランシスコで3日間のライブイベント「Grok Bot Galaxy」を開始し、AIエージェント「Grok Bot」を使った製品開発の過程を公開実験として配信している。",
+      "points": [
+        {
+          "label": "企画内容",
+          "text": "何もない状態から3人（Matt Palmer氏・Lauren Tan氏・Roshan Sadanani氏）が事業計画・製品判断・エンジニアリングをGrok Botと共に進める様子を、現地開催とライブ配信の両方で公開する。"
+        },
+        {
+          "label": "初日の構成",
+          "text": "初日はGrok Botの基礎解説、エンジニアリング、プロダクトマネジメント、創業者向けセッションなど複数のトラックで構成された。"
+        },
+        {
+          "label": "狙い",
+          "text": "単なる新機能発表ではなく、AIエージェントが実際の製品開発プロセスをどこまで担えるかを公開の場で実証することで、エージェント型AIの実用性を訴求する狙いがある。"
+        }
+      ],
+      "url": "https://supergok.com/grok-bot-galaxy/"
+    }
   ]
 };
