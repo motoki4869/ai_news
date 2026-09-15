@@ -367,11 +367,15 @@ nav {
 }
 .audio-skip:disabled { opacity: 0.35; cursor: default; }
 
-/* PC幅では「視聴済み」を枠全体の右下（音声バーの右下）へ置く。
-   スマホ幅ではキッカー行の右端のままにしたいので、min-width側だけで上書きする。 */
-@media (min-width: 769px) {
-  .audio-inner { position: relative; padding-bottom: 42px; }
-  .audio-heard-label { position: absolute; right: 22px; bottom: 14px; }
+/* PC幅では「視聴済み」を速度ボタン（1倍/1.5倍/2倍）と同じ行の右端へ置く。
+   890px未満では .audio-controls が折り返して2行組みになり、下端基準の絶対配置が
+   音声バーに重なるため、1行組みが確定する900px以上でだけ適用する。
+   それ未満（スマホ含む）はキッカー行の右端のまま。 */
+@media (min-width: 900px) {
+  .audio-inner { position: relative; }
+  /* 速度ボタン（1倍/1.5倍/2倍）の行と同じ高さに揃える。
+     .audio-copy が行の高さを決め、その最後の子が速度ボタン行なので、下端基準で合う。 */
+  .audio-heard-label { position: absolute; right: 22px; bottom: 20px; }
 }
 
 /* ===== CTA / footer ===== */
