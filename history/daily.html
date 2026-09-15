@@ -367,6 +367,13 @@ nav {
 }
 .audio-skip:disabled { opacity: 0.35; cursor: default; }
 
+/* PC幅では「視聴済み」を枠全体の右下（音声バーの右下）へ置く。
+   スマホ幅ではキッカー行の右端のままにしたいので、min-width側だけで上書きする。 */
+@media (min-width: 769px) {
+  .audio-inner { position: relative; padding-bottom: 42px; }
+  .audio-heard-label { position: absolute; right: 22px; bottom: 14px; }
+}
+
 /* ===== CTA / footer ===== */
 .cta-back { text-align: center; padding: 70px 24px 100px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
 .cta-back a {
