@@ -30,6 +30,8 @@
   --text-dim: #8a94b8;
   --card: rgba(20, 25, 55, 0.55);
   --border: rgba(0, 255, 163, 0.18);
+  /* 固定ナビの実高さ。JSが実測値で上書きする（フォントの読み込みやロゴの折り返しで変わるため） */
+  --nav-h: 64px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -239,7 +241,9 @@ nav {
   font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
   font-size: clamp(1.05rem, 3vw, 1.45rem); font-weight: 600;
   letter-spacing: 0.05em; color: var(--green);
-  scroll-margin-top: 64px;
+  /* nav は position: fixed。スマホではロゴが2行に折り返して85px前後まで伸びるため、
+     64px 固定だとスワイプ後の scrollIntoView で日付がナビの下に潜り込む。 */
+  scroll-margin-top: calc(var(--nav-h) + 18px);
 }
 .day-head .day-count {
   font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-dim);
@@ -600,6 +604,15 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
+
+/* ===== 固定ナビの高さを --nav-h に同期する =====
+   日付見出しの scroll-margin-top がこの値を使う。ロゴの折り返し・フォント読み込み・
+   画面回転で高さが変わるので、ResizeObserver で追従させる。 */
+const navEl = document.querySelector('nav');
+const syncNavHeight = () =>
+  document.documentElement.style.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+syncNavHeight();
+new ResizeObserver(syncNavHeight).observe(navEl);
 
 /* ===== Progress bar ===== */
 window.addEventListener('scroll', () => {
