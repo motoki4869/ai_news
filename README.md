@@ -38,6 +38,7 @@ bash scripts/daily_news.sh
 - `everyday_news/` — 月別ニュース記録（`line_calendar_bot` が参照）
 - `history/` — 日次ニュースの静的サイト（`daily.html` 等）
 - `report/` — テーマ別の考察レポート（Markdown、ファイル名は `YYYY-MM-DD_タイトル.md`）
+- `docs/glossary.md` — 用語集の原本。`scripts/generate_glossary_data.py` で `history/glossary-data.js` を生成し `history/glossary.html` が読む。**生成物とHTMLを直接編集せず、必ずこの原本を編集する**
 - `scripts/` — 収集・生成スクリプト一式
 - `.claude/skills/` — `format-report` / `sync-news-html` スキル
 - `.claude/hooks/line_notify.sh` — Write/EditフックでLINE通知を送るフック
