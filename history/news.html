@@ -105,7 +105,7 @@ nav {
 #search-count {
   display: none;
   position: fixed;
-  top: 98px; right: 32px; z-index: 99;
+  top: calc(var(--nav-h, 57px) + 42px); right: 32px; z-index: 99;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: var(--green);
@@ -139,7 +139,7 @@ nav {
 
 /* ===== Ticker ===== */
 .ticker-wrap {
-  position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+  position: fixed; top: var(--nav-h, 57px); left: 0; right: 0; z-index: 99;
   background: rgba(0, 255, 163, 0.06);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
@@ -179,7 +179,7 @@ nav {
 .hero {
   min-height: 62vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 150px 24px 50px; position: relative;
+  text-align: center; padding: calc(var(--nav-h, 57px) + 52px) 24px 50px; position: relative;
 }
 
 .hero-tag {
@@ -454,14 +454,25 @@ footer .logo {
   z-index: 200; box-shadow: 0 0 12px rgba(0,255,163,0.7);
 }
 
+@media (max-width: 1250px) {
+  nav { padding: 14px 20px; }
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 0.74rem; letter-spacing: 0.04em; }
+  .nav-search { width: 150px; }
+}
+
+/* 狭い画面ではセクション内リンクを畳み、ページ間リンクだけ残す */
+@media (max-width: 950px) {
+  .nav-links a[href^="#"] { display: none; }
+}
+
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
   .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
   .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
   .nav-links { order: 2; flex: 0 0 auto; gap: 10px; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
-  .hero { padding-top: 140px; }
-  #search-count { top: 130px; right: 14px; }
+  #search-count { right: 14px; }
 }
 </style>
 </head>
@@ -891,6 +902,16 @@ function resize() {
 }
 resize();
 window.addEventListener('resize', resize);
+
+/* ===== ナビの実高さを --nav-h に反映（スマホ幅でロゴが折り返すと高さが変わるため） ===== */
+const navEl = document.querySelector('nav');
+function syncNavHeight() {
+  document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+}
+syncNavHeight();
+window.addEventListener('resize', syncNavHeight);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
 
 const NODE_COUNT = Math.min(90, Math.floor(window.innerWidth / 16));
 const COLORS = ['0,255,163', '0,229,255', '139,92,246', '255,181,71'];
