@@ -101,6 +101,16 @@ nav {
 }
 .back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
 
+.gloss-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem !important;
+  color: var(--violet) !important;
+  border: 1px solid rgba(139,92,246,0.4);
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(139,92,246,0.08);
+}
+.gloss-btn:hover { box-shadow: 0 0 14px rgba(139,92,246,0.45); }
+
 /* ===== Hero ===== */
 .hero {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -397,7 +407,7 @@ footer .logo {
 
 @media (max-width: 768px) {
   nav { padding: 12px 16px; }
-  .nav-links a:not(.back-btn) { display: none; }
+  .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
   .hero { padding-top: 100px; }
   .cal-wrap { padding: 0 12px 8px; }
   .cal-grid { gap: 4px; }
@@ -424,6 +434,7 @@ footer .logo {
   <div class="nav-links">
     <a href="news.html">最新ニュース</a>
     <a href="archive.html">過去ログ</a>
+    <a class="gloss-btn" href="glossary.html">用語集</a>
     <a class="back-btn" href="index.html">← AI HISTORY</a>
   </div>
 </nav>

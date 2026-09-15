@@ -125,6 +125,16 @@ nav {
 }
 .back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
 
+.gloss-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem !important;
+  color: var(--violet) !important;
+  border: 1px solid rgba(139,92,246,0.4);
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(139,92,246,0.08);
+}
+.gloss-btn:hover { box-shadow: 0 0 14px rgba(139,92,246,0.45); }
+
 /* ===== Ticker ===== */
 .ticker-wrap {
   position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
@@ -445,7 +455,7 @@ footer .logo {
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
   .nav-logo { order: 1; }
-  .nav-links a:not(.back-btn) { display: none; }
+  .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
   .nav-links { order: 2; flex-wrap: wrap; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   .hero { padding-top: 170px; }
@@ -470,6 +480,7 @@ footer .logo {
     <a href="#security">セキュリティ</a>
     <a href="daily.html">デイリー</a>
     <a href="archive.html">過去ログ</a>
+    <a class="gloss-btn" href="glossary.html">用語集</a>
     <a class="back-btn" href="index.html">← AI HISTORY</a>
   </div>
   <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: 企業 / 技術 / トピック">
