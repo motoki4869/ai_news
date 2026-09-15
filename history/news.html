@@ -522,14 +522,13 @@ footer .logo {
     </p>
     <div class="quick-filters">
       <span class="qf-label">QUICK FILTER:</span>
-      <button data-q="OpenAI">OpenAI</button>
-      <button data-q="Anthropic">Anthropic</button>
-      <button data-q="Google">Google</button>
-      <button data-q="NVIDIA">NVIDIA</button>
-      <button data-q="NTT">NTT</button>
-      <button data-q="ソニー">ソニー</button>
-      <button data-q="金融">金融</button>
-      <button data-q="ロボット">ロボット</button>
+      <button data-sec="agent">エージェント</button>
+      <button data-sec="japan">国内実装</button>
+      <button data-sec="physical">フィジカルAI</button>
+      <button data-sec="sovereign">ソブリンAI</button>
+      <button data-sec="infra">インフラ</button>
+      <button data-sec="society">経済・社会</button>
+      <button data-sec="security">セキュリティ</button>
       <button class="qf-clear">✕ クリア</button>
     </div>
   </header>
@@ -988,39 +987,53 @@ window.addEventListener('scroll', () => {
 const searchInput = document.getElementById('site-search');
 const searchCount = document.getElementById('search-count');
 
+/* クイックフィルターは7テーマ(セクション)で絞り込む。
+   固有名詞のキーワードだとニュースが入れ替わるたびに手入れが必要になるため、
+   セクションidを使って内容に依存しない形にしている。キーワード検索とは併用できる。 */
+let activeSection = '';
+
 function applySearch() {
   const q = searchInput.value.trim().toLowerCase();
+  const filtering = !!(q || activeSection);
   let hits = 0;
 
-  document.querySelectorAll('.news-card').forEach(card => {
-    const match = !q || card.textContent.toLowerCase().includes(q);
-    card.style.display = match ? '' : 'none';
-    if (match) { hits++; if (q) card.classList.add('visible'); }
-  });
-
-  // hide theme sections with no matching cards
   document.querySelectorAll('.section').forEach(sec => {
-    const any = [...sec.querySelectorAll('.news-card')].some(c => c.style.display !== 'none');
-    sec.style.display = (any || !q) ? '' : 'none';
+    const secMatch = !activeSection || sec.id === activeSection;
+    let any = false;
+
+    sec.querySelectorAll('.news-card').forEach(card => {
+      const match = secMatch && (!q || card.textContent.toLowerCase().includes(q));
+      card.style.display = match ? '' : 'none';
+      if (match) {
+        any = true; hits++;
+        // 絞り込み中はスクロール前でも見える必要があるので、出現アニメを即時適用する
+        if (filtering) card.classList.add('visible');
+      }
+    });
+
+    // 絞り込み中は、該当カードが1枚も残らないテーマごと隠す
+    sec.style.display = (any || !filtering) ? '' : 'none';
   });
 
-  searchCount.textContent = hits + '件ヒット';
-  searchCount.style.display = q ? 'block' : 'none';
+  searchCount.textContent = hits + (q ? '件ヒット' : '件表示');
+  searchCount.style.display = filtering ? 'block' : 'none';
 
-  document.querySelectorAll('.quick-filters button[data-q]').forEach(b =>
-    b.classList.toggle('active', b.dataset.q.toLowerCase() === q));
+  document.querySelectorAll('.quick-filters button[data-sec]').forEach(b =>
+    b.classList.toggle('active', b.dataset.sec === activeSection));
 }
 
 searchInput.addEventListener('input', applySearch);
 
-document.querySelectorAll('.quick-filters button[data-q]').forEach(btn => {
+document.querySelectorAll('.quick-filters button[data-sec]').forEach(btn => {
   btn.addEventListener('click', () => {
-    searchInput.value = (searchInput.value === btn.dataset.q) ? '' : btn.dataset.q;
+    // 同じボタンをもう一度押したら解除
+    activeSection = (activeSection === btn.dataset.sec) ? '' : btn.dataset.sec;
     applySearch();
   });
 });
 
 document.querySelector('.qf-clear').addEventListener('click', () => {
+  activeSection = '';
   searchInput.value = '';
   applySearch();
 });
