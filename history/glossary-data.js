@@ -88,7 +88,7 @@ window.GLOSSARY = [
       {
         "term": "<strong>IETF AIMS</strong>",
         "sub": "draft-klrc-aiagent-auth",
-        "desc": "AIエージェントの認証・認可の標準化フレームワーク。エージェントを「サーバーレスコンテナやマイクロサービスと同等のシステムワークロード」として扱い、WIMSE識別子（SPIFFE ID）を動的発行する。<strong>ISO/IEC 42001の AIMS（AI Management System）とは全くの別物なので注意</strong>（→ 6章）。",
+        "desc": "AIエージェントの認証・認可の標準化フレームワーク。エージェントを「サーバーレスコンテナやマイクロサービスと同等のシステムワークロード」として扱い、WIMSE識別子（SPIFFE ID）を動的発行する。ISO/IEC 42001の AIMS（AI Management System）とは全くの別物なので注意（→ 6章）。",
         "q": "ietf aims draft-klrc-aiagent-auth aiエージェントの認証・認可の標準化フレームワーク。エージェントを「サーバーレスコンテナやマイクロサービスと同等のシステムワークロード」として扱い、wimse識別子（spiffe id）を動的発行する。iso/iec 42001の aims（ai management system）とは全くの別物なので注意（→ 6章）。"
       }
     ]
@@ -440,7 +440,7 @@ window.GLOSSARY = [
       {
         "term": "<strong>ISO/IEC 42001（AIMS）</strong>",
         "sub": "AI Management System",
-        "desc": "組織全体のAI運営方針・責任の所在・データガバナンスを定める国際規格。認証取得が調達条件になる例も出ており、EU AI Actへの適合を示す実務的な手段としても使われる。<strong>IETF AIMS（エージェント認証標準）とは同名の別物</strong>なので、文脈で読み分ける必要がある。",
+        "desc": "組織全体のAI運営方針・責任の所在・データガバナンスを定める国際規格。認証取得が調達条件になる例も出ており、EU AI Actへの適合を示す実務的な手段としても使われる。IETF AIMS（エージェント認証標準）とは同名の別物なので、文脈で読み分ける必要がある。",
         "q": "iso/iec 42001（aims） ai management system 組織全体のai運営方針・責任の所在・データガバナンスを定める国際規格。認証取得が調達条件になる例も出ており、eu ai actへの適合を示す実務的な手段としても使われる。ietf aims（エージェント認証標準）とは同名の別物なので、文脈で読み分ける必要がある。"
       },
       {
@@ -606,64 +606,64 @@ window.GLOSSARY = [
     "id": "sec9",
     "entries": [
       {
-        "term": "Claude Opus、Sonnet、Fable、Mythos",
+        "term": "Claude Opus / Sonnet / Fable / Mythos",
         "sub": "<strong>Anthropic</strong>",
-        "desc": "Fable 5.1 は Terminal-Bench 4.0 で55.8%。<strong>Mythos</strong> はサイバー能力が突出しており、Mythos Preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、Project Glasswing の40社パートナーにのみ厳格提供されている。",
-        "q": "anthropic claude opus、sonnet、fable、mythos fable 5.1 は terminal-bench 4.0 で55.8%。mythos はサイバー能力が突出しており、mythos preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、project glasswing の40社パートナーにのみ厳格提供されている。"
+        "desc": "Fable 5.1 は Terminal-Bench 4.0 で55.8%。Mythos はサイバー能力が突出しており、Mythos Preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、Project Glasswing の40社パートナーにのみ厳格提供されている。",
+        "q": "anthropic claude opus / sonnet / fable / mythos fable 5.1 は terminal-bench 4.0 で55.8%。mythos はサイバー能力が突出しており、mythos preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、project glasswing の40社パートナーにのみ厳格提供されている。"
       },
       {
-        "term": "GPT-5.6 Sol、Terra、Luna、Astra、Codex",
+        "term": "GPT-5.6 Sol / Terra / Luna / Astra",
         "sub": "<strong>OpenAI</strong>",
-        "desc": "Sol / Terra / Luna の3系統を2026年7月9日に一般公開。<strong>Astra</strong> は次世代モデルだが、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された。",
-        "q": "openai gpt-5.6 sol、terra、luna、astra、codex sol / terra / luna の3系統を2026年7月9日に一般公開。astra は次世代モデルだが、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された。"
+        "desc": "Sol / Terra / Luna の3系統を2026年7月9日に一般公開。Astra は次世代モデルだが、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
+        "q": "openai gpt-5.6 sol / terra / luna / astra sol / terra / luna の3系統を2026年7月9日に一般公開。astra は次世代モデルだが、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
-        "term": "Gemini（3 Pro、3.1 Flash、3.5 Pro 等）",
+        "term": "Gemini 3 Pro / 3.1 Flash / 3.5 Pro 等",
         "sub": "<strong>Google / DeepMind</strong>",
         "desc": "Gemini系列を開発。Flash が軽量・低価格、Pro が高性能という位置づけで、用途に応じて使い分ける前提の構成になっている。Gemini 3.5 Pro は200万トークンのコンテキストウィンドウを備え、長文脈の扱いで先行している。",
-        "q": "google / deepmind gemini（3 pro、3.1 flash、3.5 pro 等） gemini系列を開発。flash が軽量・低価格、pro が高性能という位置づけで、用途に応じて使い分ける前提の構成になっている。gemini 3.5 pro は200万トークンのコンテキストウィンドウを備え、長文脈の扱いで先行している。"
+        "q": "google / deepmind gemini 3 pro / 3.1 flash / 3.5 pro 等 gemini系列を開発。flash が軽量・低価格、pro が高性能という位置づけで、用途に応じて使い分ける前提の構成になっている。gemini 3.5 pro は200万トークンのコンテキストウィンドウを備え、長文脈の扱いで先行している。"
       },
       {
-        "term": "<strong>MAI</strong>（MAI-Cyber-1-Flash 等）",
+        "term": "MAI-Cyber-1-Flash 等",
         "sub": "<strong>Microsoft</strong>",
         "desc": "Microsoftの自社開発モデル群の総称。2026年9月14日、MAIモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。",
-        "q": "microsoft mai（mai-cyber-1-flash 等） microsoftの自社開発モデル群の総称。2026年9月14日、maiモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。"
+        "q": "microsoft mai-cyber-1-flash 等 microsoftの自社開発モデル群の総称。2026年9月14日、maiモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。"
       },
       {
-        "term": "Grok（4.5 等）",
+        "term": "Grok 4.5 等",
         "sub": "<strong>SpaceXAI</strong>",
         "desc": "xAI系のGrokシリーズを擁する陣営。Grok 4.5 は汎用チャットとリアルタイム情報の取り込みを強みとし、他社と比べて出力の制約が緩い方針を取ることが議論の対象になる。自社データセンターへの大規模投資でも名前が挙がる。",
-        "q": "spacexai grok（4.5 等） xai系のgrokシリーズを擁する陣営。grok 4.5 は汎用チャットとリアルタイム情報の取り込みを強みとし、他社と比べて出力の制約が緩い方針を取ることが議論の対象になる。自社データセンターへの大規模投資でも名前が挙がる。"
+        "q": "spacexai grok 4.5 等 xai系のgrokシリーズを擁する陣営。grok 4.5 は汎用チャットとリアルタイム情報の取り込みを強みとし、他社と比べて出力の制約が緩い方針を取ることが議論の対象になる。自社データセンターへの大規模投資でも名前が挙がる。"
       },
       {
-        "term": "<strong>GLM</strong>（GLM-5.3 等）",
+        "term": "GLM-5.3 等",
         "sub": "<strong>Z.AI（智谱）</strong>",
-        "desc": "中国のオープンウェイト大手。<strong>「次世代GLM」</strong> は同社が約5,000億円規模の資金調達で開発を進める次世代基盤モデルで、「完全自己学習システム」への投資とセットで語られる。香港での株式発行・転換社債により総額約50億ドルの調達を計画。",
-        "q": "z.ai（智谱） glm（glm-5.3 等） 中国のオープンウェイト大手。「次世代glm」 は同社が約5,000億円規模の資金調達で開発を進める次世代基盤モデルで、「完全自己学習システム」への投資とセットで語られる。香港での株式発行・転換社債により総額約50億ドルの調達を計画。"
+        "desc": "中国のオープンウェイト大手。「次世代GLM」 は同社が約5,000億円規模の資金調達で開発を進める次世代基盤モデルで、「完全自己学習システム」への投資とセットで語られる。香港での株式発行・転換社債により総額約50億ドルの調達を計画。",
+        "q": "z.ai（智谱） glm-5.3 等 中国のオープンウェイト大手。「次世代glm」 は同社が約5,000億円規模の資金調達で開発を進める次世代基盤モデルで、「完全自己学習システム」への投資とセットで語られる。香港での株式発行・転換社債により総額約50億ドルの調達を計画。"
       },
       {
-        "term": "V3、V4、V4-Flash、R1",
+        "term": "V3 / V4 / V4-Flash / R1",
         "sub": "<strong>DeepSeek</strong>",
         "desc": "R1 が RLVR / GRPO による推論モデルの先駆け。V4-Flash-0731 はアーキテクチャ（284B MoE、アクティブ13B）を変えずポストトレーニングのみで自社フラッグシップ超えを主張。",
-        "q": "deepseek v3、v4、v4-flash、r1 r1 が rlvr / grpo による推論モデルの先駆け。v4-flash-0731 はアーキテクチャ（284b moe、アクティブ13b）を変えずポストトレーニングのみで自社フラッグシップ超えを主張。"
+        "q": "deepseek v3 / v4 / v4-flash / r1 r1 が rlvr / grpo による推論モデルの先駆け。v4-flash-0731 はアーキテクチャ（284b moe、アクティブ13b）を変えずポストトレーニングのみで自社フラッグシップ超えを主張。"
       },
       {
-        "term": "Kimi（K2 Thinking、K3）",
+        "term": "Kimi K2 Thinking / K3",
         "sub": "<strong>Moonshot AI</strong>",
         "desc": "中国のオープンウェイト大手の一つ。K3 は2.8兆パラメータでオープンウェイト史上最大級で、Arenaのフロントエンド開発ベンチマークで首位を獲得した。米当局が「蒸留」攻撃を指摘した6社にも名前が挙がっている。",
-        "q": "moonshot ai kimi（k2 thinking、k3） 中国のオープンウェイト大手の一つ。k3 は2.8兆パラメータでオープンウェイト史上最大級で、arenaのフロントエンド開発ベンチマークで首位を獲得した。米当局が「蒸留」攻撃を指摘した6社にも名前が挙がっている。"
+        "q": "moonshot ai kimi k2 thinking / k3 中国のオープンウェイト大手の一つ。k3 は2.8兆パラメータでオープンウェイト史上最大級で、arenaのフロントエンド開発ベンチマークで首位を獲得した。米当局が「蒸留」攻撃を指摘した6社にも名前が挙がっている。"
       },
       {
-        "term": "Qwen（Qwen3、VL 等）",
+        "term": "Qwen3 / Qwen3-VL 等",
         "sub": "<strong>Alibaba</strong>",
         "desc": "Qwen（通義千問）シリーズを開発する中国のオープンウェイト最大手。Qwen3-Max-Thinking は総パラメータ2,350億・アクティブ220億のMoE構成で、Hugging Face上の派生モデル数ではLlamaを抜いた。米当局が「蒸留」攻撃を指摘した6社にも含まれる。",
-        "q": "alibaba qwen（qwen3、vl 等） qwen（通義千問）シリーズを開発する中国のオープンウェイト最大手。qwen3-max-thinking は総パラメータ2,350億・アクティブ220億のmoe構成で、hugging face上の派生モデル数ではllamaを抜いた。米当局が「蒸留」攻撃を指摘した6社にも含まれる。"
+        "q": "alibaba qwen3 / qwen3-vl 等 qwen（通義千問）シリーズを開発する中国のオープンウェイト最大手。qwen3-max-thinking は総パラメータ2,350億・アクティブ220億のmoe構成で、hugging face上の派生モデル数ではllamaを抜いた。米当局が「蒸留」攻撃を指摘した6社にも含まれる。"
       },
       {
-        "term": "MiniMax、StepFun",
+        "term": "MiniMax / StepFun",
         "sub": "<strong>その他中国勢</strong>",
         "desc": "米当局が「蒸留」攻撃を指摘した6社（DeepSeek、Moonshot AI、Alibaba、MiniMax、StepFun、Z.AI）に含まれる。",
-        "q": "その他中国勢 minimax、stepfun 米当局が「蒸留」攻撃を指摘した6社（deepseek、moonshot ai、alibaba、minimax、stepfun、z.ai）に含まれる。"
+        "q": "その他中国勢 minimax / stepfun 米当局が「蒸留」攻撃を指摘した6社（deepseek、moonshot ai、alibaba、minimax、stepfun、z.ai）に含まれる。"
       },
       {
         "term": "Mistral",
@@ -672,10 +672,10 @@ window.GLOSSARY = [
         "q": "mistral ai mistral フランス拠点のオープンウェイト系ラボ。apache 2.0等のライセンスでモデルを公開し、企業が自社のオンプレミスやeuローカルクラウドへ配備してデータ主権を自社の管理下に置く「主権ai」の選択肢として位置づけられる。オープンモデル擁護の業界共同書簡にも名を連ねた。"
       },
       {
-        "term": "Cosmos、Isaac、Omniverse",
+        "term": "Cosmos / Isaac / Omniverse",
         "sub": "<strong>NVIDIA</strong>",
         "desc": "モデルそのものより、世界モデル（Cosmos）とシミュレーション基盤（Omniverse / Isaac Sim）を提供する立場。ロボットを仮想空間で訓練して実機へ移すSim-to-Realのワークフロー全体を押さえることで、フィジカルAIの土台を握っている。",
-        "q": "nvidia cosmos、isaac、omniverse モデルそのものより、世界モデル（cosmos）とシミュレーション基盤（omniverse / isaac sim）を提供する立場。ロボットを仮想空間で訓練して実機へ移すsim-to-realのワークフロー全体を押さえることで、フィジカルaiの土台を握っている。"
+        "q": "nvidia cosmos / isaac / omniverse モデルそのものより、世界モデル（cosmos）とシミュレーション基盤（omniverse / isaac sim）を提供する立場。ロボットを仮想空間で訓練して実機へ移すsim-to-realのワークフロー全体を押さえることで、フィジカルaiの土台を握っている。"
       }
     ]
   }
