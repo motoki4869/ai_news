@@ -145,6 +145,11 @@ nav {
 .section-bar a.is-active {
   color: rgb(255, 46, 230); text-shadow: 0 0 12px rgba(255, 46, 230, 0.55);
 }
+/* 絞り込みで該当セクションが消えているあいだは、押せないことを見た目で示す */
+.section-bar a.is-unavailable {
+  opacity: 0.3;
+  pointer-events: none;
+}
 .section-bar a.is-active::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
   height: 2px; border-radius: 2px;
@@ -1089,15 +1094,46 @@ function setSpyActive(idx) {
   }
 }
 
+/* 検索・タグで絞り込むと、該当なしのセクションは display:none で消える。
+   display:none の要素の getBoundingClientRect() は全て 0 を返すため、
+   そのままだと「top が 0 なので判定ラインを越えている」とみなされ、
+   画面には年表が出ているのに最後の項目（技術革新）が点灯してしまう。
+   絞り込み中は、いま実際に表示されているセクションだけを対象にする。 */
+function isSpyTargetVisible(t) {
+  return !!t && t.offsetParent !== null;
+}
+
 function computeSpyIndex() {
   const line = barEl.getBoundingClientRect().bottom + SPY_LINE_OFFSET;
   let idx = -1;
-  spyTargets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) idx = i; });
+  let lastVisible = -1;
+  spyTargets.forEach((t, i) => {
+    if (!isSpyTargetVisible(t)) return;
+    lastVisible = i;
+    if (t.getBoundingClientRect().top <= line) idx = i;
+  });
   // 最下部まで来たら最後のセクションを現在地にする（末尾が短いと選ばれないため）
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
-    idx = spyLinks.length - 1;
+    idx = lastVisible;
   }
   return idx;
+}
+
+/* 絞り込みで消えたセクションの項目は、押しても飛び先が無いので操作不可にする。
+   幅が変わるとバーがガタつくので、非表示にはせず淡く落とすだけにする。
+   絞り込みの結果ページの高さも変わるので、現在地も測り直す。 */
+function refreshSectionSpy() {
+  spyLinks.forEach((a, i) => {
+    const gone = !isSpyTargetVisible(spyTargets[i]);
+    a.classList.toggle('is-unavailable', gone);
+    // タブキーでも触れないようにする（視覚的に無効なのに選べると混乱する）
+    if (gone) a.setAttribute('tabindex', '-1'); else a.removeAttribute('tabindex');
+  });
+  if (spyLockedIndex !== null && !isSpyTargetVisible(spyTargets[spyLockedIndex])) {
+    releaseSpyLock();
+    return;
+  }
+  updateSectionSpy();
 }
 
 function updateSectionSpy() {
@@ -1124,7 +1160,10 @@ function releaseSpyLock() {
 }
 
 spyLinks.forEach((a, i) => {
-  a.addEventListener('click', () => {
+  a.addEventListener('click', e => {
+    // pointer-events: none は指のタップしか止めない。キーボードのEnterなどでも
+    // 絞り込みで消えたセクションに飛ばないよう、ここでも弾いておく。
+    if (!isSpyTargetVisible(spyTargets[i])) { e.preventDefault(); return; }
     spyLockedIndex = i;
     spyLockY = null;
     setSpyActive(i);
@@ -1334,6 +1373,9 @@ function applyFilters() {
 
   document.querySelectorAll('.filter-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.chip === activeChip));
+
+  // 消えたセクションが目次に残らないよう、絞り込みのたびに目次を測り直す
+  refreshSectionSpy();
 }
 
 searchInput.addEventListener('input', applyFilters);
