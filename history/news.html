@@ -254,7 +254,6 @@ nav {
 }
 .quick-filters button:hover { box-shadow: 0 0 12px rgba(0,255,163,0.35); }
 .quick-filters button.active { color: var(--bg); background: var(--green); }
-.quick-filters .qf-clear { color: var(--text-dim); border-color: rgba(255,255,255,0.2); background: transparent; }
 
 /* ===== Related-page link ===== */
 .rel-link {
@@ -525,7 +524,6 @@ footer .logo {
       <button data-sec="infra">インフラ</button>
       <button data-sec="society">経済・社会</button>
       <button data-sec="security">セキュリティ</button>
-      <button class="qf-clear">✕ クリア</button>
     </div>
   </header>
 
@@ -1036,11 +1034,6 @@ document.querySelectorAll('.quick-filters button[data-sec]').forEach(btn => {
   });
 });
 
-document.querySelector('.qf-clear').addEventListener('click', () => {
-  activeSection = '';
-  searchInput.value = '';
-  applySearch();
-});
 </script>
 
 </body>

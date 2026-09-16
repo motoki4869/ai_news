@@ -204,7 +204,6 @@ nav {
 }
 .cat-filters button:hover { box-shadow: 0 0 12px rgba(139,92,246,0.35); }
 .cat-filters button.active { color: var(--bg); background: var(--violet-soft); border-color: var(--violet-soft); }
-.cat-filters .qf-clear { color: var(--text-dim); border-color: rgba(255,255,255,0.2); background: transparent; }
 
 /* ===== Sections ===== */
 .section { max-width: 1150px; margin: 0 auto; padding: 60px 24px 10px;
@@ -468,10 +467,6 @@ SECTIONS.forEach(sec => {
 
 document.getElementById('total-count').textContent = totalTerms;
 
-const clearBtn = document.createElement('button');
-clearBtn.className = 'qf-clear';
-clearBtn.textContent = '✕ すべて表示';
-catFilters.appendChild(clearBtn);
 
 /* ===== Neural network background (violet tint) ===== */
 const canvas = document.getElementById('neural-bg');
@@ -593,12 +588,8 @@ searchInput.addEventListener('input', apply);
 catFilters.addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn) return;
-  if (btn.classList.contains('qf-clear')) {
-    activeCat = '';
-    searchInput.value = '';
-  } else {
-    activeCat = (activeCat === btn.dataset.cat) ? '' : btn.dataset.cat;
-  }
+  // 絞り込み解除は、いま光っているボタンをもう一度押す。専用のクリアボタンは置かない
+  activeCat = (activeCat === btn.dataset.cat) ? '' : btn.dataset.cat;
   apply();
   if (activeCat) {
     const target = document.getElementById(activeCat);
