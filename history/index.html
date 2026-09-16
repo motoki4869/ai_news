@@ -14,7 +14,15 @@
 <meta name="theme-color" content="#00e5ff">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- ウェイトは実際に使っているものだけ並べる。Noto Sans JP は和文の字数が多く、
+     Google Fonts が1ウェイトあたり100以上の @font-face に分割して配信するため、
+     使わないウェイトを1つ足すだけでこの定義CSSが数十KB膨らむ（全ページ共通の初期コスト）。
+     Noto: 300=ヒーロー副題 / 400=本文 / 700=強調。500は使用箇所ゼロなので載せない。
+     セクション見出しは font-weight: 600 だが、Noto に600が無いため700で描画される。
+     JetBrains Mono: 400=本文 / 700=<strong>。600は使用箇所ゼロ。
+     Orbitron: 400・600・800とも使用中。
+     追加するときは、先に実際の描画ウェイトを数えてから増やすこと。 -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="analytics.js"></script>
 <style>
 :root {

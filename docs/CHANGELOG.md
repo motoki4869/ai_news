@@ -7,6 +7,13 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-17
 
+### 未使用フォントウェイトの読み込みを停止
+- **変更**: 全6ページのGoogle Fonts指定から、使用箇所ゼロの `Noto Sans JP 500` と `JetBrains Mono 600` を外し、代わりに実際に使われている `JetBrains Mono 700`（`<strong>` のブラウザ既定太字）を追加した。フォント定義CSSは 465KB → 350KB（-112KB、@font-face 511件 → 387件）。ウェイト選定の根拠をHTMLコメントで残した。
+- **理由**: Noto Sans JP は和文の字数が多く、Google Fontsが1ウェイトあたり100以上の `@font-face` に分割して配信するため、使わないウェイトが1つあるだけで全ページ共通の初期コストが数十KB増える。500は全6ページのCSSで一度も指定されておらず、実描画でも出現しなかった。逆に `JetBrains Mono 700` は用語集の12箇所で要求されているのに未読み込みで、近似の600で描画されていた。
+- **対象**: `history/index.html`, `history/generative.html`, `history/news.html`, `history/daily.html`, `history/archive.html`, `history/glossary.html`
+- **確認**: 全6ページでDOM全要素の計算済み `font-weight` を集計し、変更前後で完全一致することを確認（`Noto 300/400/700`、`Orbitron 400/600/800`、`JetBrains 400`、`<strong>` の700）。`document.fonts` の読み込み済みフェイスは `JetBrains Mono 600` → `700` のみが差分。用語集のスクリーンショット比較でも見た目の差は無し。
+- **commit**: `HEAD`（今回の実装コミット）
+
 ### LINE通知のリンク先を当日の日次ログに変更
 - **変更**: 毎朝のLINE通知に載せるURLを、サイトのルート（`https://ai-news-sandy-seven.vercel.app`）から `https://ai-news-sandy-seven.vercel.app/daily.html#YYYY-MM-DD` に変更した。日付は送信権の重複判定で使っている `LINE_NOTIFY_DATE`（未設定なら当日）と同じ値を使う。
 - **理由**: 「本日のAI_newsが更新されました」という通知なのに、開くと1950年から続くAI HISTORYの年表が出て、更新された当日分のニュースまで自分でナビゲートする必要があった。
