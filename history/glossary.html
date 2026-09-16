@@ -31,6 +31,8 @@
   --text-dim: #8a94b8;
   --card: rgba(20, 25, 55, 0.55);
   --border: rgba(139, 92, 246, 0.22);
+  /* 固定ナビの実高さ。JSが実測値で上書きする（ロゴの折り返しやフォント読み込みで変わるため） */
+  --nav-h: 57px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -61,7 +63,9 @@ body {
 /* ===== Nav ===== */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  /* space-between ではなくロゴ側の margin-right: auto で右寄せする。
+     ページごとに検索ボックスの有無が違っても並びが崩れないため。 */
+  display: flex; align-items: center; gap: 14px;
   padding: 14px 32px;
   background: rgba(5, 6, 15, 0.7);
   backdrop-filter: blur(16px);
@@ -70,6 +74,7 @@ nav {
 }
 
 .nav-logo {
+  margin-right: auto;
   font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem;
   letter-spacing: 0.18em;
   background: linear-gradient(90deg, var(--violet), var(--cyan));
@@ -77,23 +82,32 @@ nav {
   -webkit-text-fill-color: transparent;
 }
 
-.nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+/* ナビのリンクは「別ページへの遷移」だけを担う。行き先ごとに色を固定したピルで、
+   PCでもスマホでも同じ並びを出す。ページ内の移動は .section-bar が受け持つ。 */
+.nav-links { display: flex; gap: 10px; align-items: center; }
 
 .nav-links a {
-  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
-  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
-}
-.nav-links a:hover { color: var(--violet-soft); text-shadow: 0 0 12px rgba(139,92,246,0.7); }
-
-.back-btn {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--cyan) !important;
-  border: 1px solid rgba(0,229,255,0.35);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(0,229,255,0.06);
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 999px; padding: 5px 14px;
+  color: rgb(var(--pill));
+  border: 1px solid rgba(var(--pill), 0.35);
+  background: rgba(var(--pill), 0.06);
+  transition: background 0.25s, box-shadow 0.25s;
 }
-.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
+.nav-links a:hover {
+  background: rgba(var(--pill), 0.14);
+  box-shadow: 0 0 14px rgba(var(--pill), 0.4);
+}
+
+/* 行き先ごとの色。全ページで同じ色が同じ行き先を指す。 */
+.to-history  { --pill: 0, 229, 255; }
+.to-gen      { --pill: 255, 46, 230; }
+.to-news     { --pill: 0, 255, 163; }
+.to-daily    { --pill: 255, 181, 71; }
+.to-archive  { --pill: 138, 148, 184; }
+.to-glossary { --pill: 139, 92, 246; }
 
 .nav-search {
   font-family: 'JetBrains Mono', monospace;
@@ -114,7 +128,7 @@ nav {
 #search-count {
   display: none;
   position: fixed;
-  top: 98px; right: 32px; z-index: 99;
+  top: calc(var(--nav-h) + 12px); right: 32px; z-index: 99;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: var(--violet-soft);
@@ -193,7 +207,8 @@ nav {
 .cat-filters .qf-clear { color: var(--text-dim); border-color: rgba(255,255,255,0.2); background: transparent; }
 
 /* ===== Sections ===== */
-.section { max-width: 1150px; margin: 0 auto; padding: 60px 24px 10px; scroll-margin-top: 80px; }
+.section { max-width: 1150px; margin: 0 auto; padding: 60px 24px 10px;
+  scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 .section-header { margin-bottom: 30px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 
@@ -331,14 +346,14 @@ footer .logo {
 
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
-  .nav-logo { order: 1; }
-  .nav-links { order: 2; flex-wrap: wrap; gap: 10px; }
-  .nav-links a:not(.back-btn) { display: none; }
+  .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
+  .nav-links { order: 2; flex: 0 0 auto; flex-wrap: wrap; gap: 6px; }
+  .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   .hero { padding-top: 150px; }
-  #search-count { right: 14px; top: 116px; }
+  #search-count { right: 14px; }
   .term-grid { grid-template-columns: 1fr; }
-  .section { padding: 44px 16px 10px; scroll-margin-top: 110px; }
+  .section { padding: 44px 16px 10px; }
 }
 </style>
 </head>
@@ -351,10 +366,7 @@ footer .logo {
 <nav>
   <div class="nav-logo">AI GLOSSARY</div>
   <div class="nav-links">
-    <a href="daily.html">デイリー</a>
-    <a href="news.html">最新ニュース</a>
-    <a href="archive.html">過去ログ</a>
-    <a class="back-btn" href="index.html">← AI HISTORY</a>
+    <a class="to-history" href="index.html">← AI HISTORY</a>
   </div>
   <input id="site-search" class="nav-search" type="search" placeholder="🔍 用語を検索: RHI / MoE / GLM ...">
 </nav>
@@ -395,6 +407,18 @@ footer .logo {
 
 <script src="glossary-data.js"></script>
 <script>
+/* ===== 固定ナビの実高さを --nav-h に同期する =====
+   各セクションの scroll-margin-top がこの値を使う。ロゴの折り返し・フォントの読み込み・
+   画面幅の変化で高さが変わるため、実測で追従させる。 */
+const navEl = document.querySelector('nav');
+function syncNavHeight() {
+  document.documentElement.style.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+}
+syncNavHeight();
+window.addEventListener('resize', syncNavHeight);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+
 /* ===== Render ===== */
 const SECTIONS = window.GLOSSARY || [];
 const sectionsEl = document.getElementById('sections');

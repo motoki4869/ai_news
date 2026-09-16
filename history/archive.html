@@ -33,6 +33,8 @@
   --text-dim: #8a94b8;
   --card: rgba(20, 25, 55, 0.55);
   --border: rgba(0, 255, 163, 0.18);
+  /* 固定ナビの実高さ。JSが実測値で上書きする（ロゴの折り返しやフォント読み込みで変わるため） */
+  --nav-h: 57px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,7 +49,9 @@ body {
 
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  /* space-between ではなくロゴ側の margin-right: auto で右寄せする。
+     ページごとに検索ボックスの有無が違っても並びが崩れないため。 */
+  display: flex; align-items: center; gap: 14px;
   padding: 14px 32px;
   background: rgba(5, 6, 15, 0.7);
   backdrop-filter: blur(16px);
@@ -56,6 +60,7 @@ nav {
 }
 
 .nav-logo {
+  margin-right: auto;
   font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem;
   letter-spacing: 0.18em;
   background: linear-gradient(90deg, var(--amber), var(--coral));
@@ -63,22 +68,32 @@ nav {
   -webkit-text-fill-color: transparent;
 }
 
-.nav-links { display: flex; gap: 24px; align-items: center; }
-.nav-links a {
-  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
-  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
-}
-.nav-links a:hover { color: var(--green); text-shadow: 0 0 12px rgba(0,255,163,0.7); }
+/* ナビのリンクは「別ページへの遷移」だけを担う。行き先ごとに色を固定したピルで、
+   PCでもスマホでも同じ並びを出す。ページ内の移動は .section-bar が受け持つ。 */
+.nav-links { display: flex; gap: 10px; align-items: center; }
 
-.back-btn {
+.nav-links a {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--cyan) !important;
-  border: 1px solid rgba(0,229,255,0.35);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(0,229,255,0.06);
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 999px; padding: 5px 14px;
+  color: rgb(var(--pill));
+  border: 1px solid rgba(var(--pill), 0.35);
+  background: rgba(var(--pill), 0.06);
+  transition: background 0.25s, box-shadow 0.25s;
 }
-.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
+.nav-links a:hover {
+  background: rgba(var(--pill), 0.14);
+  box-shadow: 0 0 14px rgba(var(--pill), 0.4);
+}
+
+/* 行き先ごとの色。全ページで同じ色が同じ行き先を指す。 */
+.to-history  { --pill: 0, 229, 255; }
+.to-gen      { --pill: 255, 46, 230; }
+.to-news     { --pill: 0, 255, 163; }
+.to-daily    { --pill: 255, 181, 71; }
+.to-archive  { --pill: 138, 148, 184; }
+.to-glossary { --pill: 139, 92, 246; }
 
 .hero {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -105,7 +120,8 @@ nav {
   color: var(--text-dim); letter-spacing: 0.2em;
 }
 
-.section { max-width: 1100px; margin: 0 auto; padding: 50px 24px 10px; scroll-margin-top: 40px; }
+.section { max-width: 1100px; margin: 0 auto; padding: 50px 24px 10px;
+  scroll-margin-top: calc(var(--nav-h) + 16px); }
 .section-header { margin-bottom: 34px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .sec-no { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.9rem; opacity: 0.9; }
 .section-header h2 {
@@ -261,7 +277,8 @@ footer .logo {
 }
 
 @media (max-width: 768px) {
-  .nav-links a:not(.back-btn) { display: none; }
+  .nav-links { gap: 6px; }
+  .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
   .hero { padding-top: 120px; }
 }
 </style>
@@ -271,8 +288,7 @@ footer .logo {
 <nav>
   <div class="nav-logo">AI NEWS ARCHIVE</div>
   <div class="nav-links">
-    <a href="daily.html">デイリー</a>
-    <a class="back-btn" href="news.html">← NEWS FEED</a>
+    <a class="to-news" href="news.html">← NEWS FEED</a>
   </div>
 </nav>
 
@@ -616,6 +632,20 @@ footer .logo {
 
 <script src="reports-data.js"></script>
 <script src="report-modal.js"></script>
+
+<script>
+/* ===== 固定ナビの実高さを --nav-h に同期する =====
+   各セクションの scroll-margin-top がこの値を使う。ロゴの折り返し・フォントの読み込み・
+   画面幅の変化で高さが変わるため、実測で追従させる。 */
+const navEl = document.querySelector('nav');
+function syncNavHeight() {
+  document.documentElement.style.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+}
+syncNavHeight();
+window.addEventListener('resize', syncNavHeight);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+</script>
 
 </body>
 </html>

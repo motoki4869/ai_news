@@ -33,6 +33,11 @@
   --text-dim: #8a94b8;
   --card: rgba(20, 25, 55, 0.55);
   --border: rgba(0, 255, 163, 0.18);
+  /* 固定ナビと目次バーの実高さ。JSが実測値で上書きする */
+  --nav-h: 57px;
+  /* ティッカーはナビの直下に position: fixed で貼り付くので、
+     その下に来るもの（目次バー・ヒット数バッジ）はこの分も避ける必要がある */
+  --ticker-h: 34px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -61,9 +66,12 @@ body {
 .content { position: relative; z-index: 2; }
 
 /* ===== Nav ===== */
+/* 全ページ共通の構成: [ロゴ] …余白… [別ページへのピル] [検索]
+   space-between だと検索ボックスの有無でリンクの寄せが変わってしまうため、
+   ロゴに margin-right: auto を持たせて常に右端へ揃える。 */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; gap: 14px;
   padding: 14px 32px;
   background: rgba(5, 6, 15, 0.7);
   backdrop-filter: blur(16px);
@@ -77,35 +85,44 @@ nav {
   background: linear-gradient(90deg, var(--green), var(--cyan));
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin-right: auto;
 }
 
-.nav-links { display: flex; gap: 24px; align-items: center; }
+/* ナビのリンクは「別ページへの遷移」だけを担う。行き先ごとに色を固定したピルで、
+   PCでもスマホでも同じ並びを出す。ページ内の移動はクイックフィルターが受け持つ。 */
+.nav-links { display: flex; gap: 10px; align-items: center; }
 
 .nav-links a {
-  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
-  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
-}
-.nav-links a:hover { color: var(--green); text-shadow: 0 0 12px rgba(0,255,163,0.7); }
-
-.nav-search {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--text);
-  background: rgba(0, 255, 163, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 16px;
-  width: 200px;
-  outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 999px; padding: 5px 14px;
+  color: rgb(var(--pill));
+  border: 1px solid rgba(var(--pill), 0.35);
+  background: rgba(var(--pill), 0.06);
+  transition: background 0.25s, box-shadow 0.25s;
 }
-.nav-search:focus { border-color: rgba(0,255,163,0.6); box-shadow: 0 0 14px rgba(0,255,163,0.25); }
-.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+.nav-links a:hover {
+  background: rgba(var(--pill), 0.14);
+  box-shadow: 0 0 14px rgba(var(--pill), 0.4);
+}
+
+/* 行き先ごとの色。全ページで同じ色が同じ行き先を指す。 */
+.to-history  { --pill: 0, 229, 255; }
+.to-gen      { --pill: 255, 46, 230; }
+.to-news     { --pill: 0, 255, 163; }
+.to-daily    { --pill: 255, 181, 71; }
+.to-archive  { --pill: 138, 148, 184; }
+.to-glossary { --pill: 139, 92, 246; }
+
+/* news.html には目次バーを置かない。
+   ヒーロー内のクイックフィルター（7テーマ）が同じ役割を兼ねており、
+   同じ7項目を2段に並べると重複して見えるため。 */
 
 #search-count {
   display: none;
   position: fixed;
-  top: calc(var(--nav-h, 57px) + 42px); right: 32px; z-index: 99;
+  top: calc(var(--nav-h) + var(--ticker-h) + 12px); right: 32px; z-index: 99;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: var(--green);
@@ -114,28 +131,6 @@ nav {
   border-radius: 999px;
   padding: 3px 14px;
 }
-
-.back-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--cyan) !important;
-  border: 1px solid rgba(0,229,255,0.35);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(0,229,255,0.06);
-  white-space: nowrap;
-}
-.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
-
-.gloss-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--violet) !important;
-  border: 1px solid rgba(139,92,246,0.4);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(139,92,246,0.08);
-  white-space: nowrap;
-}
-.gloss-btn:hover { box-shadow: 0 0 14px rgba(139,92,246,0.45); }
 
 /* ===== Ticker ===== */
 .ticker-wrap {
@@ -257,7 +252,9 @@ nav {
 .rel-link:hover { box-shadow: 0 0 12px rgba(255,46,230,0.4); }
 
 /* ===== Sections ===== */
-.section { max-width: 1100px; margin: 0 auto; padding: 70px 24px 10px; scroll-margin-top: 40px; }
+/* 目次バーから飛んだときに、固定ナビと目次バーの下へ見出しが潜らないようにする */
+.section { max-width: 1100px; margin: 0 auto; padding: 70px 24px 10px;
+  scroll-margin-top: calc(var(--nav-h) + var(--ticker-h) + 16px); }
 
 .section-header { margin-bottom: 34px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 
@@ -456,20 +453,13 @@ footer .logo {
 
 @media (max-width: 1250px) {
   nav { padding: 14px 20px; }
-  .nav-links { gap: 14px; }
-  .nav-links a { font-size: 0.74rem; letter-spacing: 0.04em; }
+  .nav-links a { font-size: 0.72rem; padding: 5px 12px; }
   .nav-search { width: 150px; }
-}
-
-/* 狭い画面ではセクション内リンクを畳み、ページ間リンクだけ残す */
-@media (max-width: 950px) {
-  .nav-links a[href^="#"] { display: none; }
 }
 
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
   .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
-  .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
   .nav-links { order: 2; flex: 0 0 auto; gap: 10px; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   #search-count { right: 14px; }
@@ -485,17 +475,8 @@ footer .logo {
 <nav>
   <div class="nav-logo">AI NEWS FEED</div>
   <div class="nav-links">
-    <a href="#agent">エージェント</a>
-    <a href="#japan">国内実装</a>
-    <a href="#physical">フィジカルAI</a>
-    <a href="#sovereign">ソブリンAI</a>
-    <a href="#infra">インフラ</a>
-    <a href="#society">経済・社会</a>
-    <a href="#security">セキュリティ</a>
-    <a href="daily.html">デイリー</a>
-    <a href="archive.html">過去ログ</a>
-    <a class="gloss-btn" href="glossary.html">用語集</a>
-    <a class="back-btn" href="index.html">← AI HISTORY</a>
+    <a class="to-glossary" href="glossary.html">用語集</a>
+    <a class="to-history" href="index.html">← AI HISTORY</a>
   </div>
   <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: 企業 / 技術 / トピック">
 </nav>
@@ -532,6 +513,7 @@ footer .logo {
       <button class="qf-clear">✕ クリア</button>
     </div>
   </header>
+
 
   <!-- ============ 1. AGENT ============ -->
   <section class="section t-agent" id="agent">
@@ -902,15 +884,22 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-/* ===== ナビの実高さを --nav-h に反映（スマホ幅でロゴが折り返すと高さが変わるため） ===== */
+/* ===== 固定ナビと目次バーの実高さを CSS 変数へ同期する =====
+   ティッカーの位置と、各セクションの scroll-margin-top がこの値を使う。
+   ロゴの折り返し・フォントの読み込み・画面幅の変化で高さが変わるため実測で追従させる。 */
 const navEl = document.querySelector('nav');
 function syncNavHeight() {
-  document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+  const root = document.documentElement.style;
+  root.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  const ticker = document.querySelector('.ticker-wrap');
+  if (ticker) root.setProperty('--ticker-h', Math.round(ticker.getBoundingClientRect().height) + 'px');
 }
 syncNavHeight();
 window.addEventListener('resize', syncNavHeight);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
-if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+if (window.ResizeObserver) {
+  new ResizeObserver(syncNavHeight).observe(navEl);
+}
 
 const NODE_COUNT = Math.min(90, Math.floor(window.innerWidth / 16));
 const COLORS = ['0,255,163', '0,229,255', '139,92,246', '255,181,71'];

@@ -30,6 +30,9 @@
   --text-dim: #8a94b8;
   --card: rgba(20, 25, 55, 0.55);
   --border: rgba(255, 46, 230, 0.18);
+  /* 固定ナビと目次バーの実高さ。JSが実測値で上書きする（ロゴの折り返しやフォント読み込みで変わるため） */
+  --nav-h: 57px;
+  --bar-h: 0px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -60,7 +63,9 @@ body {
 /* ===== Nav ===== */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  /* space-between ではなくロゴ側の margin-right: auto で右寄せする。
+     検索ボックスの有無に関わらず「ロゴ / 余白 / ピル・検索」の並びが崩れないため。 */
+  display: flex; align-items: center; gap: 14px;
   padding: 14px 32px;
   background: rgba(5, 6, 15, 0.7);
   backdrop-filter: blur(16px);
@@ -69,6 +74,7 @@ nav {
 }
 
 .nav-logo {
+  margin-right: auto;
   font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem;
   letter-spacing: 0.18em;
   background: linear-gradient(90deg, var(--magenta), var(--violet));
@@ -76,13 +82,54 @@ nav {
   -webkit-text-fill-color: transparent;
 }
 
-.nav-links { display: flex; gap: 24px; align-items: center; }
+/* ナビのリンクは「別ページへの遷移」だけを担う。行き先ごとに色を固定したピルで、
+   PCでもスマホでも同じ並びを出す。ページ内の移動は .section-bar が受け持つ。 */
+.nav-links { display: flex; gap: 10px; align-items: center; }
 
 .nav-links a {
-  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
-  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 999px; padding: 5px 14px;
+  color: rgb(var(--pill));
+  border: 1px solid rgba(var(--pill), 0.35);
+  background: rgba(var(--pill), 0.06);
+  transition: background 0.25s, box-shadow 0.25s;
 }
-.nav-links a:hover { color: var(--magenta); text-shadow: 0 0 12px rgba(255,46,230,0.7); }
+.nav-links a:hover {
+  background: rgba(var(--pill), 0.14);
+  box-shadow: 0 0 14px rgba(var(--pill), 0.4);
+}
+
+/* 行き先ごとの色。全ページで同じ色が同じ行き先を指す。 */
+.to-history  { --pill: 0, 229, 255; }
+.to-gen      { --pill: 255, 46, 230; }
+.to-news     { --pill: 0, 255, 163; }
+.to-daily    { --pill: 255, 181, 71; }
+.to-archive  { --pill: 138, 148, 184; }
+.to-glossary { --pill: 139, 92, 246; }
+
+/* ===== 目次（ページ内アンカー） =====
+   ナビは別ページへの移動だけを担うので、ページ内の移動はこのバーが引き受ける。
+   スマホでは非表示（従来もナビに目次を出していなかったので、表示は変わらない）。 */
+.section-bar {
+  position: sticky; top: var(--nav-h); z-index: 90;
+  display: flex; justify-content: center; align-items: center;
+  flex-wrap: wrap; gap: 6px 24px;
+  padding: 11px 32px;
+  background: rgba(5, 6, 15, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.section-bar a {
+  font-size: 0.79rem; letter-spacing: 0.08em;
+  color: var(--text-dim); text-decoration: none;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+.section-bar a:hover {
+  color: rgb(255, 46, 230); text-shadow: 0 0 12px rgba(255, 46, 230, 0.7);
+}
 
 .nav-search {
   font-family: 'JetBrains Mono', monospace;
@@ -102,7 +149,7 @@ nav {
 #search-count {
   display: none;
   position: fixed;
-  top: 64px; right: 32px; z-index: 99;
+  top: calc(var(--nav-h) + var(--bar-h) + 12px); right: 32px; z-index: 99;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: var(--green);
@@ -111,16 +158,6 @@ nav {
   border-radius: 999px;
   padding: 3px 14px;
 }
-
-.back-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--cyan) !important;
-  border: 1px solid rgba(0,229,255,0.35);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(0,229,255,0.06);
-}
-.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
 
 /* ===== Hero ===== */
 .hero {
@@ -189,7 +226,8 @@ nav {
 .stat-label { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.12em; margin-top: 4px; }
 
 /* ===== Sections ===== */
-.section { max-width: 1100px; margin: 0 auto; padding: 90px 24px 20px; }
+.section { max-width: 1100px; margin: 0 auto; padding: 90px 24px 20px;
+  scroll-margin-top: calc(var(--nav-h) + var(--bar-h) + 16px); }
 
 .section-header { text-align: center; margin-bottom: 54px; }
 
@@ -209,7 +247,8 @@ nav {
 .section-header p { color: var(--text-dim); max-width: 680px; margin: 14px auto 0; font-size: 0.92rem; }
 
 /* ===== Year timeline (vertical, single column) ===== */
-.year-block { margin-bottom: 64px; opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; scroll-margin-top: 110px; }
+.year-block { margin-bottom: 64px; opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s;
+  scroll-margin-top: calc(var(--nav-h) + var(--bar-h) + 16px); }
 .year-block.visible { opacity: 1; transform: translateY(0); }
 
 .year-label {
@@ -413,9 +452,10 @@ footer .logo {
 
 @media (max-width: 768px) {
   nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
-  .nav-logo { order: 1; }
-  .nav-links a:not(.back-btn) { display: none; }
-  .nav-links { order: 2; flex-wrap: wrap; }
+  .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
+  .nav-links { order: 2; flex: 0 0 auto; gap: 6px; flex-wrap: wrap; }
+  .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
+  .section-bar { display: none; }
   .ctx-label { width: 105px; font-size: 0.62rem; }
   .ctx-val { width: 70px; font-size: 0.62rem; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
@@ -433,12 +473,7 @@ footer .logo {
 <nav>
   <div class="nav-logo">GENERATIVE ERA</div>
   <div class="nav-links">
-    <a href="#timeline">年表</a>
-    <a href="#lineage">モデル系譜</a>
-    <a href="#media">メディア生成</a>
-    <a href="#tech">技術革新</a>
-    <a href="news.html" style="color: var(--green); border: 1px solid rgba(0,255,163,0.35); border-radius: 999px; padding: 4px 14px; background: rgba(0,255,163,0.06);">最新ニュース ▶</a>
-    <a class="back-btn" href="index.html">← AI HISTORY</a>
+    <a class="to-history" href="index.html">← AI HISTORY</a>
   </div>
   <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: モデル / 年 / 企業">
 </nav>
@@ -458,6 +493,14 @@ footer .logo {
     </p>
     <div class="typewriter" id="typewriter"></div>
   </header>
+
+  <!-- ============ 目次（ページ内アンカー） ============ -->
+  <div class="section-bar" role="navigation" aria-label="ページ内の目次">
+    <a href="#timeline">年表</a>
+    <a href="#lineage">モデル系譜</a>
+    <a href="#media">メディア生成</a>
+    <a href="#tech">技術革新</a>
+  </div>
 
   <!-- ============ STATS ============ -->
   <div class="stats">
@@ -941,6 +984,27 @@ footer .logo {
 </footer>
 
 <script>
+/* ===== 固定ナビと目次バーの実高さを CSS 変数へ同期する =====
+   .section-bar の sticky 位置と、各セクションの scroll-margin-top がこの値を使う。
+   ロゴの折り返し・フォントの読み込み・画面幅の変化で高さが変わるため実測で追従させる。 */
+const navEl = document.querySelector('nav');
+const barEl = document.querySelector('.section-bar');
+function syncNavHeight() {
+  const root = document.documentElement.style;
+  root.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  // スマホ幅では目次バーを隠すので、そのときは 0 として扱う
+  const barVisible = barEl && barEl.offsetParent !== null;
+  root.setProperty('--bar-h', (barVisible ? Math.round(barEl.getBoundingClientRect().height) : 0) + 'px');
+}
+syncNavHeight();
+window.addEventListener('resize', syncNavHeight);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(syncNavHeight);
+  ro.observe(navEl);
+  if (barEl) ro.observe(barEl);
+}
+
 /* ===== Neural network background (magenta tint) ===== */
 const canvas = document.getElementById('neural-bg');
 const ctx = canvas.getContext('2d');

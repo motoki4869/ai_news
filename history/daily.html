@@ -69,7 +69,9 @@ body {
 /* ===== Nav ===== */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  /* space-between ではなくロゴ側の margin-right: auto で右寄せする。
+     ページごとに検索ボックスの有無が違っても並びが崩れないため。 */
+  display: flex; align-items: center; gap: 14px;
   padding: 14px 32px;
   background: rgba(5, 6, 15, 0.7);
   backdrop-filter: blur(16px);
@@ -78,6 +80,7 @@ nav {
 }
 
 .nav-logo {
+  margin-right: auto;
   font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem;
   letter-spacing: 0.18em;
   background: linear-gradient(90deg, var(--green), var(--cyan));
@@ -85,35 +88,32 @@ nav {
   -webkit-text-fill-color: transparent;
 }
 
-.nav-links { display: flex; gap: 24px; align-items: center; }
+/* ナビのリンクは「別ページへの遷移」だけを担う。行き先ごとに色を固定したピルで、
+   PCでもスマホでも同じ並びを出す。ページ内の移動は .section-bar が受け持つ。 */
+.nav-links { display: flex; gap: 10px; align-items: center; }
 
 .nav-links a {
-  color: var(--text-dim); text-decoration: none; font-size: 0.82rem;
-  letter-spacing: 0.08em; transition: color 0.25s, text-shadow 0.25s;
-}
-.nav-links a:hover { color: var(--green); text-shadow: 0 0 12px rgba(0,255,163,0.7); }
-
-.back-btn {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--cyan) !important;
-  border: 1px solid rgba(0,229,255,0.35);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(0,229,255,0.06);
-  white-space: nowrap;
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 999px; padding: 5px 14px;
+  color: rgb(var(--pill));
+  border: 1px solid rgba(var(--pill), 0.35);
+  background: rgba(var(--pill), 0.06);
+  transition: background 0.25s, box-shadow 0.25s;
 }
-.back-btn:hover { box-shadow: 0 0 14px rgba(0,229,255,0.4); }
+.nav-links a:hover {
+  background: rgba(var(--pill), 0.14);
+  box-shadow: 0 0 14px rgba(var(--pill), 0.4);
+}
 
-.gloss-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem !important;
-  color: var(--violet) !important;
-  border: 1px solid rgba(139,92,246,0.4);
-  padding: 5px 14px; border-radius: 999px;
-  background: rgba(139,92,246,0.08);
-  white-space: nowrap;
-}
-.gloss-btn:hover { box-shadow: 0 0 14px rgba(139,92,246,0.45); }
+/* 行き先ごとの色。全ページで同じ色が同じ行き先を指す。 */
+.to-history  { --pill: 0, 229, 255; }
+.to-gen      { --pill: 255, 46, 230; }
+.to-news     { --pill: 0, 255, 163; }
+.to-daily    { --pill: 255, 181, 71; }
+.to-archive  { --pill: 138, 148, 184; }
+.to-glossary { --pill: 139, 92, 246; }
 
 /* ===== Hero ===== */
 .hero {
@@ -424,8 +424,9 @@ footer .logo {
 
 @media (max-width: 768px) {
   nav { padding: 12px 16px; }
-  .nav-links { gap: 10px; }
-  .nav-links a:not(.back-btn):not(.gloss-btn) { display: none; }
+  .nav-logo { flex: 1 1 0; min-width: 0; }
+  .nav-links { gap: 6px; flex: 0 0 auto; }
+  .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
   .hero { padding-top: 100px; }
   .cal-wrap { padding: 0 12px 8px; }
   .cal-grid { gap: 4px; }
@@ -450,10 +451,8 @@ footer .logo {
 <nav>
   <div class="nav-logo">AI DAILY LOG</div>
   <div class="nav-links">
-    <a href="news.html">最新ニュース</a>
-    <a href="archive.html">過去ログ</a>
-    <a class="gloss-btn" href="glossary.html">用語集</a>
-    <a class="back-btn" href="index.html">← AI HISTORY</a>
+    <a class="to-glossary" href="glossary.html">用語集</a>
+    <a class="to-history" href="index.html">← AI HISTORY</a>
   </div>
 </nav>
 
