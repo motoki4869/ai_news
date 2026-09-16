@@ -116,7 +116,7 @@ nav {
 
 /* ===== 目次（ページ内アンカー） =====
    ナビは別ページへの移動だけを担うので、ページ内の移動はこのバーが引き受ける。
-   スマホでは非表示（従来もナビに目次を出していなかったので、表示は変わらない）。 */
+   スマホでも同じものを出し、1行に収めて横スクロールさせる（下部のメディアクエリ参照）。 */
 .section-bar {
   position: sticky; top: var(--nav-h); z-index: 90;
   display: flex; justify-content: center; align-items: center;
@@ -128,12 +128,23 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .section-bar a {
+  position: relative;
   font-size: 0.79rem; letter-spacing: 0.08em;
   color: var(--text-dim); text-decoration: none;
   transition: color 0.25s, text-shadow 0.25s;
 }
 .section-bar a:hover {
   color: rgb(255, 46, 230); text-shadow: 0 0 12px rgba(255, 46, 230, 0.7);
+}
+/* いま読んでいるセクションを強調する。JSが .is-active を付け外しする。
+   下線は ::after を絶対配置で描くので、点灯してもバーの高さは変わらない。 */
+.section-bar a.is-active {
+  color: rgb(255, 46, 230); text-shadow: 0 0 12px rgba(255, 46, 230, 0.55);
+}
+.section-bar a.is-active::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+  height: 2px; border-radius: 2px;
+  background: rgb(255, 46, 230); box-shadow: 0 0 10px rgba(255, 46, 230, 0.8);
 }
 
 .nav-search {
@@ -1013,7 +1024,7 @@ const barEl = document.querySelector('.section-bar');
 function syncNavHeight() {
   const root = document.documentElement.style;
   root.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
-  // スマホ幅では目次バーを隠すので、そのときは 0 として扱う
+  // 目次バーが無い／表示されていないページでは 0 として扱う
   const barVisible = barEl && barEl.offsetParent !== null;
   root.setProperty('--bar-h', (barVisible ? Math.round(barEl.getBoundingClientRect().height) : 0) + 'px');
 }
@@ -1025,6 +1036,47 @@ if (window.ResizeObserver) {
   ro.observe(navEl);
   if (barEl) ro.observe(barEl);
 }
+
+/* ===== スクロール位置に合わせて目次の現在地を光らせる =====
+   固定ナビ＋目次バーのすぐ下を判定ラインとし、そのラインを最後に越えたセクションを現在地とする。
+   バーがまだ sticky に貼り付いていない（ページ最上部）間はラインが画面下端付近に来るため、
+   どのセクションも選ばれず点灯しない。スクロール中の計測は rAF でまとめる。 */
+const spyLinks = barEl ? Array.from(barEl.querySelectorAll('a[href^="#"]')) : [];
+const spyTargets = spyLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+let spyCurrent = -2;
+function updateSectionSpy() {
+  if (!spyLinks.length || barEl.offsetParent === null) return;
+  const line = barEl.getBoundingClientRect().bottom + 8;
+  let idx = -1;
+  spyTargets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) idx = i; });
+  // 最下部まで来たら最後のセクションを現在地にする（末尾が短いと選ばれないため）
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    idx = spyLinks.length - 1;
+  }
+  if (idx === spyCurrent) return;
+  spyCurrent = idx;
+  spyLinks.forEach((a, i) => {
+    const on = i === idx;
+    a.classList.toggle('is-active', on);
+    if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+  });
+  // スマホで項目がはみ出しているときは、現在地が隠れないようバー内を横スクロールさせる
+  if (idx >= 0 && barEl.scrollWidth - barEl.clientWidth > 1) {
+    const a = spyLinks[idx];
+    barEl.scrollTo({ left: a.offsetLeft - (barEl.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+  }
+}
+let spyQueued = false;
+function requestSectionSpy() {
+  // 非表示タブでは requestAnimationFrame が止まるので、その場で計算しておく
+  if (document.hidden) { updateSectionSpy(); return; }
+  if (spyQueued) return;
+  spyQueued = true;
+  requestAnimationFrame(() => { spyQueued = false; updateSectionSpy(); });
+}
+updateSectionSpy();
+window.addEventListener('scroll', requestSectionSpy, { passive: true });
+window.addEventListener('resize', requestSectionSpy);
 
 /* ===== Neural network background (magenta tint) ===== */
 const canvas = document.getElementById('neural-bg');
