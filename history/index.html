@@ -591,7 +591,22 @@ footer .logo {
   .nav-logo { font-size: 0.85rem; order: 1; }
   .nav-links { gap: 6px; flex-wrap: wrap; order: 2; }
   .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
-  .section-bar { display: none; }
+  /* スマホでも目次を出す。折り返して2段になると固定ヘッダーが高くなりすぎるので、
+     1行に固定してはみ出す分は横スクロールで見せる。
+     contain: layout がないと、内部の幅が document の scrollWidth に算入されて
+     ページ全体が横にパンできてしまう。 */
+  .section-bar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    contain: layout;
+    gap: 0 18px;
+    padding: 8px 12px;
+  }
+  .section-bar::-webkit-scrollbar { display: none; }
+  .section-bar a { white-space: nowrap; font-size: 0.72rem; }
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   #search-count { right: 14px; }
   .hero { padding-top: 150px; }
