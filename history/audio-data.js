@@ -233,5 +233,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-16.m4a",
     "label": "2026-09-16のAIニュース音声",
     "title": "画面を突き破り現実に溶け出すAI"
+  },
+  "2026-09-17": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-17.m4a",
+    "label": "2026-09-17のAIニュース音声",
+    "title": "道具から自律的なエージェントへ"
   }
 };
