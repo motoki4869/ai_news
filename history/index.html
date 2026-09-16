@@ -42,7 +42,12 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
+  /* overflow-x: hidden は body をスクロールコンテナ化するため、
+     中の position: sticky（目次バー）が iOS Safari で効かなくなる。
+     clip はスクロールコンテナを作らずにはみ出しだけ切るので sticky と共存できる。
+     clip 非対応の古いブラウザ向けに hidden を先に残しておく。 */
   overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.8;
 }
 
