@@ -1051,21 +1051,30 @@ if (window.ResizeObserver) {
 }
 
 /* ===== スクロール位置に合わせて目次の現在地を光らせる =====
-   固定ナビ＋目次バーのすぐ下を判定ラインとし、そのラインを最後に越えたセクションを現在地とする。
+   固定ナビ＋目次バーの少し下を判定ラインとし、そのラインを最後に越えたセクションを現在地とする。
    バーがまだ sticky に貼り付いていない（ページ最上部）間はラインが画面下端付近に来るため、
    どのセクションも選ばれず点灯しない。スクロール中の計測は rAF でまとめる。 */
+
+/* 判定ラインをバーの下端から何px下に置くか。
+   目次をタップしたときの着地点は scroll-margin-top により「バーの下端 + 16px」になる。
+   これより小さいと、飛んだ直後のセクションが「まだ越えていない」と判定され、
+   ひとつ前の項目が点灯したままになる（深層学習を押したのに機械学習が光る）。
+   実測では着地位置が 5〜27px とばらつく（上にあるカウントアップ等でわずかに
+   レイアウトが動くため）ので、余裕を持たせて 48px にしてある。 */
+const SPY_LINE_OFFSET = 48;
+
 const spyLinks = barEl ? Array.from(barEl.querySelectorAll('a[href^="#"]')) : [];
 const spyTargets = spyLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
 let spyCurrent = -2;
-function updateSectionSpy() {
-  if (!spyLinks.length || barEl.offsetParent === null) return;
-  const line = barEl.getBoundingClientRect().bottom + 8;
-  let idx = -1;
-  spyTargets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) idx = i; });
-  // 最下部まで来たら最後のセクションを現在地にする（末尾が短いと選ばれないため）
-  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
-    idx = spyLinks.length - 1;
-  }
+/* 目次をタップした直後は、スムーススクロールの途中経過で手前のセクションが
+   次々に点灯するのを避けるため、押した項目に固定する。
+   固定は「着地したあと、そこから実際にスクロールで動いたとき」に解除する。
+   時間で解除すると、着地位置のわずかなズレで別の項目に光が移ってしまう。 */
+let spyLockedIndex = null;
+let spyLockY = null;
+let spySettleTimer = 0;
+
+function setSpyActive(idx) {
   if (idx === spyCurrent) return;
   spyCurrent = idx;
   spyLinks.forEach((a, i) => {
@@ -1079,6 +1088,24 @@ function updateSectionSpy() {
     barEl.scrollTo({ left: a.offsetLeft - (barEl.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
   }
 }
+
+function computeSpyIndex() {
+  const line = barEl.getBoundingClientRect().bottom + SPY_LINE_OFFSET;
+  let idx = -1;
+  spyTargets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) idx = i; });
+  // 最下部まで来たら最後のセクションを現在地にする（末尾が短いと選ばれないため）
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    idx = spyLinks.length - 1;
+  }
+  return idx;
+}
+
+function updateSectionSpy() {
+  if (!spyLinks.length || barEl.offsetParent === null) return;
+  if (spyLockedIndex !== null) return;
+  setSpyActive(computeSpyIndex());
+}
+
 let spyQueued = false;
 function requestSectionSpy() {
   // 非表示タブでは requestAnimationFrame が止まるので、その場で計算しておく
@@ -1087,9 +1114,44 @@ function requestSectionSpy() {
   spyQueued = true;
   requestAnimationFrame(() => { spyQueued = false; updateSectionSpy(); });
 }
-updateSectionSpy();
-window.addEventListener('scroll', requestSectionSpy, { passive: true });
+
+function releaseSpyLock() {
+  if (spyLockedIndex === null) return;
+  clearTimeout(spySettleTimer);
+  spyLockedIndex = null;
+  spyLockY = null;
+  updateSectionSpy();
+}
+
+spyLinks.forEach((a, i) => {
+  a.addEventListener('click', () => {
+    spyLockedIndex = i;
+    spyLockY = null;
+    setSpyActive(i);
+    clearTimeout(spySettleTimer);
+    // スムーススクロールが走らなかった場合に備え、着地点をいったん現在位置にしておく
+    spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 1200);
+  });
+});
+
+window.addEventListener('scroll', () => {
+  if (spyLockedIndex !== null) {
+    // 着地位置が決まる前（スムーススクロール中）は、止まるのを待つ
+    if (spyLockY === null) {
+      clearTimeout(spySettleTimer);
+      spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 160);
+      return;
+    }
+    // 着地後、そこから動いたら通常の判定に戻す
+    if (Math.abs(window.scrollY - spyLockY) <= 8) return;
+    releaseSpyLock();
+    return;
+  }
+  requestSectionSpy();
+}, { passive: true });
 window.addEventListener('resize', requestSectionSpy);
+
+updateSectionSpy();
 
 /* ===== Neural network background (magenta tint) ===== */
 const canvas = document.getElementById('neural-bg');
