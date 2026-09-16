@@ -10,7 +10,7 @@
 - 実行時刻: 毎日 7:00（JST）
 - 起動スクリプト: `scripts/daily_news.sh`
   - `claude -p` でプロンプト（`scripts/daily_news_prompt.txt`）を実行し、結果を `SUMMARY:` 行から抜き出してmacOS通知（`osascript`）を出す
-  - 生成データは `generate_daily_data.py` / `generate_reports_data.py` で `history/` 用のJSONに変換される
+  - 生成データは `generate_daily_data.py` / `generate_reports_data.py` で `history/` 用のJSONに変換される（レポート全文は `history/reports/<ID>.json` に1本ずつ書き出し、ページはタップされた分だけを取りに行く）
 - ログ出力先: `logs/daily_news.log`（標準出力）/ `logs/daily_news.err.log`（標準エラー）
 
 手動実行:

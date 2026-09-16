@@ -1,5 +1,6 @@
 /* news-card タップ → data-report の元レポート全文をモーダル表示
-   history/reports-data.js の window.REPORTS を参照する。
+   全文は history/reports/<ID>.json に1本ずつ置かれている。日本語のレポート名から
+   ID を引く対応表が history/reports-index.js の window.REPORT_INDEX。
    news.html / archive.html 共通で読み込む。 */
 (function () {
   const modal = document.createElement('div');
@@ -21,6 +22,34 @@
   const closeBtn = modal.querySelector('.report-modal-close');
   const backdrop = modal.querySelector('.report-modal-backdrop');
 
+  /* 全文データの取り方
+
+     以前は全レポートのHTML（約800KB）を1つの reports-data.js として同期読み込みして
+     いた。ページを開いただけで全部落ちてくるのに、実際に読まれるのはタップした1本
+     だけなので、初回表示の転送量をそのぶん丸ごと捨てていた。今はタップされた分だけを
+     fetch し、一度取ったものはこのMapに残して2回目以降は通信しない。
+
+     Mapの値はHTML文字列ではなくPromise。同じカードを連打されても fetch は1回で済む。 */
+  const cache = new Map();
+
+  function loadReport(name) {
+    if (cache.has(name)) return cache.get(name);
+    const fileId = (window.REPORT_INDEX || {})[name];
+    // 対応表に無い＝まだ全文が用意されていない。通信せずに「未登録」を返す。
+    const promise = fileId
+      ? fetch('reports/' + fileId + '.json')
+          .then(res => {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          })
+          .then(data => data.html)
+      : Promise.resolve(null);
+    // 失敗したものは覚えない。開き直したときにもう一度取りに行けるようにする。
+    promise.catch(() => cache.delete(name));
+    cache.set(name, promise);
+    return promise;
+  }
+
   /* 履歴の扱い（ここを崩すと戻るボタンが壊れる）
 
      モーダルの開閉はDOM属性の切り替えでしかないので、何もしないとブラウザの履歴には
@@ -37,18 +66,24 @@
      純粋な追加になるため、開くたびに履歴が1段ずつ伸び続ける。 */
   let openedViaHistory = false;
 
+  /* いま表示しようとしている内容の世代番号。fetch の待ち時間中に別のカードを開かれたり
+     モーダルを閉じられたりすると、古い方の結果が後から届いて画面を上書きしてしまう。
+     届いた時点で自分が最新かどうかを確かめるために使う。 */
+  let renderToken = 0;
+
   function isOpen() {
     return !modal.hasAttribute('hidden');
   }
 
-  function renderModal(reportNames) {
-    const reports = (window.REPORTS || {});
-    const sections = reportNames.map(name => {
-      const html = reports[name];
-      if (!html) {
-        return `<section class="rpt-section"><h2>${name}</h2><p class="rpt-missing">この記事の全文データは未登録です。</p></section>`;
+  function paint(results) {
+    const sections = results.map(result => {
+      if (result.html) {
+        return `<section class="rpt-section">${result.html}</section>`;
       }
-      return `<section class="rpt-section">${html}</section>`;
+      const message = result.failed
+        ? '全文を読み込めませんでした。通信環境を確認して、もう一度開いてください。'
+        : 'この記事の全文データは未登録です。';
+      return `<section class="rpt-section"><h2>${result.name}</h2><p class="rpt-missing">${message}</p></section>`;
     });
     body.innerHTML = sections.join('<hr class="rpt-divider">');
     body.querySelectorAll('table.rpt-table').forEach(table => {
@@ -66,9 +101,26 @@
         throwOnError: false
       });
     }
+    body.scrollTop = 0;
+  }
+
+  // 先に枠だけ開いてから中身を待つ。タップしても何も起きない時間を作らないため。
+  function renderModal(reportNames) {
+    const token = ++renderToken;
+    body.innerHTML = '<p class="rpt-loading">読み込み中…</p>';
     modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
     body.scrollTop = 0;
+
+    Promise.all(reportNames.map(name =>
+      loadReport(name).then(
+        html => ({ name: name, html: html }),
+        () => ({ name: name, failed: true })
+      )
+    )).then(results => {
+      if (token !== renderToken) return;  // 待っている間に閉じられた／別のカードが開かれた
+      paint(results);
+    });
   }
 
   function openModal(reportNames) {
@@ -93,6 +145,7 @@
     modal.setAttribute('hidden', '');
     document.body.style.overflow = '';
     openedViaHistory = false;
+    renderToken++;  // 読み込み中だったものが後から届いても描画させない
   }
 
   // ユーザーが「閉じる」意思を示したとき。閉じる処理そのものは popstate に任せる。

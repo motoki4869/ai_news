@@ -12,7 +12,7 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 ## 前提
 - `history/news.html` は7つの固定テーマセクションを持つ: `#agent`(エージェンティックAI) `#japan`(国内実装) `#physical`(フィジカルAI) `#sovereign`(ソブリンAI) `#infra`(インフラ) `#society`(経済・社会) `#security`(セキュリティ)。新しいテーマは追加しない。
 - 各セクションの `.news-card` 上限は6枚。
-- 各 `.news-card` は `data-added="YYYY-MM-DD"`(追加日)と `data-report="ファイル名"`(出典)を持つ。この `data-report` は `history/reports-data.js` の `window.REPORTS` オブジェクトのキー(拡張子なしファイル名)と一致している必要がある。一致していれば、ユーザーがカードをタップした際に `history/report-modal.js` が自動的に元レポート全文をモーダル表示する(カード側のHTML構造・追加のマークアップは不要)。
+- 各 `.news-card` は `data-added="YYYY-MM-DD"`(追加日)と `data-report="ファイル名"`(出典)を持つ。この `data-report` は `history/reports-index.js` の `window.REPORT_INDEX` オブジェクトのキー(拡張子なしファイル名)と一致している必要がある。一致していれば、ユーザーがカードをタップした際に `history/report-modal.js` が自動的に元レポート全文をモーダル表示する(カード側のHTML構造・追加のマークアップは不要)。
 - `history/archive.html` は同じ7テーマ・同じidを持つ「過去ログ」ページ。カード循環時のみ更新する。
 - `history/index.html`(AI HISTORY)と `history/generative.html`(GENERATIVE ERA)は、手書きの自己完結HTMLでできた年表ページ。前者は1950年からのAI全史を5つの時代(`#dawn` `#winter` `#ml` `#dl` `#gen`)で、後者は2020年以降の生成AI史を年別(`#timeline` 配下の `#y2020`〜)・モデル系譜(`#lineage`)・メディア生成(`#media`)・技術革新(`#tech`)で扱う。週次更新の主対象ではないが、「数年後に振り返っても残る節目」が出たときだけ手順13で追記する。
 - `history/daily.html`(AI DAILY LOG)は `everyday_news/*.md` を出典とする別系統のページで、`scripts/generate_daily_data.py` が生成する `history/daily-data.js` だけを読む。このスキルの対象外なので触らない。
@@ -42,7 +42,7 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
 8. `history/news.html` の `hero-desc` 内「調査レポートN本を横断」と footer の「COMPILED FROM N RESEARCH REPORTS」の N を、`report/` 配下の実ファイル数(`ls report/*.md | wc -l` 相当)に更新する。
 9. `.ticker` 内のテキストを更新する。今回追加した新規カードの見出しを要約したブレイキングニュース文を1〜2件、末尾に ` +++ ` 区切りで追記する。区切り件数が8件を超える場合は先頭(最も古い)の項目から削除し、総数をおおむね8件に保つ。
 10. `history/news.html`(および循環が発生した場合は `history/archive.html`)を上書き保存する。
-11. `python3 scripts/generate_reports_data.py` を実行し、`report/` 配下の全 `.md` から `history/reports-data.js` を再生成する(新規レポートの全文タップ表示に必要。既存レポートも含め毎回全件再生成するので、対象を絞る必要はない)。
+11. `python3 scripts/generate_reports_data.py` を実行し、`report/` 配下の全 `.md` から `history/reports/<ID>.json`(レポート1本＝1ファイル)と対応表 `history/reports-index.js` を再生成する(新規レポートの全文タップ表示に必要。既存レポートも含め毎回全件再生成するが、中身が変わったファイルだけが書き換わるので、対象を絞る必要はない)。
 12. **用語集を最新化する。** 今回 news.html に追加した新規カードの本文を読み直し、`docs/glossary.md` に未収録で、かつ説明なしでは読み手が詰まる用語（新しい略語・規格名・モデル名・技術用語）があるかを確認する。
     - **収録基準**: サイト内に実際に登場する用語だけを入れる。一般的なAI辞書に寄せない。一度しか出てこない固有名詞や、文脈から自明な語は入れない。追加すべき語が無ければ何も足さず、`最終更新` 日付だけ更新して次へ進む。
     - **追加先**: 既存9章のうち最も近い章の表に1行足す。新しい章は作らない。1〜8章は `| 用語 | 正式名称 / 読み | 意味 |`、9章のみ `| 開発元 | モデル / シリーズ | 補足 |`。
@@ -93,5 +93,5 @@ description: report/配下の調査レポート1本をhistory/news.htmlに反映
       - **`.tl-item` を増やしたら、ヘッダーの `data-count="24"`(MILESTONES)を `.tl-item` の実数に更新する**（`grep -c 'class="tl-item"' history/index.html` で数える）。
     - 年をまたいで書き足した場合は、footer の年レンジ表記(`history/index.html` は `1950 — 2026`、`history/generative.html` は `2020 — 2026`)が実態と合っているか確認する。
     - 文体・トーンは各ページの既存カードに合わせる（断定調、固有名詞と数字を含む、推測で水増ししない）。
-14. 変更したファイル(`history/news.html`、循環時は `history/archive.html`、`history/reports-data.js`、用語集を更新した場合は `docs/glossary.md` と `history/glossary-data.js`、年表に追記した場合は `history/index.html` と `history/generative.html`、ファイル名を修正した場合は変更前後の `report/*.md` 本体)を `git add` し、`"YYYY-MM-DD のAIニュースを追加"`(本日日付、既存コミットメッセージと同形式)で `git commit` する。続けて `git push` する。ai_newsはVercelとGit連携済みで、`main` へのpushが `history/` の本番デプロイ(https://ai-news-sandy-seven.vercel.app)を自動トリガーするため、pushまで完了させて初めて更新がユーザーに反映される。本スキルの手順14は「サイトを更新して」という依頼自体にpushの実行が含まれている(commitだけでは未完了)。
+14. 変更したファイル(`history/news.html`、循環時は `history/archive.html`、`history/reports-index.js` と `history/reports/` 配下の新規・更新JSON、用語集を更新した場合は `docs/glossary.md` と `history/glossary-data.js`、年表に追記した場合は `history/index.html` と `history/generative.html`、ファイル名を修正した場合は変更前後の `report/*.md` 本体)を `git add` し、`"YYYY-MM-DD のAIニュースを追加"`(本日日付、既存コミットメッセージと同形式)で `git commit` する。続けて `git push` する。ai_newsはVercelとGit連携済みで、`main` へのpushが `history/` の本番デプロイ(https://ai-news-sandy-seven.vercel.app)を自動トリガーするため、pushまで完了させて初めて更新がユーザーに反映される。本スキルの手順14は「サイトを更新して」という依頼自体にpushの実行が含まれている(commitだけでは未完了)。
 15. 作業内容を1〜2文で要約報告する: 追加したカード(セクション名・見出し)、循環して `history/archive.html` に移したカード、更新した統計値(レポート本数)、用語集に追加した用語(無ければ「追加なし」)、年表ページへの追記(無ければ「該当なし」)、push完了とデプロイトリガー済みである旨。ファイル全文は貼り直さない。

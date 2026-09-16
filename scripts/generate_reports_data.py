@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""report/*.md を丸ごと変換し、history/reports-data.js を再生成する。
+"""report/*.md を丸ごと変換し、history/reports/ 配下の全文データを再生成する。
 news.html / archive.html の news-card タップ時モーダル表示用データ。
 sync-news-html スキルの一手順として、レポート追加のたびに全件再生成する想定。
+
+レポート1本につきJSONを1ファイル出す。ページ側はタップされた1本だけを fetch し、
+読まれない分は転送しない。日本語のレポート名とファイル名の対応表は
+history/reports-index.js に別途書き出す（詳細は report_id() のコメント）。
 """
+import hashlib
 import html
 import json
 import re
@@ -10,7 +15,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REPORT_DIR = REPO_ROOT / "report"
-OUT_FILE = REPO_ROOT / "history" / "reports-data.js"
+OUT_DIR = REPO_ROOT / "history" / "reports"
+INDEX_FILE = REPO_ROOT / "history" / "reports-index.js"
 
 
 def inline(text: str) -> str:
@@ -126,16 +132,48 @@ def md_to_html(md: str) -> str:
     return "\n".join(out)
 
 
+def report_id(key: str) -> str:
+    """レポート名（拡張子なしファイル名）から、配信用ファイル名のIDを決める。
+
+    レポート名は日本語を含むので、そのままURLのパスにはしない。macOSのファイル
+    システムとGit・配信サーバーとでUnicodeの正規化（NFC/NFD）が食い違うと、
+    見た目が同じ名前なのに404になることがあるため。名前のSHA-1から作ったASCIIの
+    IDをファイル名にし、日本語名を持つのは対応表（reports-index.js）だけにする。
+
+    連番ではなくハッシュなので、レポートを1本足しても既存のファイル名は変わらない
+    （連番だと日付順に差し込むたびに以降が全部ずれ、毎回全ファイルがgitの差分に出る）。
+    """
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
+
+
 def main():
-    data = {}
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    index = {}
+    generated = set()
     for path in sorted(REPORT_DIR.glob("*.md")):
         key = path.stem
-        html = md_to_html(path.read_text(encoding="utf-8"))
-        data[key] = html
+        file_id = report_id(key)
+        index[key] = file_id
+        payload = json.dumps(
+            {"name": key, "html": md_to_html(path.read_text(encoding="utf-8"))},
+            ensure_ascii=False,
+        ) + "\n"
+        out_path = OUT_DIR / f"{file_id}.json"
+        # 毎朝の全件再生成で、中身の変わっていないファイルまで書き直さない。
+        if not out_path.exists() or out_path.read_text(encoding="utf-8") != payload:
+            out_path.write_text(payload, encoding="utf-8")
+        generated.add(out_path.name)
 
-    js = "window.REPORTS = " + json.dumps(data, ensure_ascii=False, indent=2) + ";\n"
-    OUT_FILE.write_text(js, encoding="utf-8")
-    print(f"generated {OUT_FILE} ({len(data)} reports)")
+    js = "window.REPORT_INDEX = " + json.dumps(index, ensure_ascii=False, indent=2) + ";\n"
+    INDEX_FILE.write_text(js, encoding="utf-8")
+    print(f"generated {INDEX_FILE} and {len(index)} files under {OUT_DIR}")
+
+    # レポートをリネーム・削除すると、対応表から外れたJSONが取り残される。
+    # 消すと元に戻せないので、ここでは知らせるだけにして自動削除はしない。
+    orphans = sorted(p.name for p in OUT_DIR.glob("*.json") if p.name not in generated)
+    if orphans:
+        print("該当する report/*.md が無いファイル（削除していません）: " + ", ".join(orphans))
 
 
 if __name__ == "__main__":
