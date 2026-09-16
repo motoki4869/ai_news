@@ -7,6 +7,18 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-16
 
+### 自分のブラウザをVercel Analyticsの計測対象から除外
+- **変更**: `?analytics=off` を一度開くと、そのブラウザの `localStorage` に除外設定を保存し、`ai_news` 全ページでAnalyticsスクリプトを読み込まないようにした。`?analytics=on` で除外設定を解除できる。除外判定はブラウザ単位で、他の利用者や別端末には影響しない。
+- **理由**: サイト管理者自身のスマホからの頻繁な確認で、訪問者数・ページビュー数が実際の利用状況より多く見えるのを防ぐため。
+- **対象**: `history/analytics.js`, `history/` 配下の6ページ, `test/test_vercel_analytics.sh`, `test/test_vercel_analytics_opt_out.js`
+- **commit**: `HEAD`（今回の実装コミット）
+
+### Vercel Web Analyticsによるアクセス計測を追加
+- **変更**: VercelプロジェクトでWeb Analyticsを有効化し、`history/` 配下の6ページにページビュー・訪問者数を計測するスクリプトを追加。設定反映のため本番環境も再デプロイした。
+- **理由**: サイトを社内公開した後のアクセス状況を確認できるようにし、今後の訪問者数を記録するため。
+- **対象**: `history/index.html`, `history/news.html`, `history/daily.html`, `history/generative.html`, `history/glossary.html`, `history/archive.html`, Vercelプロジェクト設定
+- **commit**: `ae16494`, `42e41d4`
+
 ### 過去ログページに絞り込みを追加
 - **変更**: `archive.html` にキーワード検索ボックスと7テーマのクイックフィルターを追加。NEWS FEEDと同じ仕様（検索とテーマの併用可、同じボタンの再押下で解除、該当0件のテーマは見出しごと非表示）に揃えた。配色のみこのページのアクセントであるamber/coralに合わせ、NEWS FEEDには無い「該当なし」の案内文を追加した。
 - **理由**: 過去ログが42件まで増え、目的のトピックを探す手段が無かったため。
