@@ -13,7 +13,7 @@
 | 2 | ナビの6ページ統一 | やらない（下記） |
 | 3 | 未使用フォントウェイトの削除 | 完了（2026-09-17） |
 | 4 | OGP / canonical / sitemap の追加 | 保留（下記） |
-| 5 | モーダルに `history.pushState` | 未着手 |
+| 5 | モーダルに `history.pushState` | 完了（2026-09-17） |
 | 6 | `reports-data.js` の遅延読み込み、`daily-data.js` の月別分割 | 未着手 |
 | 7 | 共通 `base.css` の切り出し | 未着手 |
 | 8 | 配色の整理（1ページ1主色・glow限定）＋背景canvasのフェード | 未着手 |

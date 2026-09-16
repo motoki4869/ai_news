@@ -21,7 +21,27 @@
   const closeBtn = modal.querySelector('.report-modal-close');
   const backdrop = modal.querySelector('.report-modal-backdrop');
 
-  function openModal(reportNames) {
+  /* 履歴の扱い（ここを崩すと戻るボタンが壊れる）
+
+     モーダルの開閉はDOM属性の切り替えでしかないので、何もしないとブラウザの履歴には
+     一切現れない。するとスマホのスワイプバックは「モーダルを閉じる」ではなく
+     「news.htmlに来る前のページへ戻る」になり、読んでいる途中でサイトから出てしまう。
+     そこで開くときに pushState で履歴を1段積み、戻る操作を popstate で受けて閉じる。
+
+       ×ボタン/背景/Esc : requestClose() → history.back() → popstate → hideModal()
+       スワイプバック    : ブラウザが履歴を戻す        → popstate → hideModal()
+
+     履歴を戻す責任は requestClose() だけが持ち、hideModal() は必ずその後に呼ばれるので
+     履歴に触らない。hideModal() を requestClose() を通さず直接呼ぶ経路を作ってはいけない。
+     閉じても位置が modal のまま下がらず、次に開いたときの pushState が上書きではなく
+     純粋な追加になるため、開くたびに履歴が1段ずつ伸び続ける。 */
+  let openedViaHistory = false;
+
+  function isOpen() {
+    return !modal.hasAttribute('hidden');
+  }
+
+  function renderModal(reportNames) {
     const reports = (window.REPORTS || {});
     const sections = reportNames.map(name => {
       const html = reports[name];
@@ -51,15 +71,53 @@
     body.scrollTop = 0;
   }
 
-  function closeModal() {
-    modal.setAttribute('hidden', '');
-    document.body.style.overflow = '';
+  function openModal(reportNames) {
+    // 開いている上から別のカードを開く経路ができても、履歴を二重に積まない。
+    if (isOpen()) {
+      renderModal(reportNames);
+      return;
+    }
+    openedViaHistory = false;
+    try {
+      history.pushState({ reportModal: reportNames }, '', location.href);
+      openedViaHistory = true;
+    } catch (_) {
+      // file:// など pushState が使えない環境。履歴が積まれていないので、
+      // requestClose() は history.back() を呼ばずそのまま閉じる。
+    }
+    renderModal(reportNames);
   }
 
-  closeBtn.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', closeModal);
+  // 見た目を閉じるだけ。履歴は呼び出し元（popstate）の時点で処理済み。
+  function hideModal() {
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    openedViaHistory = false;
+  }
+
+  // ユーザーが「閉じる」意思を示したとき。閉じる処理そのものは popstate に任せる。
+  function requestClose() {
+    if (!isOpen()) return;
+    if (openedViaHistory) history.back();
+    else hideModal();
+  }
+
+  closeBtn.addEventListener('click', requestClose);
+  backdrop.addEventListener('click', requestClose);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeModal();
+    if (e.key === 'Escape' && isOpen()) requestClose();
+  });
+
+  window.addEventListener('popstate', e => {
+    const names = e.state && e.state.reportModal;
+    if (Array.isArray(names)) {
+      // 「進む」でモーダルの履歴項目に入り直した場合。ブラウザが既に履歴を進めている
+      // ので、ここで pushState してはいけない。開き直すだけにする。
+      openedViaHistory = true;
+      renderModal(names);
+    } else if (isOpen()) {
+      hideModal();
+    }
   });
 
   function bindCards() {
