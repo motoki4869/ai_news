@@ -41,8 +41,22 @@ fi
 
 SUMMARY="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
 SUMMARY="${SUMMARY:-ニュースを更新しました}"
-# AppleScript文字列リテラルに埋め込むため \ と " をエスケープし、通知の表示上限に合わせて短く切る
-SUMMARY_ESCAPED="$(printf '%s' "$SUMMARY" | cut -c1-200 | sed 's/\\/\\\\/g; s/"/\\"/g')"
+# macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
+#
+# 以前は本文を文字列リテラルに直接埋め込み、`cut -c1-200` で長さを詰めていたが、
+# launchdはロケールを渡さないためCロケールになり、`cut -c` が文字ではなくバイトを
+# 数える。日本語は1文字3バイトなので200バイト目が文字の途中に当たると壊れたUTF-8が
+# できあがり、osascriptが「unknown tokenが見つかりました」で落ちて朝の通知が出なかった
+# (logs/daily_news.err.log に32回記録)。
+# argv渡しなら引用符・バックスラッシュのエスケープが不要になり、切り詰めもAppleScript
+# 側の `text 1 thru` が文字単位で行うのでロケールに左右されない。
+notify() {  # $1=本文 $2=タイトル $3=サウンド名
+  osascript -e 'on run argv
+	set body to item 1 of argv
+	if (count of body) > 200 then set body to (text 1 thru 200 of body) & "…"
+	display notification body with title (item 2 of argv) sound name (item 3 of argv)
+end run' "$1" "$2" "$3" || true
+}
 
 if [ "$STATUS" -eq 0 ]; then
   LINE_MSG_MTIME_AFTER=0
@@ -127,15 +141,15 @@ if [ "$STATUS" -eq 0 ]; then
     rm -f "$AUDIO_DATES_FILE"
   fi
   if [ "$IS_FALLBACK" -eq 1 ]; then
-    osascript -e "display notification \"${SUMMARY_ESCAPED}（Codex経由）\" with title \"AIニュース更新\" sound name \"Glass\"" || true
+    notify "${SUMMARY}（Codex経由）" "AIニュース更新" "Glass"
   else
-    osascript -e "display notification \"$SUMMARY_ESCAPED\" with title \"AIニュース更新\" sound name \"Glass\"" || true
+    notify "$SUMMARY" "AIニュース更新" "Glass"
   fi
 else
   if [ "$IS_FALLBACK" -eq 1 ]; then
-    osascript -e "display notification \"Claude利用上限到達 → Codexフォールバックも失敗しました\" with title \"AIニュース更新 失敗\" sound name \"Basso\"" || true
+    notify "Claude利用上限到達 → Codexフォールバックも失敗しました" "AIニュース更新 失敗" "Basso"
   else
-    osascript -e "display notification \"daily_news.shが失敗しました。logs/daily_news.err.logを確認してください\" with title \"AIニュース更新 失敗\" sound name \"Basso\"" || true
+    notify "daily_news.shが失敗しました。logs/daily_news.err.logを確認してください" "AIニュース更新 失敗" "Basso"
   fi
 fi
 
