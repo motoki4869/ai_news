@@ -151,8 +151,12 @@ nav {
   color: var(--text-dim); text-decoration: none;
   transition: color 0.25s, text-shadow 0.25s;
 }
-.section-bar a:hover {
-  color: rgb(0, 229, 255); text-shadow: 0 0 12px rgba(0, 229, 255, 0.7);
+/* タップではホバーが残り続ける（iOS Safari は次にどこかを触るまで :hover を外さない）。
+   現在地の点灯と見分けがつかなくなるので、実際にホバーできる環境だけに限定する。 */
+@media (hover: hover) and (pointer: fine) {
+  .section-bar a:hover {
+    color: rgb(0, 229, 255); text-shadow: 0 0 12px rgba(0, 229, 255, 0.7);
+  }
 }
 /* いま読んでいるセクションを強調する。JSが .is-active を付け外しする。
    下線は ::after を絶対配置で描くので、点灯してもバーの高さは変わらない。 */
