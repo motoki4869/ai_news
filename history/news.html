@@ -115,6 +115,22 @@ nav {
 .to-archive  { --pill: 138, 148, 184; }
 .to-glossary { --pill: 139, 92, 246; }
 
+.nav-search {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+  background: rgba(0, 255, 163, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: 200px;
+  min-width: 0;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.nav-search:focus { border-color: rgba(0,255,163,0.6); box-shadow: 0 0 14px rgba(0,255,163,0.25); }
+.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+
 /* news.html には目次バーを置かない。
    ヒーロー内のクイックフィルター（7テーマ）が同じ役割を兼ねており、
    同じ7項目を2段に並べると重複して見えるため。 */
@@ -454,7 +470,6 @@ footer .logo {
 @media (max-width: 1250px) {
   nav { padding: 14px 20px; }
   .nav-links a { font-size: 0.72rem; padding: 5px 12px; }
-  .nav-search { width: 150px; }
 }
 
 @media (max-width: 768px) {
