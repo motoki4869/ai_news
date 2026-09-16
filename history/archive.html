@@ -276,9 +276,73 @@ footer .logo {
   margin-bottom: 8px; font-size: 0.95rem;
 }
 
+/* ===== Keyword search ===== */
+/* news.html と同じ絞り込み体験を過去ログにも用意する。
+   配色だけはこのページのアクセント(amber)に合わせている。 */
+.nav-search {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+  background: rgba(255, 181, 71, 0.05);
+  border: 1px solid rgba(255, 181, 71, 0.28);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: 200px;
+  min-width: 0;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.nav-search:focus { border-color: rgba(255,181,71,0.6); box-shadow: 0 0 14px rgba(255,181,71,0.25); }
+.nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
+
+#search-count {
+  display: none;
+  position: fixed;
+  top: calc(var(--nav-h) + 12px); right: 32px; z-index: 99;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--amber);
+  background: rgba(5,6,15,0.85);
+  border: 1px solid rgba(255,181,71,0.35);
+  border-radius: 999px;
+  padding: 3px 14px;
+}
+
+/* ===== Quick filters ===== */
+.quick-filters {
+  margin-top: 30px;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; align-items: center;
+  max-width: 680px;
+}
+.qf-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  color: var(--text-dim); letter-spacing: 0.15em; margin-right: 4px;
+}
+.quick-filters button {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--amber); background: rgba(255,181,71,0.06);
+  border: 1px solid rgba(255,181,71,0.3); border-radius: 999px;
+  padding: 5px 16px; cursor: pointer; transition: all 0.25s;
+}
+.quick-filters button:hover { box-shadow: 0 0 12px rgba(255,181,71,0.35); }
+.quick-filters button.active { color: var(--bg); background: var(--amber); }
+
+/* 絞り込みで全カードが消えたときの案内 */
+.no-hit {
+  display: none;
+  text-align: center; padding: 60px 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
 @media (max-width: 768px) {
-  .nav-links { gap: 6px; }
+  nav { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
+  .nav-logo { order: 1; flex: 1 1 0; min-width: 0; }
+  .nav-links { order: 2; flex: 0 0 auto; gap: 6px; }
   .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
+  .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
+  #search-count { right: 14px; }
   .hero { padding-top: 120px; }
 }
 </style>
@@ -290,12 +354,24 @@ footer .logo {
   <div class="nav-links">
     <a class="to-news" href="news.html">← NEWS FEED</a>
   </div>
+  <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: 企業 / 技術 / トピック">
 </nav>
+<span id="search-count"></span>
 
 <header class="hero">
   <div class="hero-tag">ARCHIVE — 過去ログ</div>
   <h1>AI NEWS ARCHIVE</h1>
   <h2>news.htmlから循環した過去のトピック</h2>
+  <div class="quick-filters">
+    <span class="qf-label">QUICK FILTER:</span>
+    <button data-sec="agent">エージェント</button>
+    <button data-sec="japan">国内実装</button>
+    <button data-sec="physical">フィジカルAI</button>
+    <button data-sec="sovereign">ソブリンAI</button>
+    <button data-sec="infra">インフラ</button>
+    <button data-sec="society">経済・社会</button>
+    <button data-sec="security">セキュリティ</button>
+  </div>
 </header>
 
 <section class="section t-agent" id="agent">
@@ -620,6 +696,8 @@ footer .logo {
   </div>
 </section>
 
+<div class="no-hit" id="no-hit">&gt; 該当する過去ログはありません。</div>
+
 <div class="cta-back">
   <a class="to-news" href="news.html">← NEWS FEED に戻る</a>
   <a class="to-index" href="index.html">AI HISTORY 全体年表 →</a>
@@ -645,6 +723,51 @@ syncNavHeight();
 window.addEventListener('resize', syncNavHeight);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
 if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+
+/* ===== Keyword search & quick filters =====
+   news.html と同じ仕様。クイックフィルターは7テーマ(セクションid)で絞り込み、
+   キーワード検索と併用できる。同じボタンをもう一度押すと解除される。 */
+const searchInput = document.getElementById('site-search');
+const searchCount = document.getElementById('search-count');
+const noHit = document.getElementById('no-hit');
+let activeSection = '';
+
+function applySearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  const filtering = !!(q || activeSection);
+  let hits = 0;
+
+  document.querySelectorAll('.section').forEach(sec => {
+    const secMatch = !activeSection || sec.id === activeSection;
+    let any = false;
+
+    sec.querySelectorAll('.news-card').forEach(card => {
+      const match = secMatch && (!q || card.textContent.toLowerCase().includes(q));
+      card.style.display = match ? '' : 'none';
+      if (match) { any = true; hits++; }
+    });
+
+    // 絞り込み中は、該当カードが1枚も残らないテーマごと隠す
+    sec.style.display = (any || !filtering) ? '' : 'none';
+  });
+
+  searchCount.textContent = hits + (q ? '件ヒット' : '件表示');
+  searchCount.style.display = filtering ? 'block' : 'none';
+  noHit.style.display = (filtering && hits === 0) ? 'block' : 'none';
+
+  document.querySelectorAll('.quick-filters button[data-sec]').forEach(b =>
+    b.classList.toggle('active', b.dataset.sec === activeSection));
+}
+
+searchInput.addEventListener('input', applySearch);
+
+document.querySelectorAll('.quick-filters button[data-sec]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 同じボタンをもう一度押したら解除
+    activeSection = (activeSection === btn.dataset.sec) ? '' : btn.dataset.sec;
+    applySearch();
+  });
+});
 </script>
 
 </body>
