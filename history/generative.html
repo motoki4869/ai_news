@@ -479,16 +479,25 @@ footer .logo {
   /* スマホでも目次を出す。折り返して2段になると固定ヘッダーが高くなりすぎるので、
      1行に固定してはみ出す分は横スクロールで見せる。
      contain: layout がないと、内部の幅が document の scrollWidth に算入されて
-     ページ全体が横にパンできてしまう。 */
+     ページ全体が横にパンできてしまう。
+
+     スクロール追従を滑らかにするため、スマホでは以下を外している。
+     - backdrop-filter: 背後に全画面のアニメーションcanvasがあるので、
+       スクロールのたびにぼかしを計算し直すことになり、iOS では sticky の
+       描画が1フレーム遅れて「ついてこない」ように見える。不透明な背景で代用する。
+     - -webkit-overflow-scrolling: touch: iOS 13 以降は不要で、
+       sticky 要素に付けると独立したスクロール層を作って追従を阻害することがある。 */
   .section-bar {
     justify-content: flex-start;
     flex-wrap: nowrap;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     contain: layout;
     gap: 0 18px;
     padding: 8px 12px;
+    background: rgb(7, 9, 20);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .section-bar::-webkit-scrollbar { display: none; }
   .section-bar a { white-space: nowrap; font-size: 0.72rem; }
