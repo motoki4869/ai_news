@@ -7,6 +7,18 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-16
 
+### Vercel Analyticsの時間別データをローカル保存
+- **変更**: 前日のWeb Analyticsを毎日取得し、日本時間の1時間ごとのVisitors数とPage Views数を `data/analytics/vercel_web_analytics_hourly.csv` に保存するスクリプトとlaunchd設定を追加した。同じ日を再取得しても行が重複しない。
+- **理由**: Vercel Hobbyプランの保存期間を超えても、社内公開後のアクセス推移を手元で確認できるようにするため。
+- **対象**: `scripts/collect_vercel_analytics.py`, `scripts/collect_vercel_analytics.sh`, `scripts/com.motoki.ainews.analytics.plist`, `test/test_collect_vercel_analytics.py`, `.gitignore`, `README.md`
+- **commit**: `HEAD`（今回の実装コミット）
+
+### Vercel Analyticsの未取得日の自動埋め戻し
+- **変更**: launchd実行時にローカルCSVの未取得日を確認し、前日分を毎回更新しながら、初回記録日以降の未取得日を最大30日分まで順番に取得するようにした。通信失敗日は保留ファイルへ記録して、CSVへ書き込まず次回実行時に再試行する。
+- **理由**: Macの電源オフやAPI障害で午前1時の実行に失敗しても、後日の実行でアクセス記録が抜けないようにするため。
+- **対象**: `scripts/collect_vercel_analytics.py`, `test/test_collect_vercel_analytics.py`, `README.md`
+- **commit**: `HEAD`（今回の実装コミット）
+
 ### 自分のブラウザをVercel Analyticsの計測対象から除外
 - **変更**: `?analytics=off` を一度開くと、そのブラウザの `localStorage` に除外設定を保存し、`ai_news` 全ページでAnalyticsスクリプトを読み込まないようにした。`?analytics=on` で除外設定を解除できる。除外判定はブラウザ単位で、他の利用者や別端末には影響しない。
 - **理由**: サイト管理者自身のスマホからの頻繁な確認で、訪問者数・ページビュー数が実際の利用状況より多く見えるのを防ぐため。

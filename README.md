@@ -19,6 +19,22 @@
 bash scripts/daily_news.sh
 ```
 
+### Vercel Analyticsのローカル保存
+
+- launchdジョブ名: `com.motoki.ainews.analytics`
+- 実行時刻: 毎日 1:00（JST）。前日の日本時間0:00〜24:00を取得する。前日分は毎回再取得し、過去に未取得の日があれば最大30日分まで埋め戻す
+- 保存先: `data/analytics/vercel_web_analytics_hourly.csv`（ローカルのみ。`.gitignore`対象）。取得失敗日の再試行情報も同じフォルダの `.pending.json` に保存する
+- 保存内容: 日付、日本時間の時間帯、Visitors、Page Views。1日24行で、同じ日を再取得した場合は重複せず置き換える。前日分は毎回更新するため、1時以外に起動しても前日データを確定値へ更新できる
+- 認証: ローカルのVercel CLIログイン情報を利用する。ログアウトすると自動取得できないため、`vercel login`で再ログインする
+
+手動確認:
+
+```bash
+python3 scripts/collect_vercel_analytics.py
+```
+
+`--date YYYY-MM-DD`を付けると、その日だけを指定して取得できます。Vercelの無料枠で確認できる期間を超えた日付は取得できないため、長期保存したい場合は毎日の自動実行を止めないでください。API取得に失敗した日付はCSVへ書き込まれず、次回実行時に再試行されます。
+
 ## LINE Bot アクセストークンの保管元（ハブ）
 
 このリポジトリの `.claude/settings.local.json`（gitignore対象）に `LINE_CHANNEL_ACCESS_TOKEN` を保管している。**値そのものはこのREADMEには書かない。**

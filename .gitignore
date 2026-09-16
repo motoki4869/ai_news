@@ -1,6 +1,7 @@
 .claude/settings.local.json
 .codex/config.toml
 logs/
+data/analytics/
 everyday_news/line_message.txt
 .superpowers/
 scripts/notebooklm_audio.env
