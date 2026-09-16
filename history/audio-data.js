@@ -202,7 +202,7 @@ window.DAILY_AUDIO = {
   "2026-09-10": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-10.m4a",
     "label": "2026-09-10のAIニュース音声",
-    "title": "1万人の天才AIと数学적防衛線"
+    "title": "1万人の天才AIと数学的防衛線"
   },
   "2026-09-11": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-11.m4a",
