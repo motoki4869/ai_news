@@ -5,6 +5,15 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-09-17
+
+### LINE通知のリンク先を当日の日次ログに変更
+- **変更**: 毎朝のLINE通知に載せるURLを、サイトのルート（`https://ai-news-sandy-seven.vercel.app`）から `https://ai-news-sandy-seven.vercel.app/daily.html#YYYY-MM-DD` に変更した。日付は送信権の重複判定で使っている `LINE_NOTIFY_DATE`（未設定なら当日）と同じ値を使う。
+- **理由**: 「本日のAI_newsが更新されました」という通知なのに、開くと1950年から続くAI HISTORYの年表が出て、更新された当日分のニュースまで自分でナビゲートする必要があった。
+- **対象**: `scripts/lib/line_notification_dedupe.sh`, `scripts/lib/test_line_notification_dedupe.sh`
+- **確認**: 本番の `daily.html#2026-09-16` / `#2026-09-10` で該当日が選択されること、存在しない日付（`#2026-12-31`）では最新日にフォールバックして壊れないことをブラウザで確認。テスト8件すべてPASS。
+- **commit**: `HEAD`（今回の実装コミット）
+
 ## 2026-09-16
 
 ### Vercel Analyticsの時間別データをローカル保存

@@ -3,8 +3,17 @@
 # 同じ通知対象を同じ日に複数回送らないための原子的な送信権取得。
 # ClaudeフックとCodexフックの両方からsourceされる。
 
+# 通知文と送信権の両方が同じ日付を見るようにする。片方だけdateを呼ぶと、
+# 日付をまたぐ瞬間に「昨日のdedupeキーで今日のURLを送る」ようなずれが起きる。
+line_notification_date() {
+  printf '%s\n' "${LINE_NOTIFY_DATE:-$(date +%Y-%m-%d)}"
+}
+
+# ルートURL（70年史の年表）ではなく、その日の日次ログへ直接着地させる。
+# daily.htmlはハッシュで日付を受け取るので、#YYYY-MM-DDを付ければ当日分が開く。
 line_notification_text() {
-  printf '%s\n\n%s\n' "本日のAI_newsが更新されました" "https://ai-news-sandy-seven.vercel.app"
+  printf '%s\n\n%s\n' "本日のAI_newsが更新されました" \
+    "https://ai-news-sandy-seven.vercel.app/daily.html#$(line_notification_date)"
 }
 
 line_notification_state_dir() {
@@ -13,7 +22,8 @@ line_notification_state_dir() {
 
 line_notification_claim_path() {
   local target_file="$1"
-  local notification_date="${LINE_NOTIFY_DATE:-$(date +%Y-%m-%d)}"
+  local notification_date
+  notification_date="$(line_notification_date)"
   local key
   key="$(printf '%s\n%s\n' "$target_file" "$notification_date" | shasum -a 256 | awk '{print $1}')"
   printf '%s/%s.sent\n' "$(line_notification_state_dir)" "$key"

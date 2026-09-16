@@ -36,8 +36,16 @@ assert_value() {
   fi
 }
 
-assert_value "LINE通知は短い固定文にする" \
-  "本日のAI_newsが更新されました" "$(line_notification_text)"
+# 通知文は「更新された日の日次ログ」へ直接着地させる。LINE_NOTIFY_DATEは
+# 送信権の重複判定と同じ日付を使い、通知文とdedupeキーがずれないようにする。
+assert_value "LINE通知は当日の日次ログURLを載せる" \
+  "本日のAI_newsが更新されました
+
+https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
+
+assert_value "LINE_NOTIFY_DATE未設定なら今日の日付を使う" \
+  "https://ai-news-sandy-seven.vercel.app/daily.html#$(date +%Y-%m-%d)" \
+  "$(LINE_NOTIFY_DATE= line_notification_text | tail -1)"
 
 assert_status "同じ日・同じ通知対象は最初の1回だけ取得できる" 0 \
   claim_line_notification "/repo/everyday_news/line_message.txt"
