@@ -37,6 +37,8 @@ test('10秒操作ボタンは円形矢印アイコンで表示する', () => {
   assert.equal((DAILY_HTML.match(/class="audio-skip-icon"/g) || []).length, 2);
   assert.equal((DAILY_HTML.match(/class="audio-skip-arrow"/g) || []).length, 2);
   assert.equal((DAILY_HTML.match(/>10<\/text>/g) || []).length, 2);
+  assert.equal((DAILY_HTML.match(/stroke-width="2"/g) || []).length, 2);
+  assert.match(DAILY_HTML, /\.audio-skip-number\s*\{[^}]*font-size:\s*11px;/s);
   assert.match(DAILY_HTML, /id="audio-rewind"[^>]*aria-label="10秒巻き戻す"/);
   assert.match(DAILY_HTML, /id="audio-forward"[^>]*aria-label="10秒後送り"/);
 });

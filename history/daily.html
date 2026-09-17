@@ -493,7 +493,8 @@ nav {
 .audio-forward .audio-skip-arrow { transform: scaleX(-1); }
 .audio-skip-number {
   fill: currentColor; font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; font-weight: 700; text-anchor: middle;
+  font-size: 11px; font-weight: 700; text-anchor: middle;
+  paint-order: stroke fill; stroke: var(--bg); stroke-width: 2px; stroke-linejoin: round;
 }
 
 /* 900px以上（iPad・PC）では、速度ボタンと「視聴済み」をパネル右上（プレイヤーの真上）へ
@@ -666,8 +667,8 @@ footer .logo {
             <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">
               <svg class="audio-skip-icon" viewBox="0 0 36 36" aria-hidden="true">
                 <g class="audio-skip-arrow">
-                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M4 12 13 4v5h9v6h-9v5z" fill="currentColor"/>
+                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 12 10 7v3h3v4h-3v3z" fill="currentColor"/>
                 </g>
                 <text class="audio-skip-number" x="18" y="22">10</text>
               </svg>
@@ -679,8 +680,8 @@ footer .logo {
             <button type="button" class="audio-skip audio-forward" id="audio-forward" aria-label="10秒後送り">
               <svg class="audio-skip-icon" viewBox="0 0 36 36" aria-hidden="true">
                 <g class="audio-skip-arrow">
-                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M4 12 13 4v5h9v6h-9v5z" fill="currentColor"/>
+                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 12 10 7v3h3v4h-3v3z" fill="currentColor"/>
                 </g>
                 <text class="audio-skip-number" x="18" y="22">10</text>
               </svg>
