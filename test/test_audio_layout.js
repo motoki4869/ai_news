@@ -19,6 +19,13 @@ test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する'
   );
 });
 
+test('iPad幅では速度操作と視聴済みを離して表示する', () => {
+  assert.match(
+    DAILY_HTML,
+    /\.audio-actions\s*\{[^}]*grid-area:\s*actions;[^}]*display:\s*flex;[^}]*gap:\s*28px;/s,
+  );
+});
+
 test('再生ボタンは44pxのクリック領域で表示する', () => {
   assert.match(
     DAILY_HTML,
