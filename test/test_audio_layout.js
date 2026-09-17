@@ -34,14 +34,14 @@ test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度�
   );
 });
 
-test('スマホ幅では視聴済みの文言を隠し、タイトルをチェックボックスの手前で省略する', () => {
+test('スマホ幅では視聴済みの文言を隠し、タイトルをチェックボックスの手前で折り返す', () => {
   assert.match(
     DAILY_HTML,
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label span\s*\{\s*display:\s*none;\s*\}/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy h3\s*\{[^}]*min-width:\s*0;[^}]*white-space:\s*nowrap;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy h3\s*\{[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s,
   );
 });
 
