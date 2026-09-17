@@ -75,6 +75,15 @@ test('再生ボタンは見た目の円を表示しない', () => {
   );
 });
 
+test('スマホ幅では再生と10秒操作のアイコンだけを縮小する', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-play svg\s*\{\s*width:\s*22px;\s*height:\s*22px;\s*\}[\s\S]*?\.audio-skip-icon\s*\{\s*width:\s*28px;\s*height:\s*28px;/s,
+  );
+  assert.match(DAILY_HTML, /\.audio-play\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/s);
+  assert.match(DAILY_HTML, /\.audio-skip\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/s);
+});
+
 test('10秒操作ボタンは独立した枠線を持たない', () => {
   assert.match(
     DAILY_HTML,
