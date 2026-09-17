@@ -369,10 +369,93 @@ nav {
 }
 .audio-speed button:disabled { opacity: 0.35; cursor: default; }
 .audio-controls {
+  position: relative;
   display: flex; align-items: center; gap: 10px;
   flex: 1 1 560px; min-width: 240px;
 }
-.audio-player { flex: 1 1 auto; min-width: 0; width: 100%; height: 42px; }
+/* 再生の実体。自作UIに置き換えたので見せないが、レイアウトから外すだけにとどめる。 */
+.audio-player {
+  position: absolute; width: 1px; height: 1px;
+  opacity: 0; pointer-events: none;
+}
+
+.audio-ui {
+  flex: 1 1 auto; min-width: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+}
+.audio-seek-row { flex: 1 1 100%; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.audio-btn-row { flex: 1 1 100%; display: flex; align-items: center; justify-content: center; gap: 12px; }
+
+/* 900px以上では1行に組み直す（操作ボタンを左、シークバーを右へ伸ばす）。
+   2行のままだと .audio-controls が .audio-copy より背が高くなり、下の
+   @media (min-width: 900px) で速度ボタンの行に揃えている「視聴済み」の
+   絶対配置がずれて、プレイヤーに重なってしまうため。 */
+@media (min-width: 900px) {
+  .audio-btn-row { flex: 0 0 auto; order: -1; }
+  .audio-seek-row { flex: 1 1 auto; }
+}
+
+.audio-time {
+  flex: 0 0 auto; min-width: 40px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  color: var(--text-dim); font-variant-numeric: tabular-nums;
+}
+/* 桁が増減しても左右の余白が動かないよう、終端側は右寄せにする。 */
+.audio-time-end { text-align: right; }
+
+.audio-seek { position: relative; flex: 1 1 auto; min-width: 60px; height: 18px; display: flex; align-items: center; }
+.audio-seek-track {
+  position: absolute; left: 0; right: 0; height: 4px;
+  border-radius: 999px; background: rgba(0,229,255,0.15); overflow: hidden;
+}
+.audio-seek-buffered, .audio-seek-played {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px;
+}
+.audio-seek-buffered { background: rgba(0,229,255,0.22); }
+.audio-seek-played { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+/* 透明なつまみ操作レイヤー。トラックのdivより後ろのDOM順なので上に重なる。 */
+.audio-seek-input {
+  position: relative; width: 100%; height: 18px; margin: 0;
+  background: transparent; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+}
+.audio-seek-input::-webkit-slider-runnable-track { height: 18px; background: transparent; }
+.audio-seek-input::-moz-range-track { height: 18px; background: transparent; }
+.audio-seek-input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 13px; height: 13px; margin-top: 2.5px; border: none; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,0.75);
+}
+.audio-seek-input::-moz-range-thumb {
+  width: 13px; height: 13px; border: none; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,0.75);
+}
+.audio-seek-input:focus { outline: none; }
+.audio-seek-input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba(0,229,255,0.35), 0 0 10px rgba(0,229,255,0.75); }
+.audio-seek-input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px rgba(0,229,255,0.35), 0 0 10px rgba(0,229,255,0.75); }
+.audio-seek-input:disabled { cursor: default; }
+.audio-seek-input:disabled::-webkit-slider-thumb { background: var(--text-dim); box-shadow: none; }
+.audio-seek-input:disabled::-moz-range-thumb { background: var(--text-dim); box-shadow: none; }
+
+.audio-play {
+  flex: 0 0 auto;
+  width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(0,229,255,0.45); background: rgba(0,229,255,0.1);
+  color: var(--cyan); cursor: pointer;
+  transition: box-shadow 0.25s, background 0.25s;
+}
+.audio-play:hover:not(:disabled) {
+  background: rgba(0,229,255,0.18); box-shadow: 0 0 18px rgba(0,229,255,0.45);
+}
+.audio-play:disabled { opacity: 0.35; cursor: default; }
+.audio-play svg { width: 15px; height: 15px; display: block; fill: currentColor; }
+/* 再生中かどうかで三角と二本線を入れ替える。 */
+.audio-play .icon-pause { display: none; }
+.audio-play.is-playing .icon-play { display: none; }
+.audio-play.is-playing .icon-pause { display: block; }
+
 .audio-skip {
   flex: 0 0 auto;
   border: 1px solid rgba(0,229,255,0.35);
@@ -515,12 +598,38 @@ footer .logo {
           </div>
         </div>
       </div>
-      <div class="audio-controls" role="group" aria-label="音声の10秒操作">
-        <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">↶ 10秒</button>
-        <audio class="audio-player" id="audio-player" controls preload="metadata">
+      <div class="audio-controls" role="group" aria-label="音声プレイヤー">
+        <!-- 再生の実体。見た目は下の .audio-ui を自作しているので controls は付けない。
+             要素自体は画面外に置くだけで消さない（display:none にすると一部のブラウザで
+             再生が始まらないことがあるため）。 -->
+        <audio class="audio-player" id="audio-player" preload="metadata">
           お使いのブラウザは音声再生に対応していません。
         </audio>
-        <button type="button" class="audio-skip" id="audio-forward" aria-label="10秒後送り">10秒 ↷</button>
+        <div class="audio-ui">
+          <div class="audio-seek-row">
+            <span class="audio-time" id="audio-current">0:00</span>
+            <div class="audio-seek">
+              <!-- 見えているバーは下の2枚のdiv。input[type=range]はその上に透明で重ねてあり、
+                   ドラッグ・矢印キー操作・スクリーンリーダー対応をブラウザに任せている。 -->
+              <div class="audio-seek-track">
+                <div class="audio-seek-buffered" id="audio-buffered"></div>
+                <div class="audio-seek-played" id="audio-played"></div>
+              </div>
+              <input type="range" class="audio-seek-input" id="audio-seek"
+                     min="0" max="1" step="1" value="0" disabled
+                     aria-label="再生位置">
+            </div>
+            <span class="audio-time audio-time-end" id="audio-duration">--:--</span>
+          </div>
+          <div class="audio-btn-row">
+            <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">↶ 10秒</button>
+            <button type="button" class="audio-play" id="audio-play" aria-label="再生">
+              <svg class="icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3.2v11H4zM8.8 2.5H12v11H8.8z"/></svg>
+            </button>
+            <button type="button" class="audio-skip" id="audio-forward" aria-label="10秒後送り">10秒 ↷</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -549,6 +658,7 @@ footer .logo {
 <script src="audio-data.js"></script>
 <script src="daily-navigation.js"></script>
 <script src="audio-seek.js"></script>
+<script src="audio-player.js"></script>
 <script src="audio-heard.js"></script>
 <script>
 /* ===== Neural network background (green tint) ===== */
@@ -710,6 +820,12 @@ const dayHead = document.getElementById('day-head');
 const cardGrid = document.getElementById('card-grid');
 const audioPanel = document.getElementById('audio-panel');
 const audioPlayer = document.getElementById('audio-player');
+const audioPlayButton = document.getElementById('audio-play');
+const audioSeekInput = document.getElementById('audio-seek');
+const audioPlayedBar = document.getElementById('audio-played');
+const audioBufferedBar = document.getElementById('audio-buffered');
+const audioCurrentTimeLabel = document.getElementById('audio-current');
+const audioDurationLabel = document.getElementById('audio-duration');
 const audioRewindButton = document.getElementById('audio-rewind');
 const audioForwardButton = document.getElementById('audio-forward');
 const audioSpeedButtons = [...document.querySelectorAll('[data-audio-rate]')];
@@ -775,7 +891,97 @@ function safeAudioSrc(src) {
 function setAudioSkipEnabled(enabled) {
   audioRewindButton.disabled = !enabled;
   audioForwardButton.disabled = !enabled;
+  audioPlayButton.disabled = !enabled;
+  // シークは長さが分かってから解禁する（renderAudioDuration が判断する）。
+  if (!enabled) audioSeekInput.disabled = true;
+  else renderAudioDuration();
 }
+
+/* ===== 自作プレイヤーの表示更新 =====
+   ブラウザ標準の <audio controls> をやめ、再生ボタン・シークバー・時間表示を自前で描く。
+   標準のコントロールはブラウザごとに見た目が違い、このサイトの配色に合わせられないため。
+   音を鳴らす仕組み自体は <audio> のままで、ここがやるのは状態の読み書きだけ。 */
+
+/* シーク中はユーザーが動かしたつまみの位置を正とする。再生中は timeupdate が毎秒
+   飛んでくるので、ドラッグやキー操作の最中にそちらへ書き戻されないようにするための札。 */
+let audioScrubbing = false;
+
+function audioDurationSeconds() {
+  return Number.isFinite(audioPlayer.duration) ? Math.max(0, audioPlayer.duration) : 0;
+}
+
+/* 音声の長さが確定したとき（loadedmetadata / durationchange）。
+   シークバーの目盛りを「秒」にしておくと、矢印キー1回がちょうど1秒送りになる。 */
+function renderAudioDuration() {
+  const duration = audioDurationSeconds();
+  audioDurationLabel.textContent = AudioPlayerUI.formatTime(duration || Number.NaN);
+  audioSeekInput.max = String(Math.max(1, Math.round(duration)));
+  audioSeekInput.disabled = !duration || audioPlayButton.disabled;
+}
+
+function renderAudioProgress() {
+  const duration = audioDurationSeconds();
+  const current = Number.isFinite(audioPlayer.currentTime) ? audioPlayer.currentTime : 0;
+
+  audioCurrentTimeLabel.textContent = AudioPlayerUI.formatTime(current);
+  audioPlayedBar.style.width = AudioPlayerUI.percentOf(current, duration) + '%';
+  audioBufferedBar.style.width = AudioPlayerUI.percentOf(AudioPlayerUI.bufferedEnd(audioPlayer), duration) + '%';
+  if (!audioScrubbing) audioSeekInput.value = String(Math.round(current));
+  // 「1:23 / 12:34」のように、つまみの位置を音声として読み上げさせる。
+  audioSeekInput.setAttribute('aria-valuetext',
+    AudioPlayerUI.formatTime(current) + ' / ' + AudioPlayerUI.formatTime(duration || Number.NaN));
+}
+
+function renderAudioPlayState() {
+  const playing = !audioPlayer.paused && !audioPlayer.ended;
+  audioPlayButton.classList.toggle('is-playing', playing);
+  audioPlayButton.setAttribute('aria-label', playing ? '一時停止' : '再生');
+}
+
+/* 日付を切り替えたときなど、別の音声を読み込む前に表示を0へ戻す。 */
+function resetAudioUI() {
+  audioScrubbing = false;
+  audioSeekInput.value = '0';
+  audioPlayedBar.style.width = '0%';
+  audioBufferedBar.style.width = '0%';
+  audioCurrentTimeLabel.textContent = AudioPlayerUI.formatTime(0);
+  audioDurationLabel.textContent = AudioPlayerUI.formatTime(Number.NaN);
+  renderAudioPlayState();
+}
+
+audioPlayButton.addEventListener('click', () => {
+  // play() は Promise を返し、ユーザー操作が無い等の理由で拒否されることがある。
+  // 拒否されても再生状態は paused のままなので、表示を合わせ直すだけでよい。
+  if (audioPlayer.paused || audioPlayer.ended) {
+    const started = audioPlayer.play();
+    if (started && typeof started.catch === 'function') started.catch(renderAudioPlayState);
+  } else {
+    audioPlayer.pause();
+  }
+});
+
+audioSeekInput.addEventListener('pointerdown', () => { audioScrubbing = true; });
+audioSeekInput.addEventListener('keydown', () => { audioScrubbing = true; });
+// ドラッグ／キー操作が終わったら、以降は再生位置の側を正に戻す。
+['pointerup', 'pointercancel', 'keyup', 'change', 'blur'].forEach(type => {
+  audioSeekInput.addEventListener(type, () => { audioScrubbing = false; });
+});
+
+audioSeekInput.addEventListener('input', () => {
+  const duration = audioDurationSeconds();
+  if (!duration) return;
+  audioPlayer.currentTime = Math.min(duration, Math.max(0, Number(audioSeekInput.value)));
+  renderAudioProgress();
+});
+
+audioPlayer.addEventListener('loadedmetadata', () => { renderAudioDuration(); renderAudioProgress(); });
+audioPlayer.addEventListener('durationchange', renderAudioDuration);
+audioPlayer.addEventListener('timeupdate', renderAudioProgress);
+audioPlayer.addEventListener('progress', renderAudioProgress);
+audioPlayer.addEventListener('seeked', renderAudioProgress);
+audioPlayer.addEventListener('play', renderAudioPlayState);
+audioPlayer.addEventListener('pause', renderAudioPlayState);
+audioPlayer.addEventListener('ended', renderAudioPlayState);
 
 function setAudioSpeedEnabled(enabled) {
   audioSpeedButtons.forEach(button => { button.disabled = !enabled; });
@@ -830,7 +1036,8 @@ function renderDay() {
     audioTitleHeading.textContent = title;
     audioLabel.textContent = selected + 'のNotebookLM音声';
     audioPlayer.src = audioSrc;
-    audioPlayer.setAttribute('aria-label', title + 'を再生');
+    // 日付を切り替えると別の音声になるので、前の日の再生位置・長さの表示を消す。
+    resetAudioUI();
     setAudioSkipEnabled(true);
     setAudioSpeedEnabled(true);
     selectAudioSpeed(selectedAudioRate);
@@ -841,6 +1048,7 @@ function renderDay() {
     audioLabel.textContent = '';
     audioPlayer.removeAttribute('src');
     audioPlayer.load();
+    resetAudioUI();
     audioPanel.hidden = true;
     setAudioSkipEnabled(false);
     setAudioSpeedEnabled(false);
