@@ -19,11 +19,12 @@ test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する'
   );
 });
 
-test('再生ボタンは34pxの円形で表示する', () => {
+test('再生ボタンは44pxのクリック領域で表示する', () => {
   assert.match(
     DAILY_HTML,
-    /\.audio-play\s*\{[^}]*width:\s*34px;[^}]*height:\s*34px;/s,
+    /\.audio-play\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/s,
   );
+  assert.match(DAILY_HTML, /\.audio-play svg\s*\{[^}]*width:\s*22px;[^}]*height:\s*22px;/s);
 });
 
 test('再生ボタンは見た目の円を表示しない', () => {
