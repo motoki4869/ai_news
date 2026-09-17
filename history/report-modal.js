@@ -50,13 +50,14 @@
     return promise;
   }
 
-  /* 最新トレンドでは、画面に登場する可能性があるレポートだけを先読みする。
-     archive.html では全件先読みせず、過去ログはタップされたレポートだけを取得するため、
-     先読みは data-page="news" のページに限定する。カードの data-report を参照するので、
-     レポートの追加・循環で対象が変わっても固定リストの更新は不要。
+  /* 最新トレンドに表示されるレポートは、ページを開いた時点で先読みする。
+     archive.html では先読みを行わず、タップされたレポートだけを取得する。
+     この違いは data-page="news" で判定する。
+     先読みするレポートはカードの data-report から集めるため、レポートの追加や循環のたびに
+     固定リストを更新する必要はない。
 
-     loadReport() と同じPromiseをcacheに入れるため、先読みが完了する前にタップされても
-     二重fetchにはならず、完了後のタップは通信待ちなしでそのまま描画できる。 */
+     loadReport() と同じPromiseをキャッシュに入れるため、先読み中にタップされても
+     二重fetchにはならない。先読みが完了した後のタップは、通信を待たずに描画できる。 */
   function preloadNewsReports() {
     if (document.body.dataset.page !== 'news') return;
     const names = new Set();
