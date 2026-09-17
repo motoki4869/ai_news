@@ -8,29 +8,29 @@ const DAILY_HTML = fs.readFileSync(
   'utf8',
 );
 
-test('スマホ幅では再生速度を上段右、視聴済みをタイトル行右に表示する', () => {
+test('スマホ幅では再生速度と視聴済みを同じ上段右の操作列に表示する', () => {
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{[^}]*grid-template-areas:\s*\n\s*"kicker \."\s*\n\s*"title\s+heard"/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{[^}]*grid-template-areas:\s*\n\s*"kicker actions"\s*\n\s*"title\s+title"/s,
   );
   assert.match(
     DAILY_HTML,
-    /\.audio-speed\s*\{[^}]*grid-area:\s*speed;[^}]*justify-self:\s*end;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-actions\s*\{[^}]*grid-area:\s*actions;[^}]*display:\s*flex;[^}]*justify-self:\s*end;/s,
   );
   assert.match(
     DAILY_HTML,
-    /\.audio-heard-label\s*\{[^}]*grid-area:\s*heard;[^}]*justify-self:\s*end;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{[^}]*position:\s*static;/s,
   );
 });
 
-test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作を上段右に置く', () => {
+test('スマホ幅ではListen Toとタイトルの間隔を変えず、操作列を上段右に置く', () => {
   assert.match(
     DAILY_HTML,
     /\.audio-copy\s*\{[^}]*align-items:\s*center;\s*\}/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{[^}]*position:\s*absolute;[^}]*top:\s*0;[^}]*right:\s*0;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-actions\s*\{[^}]*grid-area:\s*actions;/s,
   );
 });
 
@@ -45,18 +45,18 @@ test('スマホ幅では視聴済みの文言を隠し、タイトルをチェ�
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-speed\s*\{[^}]*position:\s*absolute;[^}]*right:\s*0;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-speed button\s*\{[^}]*min-width:\s*44px;[^}]*font-size:\s*0\.58rem;/s,
   );
 });
 
-test('スマホ幅ではタイトル行との間隔と視聴済みの縦位置を調整する', () => {
+test('スマホ幅では操作列とタイトルの縦間隔を保ち、視聴済みを操作列に揃える', () => {
   assert.match(
     DAILY_HTML,
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{[^}]*row-gap:\s*8px;/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label\s*\{[^}]*transform:\s*translateY\(2px\);/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label\s*\{[^}]*transform:\s*none;/s,
   );
 });
 
