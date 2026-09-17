@@ -629,9 +629,9 @@ footer .logo {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  nav { padding: 10px 14px; flex-wrap: wrap; row-gap: 8px; }
-  .nav-logo { order: 1; }
-  .nav-links { gap: 6px; flex-wrap: wrap; order: 2; justify-content: center; width: 100%; }
+  nav { padding: 10px 14px; gap: 10px; flex-wrap: wrap; row-gap: 8px; }
+  .nav-logo { order: 1; white-space: nowrap; }
+  .nav-links { gap: 6px; flex-wrap: wrap; order: 3; justify-content: center; width: 100%; }
   .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
   /* スマホでも目次を出す。折り返して2段になると固定ヘッダーが高くなりすぎるので、
      1行に固定してはみ出す分は横スクロールで見せる。
@@ -658,7 +658,7 @@ footer .logo {
   }
   .section-bar::-webkit-scrollbar { display: none; }
   .section-bar a { white-space: nowrap; font-size: 0.72rem; }
-  .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
+  .nav-search { order: 2; width: clamp(116px, 33vw, 128px); font-size: 0.65rem; padding: 5px 10px; }
   #search-count { right: 14px; }
   .hero { padding-top: 150px; }
   .timeline::before { left: 18px; }
