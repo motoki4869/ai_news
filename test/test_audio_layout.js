@@ -49,6 +49,17 @@ test('スマホ幅では視聴済みの文言を隠し、タイトルをチェ�
   );
 });
 
+test('スマホ幅ではタイトル行との間隔と視聴済みの縦位置を調整する', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{[^}]*row-gap:\s*8px;/s,
+  );
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label\s*\{[^}]*transform:\s*translateY\(2px\);/s,
+  );
+});
+
 test('スマホ幅でも再生操作を再生バーの左側に並べる', () => {
   assert.match(
     DAILY_HTML,
