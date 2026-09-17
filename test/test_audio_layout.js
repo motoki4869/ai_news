@@ -37,6 +37,13 @@ test('スマホ幅でも再生操作を再生バーの左側に並べる', () =>
   );
 });
 
+test('スマホ幅では操作列を詰めて再生バーの長さを確保する', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-ui\s*\{\s*flex-wrap:\s*nowrap;\s*column-gap:\s*4px;\s*\}[\s\S]*?\.audio-btn-row\s*\{[^}]*gap:\s*0;[\s\S]*?\.audio-seek-row\s*\{\s*flex:\s*1 1 auto;\s*gap:\s*8px;[\s\S]*?\.audio-time\s*\{\s*min-width:\s*32px;/s,
+  );
+});
+
 test('音声パネルにNotebookLMのサービス名ラベルを表示しない', () => {
   assert.doesNotMatch(DAILY_HTML, /id="audio-label"/);
   assert.doesNotMatch(DAILY_HTML, /audioLabel/);
