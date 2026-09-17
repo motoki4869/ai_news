@@ -574,15 +574,22 @@ footer .logo {
   .audio-panel { padding: 0 12px; }
   .audio-inner { padding: 16px; gap: 12px; }
   .audio-copy {
+    position: relative;
     grid-template-areas:
-      "kicker speed"
+      "kicker ."
       "title  heard";
   }
-  .audio-copy .audio-speed { margin-top: 0; }
+  .audio-copy .audio-speed {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+    grid-area: auto;
+  }
   .audio-copy h3 {
     min-width: 0;
-    white-space: normal;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
+    overflow: visible;
   }
   .audio-heard-label span { display: none; }
   .audio-controls { flex-basis: 100%; min-width: 0; }

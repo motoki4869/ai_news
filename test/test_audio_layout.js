@@ -11,7 +11,7 @@ const DAILY_HTML = fs.readFileSync(
 test('スマホ幅では再生速度を上段右、視聴済みをタイトル行右に表示する', () => {
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{\s*grid-template-areas:\s*\n\s*"kicker speed"\s*\n\s*"title\s+heard"/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{[^}]*grid-template-areas:\s*\n\s*"kicker \."\s*\n\s*"title\s+heard"/s,
   );
   assert.match(
     DAILY_HTML,
@@ -23,25 +23,29 @@ test('スマホ幅では再生速度を上段右、視聴済みをタイトル�
   );
 });
 
-test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作を上段に揃える', () => {
+test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作を上段右に置く', () => {
   assert.match(
     DAILY_HTML,
     /\.audio-copy\s*\{[^}]*align-items:\s*center;\s*\}/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*0;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{[^}]*position:\s*absolute;[^}]*top:\s*0;[^}]*right:\s*0;/s,
   );
 });
 
-test('スマホ幅では視聴済みの文言を隠し、タイトルをチェックボックスの手前で折り返す', () => {
+test('スマホ幅では視聴済みの文言を隠し、タイトルをチェックボックスの手前まで1行で表示する', () => {
   assert.match(
     DAILY_HTML,
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label span\s*\{\s*display:\s*none;\s*\}/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy h3\s*\{[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy h3\s*\{[^}]*min-width:\s*0;[^}]*white-space:\s*nowrap;[^}]*overflow:\s*visible;/s,
+  );
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-speed\s*\{[^}]*position:\s*absolute;[^}]*right:\s*0;/s,
   );
 });
 
