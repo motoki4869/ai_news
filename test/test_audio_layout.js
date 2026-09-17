@@ -19,6 +19,13 @@ test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する'
   );
 });
 
+test('スマホ幅ではタイトルと速度操作の行間を確保する', () => {
+  assert.match(
+    DAILY_HTML,
+    /\.audio-copy\s*\{[^}]*align-items:\s*center;[^}]*row-gap:\s*12px;/s,
+  );
+});
+
 test('iPad幅では速度操作と視聴済みを離して表示する', () => {
   assert.match(
     DAILY_HTML,
