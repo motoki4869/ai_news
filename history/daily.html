@@ -476,18 +476,25 @@ nav {
 
 .audio-skip {
   flex: 0 0 auto;
-  border: 1px solid rgba(0,229,255,0.20);
-  border-radius: 999px; padding: 7px 11px;
-  background: rgba(0,229,255,0.06); color: var(--cyan);
-  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-  cursor: pointer; white-space: nowrap;
+  width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--cyan);
+  cursor: pointer;
   transition: box-shadow 0.25s, background 0.25s;
 }
 .audio-skip:hover:not(:disabled) {
-  background: rgba(0,229,255,0.12);
-  box-shadow: 0 0 14px rgba(0,229,255,0.35);
+  background: rgba(0,229,255,0.08);
+  box-shadow: 0 0 12px rgba(0,229,255,0.25);
 }
 .audio-skip:disabled { opacity: 0.35; cursor: default; }
+.audio-skip:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.audio-skip-icon { width: 34px; height: 34px; display: block; overflow: visible; }
+.audio-skip-arrow { transform-box: fill-box; transform-origin: center; }
+.audio-forward .audio-skip-arrow { transform: scaleX(-1); }
+.audio-skip-number {
+  fill: currentColor; font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700; text-anchor: middle;
+}
 
 /* 900px以上（iPad・PC）では、速度ボタンと「視聴済み」をパネル右上（プレイヤーの真上）へ
    まとめて移す。狭い画面と同じ縦積みのままだと、右半分はプレイヤー1行だけなのに左半分は
@@ -656,12 +663,28 @@ footer .logo {
             <span class="audio-time audio-time-end" id="audio-duration">--:--</span>
           </div>
           <div class="audio-btn-row">
-            <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">↶ 10秒</button>
+            <button type="button" class="audio-skip" id="audio-rewind" aria-label="10秒巻き戻す">
+              <svg class="audio-skip-icon" viewBox="0 0 36 36" aria-hidden="true">
+                <g class="audio-skip-arrow">
+                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M4 12 13 4v5h9v6h-9v5z" fill="currentColor"/>
+                </g>
+                <text class="audio-skip-number" x="18" y="22">10</text>
+              </svg>
+            </button>
             <button type="button" class="audio-play" id="audio-play" aria-label="再生">
               <svg class="icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
               <svg class="icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3.2v11H4zM8.8 2.5H12v11H8.8z"/></svg>
             </button>
-            <button type="button" class="audio-skip" id="audio-forward" aria-label="10秒後送り">10秒 ↷</button>
+            <button type="button" class="audio-skip audio-forward" id="audio-forward" aria-label="10秒後送り">
+              <svg class="audio-skip-icon" viewBox="0 0 36 36" aria-hidden="true">
+                <g class="audio-skip-arrow">
+                  <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M4 12 13 4v5h9v6h-9v5z" fill="currentColor"/>
+                </g>
+                <text class="audio-skip-number" x="18" y="22">10</text>
+              </svg>
+            </button>
           </div>
         </div>
       </div>

@@ -26,9 +26,17 @@ test('再生ボタンは34pxの円形で表示する', () => {
   );
 });
 
-test('10秒操作ボタンの枠線は控えめに表示する', () => {
+test('10秒操作ボタンは独立した枠線を持たない', () => {
   assert.match(
     DAILY_HTML,
-    /\.audio-skip\s*\{[^}]*border:\s*1px\s+solid\s+rgba\(0,229,255,0\.20\);/s,
+    /\.audio-skip\s*\{[^}]*border:\s*0;/s,
   );
+});
+
+test('10秒操作ボタンは円形矢印アイコンで表示する', () => {
+  assert.equal((DAILY_HTML.match(/class="audio-skip-icon"/g) || []).length, 2);
+  assert.equal((DAILY_HTML.match(/class="audio-skip-arrow"/g) || []).length, 2);
+  assert.equal((DAILY_HTML.match(/>10<\/text>/g) || []).length, 2);
+  assert.match(DAILY_HTML, /id="audio-rewind"[^>]*aria-label="10秒巻き戻す"/);
+  assert.match(DAILY_HTML, /id="audio-forward"[^>]*aria-label="10秒後送り"/);
 });
