@@ -50,6 +50,25 @@
     return promise;
   }
 
+  /* 最新トレンドでは、画面に登場する可能性があるレポートだけを先読みする。
+     archive.html まで全件先読みすると、過去ログを見ない人にも初期コストが発生するため、
+     data-page="news" のページに限定する。カードの data-report を参照するので、
+     レポートの追加・循環で対象が変わっても固定リストの更新は不要。
+
+     loadReport() と同じPromiseをcacheに入れるため、先読みが完了する前にタップされても
+     二重fetchにはならず、完了後のタップは通信待ちなしでそのまま描画できる。 */
+  function preloadNewsReports() {
+    if (document.body.dataset.page !== 'news') return;
+    const names = new Set();
+    document.querySelectorAll('.news-card[data-report]').forEach(card => {
+      card.dataset.report.split('/').map(s => s.trim()).filter(Boolean).forEach(name => names.add(name));
+    });
+    names.forEach(name => loadReport(name));
+  }
+
+  // このスクリプトはカードの後ろで読み込まれるため、DOMContentLoadedを待たずに始める。
+  preloadNewsReports();
+
   /* 履歴の扱い（ここを崩すと戻るボタンが壊れる）
 
      モーダルの開閉はDOM属性の切り替えでしかないので、何もしないとブラウザの履歴には
