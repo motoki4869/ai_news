@@ -18,3 +18,10 @@ test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する'
     /\.audio-speed\s*\{[^}]*grid-area:\s*speed;[^}]*justify-self:\s*end;/s,
   );
 });
+
+test('再生ボタンは34pxの円形で表示する', () => {
+  assert.match(
+    DAILY_HTML,
+    /\.audio-play\s*\{[^}]*width:\s*34px;[^}]*height:\s*34px;/s,
+  );
+});
