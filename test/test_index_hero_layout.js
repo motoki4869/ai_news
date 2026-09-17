@@ -8,8 +8,12 @@ const INDEX_HTML = fs.readFileSync(
   'utf8',
 );
 
-test('スマホ幅ではヒーローの高さから固定ナビ分を差し引く', () => {
+test('スマホ幅ではヒーローを画面全体の高さで中央配置する', () => {
   assert.match(
+    INDEX_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.hero\s*\{[^}]*padding-top:\s*150px;/s,
+  );
+  assert.doesNotMatch(
     INDEX_HTML,
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.hero\s*\{[^}]*min-height:\s*calc\(100vh\s*-\s*var\(--nav-h\)\);/s,
   );
