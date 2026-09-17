@@ -8,9 +8,17 @@ const INDEX_HTML = fs.readFileSync(
   'utf8',
 );
 
-test('スマホ幅ではAI HISTORYのナビリンクを中央から等間隔に並べる', () => {
+test('スマホ幅ではAI HISTORYのナビリンクを左寄せで等間隔に並べる', () => {
   assert.match(
     INDEX_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links\s*\{[^}]*justify-content:\s*center;[^}]*width:\s*100%;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links\s*\{[^}]*justify-content:\s*flex-start;[^}]*width:\s*100%;/s,
+  );
+  assert.match(
+    INDEX_HTML,
+    /<a\s+class="to-glossary"\s+href="glossary\.html">用語集<\/a>/,
+  );
+  assert.match(
+    INDEX_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links\s+\.to-glossary\s*\{[^}]*margin-left:\s*auto;/s,
   );
 });
