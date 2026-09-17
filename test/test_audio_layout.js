@@ -24,7 +24,7 @@ test('再生ボタンは44pxのクリック領域で表示する', () => {
     DAILY_HTML,
     /\.audio-play\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/s,
   );
-  assert.match(DAILY_HTML, /\.audio-play svg\s*\{[^}]*width:\s*22px;[^}]*height:\s*22px;/s);
+  assert.match(DAILY_HTML, /\.audio-play svg\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;/s);
 });
 
 test('再生ボタンは見た目の円を表示しない', () => {
