@@ -17,7 +17,7 @@ test('スマホ幅ではAI HISTORYのナビリンクを左寄せで等間隔に�
     INDEX_HTML,
     /<a\s+class="to-glossary"\s+href="glossary\.html">用語集<\/a>/,
   );
-  assert.match(
+  assert.doesNotMatch(
     INDEX_HTML,
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links\s+\.to-glossary\s*\{[^}]*margin-left:\s*auto;/s,
   );
