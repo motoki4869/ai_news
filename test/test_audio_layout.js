@@ -11,7 +11,7 @@ const DAILY_HTML = fs.readFileSync(
 test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する', () => {
   assert.match(
     DAILY_HTML,
-    /grid-template-areas:\s*\n\s*"kicker heard"\s*\n\s*"title\s+title"\s*\n\s*"desc\s+speed"/s,
+    /grid-template-areas:\s*\n\s*"kicker heard"\s*\n\s*"title\s+title"\s*\n\s*"\.\s+speed"/s,
   );
   assert.match(
     DAILY_HTML,
@@ -26,8 +26,13 @@ test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度�
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy p,\s*\n\s*\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*14px;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*14px;/s,
   );
+});
+
+test('音声パネルにNotebookLMのサービス名ラベルを表示しない', () => {
+  assert.doesNotMatch(DAILY_HTML, /id="audio-label"/);
+  assert.doesNotMatch(DAILY_HTML, /audioLabel/);
 });
 
 test('iPad幅では速度操作と視聴済みを離して表示する', () => {
