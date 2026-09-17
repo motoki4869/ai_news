@@ -238,5 +238,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-17.m4a",
     "label": "2026-09-17のAIニュース音声",
     "title": "道具から自律的なエージェントへ"
+  },
+  "2026-09-18": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-18.m4a",
+    "label": "2026-09-18のAIニュース音声",
+    "title": "暴走する巨大AIの手綱を握る"
   }
 };
