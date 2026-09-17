@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-17
 
+### Codexフォールバックが定時実行から起動できなかったのを修正
+- **変更**: `scripts/lib/codex_fallback.sh` の `run_codex_fallback()` で、`codex` と `node` の実行ファイルを明示的にフルパス解決するようにした。`CODEX_BIN` / `NODE_BIN` 環境変数があればそれを使い、無ければ `command -v` → `/opt/homebrew/bin` → `/usr/local/bin` の順に探す。見つからない場合は理由を標準エラーに出して終了コード127を返す。起動時は `node` のあるディレクトリを `PATH` の先頭に足す。
+- **理由**: launchdは `.zshrc` を読まず `PATH` が `/usr/bin:/bin:/usr/sbin:/sbin` に限られる。`codex` の実体は `/opt/homebrew/bin` にあるため、PATH頼りの呼び出しは `codex: command not found`（終了コード127）になっていた。さらに `/opt/homebrew/bin/codex` は `#!/usr/bin/env node` のNodeスクリプトなので、`codex` のパスを解決しただけでは `env: node: No such file or directory` で落ちる。呼び出し元が `claude` / `gh` / `python3` を明示解決しているのに `codex` だけ漏れていた。Claude利用上限に到達した朝は、フォールバックが起動せずニュース更新が丸ごと失われる状態だった（`logs/daily_news.log` に上限到達の記録は0件で、これまで発覚していなかった）。
+- **対象**: `scripts/lib/codex_fallback.sh`
+- **確認**: `env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=$HOME`（launchd相当）で `run_codex_fallback` を実行し、修正前は `env: node: No such file or directory`（127）だったのが、修正後は `codex exec` が終了コード0で完走し応答を返すことを確認（ChatGPTログインも同環境で通ることを実地確認）。
+
 ### 日次ログの音声プレイヤーを自作のものに置き換え
 - **変更**: `daily.html` の音声再生を、ブラウザ標準の `<audio controls>` からサイトの配色に合わせた自作プレイヤーに差し替えた。再生／一時停止ボタン、シークバー（読み込み済み範囲と再生済み範囲を色分け）、現在位置と長さの表示を自前で描画する。既存の10秒送り／戻しボタンはシークバーの下の1行にまとめ、900px以上では操作ボタンを左・シークバーを右に並べた1行組みにする。音を鳴らす仕組みは従来どおり `<audio>` のままで、要素は画面外に置いて残している。
 - **理由**: 標準のコントロールはブラウザごとに見た目が違い（Safariは黒い角丸バー、Chromeは灰色のバー）、CSSも当てられないため、左右の自作ボタンだけがサイトの配色で中央の再生バーだけが浮いていた。標準プレイヤーが最小幅を主張するせいで狭い画面のレイアウトが崩れやすい問題もあった。
