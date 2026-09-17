@@ -8,25 +8,40 @@ const DAILY_HTML = fs.readFileSync(
   'utf8',
 );
 
-test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する', () => {
+test('スマホ幅では再生速度を上段右、視聴済みをタイトル行右に表示する', () => {
   assert.match(
     DAILY_HTML,
-    /grid-template-areas:\s*\n\s*"kicker heard"\s*\n\s*"title\s+title"\s*\n\s*"\.\s+speed"/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy\s*\{\s*grid-template-areas:\s*\n\s*"kicker speed"\s*\n\s*"title\s+heard"/s,
   );
   assert.match(
     DAILY_HTML,
     /\.audio-speed\s*\{[^}]*grid-area:\s*speed;[^}]*justify-self:\s*end;/s,
   );
+  assert.match(
+    DAILY_HTML,
+    /\.audio-heard-label\s*\{[^}]*grid-area:\s*heard;[^}]*justify-self:\s*end;/s,
+  );
 });
 
-test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作だけ離す', () => {
+test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作を上段に揃える', () => {
   assert.match(
     DAILY_HTML,
     /\.audio-copy\s*\{[^}]*align-items:\s*center;\s*\}/s,
   );
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*14px;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*0;/s,
+  );
+});
+
+test('スマホ幅では視聴済みの文言を隠し、タイトルをチェックボックスの手前で省略する', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-heard-label span\s*\{\s*display:\s*none;\s*\}/s,
+  );
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy h3\s*\{[^}]*min-width:\s*0;[^}]*white-space:\s*nowrap;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;/s,
   );
 });
 

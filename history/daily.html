@@ -340,7 +340,7 @@ nav {
   box-shadow: 0 0 26px rgba(0,229,255,0.08);
 }
 /* 狭い画面での並び。DOM上のキッカー／見出し／操作群（速度＋視聴済み）を、
-   「視聴済み」はキッカー行の右端、速度ボタンはタイトルの右下へグリッドで置き直す。 */
+   グリッドの各セルへ配置して、幅の狭い画面でも情報の役割を分ける。 */
 .audio-copy {
   flex: 1 1 220px; min-width: 0;
   display: grid;
@@ -573,7 +573,19 @@ footer .logo {
   .news-grid { grid-template-columns: 1fr; }
   .audio-panel { padding: 0 12px; }
   .audio-inner { padding: 16px; gap: 12px; }
-  .audio-copy .audio-speed { margin-top: 14px; }
+  .audio-copy {
+    grid-template-areas:
+      "kicker speed"
+      "title  heard";
+  }
+  .audio-copy .audio-speed { margin-top: 0; }
+  .audio-copy h3 {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .audio-heard-label span { display: none; }
   .audio-controls { flex-basis: 100%; min-width: 0; }
   .audio-ui { flex-wrap: nowrap; column-gap: 0; }
   .audio-btn-row { flex: 0 0 auto; order: -1; gap: 0; margin-left: -8px; margin-right: -8px; }
@@ -635,7 +647,7 @@ footer .logo {
       <div class="audio-copy">
         <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
         <h3 id="audio-title">今日のニュースを音声で聴く</h3>
-        <!-- 速度と「視聴済み」。狭い画面ではタイトルの右下とキッカー行の右端に分け、900px以上では
+        <!-- 速度と「視聴済み」。スマホでは速度を上段右、視聴済みをタイトル行右へ置き、900px以上では
              この箱ごとパネル右上（プレイヤーの真上）へ移す。並べ替えはCSSのグリッドで行う
              ので、DOMの順番は「狭い画面で読み上げたい順」にしてある。 -->
         <div class="audio-actions">
@@ -645,7 +657,7 @@ footer .logo {
             <button type="button" id="audio-speed-2" data-audio-rate="2" aria-pressed="false">2倍</button>
           </div>
           <label class="audio-heard-label">
-            <input type="checkbox" id="audio-heard">
+            <input type="checkbox" id="audio-heard" aria-label="視聴済み">
             <span>視聴済み</span>
           </label>
         </div>
