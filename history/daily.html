@@ -340,7 +340,7 @@ nav {
   box-shadow: 0 0 26px rgba(0,229,255,0.08);
 }
 /* 狭い画面での並び。DOM上は キッカー／見出し／説明文／操作群（速度＋視聴済み）の順だが、
-   「視聴済み」だけはキッカーと同じ行の右端に出したいので、グリッドの升目で置き直す。 */
+   「視聴済み」はキッカー行の右端、速度ボタンはNotebookLM音声の右側へグリッドで置き直す。 */
 .audio-copy {
   flex: 1 1 220px; min-width: 0;
   display: grid;
@@ -348,8 +348,7 @@ nav {
   grid-template-areas:
     "kicker heard"
     "title  title"
-    "desc   desc"
-    "speed  speed";
+    "desc   speed";
   align-items: center;
 }
 /* 中身を直接グリッドに並べるため、箱自体は無かったことにする。 */
@@ -369,9 +368,12 @@ nav {
 }
 .audio-heard-label input:disabled { cursor: default; }
 .audio-copy h3 { grid-area: title; font-size: 0.98rem; margin-top: 3px; }
-.audio-copy p { grid-area: desc; color: var(--text-dim); font-size: 0.76rem; margin-top: 2px; }
+.audio-copy p {
+  grid-area: desc; min-width: 0;
+  color: var(--text-dim); font-size: 0.76rem; margin-top: 2px;
+}
 .audio-speed {
-  grid-area: speed; justify-self: start; margin-top: 10px;
+  grid-area: speed; justify-self: end; margin-top: 2px;
   display: flex; gap: 4px;
 }
 .audio-speed button {
@@ -615,7 +617,7 @@ footer .logo {
         <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
         <h3 id="audio-title">今日のニュースを音声で聴く</h3>
         <p id="audio-label"></p>
-        <!-- 速度と「視聴済み」。狭い画面では説明文の下と右上に分かれて置き、900px以上では
+        <!-- 速度と「視聴済み」。狭い画面では説明文の右とキッカー行の右端に分け、900px以上では
              この箱ごとパネル右上（プレイヤーの真上）へ移す。並べ替えはCSSのグリッドで行う
              ので、DOMの順番は「狭い画面で読み上げたい順」にしてある。 -->
         <div class="audio-actions">
