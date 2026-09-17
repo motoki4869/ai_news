@@ -460,15 +460,15 @@ nav {
   flex: 0 0 auto;
   width: 34px; height: 34px; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(0,229,255,0.45); background: rgba(0,229,255,0.1);
+  border: 0; background: transparent;
   color: var(--cyan); cursor: pointer;
-  transition: box-shadow 0.25s, background 0.25s;
+  transition: color 0.25s, filter 0.25s;
 }
 .audio-play:hover:not(:disabled) {
-  background: rgba(0,229,255,0.18); box-shadow: 0 0 18px rgba(0,229,255,0.45);
+  background: transparent; filter: drop-shadow(0 0 7px rgba(0,229,255,0.75));
 }
 .audio-play:disabled { opacity: 0.35; cursor: default; }
-.audio-play svg { width: 15px; height: 15px; display: block; fill: currentColor; }
+.audio-play svg { width: 17px; height: 17px; display: block; fill: currentColor; }
 /* 再生中かどうかで三角と二本線を入れ替える。 */
 .audio-play .icon-pause { display: none; }
 .audio-play.is-playing .icon-play { display: none; }

@@ -26,6 +26,17 @@ test('再生ボタンは34pxの円形で表示する', () => {
   );
 });
 
+test('再生ボタンは見た目の円を表示しない', () => {
+  assert.match(
+    DAILY_HTML,
+    /\.audio-play\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;/s,
+  );
+  assert.match(
+    DAILY_HTML,
+    /\.audio-play:hover:not\(:disabled\)\s*\{[^}]*background:\s*transparent;/s,
+  );
+});
+
 test('10秒操作ボタンは独立した枠線を持たない', () => {
   assert.match(
     DAILY_HTML,
