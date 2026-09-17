@@ -94,7 +94,14 @@ test('スマホ幅では操作列を左へ寄せて再生バーを広げる', ()
 test('スマホ幅では操作ボタンを詰め、再生バーとの間隔を確保する', () => {
   assert.match(
     DAILY_HTML,
-    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-play,\s*\.audio-skip\s*\{\s*width:\s*36px;\s*height:\s*36px;\s*\}[\s\S]*?\.audio-seek-row\s*\{[^}]*margin-left:\s*12px;/s,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-play,\s*\.audio-skip\s*\{\s*width:\s*36px;\s*height:\s*36px;\s*\}[\s\S]*?\.audio-seek-row\s*\{[^}]*margin-left:\s*20px;/s,
+  );
+});
+
+test('スマホ幅では10秒送りと再生時間の間隔を広げる', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-seek-row\s*\{[^}]*margin-left:\s*20px;/s,
   );
 });
 
