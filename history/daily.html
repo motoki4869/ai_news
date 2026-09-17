@@ -575,19 +575,19 @@ footer .logo {
   .audio-inner { padding: 16px; gap: 12px; }
   .audio-copy .audio-speed { margin-top: 14px; }
   .audio-controls { flex-basis: 100%; min-width: 0; }
-  .audio-ui { flex-wrap: nowrap; column-gap: 4px; }
-  .audio-btn-row { flex: 0 0 auto; order: -1; gap: 0; }
-  .audio-seek-row { flex: 1 1 auto; gap: 8px; }
-  .audio-time { min-width: 32px; font-size: 0.62rem; }
+  .audio-ui { flex-wrap: nowrap; column-gap: 0; }
+  .audio-btn-row { flex: 0 0 auto; order: -1; gap: 0; margin-left: -8px; margin-right: -8px; }
+  .audio-seek-row { flex: 1 1 auto; gap: 6px; }
+  .audio-time { min-width: 30px; font-size: 0.62rem; }
   .audio-play svg { width: 22px; height: 22px; }
   .audio-skip-icon { width: 28px; height: 28px; }
 }
 
 @media (max-width: 360px) {
-  .audio-ui { column-gap: 4px; }
-  .audio-btn-row { gap: 2px; }
+  .audio-ui { column-gap: 0; }
+  .audio-btn-row { gap: 0; }
   .audio-seek-row { gap: 6px; }
-  .audio-time { min-width: 32px; font-size: 0.6rem; }
+  .audio-time { min-width: 30px; font-size: 0.6rem; }
   .audio-seek { min-width: 48px; }
 }
 </style>
