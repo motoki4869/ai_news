@@ -349,7 +349,7 @@ nav {
     "kicker heard"
     "title  title"
     "desc   speed";
-  align-items: center; row-gap: 12px;
+  align-items: center;
 }
 /* 中身を直接グリッドに並べるため、箱自体は無かったことにする。 */
 .audio-actions { display: contents; }
@@ -577,6 +577,8 @@ footer .logo {
   .news-grid { grid-template-columns: 1fr; }
   .audio-panel { padding: 0 12px; }
   .audio-inner { padding: 16px; gap: 12px; }
+  .audio-copy p,
+  .audio-copy .audio-speed { margin-top: 14px; }
   .audio-controls { flex-basis: 100%; min-width: 0; }
 }
 </style>

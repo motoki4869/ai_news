@@ -19,10 +19,14 @@ test('スマホ幅ではNotebookLM音声の右側に再生速度を表示する'
   );
 });
 
-test('スマホ幅ではタイトルと速度操作の行間を確保する', () => {
+test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度操作だけ離す', () => {
   assert.match(
     DAILY_HTML,
-    /\.audio-copy\s*\{[^}]*align-items:\s*center;[^}]*row-gap:\s*12px;/s,
+    /\.audio-copy\s*\{[^}]*align-items:\s*center;\s*\}/s,
+  );
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-copy p,\s*\n\s*\.audio-copy \.audio-speed\s*\{\s*margin-top:\s*14px;/s,
   );
 });
 
