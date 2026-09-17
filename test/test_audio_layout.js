@@ -91,6 +91,13 @@ test('スマホ幅では操作列を左へ寄せて再生バーを広げる', ()
   );
 });
 
+test('スマホ幅では操作ボタンを詰め、再生バーとの間隔を確保する', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-play,\s*\.audio-skip\s*\{\s*width:\s*36px;\s*height:\s*36px;\s*\}[\s\S]*?\.audio-seek-row\s*\{[^}]*margin-left:\s*12px;/s,
+  );
+});
+
 test('10秒操作ボタンは独立した枠線を持たない', () => {
   assert.match(
     DAILY_HTML,
