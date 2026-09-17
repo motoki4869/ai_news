@@ -30,6 +30,13 @@ test('スマホ幅ではListen Toとタイトルの間隔を変えず、速度�
   );
 });
 
+test('スマホ幅でも再生操作を再生バーの左側に並べる', () => {
+  assert.match(
+    DAILY_HTML,
+    /@media\s*\(max-width:\s*768px\)[\s\S]*?\.audio-btn-row\s*\{[^}]*flex:\s*0 0 auto;[^}]*order:\s*-1;[^}]*\}[\s\S]*?\.audio-seek-row\s*\{\s*flex:\s*1 1 auto;/s,
+  );
+});
+
 test('音声パネルにNotebookLMのサービス名ラベルを表示しない', () => {
   assert.doesNotMatch(DAILY_HTML, /id="audio-label"/);
   assert.doesNotMatch(DAILY_HTML, /audioLabel/);
