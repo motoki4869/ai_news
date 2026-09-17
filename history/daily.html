@@ -339,13 +339,28 @@ nav {
   border-radius: 12px; background: rgba(0,229,255,0.06);
   box-shadow: 0 0 26px rgba(0,229,255,0.08);
 }
-.audio-copy { flex: 1 1 220px; min-width: 0; }
+/* 狭い画面での並び。DOM上は キッカー／見出し／説明文／操作群（速度＋視聴済み）の順だが、
+   「視聴済み」だけはキッカーと同じ行の右端に出したいので、グリッドの升目で置き直す。 */
+.audio-copy {
+  flex: 1 1 220px; min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "kicker heard"
+    "title  title"
+    "desc   desc"
+    "speed  speed";
+  align-items: center;
+}
+/* 中身を直接グリッドに並べるため、箱自体は無かったことにする。 */
+.audio-actions { display: contents; }
 .audio-kicker {
+  grid-area: kicker;
   color: var(--cyan); font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem; letter-spacing: 0.12em;
 }
-.audio-kicker-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .audio-heard-label {
+  grid-area: heard; justify-self: end;
   display: inline-flex; align-items: center; gap: 5px;
   color: var(--text-dim); font-size: 0.68rem; white-space: nowrap; cursor: pointer;
 }
@@ -353,10 +368,12 @@ nav {
   width: 15px; height: 15px; margin: 0; accent-color: var(--green); cursor: pointer;
 }
 .audio-heard-label input:disabled { cursor: default; }
-.audio-copy h3 { font-size: 0.98rem; margin-top: 3px; }
-.audio-label-row { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
-.audio-copy p { color: var(--text-dim); font-size: 0.76rem; }
-.audio-speed { display: flex; gap: 4px; }
+.audio-copy h3 { grid-area: title; font-size: 0.98rem; margin-top: 3px; }
+.audio-copy p { grid-area: desc; color: var(--text-dim); font-size: 0.76rem; margin-top: 2px; }
+.audio-speed {
+  grid-area: speed; justify-self: start; margin-top: 10px;
+  display: flex; gap: 4px;
+}
 .audio-speed button {
   border: 1px solid rgba(0,229,255,0.28); border-radius: 999px;
   min-width: 48px; padding: 3px 8px; background: transparent; color: var(--text-dim);
@@ -387,9 +404,8 @@ nav {
 .audio-btn-row { flex: 1 1 100%; display: flex; align-items: center; justify-content: center; gap: 12px; }
 
 /* 900px以上では1行に組み直す（操作ボタンを左、シークバーを右へ伸ばす）。
-   2行のままだと .audio-controls が .audio-copy より背が高くなり、下の
-   @media (min-width: 900px) で速度ボタンの行に揃えている「視聴済み」の
-   絶対配置がずれて、プレイヤーに重なってしまうため。 */
+   2行のままだとプレイヤーが縦に伸び、下の @media (min-width: 900px) で
+   右列の上段に置いている速度ボタン・「視聴済み」の行が押し下げられるため。 */
 @media (min-width: 900px) {
   .audio-btn-row { flex: 0 0 auto; order: -1; }
   .audio-seek-row { flex: 1 1 auto; }
@@ -471,15 +487,30 @@ nav {
 }
 .audio-skip:disabled { opacity: 0.35; cursor: default; }
 
-/* PC幅では「視聴済み」を速度ボタン（1倍/1.5倍/2倍）と同じ行の右端へ置く。
-   890px未満では .audio-controls が折り返して2行組みになり、下端基準の絶対配置が
-   音声バーに重なるため、1行組みが確定する900px以上でだけ適用する。
-   それ未満（スマホ含む）はキッカー行の右端のまま。 */
+/* 900px以上（iPad・PC）では、速度ボタンと「視聴済み」をパネル右上（プレイヤーの真上）へ
+   まとめて移す。狭い画面と同じ縦積みのままだと、右半分はプレイヤー1行だけなのに左半分は
+   文字が3行あり、右上に大きな余白が空いて間延びして見えるため。
+   左列に文字、右列に操作群とプレイヤーを縦に2段、という2列のグリッドで組む。 */
 @media (min-width: 900px) {
-  .audio-inner { position: relative; }
-  /* 速度ボタン（1倍/1.5倍/2倍）の行と同じ高さに揃える。
-     .audio-copy が行の高さを決め、その最後の子が速度ボタン行なので、下端基準で合う。 */
-  .audio-heard-label { position: absolute; right: 22px; bottom: 20px; }
+  .audio-inner {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(0, 2fr);
+    grid-template-areas:
+      "kicker actions"
+      "title  player"
+      "desc   player";
+    align-items: center;
+    column-gap: 18px; row-gap: 6px;
+  }
+  /* .audio-copy の箱を無かったことにして、中の4つを直接 .audio-inner のグリッドに並べる。
+     （狭い画面では .audio-copy 自身がグリッドなので、升目の名前はそのまま使える） */
+  .audio-copy { display: contents; }
+  .audio-actions {
+    grid-area: actions; justify-self: end;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .audio-speed { margin-top: 0; }
+  .audio-controls { grid-area: player; }
 }
 
 /* ===== CTA / footer ===== */
@@ -581,21 +612,22 @@ footer .logo {
   <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
     <div class="audio-inner">
       <div class="audio-copy">
-        <div class="audio-kicker-row">
-          <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
-          <label class="audio-heard-label">
-            <input type="checkbox" id="audio-heard">
-            <span>視聴済み</span>
-          </label>
-        </div>
+        <div class="audio-kicker">LISTEN TO DAILY NEWS</div>
         <h3 id="audio-title">今日のニュースを音声で聴く</h3>
-        <div class="audio-label-row">
-          <p id="audio-label"></p>
+        <p id="audio-label"></p>
+        <!-- 速度と「視聴済み」。狭い画面では説明文の下と右上に分かれて置き、900px以上では
+             この箱ごとパネル右上（プレイヤーの真上）へ移す。並べ替えはCSSのグリッドで行う
+             ので、DOMの順番は「狭い画面で読み上げたい順」にしてある。 -->
+        <div class="audio-actions">
           <div class="audio-speed" role="group" aria-label="再生速度">
             <button type="button" id="audio-speed-1" data-audio-rate="1" aria-pressed="true">1倍</button>
             <button type="button" id="audio-speed-1-5" data-audio-rate="1.5" aria-pressed="false">1.5倍</button>
             <button type="button" id="audio-speed-2" data-audio-rate="2" aria-pressed="false">2倍</button>
           </div>
+          <label class="audio-heard-label">
+            <input type="checkbox" id="audio-heard">
+            <span>視聴済み</span>
+          </label>
         </div>
       </div>
       <div class="audio-controls" role="group" aria-label="音声プレイヤー">
