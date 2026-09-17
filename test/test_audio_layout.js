@@ -42,3 +42,10 @@ test('10秒操作ボタンは円形矢印アイコンで表示する', () => {
   assert.match(DAILY_HTML, /id="audio-rewind"[^>]*aria-label="10秒巻き戻す"/);
   assert.match(DAILY_HTML, /id="audio-forward"[^>]*aria-label="10秒後送り"/);
 });
+
+test('10秒後送りの矢印はSVG全体の中心を軸に反転する', () => {
+  assert.match(
+    DAILY_HTML,
+    /class="audio-skip audio-forward"[\s\S]*?<g class="audio-skip-arrow" transform="translate\(36 0\) scale\(-1 1\)">/,
+  );
+});

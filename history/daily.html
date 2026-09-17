@@ -489,8 +489,6 @@ nav {
 .audio-skip:disabled { opacity: 0.35; cursor: default; }
 .audio-skip:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 .audio-skip-icon { width: 34px; height: 34px; display: block; overflow: visible; }
-.audio-skip-arrow { transform-box: fill-box; transform-origin: center; }
-.audio-forward .audio-skip-arrow { transform: scaleX(-1); }
 .audio-skip-number {
   fill: currentColor; font-family: 'JetBrains Mono', monospace;
   font-size: 11px; font-weight: 700; text-anchor: middle;
@@ -679,7 +677,7 @@ footer .logo {
             </button>
             <button type="button" class="audio-skip audio-forward" id="audio-forward" aria-label="10秒後送り">
               <svg class="audio-skip-icon" viewBox="0 0 36 36" aria-hidden="true">
-                <g class="audio-skip-arrow">
+                <g class="audio-skip-arrow" transform="translate(36 0) scale(-1 1)">
                   <path d="M10 13a10 10 0 1 1-1 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                   <path d="M5 12 10 7v3h3v4h-3v3z" fill="currentColor"/>
                 </g>
