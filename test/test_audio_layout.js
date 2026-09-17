@@ -25,3 +25,10 @@ test('再生ボタンは34pxの円形で表示する', () => {
     /\.audio-play\s*\{[^}]*width:\s*34px;[^}]*height:\s*34px;/s,
   );
 });
+
+test('10秒操作ボタンの枠線は控えめに表示する', () => {
+  assert.match(
+    DAILY_HTML,
+    /\.audio-skip\s*\{[^}]*border:\s*1px\s+solid\s+rgba\(0,229,255,0\.20\);/s,
+  );
+});
