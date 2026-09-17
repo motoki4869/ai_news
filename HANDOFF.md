@@ -1,4 +1,4 @@
-# HANDOFF (2026-09-17 21:19, from Claude Code)
+# HANDOFF (2026-09-18, from Codex)
 
 ## やっていたこと
 AI_newsサイト（`history/` 配下の静的サイト、本番 https://ai-news-sandy-seven.vercel.app）の
@@ -12,6 +12,7 @@ AI_newsサイト（`history/` 配下の静的サイト、本番 https://ai-news-
 - Codexフォールバックの起動不具合を ai_news / investment 両方で修正（ai_news `624ad55`、investment `fe1df1a`）。
 - iPad・PC幅（900px以上）で音声パネルを2列グリッドに組み直し、速度ボタンと「視聴済み」を
   プレイヤーの真上（右上）へ移動（`d13f8a0`）。狭い画面の並びは変更なし。
+- 最新トレンド末尾の生成AI年表リンクと、デイリーログ末尾の最新トレンドリンクを削除。
 - 両リポジトリとも作業ツリーはクリーン、push済み。
 
 ## 次の一手

@@ -49,3 +49,10 @@ test('日付見出しを固定ナビに隠れない位置へスクロールす�
     /const dateHeading = dayHead\.querySelector\('h2'\);\s*if \(dateHeading\) dateHeading\.scrollIntoView\(/s,
   );
 });
+
+test('デイリーログ末尾には最新トレンドへの遷移を置かない', () => {
+  assert.doesNotMatch(
+    DAILY_HTML,
+    /<div class="cta-back">[\s\S]*<a class="to-news" href="news\.html">/s,
+  );
+});

@@ -22,3 +22,10 @@ test('スマホ幅ではニュースフィードのナビロゴを1行に収め�
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links a\s*\{[^}]*padding:\s*4px 10px;/s,
   );
 });
+
+test('ニュースフィード末尾には生成AI年表への遷移を置かない', () => {
+  assert.doesNotMatch(
+    NEWS_HTML,
+    /<div class="cta-back">[\s\S]*<a class="to-gen" href="generative\.html">/s,
+  );
+});
