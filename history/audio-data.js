@@ -248,5 +248,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-19.m4a",
     "label": "2026-09-19のAIニュース音声",
     "title": "肉体を得たAIと緊急停止スイッチ"
+  },
+  "2026-09-20": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-20.m4a",
+    "label": "2026-09-20のAIニュース音声",
+    "title": "AIの暴走を止めるブレーキが奪われる"
   }
 };
