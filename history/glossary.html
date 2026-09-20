@@ -42,6 +42,7 @@
   --border: rgba(139, 92, 246, 0.22);
   /* 固定ナビの実高さ。JSが実測値で上書きする（ロゴの折り返しやフォント読み込みで変わるため） */
   --nav-h: 57px;
+  --bar-h: 0px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -142,6 +143,43 @@ nav {
 .nav-search:focus { border-color: rgba(139,92,246,0.7); box-shadow: 0 0 14px rgba(139,92,246,0.28); }
 .nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
 
+/* ===== 目次（ページ内アンカー） =====
+   ナビは別ページへの移動だけを担うので、ページ内の移動はこのバーが引き受ける。
+   スマホでも同じものを出し、1行に収めて横スクロールさせる（下部のメディアクエリ参照）。 */
+.section-bar {
+  position: sticky; top: var(--nav-h); z-index: 90;
+  display: flex; justify-content: center; align-items: center;
+  flex-wrap: wrap; gap: 6px 24px;
+  padding: 11px 32px;
+  background: rgba(5, 6, 15, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.section-bar a {
+  position: relative;
+  font-size: 0.79rem; letter-spacing: 0.08em;
+  color: var(--text-dim); text-decoration: none;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .section-bar a:hover {
+    color: var(--violet-soft); text-shadow: 0 0 12px rgba(139, 92, 246, 0.7);
+  }
+}
+.section-bar a.is-active {
+  color: var(--violet-soft); text-shadow: 0 0 12px rgba(139, 92, 246, 0.55);
+}
+.section-bar a.is-unavailable {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.section-bar a.is-active::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+  height: 2px; border-radius: 2px;
+  background: var(--violet-soft); box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+}
+
 #search-count {
   display: none;
   position: fixed;
@@ -224,7 +262,7 @@ nav {
 
 /* ===== Sections ===== */
 .section { max-width: 1150px; margin: 0 auto; padding: 60px 24px 10px;
-  scroll-margin-top: calc(var(--nav-h) + 16px); }
+  scroll-margin-top: calc(var(--nav-h) + var(--bar-h) + 16px); }
 
 .section-header { margin-bottom: 30px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 
@@ -370,6 +408,20 @@ footer .logo {
   #search-count { right: 14px; }
   .term-grid { grid-template-columns: 1fr; }
   .section { padding: 44px 16px 10px; }
+  .section-bar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    contain: layout;
+    gap: 0 18px;
+    padding: 8px 12px;
+    background: rgb(7, 9, 20);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .section-bar::-webkit-scrollbar { display: none; }
+  .section-bar a { white-space: nowrap; font-size: 0.72rem; }
 }
 </style>
 </head>
@@ -405,6 +457,9 @@ footer .logo {
     </div>
   </header>
 
+  <!-- ============ 目次（ページ内アンカー） ============ -->
+  <div class="section-bar" id="section-bar" role="navigation" aria-label="ページ内の目次"></div>
+
   <div id="sections"></div>
 
   <div class="no-hit" id="no-hit">該当する用語は見つかりませんでした。</div>
@@ -424,17 +479,25 @@ footer .logo {
 
 <script src="glossary-data.js"></script>
 <script>
-/* ===== 固定ナビの実高さを --nav-h に同期する =====
-   各セクションの scroll-margin-top がこの値を使う。ロゴの折り返し・フォントの読み込み・
-   画面幅の変化で高さが変わるため、実測で追従させる。 */
+/* ===== 固定ナビと目次バーの実高さを CSS 変数へ同期する =====
+   .section-bar の sticky 位置と、各セクションの scroll-margin-top がこの値を使う。
+   ロゴの折り返し・フォントの読み込み・画面幅の変化で高さが変わるため実測で追従させる。 */
 const navEl = document.querySelector('nav');
+const barEl = document.getElementById('section-bar');
 function syncNavHeight() {
-  document.documentElement.style.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  const root = document.documentElement.style;
+  root.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  const barVisible = barEl && barEl.offsetParent !== null;
+  root.setProperty('--bar-h', (barVisible ? Math.round(barEl.getBoundingClientRect().height) : 0) + 'px');
 }
 syncNavHeight();
 window.addEventListener('resize', syncNavHeight);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
-if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(syncNavHeight);
+  ro.observe(navEl);
+  if (barEl) ro.observe(barEl);
+}
 
 /* ===== Render ===== */
 const SECTIONS = window.GLOSSARY || [];
@@ -480,9 +543,16 @@ SECTIONS.forEach(sec => {
   btn.textContent = sec.title;
   btn.dataset.cat = sec.id;
   catFilters.appendChild(btn);
+
+  const barLink = document.createElement('a');
+  barLink.href = '#' + sec.id;
+  barLink.textContent = sec.title;
+  barEl.appendChild(barLink);
 });
 
 document.getElementById('total-count').textContent = totalTerms;
+// 目次バーの中身が確定してから、実測の高さで --bar-h を上書きする
+syncNavHeight();
 
 
 /* ===== Neural network background (violet tint) ===== */
@@ -568,6 +638,113 @@ window.addEventListener('scroll', () => {
   document.getElementById('progress').style.width = p + '%';
 }, { passive: true });
 
+/* ===== スクロール位置に合わせて目次の現在地を光らせる =====
+   固定ナビ＋目次バーの少し下を判定ラインとし、そのラインを最後に越えたセクションを現在地とする。 */
+const SPY_LINE_OFFSET = 48;
+
+const spyLinks = barEl ? Array.from(barEl.querySelectorAll('a[href^="#"]')) : [];
+const spyTargets = spyLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+let spyCurrent = -2;
+let spyLockedIndex = null;
+let spyLockY = null;
+let spySettleTimer = 0;
+
+function setSpyActive(idx) {
+  if (idx === spyCurrent) return;
+  spyCurrent = idx;
+  spyLinks.forEach((a, i) => {
+    const on = i === idx;
+    a.classList.toggle('is-active', on);
+    if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+  });
+  if (idx >= 0 && barEl.scrollWidth - barEl.clientWidth > 1) {
+    const a = spyLinks[idx];
+    barEl.scrollTo({ left: a.offsetLeft - (barEl.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+  }
+}
+
+function isSpyTargetVisible(t) {
+  return !!t && t.offsetParent !== null;
+}
+
+function computeSpyIndex() {
+  const line = barEl.getBoundingClientRect().bottom + SPY_LINE_OFFSET;
+  let idx = -1;
+  let lastVisible = -1;
+  spyTargets.forEach((t, i) => {
+    if (!isSpyTargetVisible(t)) return;
+    lastVisible = i;
+    if (t.getBoundingClientRect().top <= line) idx = i;
+  });
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    idx = lastVisible;
+  }
+  return idx;
+}
+
+function refreshSectionSpy() {
+  spyLinks.forEach((a, i) => {
+    const gone = !isSpyTargetVisible(spyTargets[i]);
+    a.classList.toggle('is-unavailable', gone);
+    if (gone) a.setAttribute('tabindex', '-1'); else a.removeAttribute('tabindex');
+  });
+  if (spyLockedIndex !== null && !isSpyTargetVisible(spyTargets[spyLockedIndex])) {
+    releaseSpyLock();
+    return;
+  }
+  updateSectionSpy();
+}
+
+function updateSectionSpy() {
+  if (!spyLinks.length || barEl.offsetParent === null) return;
+  if (spyLockedIndex !== null) return;
+  setSpyActive(computeSpyIndex());
+}
+
+let spyQueued = false;
+function requestSectionSpy() {
+  if (document.hidden) { updateSectionSpy(); return; }
+  if (spyQueued) return;
+  spyQueued = true;
+  requestAnimationFrame(() => { spyQueued = false; updateSectionSpy(); });
+}
+
+function releaseSpyLock() {
+  if (spyLockedIndex === null) return;
+  clearTimeout(spySettleTimer);
+  spyLockedIndex = null;
+  spyLockY = null;
+  updateSectionSpy();
+}
+
+spyLinks.forEach((a, i) => {
+  a.addEventListener('click', e => {
+    if (!isSpyTargetVisible(spyTargets[i])) { e.preventDefault(); return; }
+    spyLockedIndex = i;
+    spyLockY = null;
+    setSpyActive(i);
+    clearTimeout(spySettleTimer);
+    spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 1200);
+  });
+});
+
+window.addEventListener('scroll', () => {
+  if (spyLockedIndex !== null) {
+    if (spyLockY === null) {
+      clearTimeout(spySettleTimer);
+      spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 160);
+      return;
+    }
+    if (Math.abs(window.scrollY - spyLockY) <= 8) return;
+    releaseSpyLock();
+    return;
+  }
+  requestSectionSpy();
+}, { passive: true });
+window.addEventListener('resize', requestSectionSpy);
+
+updateSectionSpy();
+
 /* ===== Search & category filter ===== */
 const searchInput = document.getElementById('site-search');
 const searchCount = document.getElementById('search-count');
@@ -598,6 +775,9 @@ function apply() {
 
   document.querySelectorAll('#cat-filters button[data-cat]').forEach(b =>
     b.classList.toggle('active', b.dataset.cat === activeCat));
+
+  // 絞り込みでセクションの表示・高さが変わるので、目次側も現在地を測り直す
+  refreshSectionSpy();
 }
 
 searchInput.addEventListener('input', apply);
