@@ -44,6 +44,7 @@
   --border: rgba(0, 255, 163, 0.18);
   /* 固定ナビの実高さ。JSが実測値で上書きする（ロゴの折り返しやフォント読み込みで変わるため） */
   --nav-h: 57px;
+  --bar-h: 0px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -138,7 +139,7 @@ nav {
 }
 
 .section { max-width: 1100px; margin: 0 auto; padding: 50px 24px 10px;
-  scroll-margin-top: calc(var(--nav-h) + 16px); }
+  scroll-margin-top: calc(var(--nav-h) + var(--bar-h) + 16px); }
 .section-header { margin-bottom: 34px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .sec-no { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.9rem; opacity: 0.9; }
 .section-header h2 {
@@ -313,6 +314,44 @@ footer .logo {
 .nav-search:focus { border-color: rgba(255,181,71,0.6); box-shadow: 0 0 14px rgba(255,181,71,0.25); }
 .nav-search::placeholder { color: var(--text-dim); opacity: 0.7; }
 
+/* ===== 目次（ページ内アンカー） =====
+   ヒーロー内のクイックフィルターは絞り込み用で、スクロールすると隠れてしまう。
+   下までスクロールしたあとも7テーマ間をすぐ移動できるよう、
+   AI HISTORY(index.html)と同じ仕組みで、ナビの下に貼り付く目次を出す。 */
+.section-bar {
+  position: sticky; top: var(--nav-h); z-index: 90;
+  display: flex; justify-content: center; align-items: center;
+  flex-wrap: wrap; gap: 6px 24px;
+  padding: 11px 32px;
+  background: rgba(5, 6, 15, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.section-bar a {
+  position: relative;
+  font-size: 0.79rem; letter-spacing: 0.08em;
+  color: var(--text-dim); text-decoration: none;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .section-bar a:hover {
+    color: var(--amber); text-shadow: 0 0 12px rgba(255, 181, 71, 0.7);
+  }
+}
+.section-bar a.is-active {
+  color: var(--amber); text-shadow: 0 0 12px rgba(255, 181, 71, 0.55);
+}
+.section-bar a.is-unavailable {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.section-bar a.is-active::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+  height: 2px; border-radius: 2px;
+  background: var(--amber); box-shadow: 0 0 10px rgba(255, 181, 71, 0.8);
+}
+
 #search-count {
   display: none;
   position: fixed;
@@ -362,6 +401,24 @@ footer .logo {
   .nav-search { width: 100%; font-size: 0.7rem; order: 3; }
   #search-count { right: 14px; }
   .hero { padding-top: 120px; }
+  /* スマホでも目次を出す。折り返して2段になると固定ヘッダーが高くなりすぎるので、
+     1行に固定してはみ出す分は横スクロールで見せる（AI HISTORYと同じ対応）。
+     contain: layout がないと、内部の幅が document の scrollWidth に算入されて
+     ページ全体が横にパンできてしまう。 */
+  .section-bar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    contain: layout;
+    gap: 0 18px;
+    padding: 8px 12px;
+    background: rgb(7, 9, 20);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .section-bar::-webkit-scrollbar { display: none; }
+  .section-bar a { white-space: nowrap; font-size: 0.72rem; }
 }
 </style>
 </head>
@@ -391,6 +448,17 @@ footer .logo {
     <button data-sec="security">セキュリティ</button>
   </div>
 </header>
+
+<!-- ============ 目次（ページ内アンカー） ============ -->
+<div class="section-bar" role="navigation" aria-label="ページ内の目次">
+  <a href="#agent">エージェント</a>
+  <a href="#japan">国内実装</a>
+  <a href="#physical">フィジカルAI</a>
+  <a href="#sovereign">ソブリンAI</a>
+  <a href="#infra">インフラ</a>
+  <a href="#society">経済・社会</a>
+  <a href="#security">セキュリティ</a>
+</div>
 
 <section class="section t-agent" id="agent">
   <div class="section-header">
@@ -772,17 +840,135 @@ footer .logo {
 <script src="report-modal.js"></script>
 
 <script>
-/* ===== 固定ナビの実高さを --nav-h に同期する =====
+/* ===== 固定ナビと目次バーの実高さを --nav-h / --bar-h に同期する =====
    各セクションの scroll-margin-top がこの値を使う。ロゴの折り返し・フォントの読み込み・
    画面幅の変化で高さが変わるため、実測で追従させる。 */
 const navEl = document.querySelector('nav');
+const barEl = document.querySelector('.section-bar');
 function syncNavHeight() {
-  document.documentElement.style.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  const root = document.documentElement.style;
+  root.setProperty('--nav-h', Math.round(navEl.getBoundingClientRect().height) + 'px');
+  const barVisible = barEl && barEl.offsetParent !== null;
+  root.setProperty('--bar-h', (barVisible ? Math.round(barEl.getBoundingClientRect().height) : 0) + 'px');
 }
 syncNavHeight();
 window.addEventListener('resize', syncNavHeight);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
-if (window.ResizeObserver) new ResizeObserver(syncNavHeight).observe(navEl);
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(syncNavHeight);
+  ro.observe(navEl);
+  if (barEl) ro.observe(barEl);
+}
+
+/* ===== スクロール位置に合わせて目次の現在地を光らせる =====
+   AI HISTORY(index.html)と同じ仕組み。固定ナビ＋目次バーの少し下を判定ラインとし、
+   そのラインを最後に越えたセクションを現在地とする。 */
+const SPY_LINE_OFFSET = 48;
+
+const spyLinks = barEl ? Array.from(barEl.querySelectorAll('a[href^="#"]')) : [];
+const spyTargets = spyLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+let spyCurrent = -2;
+let spyLockedIndex = null;
+let spyLockY = null;
+let spySettleTimer = 0;
+
+function setSpyActive(idx) {
+  if (idx === spyCurrent) return;
+  spyCurrent = idx;
+  spyLinks.forEach((a, i) => {
+    const on = i === idx;
+    a.classList.toggle('is-active', on);
+    if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+  });
+  if (idx >= 0 && barEl.scrollWidth - barEl.clientWidth > 1) {
+    const a = spyLinks[idx];
+    barEl.scrollTo({ left: a.offsetLeft - (barEl.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+  }
+}
+
+/* クイックフィルター／キーワード検索で該当なしのセクションは display:none で消える。
+   絞り込み中は、いま実際に表示されているセクションだけを目次の対象にする。 */
+function isSpyTargetVisible(t) {
+  return !!t && t.offsetParent !== null;
+}
+
+function computeSpyIndex() {
+  const line = barEl.getBoundingClientRect().bottom + SPY_LINE_OFFSET;
+  let idx = -1;
+  let lastVisible = -1;
+  spyTargets.forEach((t, i) => {
+    if (!isSpyTargetVisible(t)) return;
+    lastVisible = i;
+    if (t.getBoundingClientRect().top <= line) idx = i;
+  });
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    idx = lastVisible;
+  }
+  return idx;
+}
+
+function refreshSectionSpy() {
+  spyLinks.forEach((a, i) => {
+    const gone = !isSpyTargetVisible(spyTargets[i]);
+    a.classList.toggle('is-unavailable', gone);
+    if (gone) a.setAttribute('tabindex', '-1'); else a.removeAttribute('tabindex');
+  });
+  if (spyLockedIndex !== null && !isSpyTargetVisible(spyTargets[spyLockedIndex])) {
+    releaseSpyLock();
+    return;
+  }
+  updateSectionSpy();
+}
+
+function updateSectionSpy() {
+  if (!spyLinks.length || barEl.offsetParent === null) return;
+  if (spyLockedIndex !== null) return;
+  setSpyActive(computeSpyIndex());
+}
+
+let spyQueued = false;
+function requestSectionSpy() {
+  if (document.hidden) { updateSectionSpy(); return; }
+  if (spyQueued) return;
+  spyQueued = true;
+  requestAnimationFrame(() => { spyQueued = false; updateSectionSpy(); });
+}
+
+function releaseSpyLock() {
+  if (spyLockedIndex === null) return;
+  clearTimeout(spySettleTimer);
+  spyLockedIndex = null;
+  spyLockY = null;
+  updateSectionSpy();
+}
+
+spyLinks.forEach((a, i) => {
+  a.addEventListener('click', e => {
+    if (!isSpyTargetVisible(spyTargets[i])) { e.preventDefault(); return; }
+    spyLockedIndex = i;
+    spyLockY = null;
+    setSpyActive(i);
+    clearTimeout(spySettleTimer);
+    spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 1200);
+  });
+});
+
+window.addEventListener('scroll', () => {
+  if (spyLockedIndex !== null) {
+    if (spyLockY === null) {
+      clearTimeout(spySettleTimer);
+      spySettleTimer = setTimeout(() => { spyLockY = window.scrollY; }, 160);
+      return;
+    }
+    if (Math.abs(window.scrollY - spyLockY) <= 8) return;
+    releaseSpyLock();
+    return;
+  }
+  requestSectionSpy();
+}, { passive: true });
+window.addEventListener('resize', requestSectionSpy);
+
+updateSectionSpy();
 
 /* ===== Keyword search & quick filters =====
    news.html と同じ仕様。クイックフィルターは7テーマ(セクションid)で絞り込み、
@@ -817,6 +1003,9 @@ function applySearch() {
 
   document.querySelectorAll('.quick-filters button[data-sec]').forEach(b =>
     b.classList.toggle('active', b.dataset.sec === activeSection));
+
+  // 絞り込みでセクションの表示・高さが変わるので、目次側も現在地を測り直す
+  refreshSectionSpy();
 }
 
 searchInput.addEventListener('input', applySearch);
