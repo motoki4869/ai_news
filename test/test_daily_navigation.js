@@ -43,7 +43,7 @@ test('短い移動と縦方向の移動はスワイプにしない', () => {
 });
 
 test('日付見出しを固定ナビに隠れない位置へスクロールする', () => {
-  assert.match(DAILY_HTML, /\.day-head h2\s*\{[^}]*scroll-margin-top:\s*64px;/s);
+  assert.match(DAILY_HTML, /\.day-head h2\s*\{[^}]*scroll-margin-top:\s*calc\(var\(--nav-h\)\s*\+\s*18px\);/s);
   assert.match(
     DAILY_HTML,
     /const dateHeading = dayHead\.querySelector\('h2'\);\s*if \(dateHeading\) dateHeading\.scrollIntoView\(/s,
