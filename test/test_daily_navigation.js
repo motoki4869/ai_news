@@ -69,6 +69,16 @@ test('日付見出しを固定ナビに隠れない位置へスクロールす�
   );
 });
 
+test('最新ボタンを日付見出し行の右端へ配置する', () => {
+  const calendarHead = DAILY_HTML.match(/<div class="cal-head">[\s\S]*?<\/div>/)?.[0];
+  assert.ok(calendarHead);
+  assert.doesNotMatch(
+    calendarHead,
+    /id="cal-latest"/,
+  );
+  assert.match(DAILY_HTML, /dayHead\.append\(h2, countSpan, lineSpan, latestBtn\);/);
+});
+
 test('デイリーログ末尾には最新トレンドへの遷移を置かない', () => {
   assert.doesNotMatch(
     DAILY_HTML,

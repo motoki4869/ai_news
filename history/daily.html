@@ -252,7 +252,7 @@ nav {
 .day-head {
   max-width: 1100px; margin: 0 auto;
   padding: 34px 24px 0;
-  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: nowrap;
 }
 .day-head h2 {
   font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
@@ -693,14 +693,15 @@ footer .logo {
       <button type="button" id="cal-prev" class="cal-nav" aria-label="前の月">◀</button>
       <span class="cal-title" id="cal-title"></span>
       <button type="button" id="cal-next" class="cal-nav" aria-label="次の月">▶</button>
-      <button type="button" id="cal-latest" class="cal-latest">最新</button>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
   <div id="daily-content" class="daily-content" role="region" aria-label="日次ニュース。左右にスワイプして日付を切り替えられます。">
 
-  <div class="day-head" id="day-head"></div>
+  <div class="day-head" id="day-head">
+    <button type="button" id="cal-latest" class="cal-latest">最新</button>
+  </div>
 
   <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
     <div class="audio-inner">
@@ -1172,7 +1173,7 @@ function renderDay() {
   countSpan.textContent = items.length + '件';
   const lineSpan = document.createElement('span');
   lineSpan.className = 'day-line';
- dayHead.append(h2, countSpan, lineSpan);
+  dayHead.append(h2, countSpan, lineSpan, latestBtn);
 
   const audio = AUDIO[selected];
   const audioSrc = audio && safeAudioSrc(audio.src);
