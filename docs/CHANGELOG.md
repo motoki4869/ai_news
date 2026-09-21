@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### 生成AI年表へのAI比較モーダル追加
+- **変更**: `GENERATIVE ERA`ページの上部ナビにも「AI比較」ボタンと、Arena.ai・Artificial Analysisを選べるモーダルを追加した。
+- **理由**: 生成AI年表を読んでいる途中からも、モデル性能の比較サイトへ移動できるようにするため。
+- **対象**: `history/generative.html`、`test/test_index_benchmark_modal.js`
+- **commit**: `HEAD`
+
 ### AI性能比較リンクの選択モーダル化
 - **変更**: AI HISTORY上部の「AI比較」ボタンから、Arena.aiとArtificial Analysisを選べるモーダルを表示するようにした。外部リンクは新しいタブで開き、閉じるボタン・背景クリック・Escapeキーに対応した。
 - **理由**: 性能比較サイトを1つに限定せず、目的に応じて選べるようにするため。

@@ -7,11 +7,17 @@ const INDEX_HTML = fs.readFileSync(
   path.join(__dirname, '..', 'history', 'index.html'),
   'utf8',
 );
+const GENERATIVE_HTML = fs.readFileSync(
+  path.join(__dirname, '..', 'history', 'generative.html'),
+  'utf8',
+);
 
-test('AI比較ボタンから2つの性能比較サイトを選べる', () => {
-  assert.match(INDEX_HTML, /id="ai-benchmark-modal"[^>]*role="dialog"[^>]*aria-modal="true"/);
-  assert.match(INDEX_HTML, /<button[^>]*aria-controls="ai-benchmark-modal"[^>]*>AI比較<\/button>/);
-  assert.match(INDEX_HTML, /href="https:\/\/arena\.ai\/leaderboard\/"[^>]*target="_blank"[^>]*rel="noopener"/);
-  assert.match(INDEX_HTML, /href="https:\/\/artificialanalysis\.ai\/"[^>]*target="_blank"[^>]*rel="noopener"/);
-  assert.match(INDEX_HTML, /event\.key === 'Escape'[\s\S]*setAiBenchmarkModalOpen\(false\)/);
-});
+for (const [pageName, html] of [['AI HISTORY', INDEX_HTML], ['生成AI年表', GENERATIVE_HTML]]) {
+  test(`${pageName}のAI比較ボタンから2つの性能比較サイトを選べる`, () => {
+    assert.match(html, /id="ai-benchmark-modal"[^>]*role="dialog"[^>]*aria-modal="true"/);
+    assert.match(html, /<button[^>]*aria-controls="ai-benchmark-modal"[^>]*>AI比較<\/button>/);
+    assert.match(html, /href="https:\/\/arena\.ai\/leaderboard\/"[^>]*target="_blank"[^>]*rel="noopener"/);
+    assert.match(html, /href="https:\/\/artificialanalysis\.ai\/"[^>]*target="_blank"[^>]*rel="noopener"/);
+    assert.match(html, /event\.key === 'Escape'[\s\S]*setAiBenchmarkModalOpen\(false\)/);
+  });
+}
