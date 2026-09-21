@@ -66,6 +66,14 @@ test('3つの要点は省略記号なしで全文表示する', () => {
   assert.doesNotMatch(ARCHIVE_HTML, /\.rpt-summary-list li \{[^}]*-webkit-line-clamp/);
 });
 
+test('レポート導入部の余白を広げ、要点下の点線を外す', () => {
+  for (const html of [NEWS_HTML, ARCHIVE_HTML]) {
+    assert.match(html, /\.report-modal-header \{[^}]*padding: 14px 14px 12px/);
+    assert.match(html, /\.rpt-summary \{[^}]*padding-bottom: 12px/);
+    assert.doesNotMatch(html, /\.rpt-summary \{[^}]*border-bottom/);
+  }
+});
+
 test('左上の章一覧は左側から開くドロワーにする', () => {
   assert.match(NEWS_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
   assert.match(NEWS_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);
