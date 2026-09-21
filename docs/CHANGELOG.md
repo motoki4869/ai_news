@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### 読者向けページの内部パス表記を自然な文言に修正
+- **変更**: `history/archive.html`（meta description・hero見出し・footer）、`history/news.html`（hero内source-note・footer）、`history/glossary.html`（hero内source-note・footer）、`history/daily.html`（footer）から、`ai_news/report`・`docs/glossary.md`・`ai_news/everyday_news`・「news.htmlから循環した」といった内部のリポジトリ構成・ファイルパスの直書きを削除し、「過去に掲載したトレンド」「参考レポート」「掲載用語」のような読者向けの自然な言い回しに書き換えた。
+- **理由**: サイト訪問者には文脈のない内部のディレクトリ・ファイル名がそのまま表示されており、実装の都合が透けて見える表記になっていたため。
+- **対象**: `history/archive.html`, `history/news.html`, `history/glossary.html`, `history/daily.html`
+- **commit**: `HEAD`
+
 ### 全文表示モーダルのキーボード操作を修正
 - **変更**: `history/report-modal.js`にフォーカス管理を追加した。モーダルを開くと開く前にフォーカスしていた要素（タップしたカード）を記憶し、閉じるボタンへフォーカスを移す。開いている間はTabキーがモーダル内のfocusable要素だけを巡回する（フォーカストラップ）ようにし、背後のニュースカード列へ抜けないようにした。閉じたときは記憶しておいた元のカードへフォーカスを戻す。
 - **理由**: レポートを開いてもフォーカスが背後のカードに残ったままで、Tabキーで背後の次のカードへ移動してしまっていたため。
