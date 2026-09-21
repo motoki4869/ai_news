@@ -91,6 +91,31 @@
      届いた時点で自分が最新かどうかを確かめるために使う。 */
   let renderToken = 0;
 
+  /* フォーカス管理
+     開く前にフォーカスしていた要素（タップしたカード）を覚えておき、閉じたら戻す。
+     開いている間は Tab がモーダルの外（背後のカード列）へ抜けないよう、
+     モーダル内の focusable 要素だけを巡回させる（フォーカストラップ）。 */
+  let returnFocusEl = null;
+
+  function getFocusable() {
+    return Array.from(
+      modal.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ).filter(el => el.offsetParent !== null);
+  }
+
+  function trapFocus(e) {
+    const focusables = getFocusable();
+    if (!focusables.length) { e.preventDefault(); return; }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const inside = modal.contains(document.activeElement);
+    if (e.shiftKey) {
+      if (!inside || document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (!inside || document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+
   function isOpen() {
     return !modal.hasAttribute('hidden');
   }
@@ -131,6 +156,7 @@
     modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
     body.scrollTop = 0;
+    closeBtn.focus();
 
     Promise.all(reportNames.map(name =>
       loadReport(name).then(
@@ -149,6 +175,7 @@
       renderModal(reportNames);
       return;
     }
+    returnFocusEl = document.activeElement;
     openedViaHistory = false;
     try {
       history.pushState({ reportModal: reportNames }, '', location.href);
@@ -166,6 +193,8 @@
     document.body.style.overflow = '';
     openedViaHistory = false;
     renderToken++;  // 読み込み中だったものが後から届いても描画させない
+    if (returnFocusEl && document.contains(returnFocusEl)) returnFocusEl.focus();
+    returnFocusEl = null;
   }
 
   // ユーザーが「閉じる」意思を示したとき。閉じる処理そのものは popstate に任せる。
@@ -178,7 +207,9 @@
   closeBtn.addEventListener('click', requestClose);
   backdrop.addEventListener('click', requestClose);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && isOpen()) requestClose();
+    if (!isOpen()) return;
+    if (e.key === 'Escape') { requestClose(); return; }
+    if (e.key === 'Tab') trapFocus(e);
   });
 
   window.addEventListener('popstate', e => {
