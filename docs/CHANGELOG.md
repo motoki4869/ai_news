@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### 生成AI年表の戻りリンク位置調整
+- **変更**: 生成AI年表上部ナビの「← AI HISTORY」をAI比較ボタンの右側へ移動した。
+- **理由**: 年表から比較サイトを開く導線を先に置き、全体年表への戻り先をナビ右側に整理するため。
+- **対象**: `history/generative.html`、`test/test_index_benchmark_modal.js`
+- **commit**: `HEAD`
+
 ### 生成AI年表へのAI比較モーダル追加
 - **変更**: `GENERATIVE ERA`ページの上部ナビにも「AI比較」ボタンと、Arena.ai・Artificial Analysisを選べるモーダルを追加した。
 - **理由**: 生成AI年表を読んでいる途中からも、モデル性能の比較サイトへ移動できるようにするため。

@@ -21,3 +21,10 @@ for (const [pageName, html] of [['AI HISTORY', INDEX_HTML], ['生成AI年表', G
     assert.match(html, /event\.key === 'Escape'[\s\S]*setAiBenchmarkModalOpen\(false\)/);
   });
 }
+
+test('生成AI年表の上部ナビではAI HISTORYへの戻りリンクを右側に置く', () => {
+  assert.match(
+    GENERATIVE_HTML,
+    /<div class="nav-links">\s*<button class="to-arena"[\s\S]*?<a class="to-history" href="index\.html">← AI HISTORY<\/a>\s*<\/div>/s,
+  );
+});
