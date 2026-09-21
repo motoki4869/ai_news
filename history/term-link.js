@@ -66,9 +66,11 @@
     }
   }
 
-  // 1カードにつき最初に見つかった1語だけをリンク化する（複数語が光ると読みにくいため）
-  window.linkifyGlossaryTerms = function (root) {
-    (root || document).querySelectorAll('.news-card p, .news-card .point-list li').forEach(el => {
+  // 1要素につき最初に見つかった1語だけをリンク化する（複数語が光ると読みにくいため）。
+  // selector省略時はニュースカードの見出し下テキストが対象。レポート全文モーダルなど
+  // 別の範囲に使う場合は呼び出し側でselectorを指定する（report-modal.js参照）。
+  window.linkifyGlossaryTerms = function (root, selector) {
+    (root || document).querySelectorAll(selector || '.news-card p, .news-card .point-list li').forEach(el => {
       if (el.dataset.glossLinked) return;
       el.dataset.glossLinked = '1';
       linkifyElement(el);

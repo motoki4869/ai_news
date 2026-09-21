@@ -7,6 +7,13 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### レポート全文モーダル内の用語からも用語集へジャンプできるように
+- **変更**: `history/term-link.js`の`linkifyGlossaryTerms(root, selector)`に対象範囲を指定できる第2引数を追加し、`history/report-modal.js`のレポート全文描画（`paint()`）から`.rpt-section p, .rpt-section li, .rpt-section td`を対象に呼び出すようにした。これにより、`news.html`（最新トレンド）・`archive.html`（過去ログ）でニュースカードをタップして開く全文レポートの本文中に登場するMCP・RSI等の用語も、直下の要約カードと同じくバイオレットの下線リンクとして用語集へジャンプできるようになった。
+- **理由**: ユーザーから「デイリーや最新トレンドのレポートの中からも遷移できるようにできない？」との要望があったため。要約カード本文は既に対応済みだったが、カードをタップして開く元レポートの全文には未反映だった（`daily.html`はカードをタップしても外部の出典記事へのリンクしか持たず内部の全文表示機能自体が無いため、対象は`news.html`/`archive.html`のレポート全文モーダルのみとなる）。
+- **対象**: `history/term-link.js`, `history/report-modal.js`
+- **確認**: ローカルサーバー起動後、cmux browserでnews.html/archive.htmlのカードをタップしてレポート全文モーダルを開き、本文中の用語（RSI等）がリンク化されていること、クリックで`glossary.html?q=RSI`へ正しく遷移し、モーダルを閉じる操作と競合しないことを確認した。
+- **commit**: `HEAD`
+
 ### 用語集の検索状態をURLに反映、記事本文の用語から直接ジャンプできるように
 - **変更**: `history/glossary.html`の検索ボックスの入力値を`?q=`パラメータとしてURLに同期（`history.replaceState`）し、`glossary.html?q=MCP`のようなURLを直接開くと検索欄が自動入力され、絞り込んだ上で最初に一致した用語カードまでスクロールしてバイオレットの光るアニメーション（`.jump-flash`）で強調表示するようにした。あわせて新規ファイル`history/term-link.js`を追加し、`news.html`・`archive.html`・`daily.html`のニュースカード本文中に登場する用語集掲載済みの英字略語・製品名（MCP、RAG、OpenClaw等）を自動検出し、1カードにつき最初の1語だけを`glossary.html?q=<用語>`への内部リンクに変換する。news.html/archive.htmlのカードは全体がタップで全文モーダルを開く仕様のため、リンククリックがモーダル表示に伝播しないよう`stopPropagation`を追加した。daily.htmlは日付切り替えのたびにカードを再描画するため、`renderDay()`内で毎回リンク化を呼び直す形にした。
 - **理由**: レビュー指摘「用語集でMCPを検索できるが、検索状態がURLに反映されない。記事中の『MCP』から該当用語へ移動できると理解が途切れない」に対応するため。

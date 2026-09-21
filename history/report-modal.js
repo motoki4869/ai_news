@@ -137,6 +137,10 @@
       table.parentNode.insertBefore(wrap, table);
       wrap.appendChild(table);
     });
+    // カード本文と同じ仕組みで、全文中の用語（MCP等）も用語集へリンクする。
+    if (window.linkifyGlossaryTerms) {
+      window.linkifyGlossaryTerms(body, '.rpt-section p, .rpt-section li, .rpt-section td');
+    }
     if (window.renderMathInElement) {
       window.renderMathInElement(body, {
         delimiters: [
