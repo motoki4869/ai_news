@@ -58,6 +58,14 @@ test('要約は冒頭文の連結ではなく3つの要点として表示する'
   assert.match(ARCHIVE_HTML, /\.rpt-summary-list/);
 });
 
+test('3つの要点は省略記号なしで全文表示する', () => {
+  assert.doesNotMatch(REPORT_MODAL_JS, /shortened/);
+  assert.match(REPORT_MODAL_JS, /return points\.slice\(0, 3\);/);
+  assert.match(NEWS_HTML, /\.rpt-summary-list li \{[^}]*overflow-wrap: anywhere/);
+  assert.doesNotMatch(NEWS_HTML, /\.rpt-summary-list li \{[^}]*-webkit-line-clamp/);
+  assert.doesNotMatch(ARCHIVE_HTML, /\.rpt-summary-list li \{[^}]*-webkit-line-clamp/);
+});
+
 test('左上の章一覧は左側から開くドロワーにする', () => {
   assert.match(NEWS_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
   assert.match(NEWS_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);

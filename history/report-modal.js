@@ -163,12 +163,7 @@
     sentences.forEach(sentence => {
       if (points.length < 3 && !points.includes(sentence)) points.push(sentence);
     });
-    return points.slice(0, 3).map(point => {
-      if (point.length <= 112) return point;
-      const shortened = point.slice(0, 112);
-      const comma = shortened.lastIndexOf('、');
-      return `${shortened.slice(0, comma > 56 ? comma : 108)}…`;
-    });
+    return points.slice(0, 3);
   }
 
   function createReadingGuide(section, reportIndex) {
