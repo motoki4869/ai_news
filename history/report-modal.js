@@ -207,11 +207,12 @@
     // レポートの先頭にある h2 はタイトルなので、章目次からは除外する。
     const firstElement = section.firstElementChild;
     const tocHeadings = firstElement === headings[0] ? headings.slice(1) : headings;
+    const summaryLevel = tocHeadings[0]?.tagName.toLowerCase() || 'h2';
     tocHeadings.forEach((heading, headingIndex) => {
       heading.id = `rpt-${reportIndex}-section-${headingIndex}`;
     });
     section.insertBefore(guide, section.firstChild);
-    return { summary: summaryTarget, headings: tocHeadings };
+    return { summary: summaryTarget, summaryLevel, headings: tocHeadings };
   }
 
   function createTocPanel(entries) {
@@ -279,7 +280,7 @@
           tocEntries.push({
             target: guide.summary,
             label: 'まず押さえる3点',
-            className: 'rpt-toc-summary'
+            className: `rpt-toc-level-${guide.summaryLevel}`
           });
         }
         guide.headings.forEach(heading => tocEntries.push({

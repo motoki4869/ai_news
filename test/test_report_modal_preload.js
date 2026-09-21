@@ -99,7 +99,12 @@ test('スマホの章一覧シートは上の余白を抑えて表示する', ()
 
 test('章目次に「まず押さえる3点」へのリンクを追加する', () => {
   assert.match(REPORT_MODAL_JS, /summary\.id = `rpt-\$\{reportIndex\}-summary`/);
-  assert.match(REPORT_MODAL_JS, /return \{ summary: summaryTarget, headings: tocHeadings \};/);
+  assert.match(REPORT_MODAL_JS, /return \{ summary: summaryTarget, summaryLevel, headings: tocHeadings \};/);
   assert.match(REPORT_MODAL_JS, /tocEntries\.push\(\{\s*target: guide\.summary,\s*label: 'まず押さえる3点'/);
   assert.match(REPORT_MODAL_JS, /target\.scrollIntoView\(\{ behavior: 'smooth'/);
+});
+
+test('要約の目次項目を1章と同じ階層で表示する', () => {
+  assert.match(REPORT_MODAL_JS, /const summaryLevel = tocHeadings\[0\]\?\.tagName\.toLowerCase\(\) \|\| 'h2';/);
+  assert.match(REPORT_MODAL_JS, /className: `rpt-toc-level-\$\{guide\.summaryLevel\}`/);
 });
