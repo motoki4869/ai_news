@@ -99,8 +99,8 @@ test('スマホの章一覧シートは上の余白を抑えて表示する', ()
 
 test('章一覧の左余白と階層インデントを詰めて本文幅を確保する', () => {
   for (const html of [NEWS_HTML, ARCHIVE_HTML]) {
-    assert.match(html, /\.report-modal-toc-list li\.rpt-toc-level-h3 \{ padding-left: 10px; \}/);
-    assert.match(html, /\.report-modal-toc-list li\.rpt-toc-level-h4 \{ padding-left: 20px; \}/);
+    assert.match(html, /\.report-modal-toc-list li\.rpt-toc-level-h3 \{ padding-left: 0; \}/);
+    assert.match(html, /\.report-modal-toc-list li\.rpt-toc-level-h4 \{ padding-left: 10px; \}/);
     assert.match(
       html,
       /@media \(max-width: 768px\) \{[\s\S]*?\.report-modal-toc-sheet \{[^}]*padding: 16px 14px 24px;/,
