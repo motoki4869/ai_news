@@ -6,6 +6,7 @@ const path = require('node:path');
 const {
   getAdjacentDate,
   getSwipeDirection,
+  shouldIgnoreTouchStart,
 } = require('../history/daily-navigation.js');
 
 const DATES = [
@@ -40,6 +41,24 @@ test('右スワイプは前の日、左スワイプは次の日へ進む', () =>
 test('短い移動と縦方向の移動はスワイプにしない', () => {
   assert.equal(getSwipeDirection(10, 100, 35, 105), null);
   assert.equal(getSwipeDirection(10, 100, 80, 180), null);
+});
+
+test('要約欄のリンク上ではスワイプ開始を無視しない', () => {
+  const headlineLink = {
+    closest(selector) {
+      assert.equal(selector, 'button, input, select, textarea, audio');
+      return null;
+    },
+  };
+  const audioControl = {
+    closest(selector) {
+      assert.equal(selector, 'button, input, select, textarea, audio');
+      return { tagName: 'BUTTON' };
+    },
+  };
+
+  assert.equal(shouldIgnoreTouchStart(headlineLink), false);
+  assert.equal(shouldIgnoreTouchStart(audioControl), true);
 });
 
 test('日付見出しを固定ナビに隠れない位置へスクロールする', () => {

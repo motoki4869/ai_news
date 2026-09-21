@@ -1318,8 +1318,9 @@ dailyContent.addEventListener('touchstart', e => {
     return;
   }
 
-  // カードの出典リンクや音声プレイヤーの操作を日付切り替えで奪わない。
-  if (e.target.closest('a, button, input, select, textarea, audio')) {
+  // 音声プレイヤーや操作ボタンのジェスチャーを日付切り替えで奪わない。
+  // リンクは短いタップなら通常の遷移を維持し、横移動した場合だけ日付切り替えに使う。
+  if (DailyNavigation.shouldIgnoreTouchStart(e.target)) {
     touchStart = null;
     return;
   }

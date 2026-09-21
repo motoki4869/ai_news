@@ -24,5 +24,9 @@
     return deltaX > 0 ? 'previous' : 'next';
   }
 
-  return { getAdjacentDate, getSwipeDirection };
+  function shouldIgnoreTouchStart(target) {
+    return Boolean(target && target.closest && target.closest('button, input, select, textarea, audio'));
+  }
+
+  return { getAdjacentDate, getSwipeDirection, shouldIgnoreTouchStart };
 }));
