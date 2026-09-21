@@ -8,16 +8,16 @@ const GLOSSARY_HTML = fs.readFileSync(
   'utf8',
 );
 
-test('用語集上部ナビを最新トレンド、デイリーの順に並べる', () => {
+test('用語集上部ナビをトレンド、デイリーの順に並べる', () => {
   assert.match(
     GLOSSARY_HTML,
-    /<div class="nav-links">\s*<a class="to-news" href="news\.html">最新トレンド<\/a>\s*<a class="to-daily" href="daily\.html">デイリー<\/a>\s*<\/div>/s,
+    /<div class="nav-links">\s*<a class="to-news" href="news\.html">トレンド<\/a>\s*<a class="to-daily" href="daily\.html">デイリー<\/a>\s*<\/div>/s,
   );
 });
 
-test('用語集末尾の遷移を全体年表、最新トレンド、デイリーログの順に並べる', () => {
+test('用語集末尾の遷移を全体年表、トレンド、デイリーログの順に並べる', () => {
   assert.match(
     GLOSSARY_HTML,
-    /<div class="cta-back">\s*<a class="to-index" href="index\.html">← AI HISTORY 全体年表<\/a>\s*<a class="to-news" href="news\.html">最新トレンド →<\/a>\s*<a class="to-daily" href="daily\.html">デイリーログ →<\/a>\s*<\/div>/s,
+    /<div class="cta-back">\s*<a class="to-index" href="index\.html">← AI HISTORY 全体年表<\/a>\s*<a class="to-news" href="news\.html">トレンド →<\/a>\s*<a class="to-daily" href="daily\.html">デイリーログ →<\/a>\s*<\/div>/s,
   );
 });
