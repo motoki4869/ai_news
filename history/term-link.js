@@ -1,57 +1,96 @@
-/* 記事本文中の主要な用語（英字の略語・製品名）を用語集ページへのリンクに変換する。
+/* 記事本文中の用語を用語集ページへのリンクに変換する。
  * glossary-data.js (window.GLOSSARY) を先に読み込んだページでのみ動作する。
- * 一般的な英単語まで誤ってリンク化しないよう、対象は用語集の「用語」列に載っている
- * ASCII の略語・製品名（例: MCP, RAG, MoE）だけに絞ってある。日本語の用語名や、
- * 「正式名称」列に載っている長い英語表記（Model Context Protocol 等）は対象外。
+ * 「正式名称」列ではなく、用語集の「用語」列に載っている用語と、その括弧内・
+ * スラッシュ区切りの別名を対象にする。用語集に登録された内容と本文の表記を
+ * 一致させるため、英字の略語だけでなく日本語の用語もリンク化する。
  */
 (function () {
   const GLOSSARY = window.GLOSSARY || [];
   if (!GLOSSARY.length) return;
 
-  const TOKEN_RE = /^[A-Za-z][A-Za-z0-9-]{2,10}$/;
+  function decodeHtmlEntities(text) {
+    return text
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  }
+
+  function addAlias(aliases, known, raw) {
+    const alias = raw.trim().replace(/\s+等$/, '');
+    if (!alias || alias === '等' || known.has(alias)) return;
+    known.add(alias);
+    aliases.push(alias);
+  }
+
+  function collectAliases(termHtml) {
+    const term = decodeHtmlEntities(termHtml.replace(/<[^>]+>/g, ''));
+    const aliases = [];
+    const known = new Set();
+
+    function addParts(value) {
+      addAlias(aliases, known, value);
+      value.split(/\s+\/\s+|\s+→\s+/).forEach(part => addAlias(aliases, known, part));
+    }
+
+    addParts(term);
+    const base = term.replace(/[（(][^）)]*[）)]/g, '').trim();
+    if (base !== term) addParts(base);
+
+    const parentheses = /[（(]([^）)]*)[）)]/g;
+    let match;
+    while ((match = parentheses.exec(term))) addParts(match[1]);
+    return aliases;
+  }
+
   const tokens = [];
   const known = new Set();
   GLOSSARY.forEach(sec => {
     sec.entries.forEach(entry => {
-      entry.term.replace(/<\/?strong>/g, '').split(' / ').forEach(raw => {
-        const tok = raw.trim();
-        if (TOKEN_RE.test(tok) && !known.has(tok)) {
-          known.add(tok);
-          tokens.push(tok);
+      collectAliases(entry.term).forEach(alias => {
+        if (!known.has(alias)) {
+          known.add(alias);
+          tokens.push(alias);
         }
       });
     });
   });
   if (!tokens.length) return;
 
-  // 長いトークンを先に判定する（例: "V4-Flash" が "V4" として途中一致しないように）
+  // 長いトークンを先に判定する（例: "V4-Flash" が "V4" として途中一致しないように）。
+  // ASCIIだけの用語には英数字境界を付け、一般語の一部だけをリンク化しない。
   tokens.sort((a, b) => b.length - a.length);
   const escaped = tokens.map(t => t.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&'));
-  const pattern = new RegExp('\\b(' + escaped.join('|') + ')\\b');
+  const ascii = [];
+  const other = [];
+  tokens.forEach((token, index) => {
+    if (/^[A-Za-z0-9][A-Za-z0-9 ._+/#-]*$/.test(token)) ascii.push(escaped[index]);
+    else other.push(escaped[index]);
+  });
+  const alternatives = [];
+  if (ascii.length) alternatives.push('\\b(?:' + ascii.join('|') + ')\\b');
+  if (other.length) alternatives.push('(?:' + other.join('|') + ')');
+  const pattern = new RegExp(alternatives.join('|'), 'g');
 
   function linkifyElement(el) {
-    const state = { done: false };
-    walk(el, state);
+    walk(el);
   }
 
-  function walk(node, state) {
-    const children = Array.from(node.childNodes);
-    for (const child of children) {
-      if (state.done) return;
-      if (child.nodeType === Node.ELEMENT_NODE) {
-        if (child.tagName === 'A') continue;
-        walk(child, state);
-        continue;
+  function linkifyTextNode(node) {
+    const text = node.textContent;
+    pattern.lastIndex = 0;
+    let cursor = 0;
+    let match;
+    const frag = document.createDocumentFragment();
+    let found = false;
+
+    while ((match = pattern.exec(text))) {
+      found = true;
+      if (match.index > cursor) {
+        frag.appendChild(document.createTextNode(text.slice(cursor, match.index)));
       }
-      if (child.nodeType !== Node.TEXT_NODE) continue;
-      const m = pattern.exec(child.textContent);
-      if (!m) continue;
-      const term = m[1];
-      const idx = m.index;
-      const before = child.textContent.slice(0, idx);
-      const after = child.textContent.slice(idx + term.length);
-      const frag = document.createDocumentFragment();
-      if (before) frag.appendChild(document.createTextNode(before));
+      const term = match[0];
       const a = document.createElement('a');
       a.className = 'gloss-link';
       a.href = 'glossary.html?q=' + encodeURIComponent(term);
@@ -60,13 +99,26 @@
       // クリックハンドラを持つため、リンクのクリックがそこへ伝播しないようにする
       a.addEventListener('click', e => e.stopPropagation());
       frag.appendChild(a);
-      if (after) frag.appendChild(document.createTextNode(after));
-      child.replaceWith(frag);
-      state.done = true;
+      cursor = match.index + term.length;
+    }
+    if (!found) return;
+    if (cursor < text.length) frag.appendChild(document.createTextNode(text.slice(cursor)));
+    node.replaceWith(frag);
+  }
+
+  function walk(node) {
+    const children = Array.from(node.childNodes);
+    for (const child of children) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.tagName === 'A') continue;
+        walk(child);
+        continue;
+      }
+      if (child.nodeType !== Node.TEXT_NODE) continue;
+      linkifyTextNode(child);
     }
   }
 
-  // 1要素につき最初に見つかった1語だけをリンク化する（複数語が光ると読みにくいため）。
   // selector省略時はニュースカードの見出し下テキストが対象。レポート全文モーダルなど
   // 別の範囲に使う場合は呼び出し側でselectorを指定する（report-modal.js参照）。
   window.linkifyGlossaryTerms = function (root, selector) {
