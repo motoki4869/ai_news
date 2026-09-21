@@ -29,11 +29,11 @@ test('最新トレンドはカード出典のレポートを先読みし、ア�
 
 test('レポート全文に概要・章目次・読了目安を自動表示する', () => {
   assert.match(REPORT_MODAL_JS, /function createReadingGuide\(section, reportIndex\)/);
-  assert.match(REPORT_MODAL_JS, /冒頭の3行要約/);
+  assert.match(REPORT_MODAL_JS, /まず押さえる3点/);
   assert.match(REPORT_MODAL_JS, /読了目安 約\$\{minutes\}分/);
   assert.match(REPORT_MODAL_JS, /heading\.scrollIntoView\(\{ behavior: 'smooth'/);
   assert.match(REPORT_MODAL_JS, /section\.querySelectorAll\('h2, h3, h4'\)/);
-  assert.match(REPORT_MODAL_JS, /\.rpt-section > p, \.rpt-section > ul > li, \.rpt-section td, \.rpt-summary p/);
+  assert.match(REPORT_MODAL_JS, /\.rpt-section > p, \.rpt-section > ul > li, \.rpt-section td, \.rpt-summary-list li/);
   assert.match(NEWS_HTML, /\.rpt-reading-guide/);
   assert.match(ARCHIVE_HTML, /\.rpt-reading-guide/);
 });
@@ -48,4 +48,21 @@ test('章目次は三本線ボタンから開くオーバーレイにする', ()
   assert.match(NEWS_HTML, /\.report-modal-toc/);
   assert.match(ARCHIVE_HTML, /\.report-modal-toc-toggle/);
   assert.match(ARCHIVE_HTML, /\.report-modal-toc/);
+});
+
+test('要約は冒頭文の連結ではなく3つの要点として表示する', () => {
+  assert.match(REPORT_MODAL_JS, /function buildSummaryPoints\(paragraphs\)/);
+  assert.match(REPORT_MODAL_JS, /rpt-summary-list/);
+  assert.match(REPORT_MODAL_JS, /buildSummaryPoints\(paragraphs\)/);
+  assert.match(NEWS_HTML, /\.rpt-summary-list/);
+  assert.match(ARCHIVE_HTML, /\.rpt-summary-list/);
+});
+
+test('左上の章一覧は左側から開くドロワーにする', () => {
+  assert.match(NEWS_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
+  assert.match(NEWS_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);
+  assert.match(NEWS_HTML, /report-toc-in-left/);
+  assert.match(ARCHIVE_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
+  assert.match(ARCHIVE_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);
+  assert.match(ARCHIVE_HTML, /report-toc-in-left/);
 });

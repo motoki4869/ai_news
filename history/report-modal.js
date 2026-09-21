@@ -142,6 +142,35 @@
     }
   }
 
+  function buildSummaryPoints(paragraphs) {
+    const sentences = paragraphs
+      .flatMap(paragraph => paragraph.textContent
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(/(?<=[。！？!?])\s*/)
+        .map(sentence => sentence.trim())
+        .filter(sentence => sentence.length >= 24)
+      );
+    const points = [];
+    paragraphs.forEach(paragraph => {
+      const firstSentence = paragraph.textContent
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(/(?<=[。！？!?])\s*/)[0]
+        ?.trim();
+      if (firstSentence && firstSentence.length >= 24) points.push(firstSentence);
+    });
+    sentences.forEach(sentence => {
+      if (points.length < 3 && !points.includes(sentence)) points.push(sentence);
+    });
+    return points.slice(0, 3).map(point => {
+      if (point.length <= 112) return point;
+      const shortened = point.slice(0, 112);
+      const comma = shortened.lastIndexOf('、');
+      return `${shortened.slice(0, comma > 56 ? comma : 108)}…`;
+    });
+  }
+
   function createReadingGuide(section, reportIndex) {
     const paragraphs = Array.from(section.querySelectorAll(':scope > p'));
     const headings = Array.from(section.querySelectorAll('h2, h3, h4'));
@@ -153,7 +182,7 @@
     const meta = document.createElement('div');
     meta.className = 'rpt-reading-meta';
     meta.innerHTML = `
-      <span class="rpt-guide-label">長いレポートの読み方</span>
+      <span class="rpt-guide-label">レポートを読む前に</span>
       <span class="rpt-reading-time">読了目安 約${minutes}分</span>
     `;
     guide.appendChild(meta);
@@ -163,15 +192,18 @@
       summary.className = 'rpt-summary';
       const summaryLabel = document.createElement('span');
       summaryLabel.className = 'rpt-summary-label';
-      summaryLabel.textContent = '冒頭の3行要約';
-      const summaryText = document.createElement('p');
-      summaryText.textContent = paragraphs
-        .slice(0, 3)
-        .map(paragraph => paragraph.textContent.trim())
-        .filter(Boolean)
-        .join(' ');
-      summary.append(summaryLabel, summaryText);
-      guide.appendChild(summary);
+      summaryLabel.textContent = 'まず押さえる3点';
+      const summaryList = document.createElement('ul');
+      summaryList.className = 'rpt-summary-list';
+      buildSummaryPoints(paragraphs).forEach(point => {
+        const item = document.createElement('li');
+        item.textContent = point;
+        summaryList.appendChild(item);
+      });
+      if (summaryList.children.length) {
+        summary.append(summaryLabel, summaryList);
+        guide.appendChild(summary);
+      }
     }
 
     // レポートの先頭にある h2 はタイトルなので、章目次からは除外する。
@@ -256,7 +288,7 @@
     });
     // カード本文と同じ仕組みで、全文中の用語（MCP等）も用語集へリンクする。
     if (window.linkifyGlossaryTerms) {
-      window.linkifyGlossaryTerms(body, '.rpt-section > p, .rpt-section > ul > li, .rpt-section td, .rpt-summary p');
+      window.linkifyGlossaryTerms(body, '.rpt-section > p, .rpt-section > ul > li, .rpt-section td, .rpt-summary-list li');
     }
     if (window.renderMathInElement) {
       window.renderMathInElement(body, {
