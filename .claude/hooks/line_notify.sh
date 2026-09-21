@@ -2,6 +2,7 @@
 input=$(cat)
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../scripts/lib/line_notification_dedupe.sh"
+source "$script_dir/../../scripts/lib/codex_fallback.sh"
 
 f=$(echo "$input" | jq -r '.tool_response.filePath // .tool_input.file_path // empty')
 
@@ -25,10 +26,7 @@ claim_line_notification "$f" >/dev/null 2>&1 || exit 0
 
 msg=$(line_notification_text)
 
-token="${LINE_CHANNEL_ACCESS_TOKEN:-$(jq -r '.env.LINE_CHANNEL_ACCESS_TOKEN // empty' "$script_dir/../settings.local.json")}"
-
-body=$(jq -n --arg t "$msg" '{messages:[{type:"text",text:$t}]}')
-curl -s -X POST https://api.line.me/v2/bot/message/broadcast \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $token" \
-  -d "$body" >/dev/null
+if ! send_line_broadcast "$script_dir/../settings.local.json" "$msg"; then
+  release_line_notification_claim "$f" || true
+  exit 1
+fi

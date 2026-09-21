@@ -65,9 +65,10 @@ hook_input='{"tool_name":"Write","tool_input":{"file_path":"/repo/everyday_news/
 
 run_hook() {
   local hook="$1"
+  local target_state="${2:-$hook_state_dir}"
   printf '%s' "$hook_input" | \
     PATH="$stub_dir:$PATH" \
-    LINE_NOTIFY_STATE_DIR="$hook_state_dir" \
+    LINE_NOTIFY_STATE_DIR="$target_state" \
     LINE_NOTIFY_DATE="2026-09-03" \
     bash "$hook"
 }
@@ -79,6 +80,28 @@ assert_status "Codexフックの同日送信は抑止される" 0 \
 
 sent_count="$(find "$hook_state_dir" -type d -name '*.sent' -print 2>/dev/null | wc -l | tr -d ' ')"
 assert_value "両フックで送信権が1つだけ作られる" "1" "$sent_count"
+
+# フックからのLINE送信が失敗した場合はclaimを解放し、同日再送を可能にする。
+failure_stub_dir="${TMPDIR:-/tmp}/ai-news-line-notify-hook-failure-$$"
+mkdir -p "$failure_stub_dir"
+ln -s /usr/bin/false "$failure_stub_dir/curl"
+failure_state_dir="$failure_stub_dir/state"
+
+run_failing_hook() {
+  local hook="$1"
+  printf '%s' "$hook_input" | \
+    PATH="$failure_stub_dir:$PATH" \
+    LINE_NOTIFY_STATE_DIR="$failure_state_dir" \
+    LINE_NOTIFY_DATE="2026-09-04" \
+    bash "$hook"
+}
+
+assert_status "Claudeフックの送信失敗は失敗扱いになる" 1 \
+  run_failing_hook "$script_dir/../../.claude/hooks/line_notify.sh"
+sent_count="$(find "$failure_state_dir" -type d -name '*.sent' -print 2>/dev/null | wc -l | tr -d ' ')"
+assert_value "送信失敗時はclaimを残さない" "0" "$sent_count"
+assert_status "送信失敗後は同日再送を再試行できる" 0 \
+  run_hook "$script_dir/../../.claude/hooks/line_notify.sh" "$failure_state_dir"
 
 if [ "$failures" -ne 0 ]; then
   exit 1

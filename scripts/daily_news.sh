@@ -53,7 +53,9 @@ fi
 SUMMARY_KIND="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
 SUMMARY="${SUMMARY_KIND:-SUMMARY行がありません}"
 if [[ "$SUMMARY_KIND" == ERROR:* ]]; then
-  ERROR_REASON="${SUMMARY_KIND#ERROR: }"
+  ERROR_REASON="${SUMMARY_KIND#ERROR:}"
+  ERROR_REASON="${ERROR_REASON#"${ERROR_REASON%%[![:space:]]*}"}"
+  [ -n "$ERROR_REASON" ] || ERROR_REASON="エラー原因が空です"
 else
   ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
 fi
@@ -83,8 +85,13 @@ if git rev-parse --verify HEAD >/dev/null 2>&1 \
    && git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null | grep -q "^## $AUDIO_DATE$"; then
   AUDIO_READY=1
 fi
+NEWS_SECTION_EXISTS=0
+if grep -Eq "^##[[:space:]]+$AUDIO_DATE([[:space:]].*)?$" \
+   "$REPO_DIR/$AUDIO_SOURCE_FILE" 2>/dev/null; then
+  NEWS_SECTION_EXISTS=1
+fi
 
-if [ "$STATUS" -eq 0 ] && [ "$AUDIO_READY" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
+if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_EXISTS" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
     # ClaudeがBashで通知文を書いた場合でも、ここで短いLINE通知を送る。
     if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"; then

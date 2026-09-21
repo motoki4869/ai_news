@@ -7,6 +7,8 @@ TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ai-news-daily-test.XXXXXX")"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 TEST_REPO="$TMP_DIR/repo"
+TODAY="$(date +%Y-%m-%d)"
+MONTH="$(date +%Y%m)"
 mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude"
 
 cat > "$TMP_DIR/fake-claude-error" <<'EOF'
@@ -70,16 +72,16 @@ chmod +x "$TMP_DIR/fake-gh"
 git -C "$TEST_REPO" init -q
 git -C "$TEST_REPO" config user.email test@example.com
 git -C "$TEST_REPO" config user.name test
-cat > "$TEST_REPO/everyday_news/202609.md" <<'EOF'
-# 2026年9月 AIニュースまとめ
+cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+# ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
 
-## 2026-09-21
+## $TODAY
 
 - **【技術】テスト**（[出典](https://example.com)）
   テスト用の当日ニュースです。
   ・**影響**: 音声再試行の確認に使います。
 EOF
-git -C "$TEST_REPO" add everyday_news/202609.md
+git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
 
 run_daily() {
@@ -94,7 +96,7 @@ run_daily() {
   FAKE_CURL_LOG="$TMP_DIR/curl.log" \
   FAKE_CURL_FAIL="${3:-0}" \
   LINE_CHANNEL_ACCESS_TOKEN=test-token \
-  LINE_NOTIFY_DATE=2026-09-21 \
+  LINE_NOTIFY_DATE="$TODAY" \
   LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state" \
   NOTEBOOKLM_AUDIO_SCRIPT="$TMP_DIR/missing-audio" \
   GH_BIN="$TMP_DIR/missing-gh" \
@@ -163,8 +165,8 @@ REPO_DIR="$TEST_REPO" \
 CLAUDE_BIN="$TMP_DIR/fake-claude-no-ok" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
-FAKE_AUDIO_LOG="$TMP_DIR/audio.log" \
-LINE_NOTIFY_DATE=2026-09-21 \
+  FAKE_AUDIO_LOG="$TMP_DIR/audio.log" \
+  LINE_NOTIFY_DATE="$TODAY" \
 LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state-audio" \
 NOTEBOOKLM_AUDIO_SCRIPT="$TMP_DIR/fake-audio" \
 GH_BIN="$TMP_DIR/fake-gh" \
@@ -172,7 +174,7 @@ GH_BIN="$TMP_DIR/fake-gh" \
 AUDIO_STATUS=$?
 set -e
 
-if [ "$AUDIO_STATUS" -eq 0 ] || ! grep -qx '2026-09-21' "$TMP_DIR/audio.log"; then
+if [ "$AUDIO_STATUS" -eq 0 ] || ! grep -qx "$TODAY" "$TMP_DIR/audio.log"; then
   echo "当日分がcommit済みなのにSummary失敗時の音声再試行が行われませんでした" >&2
   cat "$TMP_DIR/output-audio.log" >&2
   exit 1

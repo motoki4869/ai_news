@@ -36,10 +36,16 @@ test('日次ニュース更新プロンプトは用語集関連ファイルをco
   for (const promptPath of PROMPTS) {
     const prompt = fs.readFileSync(promptPath, 'utf8');
 
-    assert.match(prompt, /everyday_news\/<YYYYMM>\.md[\s\S]*history\/daily-data\.js/,
-      `${path.basename(promptPath)} が日次原本と日次生成物のcommit対象を明示していません`);
-    assert.match(prompt, /docs\/glossary\.md[\s\S]*history\/glossary-data\.js/,
-      `${path.basename(promptPath)} が用語集関連ファイルのcommitを指示していません`);
+    const addLine = prompt.split('\n').find((line) => line.includes('git add'));
+    assert.ok(addLine, `${path.basename(promptPath)} にgit addの指示がありません`);
+    assert.match(addLine, /everyday_news\/\*\.md/,
+      `${path.basename(promptPath)} が日次原本のcommit対象を明示していません`);
+    assert.match(addLine, /history\/daily-data\.js/,
+      `${path.basename(promptPath)} が日次生成物のcommit対象を明示していません`);
+    assert.match(addLine, /docs\/glossary\.md/,
+      `${path.basename(promptPath)} が用語集原本のcommit対象を明示していません`);
+    assert.match(addLine, /history\/glossary-data\.js/,
+      `${path.basename(promptPath)} が用語集生成物のcommit対象を明示していません`);
   }
 });
 

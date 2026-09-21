@@ -29,7 +29,11 @@ _news_update_process_start() {
 }
 
 _news_update_mtime() {
-  stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null
+  if [ "$(uname -s)" = "Darwin" ]; then
+    stat -f %m "$1" 2>/dev/null
+  else
+    stat -c %Y "$1" 2>/dev/null
+  fi
 }
 
 _news_update_remove_lock_dir() {
@@ -59,14 +63,14 @@ _news_update_write_owner() {
   } > "$temporary" && mv "$temporary" "$owner_file"
 }
 
-_news_update_lock_is_stale() {
-  local repo_dir="$1"
-  local owner_file="$(_news_update_lock_owner_file "$repo_dir")"
+_news_update_lock_is_stale_file() {
+  local owner_file="$1"
+  local lock_dir="$2"
   local mode pid process_start renewed_at now
 
   if [ ! -f "$owner_file" ]; then
-    local lock_mtime now
-    lock_mtime="$(_news_update_mtime "$(_news_update_lock_dir "$repo_dir")")"
+    local lock_mtime
+    lock_mtime="$(_news_update_mtime "$lock_dir")"
     now="$(date +%s)"
     [ -n "$lock_mtime" ] && [ $((now - lock_mtime)) -gt "$NEWS_UPDATE_LOCK_TTL_SECONDS" ]
     return $?
@@ -95,6 +99,25 @@ _news_update_lock_is_stale() {
   return 1
 }
 
+_news_update_lock_is_stale() {
+  local repo_dir="$1"
+  _news_update_lock_is_stale_file \
+    "$(_news_update_lock_owner_file "$repo_dir")" \
+    "$(_news_update_lock_dir "$repo_dir")"
+}
+
+_news_update_restore_reclaimed_lock() {
+  local lock_dir="$1"
+  local stale_dir="$2"
+
+  if [ ! -e "$lock_dir" ]; then
+    mv "$stale_dir" "$lock_dir" 2>/dev/null
+  else
+    _news_update_remove_lock_dir "$stale_dir"
+    return 1
+  fi
+}
+
 _news_update_reclaim_stale_lock() {
   local repo_dir="$1"
   local lock_dir="$(_news_update_lock_dir "$repo_dir")"
@@ -109,9 +132,11 @@ _news_update_reclaim_stale_lock() {
 
   actual_token="$(_news_update_lock_field token "$stale_dir/owner")"
   if [ "$actual_token" != "$expected_token" ]; then
-    if ! mv "$stale_dir" "$lock_dir" 2>/dev/null; then
-      _news_update_remove_lock_dir "$stale_dir"
-    fi
+    _news_update_restore_reclaimed_lock "$lock_dir" "$stale_dir" || true
+    return 1
+  fi
+  if ! _news_update_lock_is_stale_file "$stale_dir/owner" "$stale_dir"; then
+    _news_update_restore_reclaimed_lock "$lock_dir" "$stale_dir" || true
     return 1
   fi
   _news_update_remove_lock_dir "$stale_dir"
