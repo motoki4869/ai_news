@@ -258,5 +258,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-21.m4a",
     "label": "2026-09-21のAIニュース音声",
     "title": "2兆ドルのAIと医師の拒絶"
+  },
+  "2026-09-22": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-22.m4a",
+    "label": "2026-09-22のAIニュース音声",
+    "title": "画面を飛び出し現実に衝突するAI"
   }
 };
