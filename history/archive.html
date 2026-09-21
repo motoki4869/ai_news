@@ -225,9 +225,25 @@ nav {
 }
 .report-modal-header {
   flex: 0 0 auto;
-  display: flex; justify-content: flex-end;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 14px 14px 0;
 }
+.report-modal-toc-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 34px; padding: 6px 11px;
+  border: 1px solid rgba(0,229,255,0.24); border-radius: 7px;
+  background: rgba(0,229,255,0.05); color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+}
+.report-modal-toc-toggle:hover, .report-modal-toc-toggle:focus-visible,
+.report-modal-toc-toggle.is-open { color: var(--cyan); border-color: var(--cyan); background: rgba(0,229,255,0.11); }
+.report-modal-toc-toggle[hidden] { display: none; }
+.report-modal-toc-icon { display: grid; gap: 3px; width: 14px; }
+.report-modal-toc-icon i { display: block; height: 1px; background: currentColor; transition: transform .2s, opacity .2s; }
+.report-modal-toc-toggle.is-open .report-modal-toc-icon i:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+.report-modal-toc-toggle.is-open .report-modal-toc-icon i:nth-child(2) { opacity: 0; }
+.report-modal-toc-toggle.is-open .report-modal-toc-icon i:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
 .report-modal-close {
   width: 34px; height: 34px; border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.15);
@@ -256,11 +272,8 @@ nav {
 .report-modal-body .rpt-missing { color: var(--coral); }
 .report-modal-body .rpt-loading { color: var(--text-dim); text-align: center; padding: 48px 0; }
 .rpt-reading-guide {
-  margin: 0 0 28px;
-  padding: 16px 18px;
-  border: 1px solid rgba(0,229,255,0.2);
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(139,92,246,0.06));
+  margin: 0 0 24px; padding: 0 0 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 .rpt-reading-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .rpt-guide-label, .rpt-summary-label, .rpt-toc-label {
@@ -271,14 +284,20 @@ nav {
 .rpt-summary { padding-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.14); }
 .rpt-summary-label, .rpt-toc-label { display: block; margin-bottom: 6px; color: var(--text-dim); }
 .rpt-summary p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; margin: 0; color: var(--text); font-size: 0.84rem; line-height: 1.75; }
-.rpt-toc { padding-top: 12px; }
-.rpt-toc ol { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; }
-.rpt-toc li { margin: 0; padding-left: 0; }
-.rpt-toc li.rpt-toc-level-h3 { padding-left: 14px; }
-.rpt-toc li.rpt-toc-level-h4 { padding-left: 28px; }
-.rpt-toc button { display: block; width: 100%; padding: 3px 0; border: 0; background: none; color: var(--text-dim); font: inherit; font-size: 0.78rem; line-height: 1.5; text-align: left; cursor: pointer; }
-.rpt-toc button::before { content: '› '; color: var(--cyan); }
-.rpt-toc button:hover, .rpt-toc button:focus-visible { color: var(--green); }
+.report-modal-toc[hidden] { display: none; }
+.report-modal-toc { position: absolute; inset: 0; z-index: 3; display: flex; justify-content: flex-end; background: rgba(2,3,10,0.58); }
+.report-modal-toc-sheet { width: min(340px, 88%); height: 100%; overflow-y: auto; padding: 20px 20px 28px; background: linear-gradient(160deg, rgba(13,18,33,0.98), rgba(8,10,22,0.99)); border-left: 1px solid rgba(0,229,255,0.25); box-shadow: -20px 0 50px rgba(0,0,0,0.35); animation: report-toc-in .2s ease-out both; }
+@keyframes report-toc-in { from { transform: translateX(20px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
+.report-modal-toc-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.12); color: var(--cyan); font-size: 0.84rem; }
+.report-modal-toc-head button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.16); border-radius: 50%; background: transparent; color: var(--text-dim); font-size: 1rem; line-height: 1; cursor: pointer; }
+.report-modal-toc-head button:hover, .report-modal-toc-head button:focus-visible { color: var(--green); border-color: var(--green); }
+.report-modal-toc-list { display: grid; gap: 3px; margin: 14px 0 0; padding: 0; list-style: none; }
+.report-modal-toc-list li { margin: 0; padding: 0; }
+.report-modal-toc-list li.rpt-toc-level-h3 { padding-left: 14px; }
+.report-modal-toc-list li.rpt-toc-level-h4 { padding-left: 28px; }
+.report-modal-toc-list button { display: block; width: 100%; padding: 5px 0; border: 0; background: none; color: var(--text-dim); font: inherit; font-size: 0.78rem; line-height: 1.55; text-align: left; cursor: pointer; }
+.report-modal-toc-list button::before { content: '› '; color: var(--cyan); }
+.report-modal-toc-list button:hover, .report-modal-toc-list button:focus-visible { color: var(--green); }
 .rpt-section h2, .rpt-section h3, .rpt-section h4 { scroll-margin-top: 14px; }
 .report-modal-body .rpt-formula {
   color: var(--text);
@@ -457,6 +476,9 @@ footer .logo {
   .report-modal-panel { width: min(94vw, 760px); max-height: 88vh; margin-top: 4vh; }
   .report-modal-body { padding: 0 18px 36px; }
   .rpt-reading-meta { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .report-modal-toc { align-items: flex-end; }
+  .report-modal-toc-sheet { width: 100%; height: auto; max-height: 76%; padding: 16px 18px 24px; border-left: 0; border-top: 1px solid rgba(0,229,255,0.25); border-radius: 16px 16px 0 0; box-shadow: 0 -20px 50px rgba(0,0,0,0.35); animation-name: report-toc-up; }
+  @keyframes report-toc-up { from { transform: translateY(20px); opacity: .3; } to { transform: translateY(0); opacity: 1; } }
 }
 </style>
 </head>

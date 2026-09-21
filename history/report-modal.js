@@ -11,6 +11,10 @@
     <div class="report-modal-backdrop"></div>
     <div class="report-modal-panel" role="dialog" aria-modal="true">
       <div class="report-modal-header">
+        <button class="report-modal-toc-toggle" type="button" aria-expanded="false" aria-controls="report-modal-toc">
+          <span class="report-modal-toc-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>章一覧</span>
+        </button>
         <button class="report-modal-close" aria-label="閉じる">×</button>
       </div>
       <div class="report-modal-body"></div>
@@ -19,6 +23,8 @@
   document.body.appendChild(modal);
 
   const body = modal.querySelector('.report-modal-body');
+  const panel = modal.querySelector('.report-modal-panel');
+  const tocToggle = modal.querySelector('.report-modal-toc-toggle');
   const closeBtn = modal.querySelector('.report-modal-close');
   const backdrop = modal.querySelector('.report-modal-backdrop');
 
@@ -96,6 +102,8 @@
      開いている間は Tab がモーダルの外（背後のカード列）へ抜けないよう、
      モーダル内の focusable 要素だけを巡回させる（フォーカストラップ）。 */
   let returnFocusEl = null;
+  let tocPanel = null;
+  let tocOpen = false;
 
   function getFocusable() {
     return Array.from(
@@ -118,6 +126,20 @@
 
   function isOpen() {
     return !modal.hasAttribute('hidden');
+  }
+
+  function setTocOpen(open) {
+    if (!tocPanel) return;
+    tocOpen = open;
+    tocPanel.hidden = !open;
+    tocToggle.setAttribute('aria-expanded', String(open));
+    tocToggle.classList.toggle('is-open', open);
+    if (open) {
+      const firstItem = tocPanel.querySelector('.report-modal-toc-sheet button');
+      if (firstItem) firstItem.focus();
+    } else if (isOpen()) {
+      tocToggle.focus();
+    }
   }
 
   function createReadingGuide(section, reportIndex) {
@@ -155,35 +177,57 @@
     // レポートの先頭にある h2 はタイトルなので、章目次からは除外する。
     const firstElement = section.firstElementChild;
     const tocHeadings = firstElement === headings[0] ? headings.slice(1) : headings;
-    if (tocHeadings.length) {
-      const toc = document.createElement('nav');
-      toc.className = 'rpt-toc';
-      toc.setAttribute('aria-label', 'レポートの章');
-      const tocLabel = document.createElement('span');
-      tocLabel.className = 'rpt-toc-label';
-      tocLabel.textContent = '章から読む';
-      const list = document.createElement('ol');
-
-      tocHeadings.forEach((heading, headingIndex) => {
-        const id = `rpt-${reportIndex}-section-${headingIndex}`;
-        heading.id = id;
-        const item = document.createElement('li');
-        item.className = `rpt-toc-level-${heading.tagName.toLowerCase()}`;
-        const link = document.createElement('button');
-        link.type = 'button';
-        link.textContent = heading.textContent;
-        link.addEventListener('click', () => {
-          heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-
-      toc.append(tocLabel, list);
-      guide.appendChild(toc);
-    }
-
+    tocHeadings.forEach((heading, headingIndex) => {
+      heading.id = `rpt-${reportIndex}-section-${headingIndex}`;
+    });
     section.insertBefore(guide, section.firstChild);
+    return tocHeadings;
+  }
+
+  function createTocPanel(entries) {
+    if (tocPanel) tocPanel.remove();
+    tocPanel = null;
+    tocToggle.hidden = !entries.length;
+    tocToggle.setAttribute('aria-expanded', 'false');
+    tocToggle.classList.remove('is-open');
+    tocOpen = false;
+    if (!entries.length) return;
+
+    tocPanel = document.createElement('nav');
+    tocPanel.id = 'report-modal-toc';
+    tocPanel.className = 'report-modal-toc';
+    tocPanel.setAttribute('aria-label', 'レポートの章');
+    tocPanel.setAttribute('hidden', '');
+    tocPanel.innerHTML = `
+      <div class="report-modal-toc-sheet">
+        <div class="report-modal-toc-head">
+          <span>章から読む</span>
+          <button type="button" class="report-modal-toc-close" aria-label="章一覧を閉じる">×</button>
+        </div>
+        <ol class="report-modal-toc-list"></ol>
+      </div>
+    `;
+    const sheet = tocPanel.querySelector('.report-modal-toc-sheet');
+    const list = tocPanel.querySelector('.report-modal-toc-list');
+    entries.forEach(({ heading }) => {
+      const item = document.createElement('li');
+      item.className = `rpt-toc-level-${heading.tagName.toLowerCase()}`;
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.textContent = heading.textContent;
+      link.addEventListener('click', () => {
+        setTocOpen(false);
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      item.appendChild(link);
+      list.appendChild(item);
+    });
+    tocPanel.addEventListener('click', event => {
+      if (event.target === tocPanel) setTocOpen(false);
+    });
+    tocPanel.querySelector('.report-modal-toc-close').addEventListener('click', () => setTocOpen(false));
+    sheet.addEventListener('click', event => event.stopPropagation());
+    panel.appendChild(tocPanel);
   }
 
   function paint(results) {
@@ -197,9 +241,13 @@
       return `<section class="rpt-section"><h2>${result.name}</h2><p class="rpt-missing">${message}</p></section>`;
     });
     body.innerHTML = sections.join('<hr class="rpt-divider">');
+    const tocEntries = [];
     body.querySelectorAll('.rpt-section').forEach((section, reportIndex) => {
-      if (!section.querySelector('.rpt-missing')) createReadingGuide(section, reportIndex);
+      if (!section.querySelector('.rpt-missing')) {
+        createReadingGuide(section, reportIndex).forEach(heading => tocEntries.push({ heading }));
+      }
     });
+    createTocPanel(tocEntries);
     body.querySelectorAll('table.rpt-table').forEach(table => {
       const wrap = document.createElement('div');
       wrap.className = 'rpt-table-wrap';
@@ -225,6 +273,8 @@
   // 先に枠だけ開いてから中身を待つ。タップしても何も起きない時間を作らないため。
   function renderModal(reportNames) {
     const token = ++renderToken;
+    setTocOpen(false);
+    tocToggle.hidden = true;
     body.innerHTML = '<p class="rpt-loading">読み込み中…</p>';
     modal.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
@@ -262,6 +312,7 @@
 
   // 見た目を閉じるだけ。履歴は呼び出し元（popstate）の時点で処理済み。
   function hideModal() {
+    setTocOpen(false);
     modal.setAttribute('hidden', '');
     document.body.style.overflow = '';
     openedViaHistory = false;
@@ -277,11 +328,16 @@
     else hideModal();
   }
 
+  tocToggle.addEventListener('click', () => setTocOpen(!tocOpen));
   closeBtn.addEventListener('click', requestClose);
   backdrop.addEventListener('click', requestClose);
   document.addEventListener('keydown', e => {
     if (!isOpen()) return;
-    if (e.key === 'Escape') { requestClose(); return; }
+    if (e.key === 'Escape') {
+      if (tocOpen) { setTocOpen(false); return; }
+      requestClose();
+      return;
+    }
     if (e.key === 'Tab') trapFocus(e);
   });
 

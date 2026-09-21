@@ -37,3 +37,15 @@ test('レポート全文に概要・章目次・読了目安を自動表示す�
   assert.match(NEWS_HTML, /\.rpt-reading-guide/);
   assert.match(ARCHIVE_HTML, /\.rpt-reading-guide/);
 });
+
+test('章目次は三本線ボタンから開くオーバーレイにする', () => {
+  assert.match(REPORT_MODAL_JS, /report-modal-toc-toggle/);
+  assert.match(REPORT_MODAL_JS, /aria-expanded/);
+  assert.match(REPORT_MODAL_JS, /function setTocOpen\(open\)/);
+  assert.match(REPORT_MODAL_JS, /report-modal-toc/);
+  assert.match(REPORT_MODAL_JS, /tocPanel\.hidden = !open/);
+  assert.match(NEWS_HTML, /\.report-modal-toc-toggle/);
+  assert.match(NEWS_HTML, /\.report-modal-toc/);
+  assert.match(ARCHIVE_HTML, /\.report-modal-toc-toggle/);
+  assert.match(ARCHIVE_HTML, /\.report-modal-toc/);
+});
