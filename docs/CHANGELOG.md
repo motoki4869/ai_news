@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### デイリーニュースをもとに用語集へ18語を追加
+- **変更**: `everyday_news/*.md`のデイリーニュースを精査し、未収録だった18語（Claude Tag、Terminal-Bench / Terminal-Bench-Science、Artificial Analysis Intelligence Index、DeepSWE、Deep Think、Jalapeño、主権AI / ソブリンAI、FDE、RVG、WAICO、パックス・シリカ、SB 53、ZDR、DSA / VLOSE、EU KIDS Act、CyberGym、HEIR / FHE）を`docs/glossary.md`に追加し、既存のOpenAI行にGPT-Liveを追記した。`history/glossary-data.js`を再生成し、`term-link.js`による自動リンク機構を通じてデイリー側からもこれらの用語へのリンクが有効になった。
+- **理由**: ユーザーからの依頼で、デイリーニュースに登場するが用語集に未収録の語を洗い出して追加する必要があったため。
+- **対象**: `docs/glossary.md`、`history/glossary-data.js`
+- **commit**: `HEAD`
+
 ### Claude Code再レビューの重要指摘修正（フック通知）
 - **変更**: Claude/CodexのLINE通知フックでもHEAD上の当日見出しを確認し、commit前の作業ツリーから通知しないようにした。未commit時のフック抑止テストを追加し、再送テストのclaim・日付・一時リポジトリを分離した。フックだけ短い送信timeoutを使い、日次本体の送信retry余裕は維持した。
 - **理由**: Claude Code再レビューで、Write/Edit直後のPostToolUseフックが日次処理のcommit・push前にLINE通知を送る経路が残っており、日次スクリプト側のHEAD確認だけでは未公開ニュースを通知し得ることが判明したため。
