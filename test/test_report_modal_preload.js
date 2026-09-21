@@ -87,3 +87,12 @@ test('左上の章一覧は左側から開くドロワーにする', () => {
   assert.match(ARCHIVE_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);
   assert.match(ARCHIVE_HTML, /report-toc-in-left/);
 });
+
+test('スマホの章一覧シートは上の余白を抑えて表示する', () => {
+  for (const html of [NEWS_HTML, ARCHIVE_HTML]) {
+    assert.match(
+      html,
+      /@media \(max-width: 768px\) \{[\s\S]*?\.report-modal-toc-sheet \{[^}]*height: auto;[^}]*max-height: calc\(100% - 24px\)/,
+    );
+  }
+});
