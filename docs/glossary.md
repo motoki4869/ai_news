@@ -178,7 +178,7 @@
 
 ## 更新方針
 
-このファイルが用語集の原本。`scripts/generate_glossary_data.py` が `history/glossary-data.js` を生成し、`history/glossary.html` がそれを読む。**生成物とHTMLは直接編集せず、必ずここを編集して再生成する。** 週次のニュース更新（`sync-news-html` スキル）の最後に、この手順が実行される。
+このファイルが用語集の原本。`scripts/generate_glossary_data.py` が `history/glossary-data.js` を生成し、`history/glossary.html` がそれを読む。**生成物とHTMLは直接編集せず、必ずここを編集して再生成する。** 週次のレポート更新（`sync-news-html` スキル）と日次のニュース更新の最後に、この手順が実行される。
 
 - 新しい用語がニュースに登場したら、該当カテゴリの表に1行追加する。新しい章は作らない
 - サイト内に実際に登場する用語だけを収録する。一般的なAI辞書に寄せない
