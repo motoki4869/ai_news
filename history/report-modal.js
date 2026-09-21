@@ -173,6 +173,7 @@
     const minutes = Math.max(1, Math.ceil(characterCount / 500));
     const guide = document.createElement('aside');
     guide.className = 'rpt-reading-guide';
+    let summaryTarget = null;
 
     const meta = document.createElement('div');
     meta.className = 'rpt-reading-meta';
@@ -196,6 +197,8 @@
         summaryList.appendChild(item);
       });
       if (summaryList.children.length) {
+        summary.id = `rpt-${reportIndex}-summary`;
+        summaryTarget = summary;
         summary.append(summaryLabel, summaryList);
         guide.appendChild(summary);
       }
@@ -208,7 +211,7 @@
       heading.id = `rpt-${reportIndex}-section-${headingIndex}`;
     });
     section.insertBefore(guide, section.firstChild);
-    return tocHeadings;
+    return { summary: summaryTarget, headings: tocHeadings };
   }
 
   function createTocPanel(entries) {
@@ -223,7 +226,7 @@
     tocPanel = document.createElement('nav');
     tocPanel.id = 'report-modal-toc';
     tocPanel.className = 'report-modal-toc';
-    tocPanel.setAttribute('aria-label', 'レポートの章');
+    tocPanel.setAttribute('aria-label', 'レポートの目次');
     tocPanel.setAttribute('hidden', '');
     tocPanel.innerHTML = `
       <div class="report-modal-toc-sheet">
@@ -236,15 +239,15 @@
     `;
     const sheet = tocPanel.querySelector('.report-modal-toc-sheet');
     const list = tocPanel.querySelector('.report-modal-toc-list');
-    entries.forEach(({ heading }) => {
+    entries.forEach(({ target, label, className }) => {
       const item = document.createElement('li');
-      item.className = `rpt-toc-level-${heading.tagName.toLowerCase()}`;
+      item.className = className;
       const link = document.createElement('button');
       link.type = 'button';
-      link.textContent = heading.textContent;
+      link.textContent = label;
       link.addEventListener('click', () => {
         setTocOpen(false);
-        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       item.appendChild(link);
       list.appendChild(item);
@@ -271,7 +274,19 @@
     const tocEntries = [];
     body.querySelectorAll('.rpt-section').forEach((section, reportIndex) => {
       if (!section.querySelector('.rpt-missing')) {
-        createReadingGuide(section, reportIndex).forEach(heading => tocEntries.push({ heading }));
+        const guide = createReadingGuide(section, reportIndex);
+        if (guide.summary) {
+          tocEntries.push({
+            target: guide.summary,
+            label: 'まず押さえる3点',
+            className: 'rpt-toc-summary'
+          });
+        }
+        guide.headings.forEach(heading => tocEntries.push({
+          target: heading,
+          label: heading.textContent,
+          className: `rpt-toc-level-${heading.tagName.toLowerCase()}`
+        }));
       }
     });
     createTocPanel(tocEntries);

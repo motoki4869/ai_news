@@ -31,7 +31,7 @@ test('レポート全文に概要・章目次・読了目安を自動表示す�
   assert.match(REPORT_MODAL_JS, /function createReadingGuide\(section, reportIndex\)/);
   assert.match(REPORT_MODAL_JS, /まず押さえる3点/);
   assert.match(REPORT_MODAL_JS, /読了目安 約\$\{minutes\}分/);
-  assert.match(REPORT_MODAL_JS, /heading\.scrollIntoView\(\{ behavior: 'smooth'/);
+  assert.match(REPORT_MODAL_JS, /target\.scrollIntoView\(\{ behavior: 'smooth'/);
   assert.match(REPORT_MODAL_JS, /section\.querySelectorAll\('h2, h3, h4'\)/);
   assert.match(REPORT_MODAL_JS, /\.rpt-section > p, \.rpt-section > ul > li, \.rpt-section td, \.rpt-summary-list li/);
   assert.match(NEWS_HTML, /\.rpt-reading-guide/);
@@ -95,4 +95,11 @@ test('スマホの章一覧シートは上の余白を抑えて表示する', ()
       /@media \(max-width: 768px\) \{[\s\S]*?\.report-modal-toc-sheet \{[^}]*height: auto;[^}]*max-height: calc\(100% - 24px\)/,
     );
   }
+});
+
+test('章目次に「まず押さえる3点」へのリンクを追加する', () => {
+  assert.match(REPORT_MODAL_JS, /summary\.id = `rpt-\$\{reportIndex\}-summary`/);
+  assert.match(REPORT_MODAL_JS, /return \{ summary: summaryTarget, headings: tocHeadings \};/);
+  assert.match(REPORT_MODAL_JS, /tocEntries\.push\(\{\s*target: guide\.summary,\s*label: 'まず押さえる3点'/);
+  assert.match(REPORT_MODAL_JS, /target\.scrollIntoView\(\{ behavior: 'smooth'/);
 });
