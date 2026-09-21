@@ -270,6 +270,36 @@ nav {
   background: linear-gradient(90deg, rgba(0,255,163,0.6), transparent);
 }
 
+/* ===== この日の見出し一覧（上部の目次） ===== */
+.headline-list { max-width: 1100px; margin: 14px auto 0; padding: 0 24px; }
+.headline-list ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 4px 28px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: var(--card);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.headline-list a {
+  display: flex; gap: 8px; align-items: baseline;
+  color: var(--text-dim); text-decoration: none;
+  font-size: 0.83rem; line-height: 1.6;
+  padding: 4px 0;
+  border-bottom: 1px dashed transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.headline-list a:hover, .headline-list a:focus-visible {
+  color: var(--green);
+  border-bottom-color: rgba(0,255,163,0.4);
+}
+.headline-list .hl-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--cyan); flex: 0 0 auto;
+}
+
 .cards-wrap { max-width: 1100px; margin: 0 auto; padding: 26px 24px 10px; }
 
 .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; }
@@ -282,6 +312,7 @@ nav {
   opacity: 0; transform: translateY(24px);
   display: flex; flex-direction: column;
   align-items: flex-start;
+  scroll-margin-top: calc(var(--nav-h) + 18px);
 }
 .news-card.visible {
   opacity: 1; transform: translateY(0);
@@ -574,6 +605,8 @@ footer .logo {
   .news-card { padding: 24px 22px; }
   .news-card p,
   .news-card .point-list li { font-size: 0.95rem; line-height: 1.7; }
+  .headline-list { padding: 0 16px; }
+  .headline-list ol { grid-template-columns: 1fr; padding: 12px 16px; }
   .audio-panel { padding: 0 12px; }
   .audio-inner { padding: 16px; gap: 12px; }
   .audio-copy {
@@ -662,6 +695,10 @@ footer .logo {
   <div id="daily-content" class="daily-content" role="region" aria-label="日次ニュース。左右にスワイプして日付を切り替えられます。">
 
   <div class="day-head" id="day-head"></div>
+
+  <div class="headline-list" id="headline-list" role="navigation" aria-label="この日の見出し一覧" hidden>
+    <ol id="headline-list-items"></ol>
+  </div>
 
   <section class="audio-panel" id="audio-panel" hidden aria-labelledby="audio-title">
     <div class="audio-inner">
@@ -917,6 +954,8 @@ prevBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, -1);
 nextBtn.addEventListener('click', () => { viewMonth = shiftMonth(viewMonth, 1); renderCalendar(); });
 
 const dayHead = document.getElementById('day-head');
+const headlineList = document.getElementById('headline-list');
+const headlineListItems = document.getElementById('headline-list-items');
 const cardGrid = document.getElementById('card-grid');
 const audioPanel = document.getElementById('audio-panel');
 const audioPlayer = document.getElementById('audio-player');
@@ -1153,10 +1192,32 @@ function renderDay() {
     audioHeardCheckbox.checked = false;
   }
 
+  headlineListItems.innerHTML = '';
+  headlineList.hidden = items.length === 0;
+  items.forEach((item, i) => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#daily-card-' + i;
+    const num = document.createElement('span');
+    num.className = 'hl-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+    const label = document.createElement('span');
+    label.textContent = item.title;
+    a.append(num, label);
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById('daily-card-' + i);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    li.appendChild(a);
+    headlineListItems.appendChild(li);
+  });
+
   cardGrid.innerHTML = '';
-  items.forEach(item => {
+  items.forEach((item, i) => {
     const article = document.createElement('article');
     article.className = 'news-card';
+    article.id = 'daily-card-' + i;
 
     const kicker = document.createElement('div');
     kicker.className = 'kicker';
