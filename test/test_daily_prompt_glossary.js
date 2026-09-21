@@ -53,6 +53,42 @@ test('日次ニュース更新プロンプトは当日分が存在しても生�
   }
 });
 
+test('日次ニュース更新プロンプトは同日再実行でもLINE通知文を再生成する', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(
+      prompt,
+      /当日分が(?:既に)?存在[\s\S]*line_message\.txt[\s\S]*(?:再生成|書き直|更新)/,
+      `${path.basename(promptPath)} が同日再実行時のLINE通知再生成を指示していません`,
+    );
+  }
+});
+
+test('日次ニュース更新プロンプトは変更なしを正常な更新結果として扱う', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(
+      prompt,
+      /変更がない|変更なし|commit.*不要|commit.*無い[\s\S]*SUMMARY:\s*OK:/i,
+      `${path.basename(promptPath)} が変更なしの正常系を定義していません`,
+    );
+  }
+});
+
+test('日次ニュース更新プロンプトの警告失敗経路もSUMMARY: ERROR:を使う', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(
+      prompt,
+      /警告[\s\S]*SUMMARY:\s*ERROR:/,
+      `${path.basename(promptPath)} の警告失敗経路がSUMMARY: ERROR:になっていません`,
+    );
+  }
+});
+
 test('Claude版とCodex版の日次プロンプトは検索ツール名以外が一致する', () => {
   const [claudePrompt, codexPrompt] = PROMPTS.map((promptPath) =>
     fs.readFileSync(promptPath, 'utf8'),

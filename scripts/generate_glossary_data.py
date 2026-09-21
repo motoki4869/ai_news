@@ -10,6 +10,7 @@ import html
 import json
 import os
 import re
+import stat
 import sys
 import tempfile
 from pathlib import Path
@@ -79,7 +80,7 @@ def parse_table(lines: list[tuple[int, str]]) -> tuple[list[str], list[list[str]
             raise GlossaryParseError(
                 f"{SRC_FILE}:{lineno}: 用語集の表は3列必要です（{len(cells)}列）: {line}"
             )
-        if any(not cell for cell in cells):
+        if not cells[0] or not cells[2]:
             raise GlossaryParseError(
                 f"{SRC_FILE}:{lineno}: 用語集の表の必須セルが空です: {line}"
             )
@@ -140,6 +141,10 @@ def build_sections(md: str) -> list[dict]:
 def write_output(path: Path, content: str) -> None:
     """生成物を一時ファイルへ書いてから原子的に置換する。"""
     path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        output_mode = stat.S_IMODE(path.stat().st_mode)
+    except FileNotFoundError:
+        output_mode = 0o644
     temp_path: str | None = None
     try:
         with tempfile.NamedTemporaryFile(
@@ -153,6 +158,7 @@ def write_output(path: Path, content: str) -> None:
             temp_file.write(content)
             temp_file.flush()
             os.fsync(temp_file.fileno())
+        os.chmod(temp_path, output_mode)
         os.replace(temp_path, path)
         temp_path = None
     finally:

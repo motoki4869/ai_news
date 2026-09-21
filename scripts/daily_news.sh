@@ -1,9 +1,10 @@
 #!/bin/bash
 set -uo pipefail
 
-REPO_DIR="/Users/motoki/Desktop/GitHub/03_自動化・定期実行/ai_news"
-PROMPT_FILE="$REPO_DIR/scripts/daily_news_prompt.txt"
-CODEX_PROMPT_FILE="$REPO_DIR/scripts/daily_news_prompt.codex.txt"
+SCRIPT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+REPO_DIR="${REPO_DIR:-$SCRIPT_ROOT}"
+PROMPT_FILE="${PROMPT_FILE:-$SCRIPT_ROOT/scripts/daily_news_prompt.txt}"
+CODEX_PROMPT_FILE="${CODEX_PROMPT_FILE:-$SCRIPT_ROOT/scripts/daily_news_prompt.codex.txt}"
 CLAUDE_BIN="${CLAUDE_BIN:-/opt/homebrew/bin/claude}"
 # launchdは.zshrcを読まずPATHが/usr/bin等に限られるため、python3を明示的に解決する。
 PYTHON_BIN="${PYTHON_BIN:-$(command -v python3 || true)}"
@@ -16,20 +17,15 @@ LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 
 cd "$REPO_DIR"
 
-source "$REPO_DIR/scripts/lib/codex_fallback.sh"
-source "$REPO_DIR/scripts/lib/line_notification_dedupe.sh"
-source "$REPO_DIR/scripts/lib/news_update_lock.sh"
+source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
+source "$SCRIPT_ROOT/scripts/lib/line_notification_dedupe.sh"
+source "$SCRIPT_ROOT/scripts/lib/news_update_lock.sh"
 
 if ! acquire_news_update_lock "$REPO_DIR"; then
   echo "別の日次・週次ニュース更新が実行中のため、今回の更新を中止します" >&2
   exit 1
 fi
 trap 'release_news_update_lock "$REPO_DIR"' EXIT
-
-LINE_MSG_MTIME_BEFORE=0
-[ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_BEFORE=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
-LINE_MSG_HASH_BEFORE=""
-[ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_BEFORE=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
 
 OUTPUT="$("$CLAUDE_BIN" -p "$(cat "$PROMPT_FILE")" \
   --allowedTools "Read Write Edit WebSearch Bash" 2>&1)"
@@ -54,10 +50,11 @@ if [ "$STATUS" -eq 0 ] && ! printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: OK:'; t
   STATUS=1
 fi
 
-SUMMARY="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
-SUMMARY="${SUMMARY:-ニュースを更新しました}"
+SUMMARY_KIND="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
+SUMMARY="${SUMMARY_KIND:-SUMMARY行がありません}"
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
+ERROR_REASON="$SUMMARY"
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
 #
 # 以前は本文を文字列リテラルに直接埋め込み、`cut -c1-200` で長さを詰めていたが、
@@ -75,23 +72,26 @@ notify() {  # $1=本文 $2=タイトル $3=サウンド名
 end run' "$1" "$2" "$3" || true
 }
 
-if [ "$STATUS" -eq 0 ]; then
-  LINE_MSG_MTIME_AFTER=0
-  [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_AFTER=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
-  LINE_MSG_HASH_AFTER=""
-  [ -f "$LINE_MSG_FILE" ] && LINE_MSG_HASH_AFTER=$(md5 -q "$LINE_MSG_FILE" 2>/dev/null || echo "")
-  if [ -s "$LINE_MSG_FILE" ] && { [ "$LINE_MSG_MTIME_AFTER" -gt "$LINE_MSG_MTIME_BEFORE" ] || [ "$LINE_MSG_HASH_AFTER" != "$LINE_MSG_HASH_BEFORE" ]; } \
-     && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
+AUDIO_DATE="$(date +%Y-%m-%d)"
+AUDIO_SOURCE_FILE="everyday_news/${AUDIO_DATE:0:4}${AUDIO_DATE:5:2}.md"
+AUDIO_READY=0
+if git rev-parse --verify HEAD >/dev/null 2>&1 \
+   && git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null | grep -q "^## $AUDIO_DATE$"; then
+  AUDIO_READY=1
+fi
+
+if [ "$STATUS" -eq 0 ] && [ -s "$LINE_MSG_FILE" ] \
+   && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
     # ClaudeがBashで通知文を書いた場合でも、ここで短いLINE通知を送る。
     send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"
-  fi
+fi
 
-  AUDIO_SCRIPT="${NOTEBOOKLM_AUDIO_SCRIPT:-$REPO_DIR/scripts/generate_notebooklm_audio.sh}"
-  AUDIO_DATA_SCRIPT="$REPO_DIR/scripts/generate_audio_data.py"
+if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then
+  AUDIO_SCRIPT="${NOTEBOOKLM_AUDIO_SCRIPT:-$SCRIPT_ROOT/scripts/generate_notebooklm_audio.sh}"
+  AUDIO_DATA_SCRIPT="$SCRIPT_ROOT/scripts/generate_audio_data.py"
   AUDIO_DATA_FILE="$REPO_DIR/history/audio-data.js"
   AUDIO_TITLE_FILE="$REPO_DIR/history/audio-titles.json"
   AUDIO_DIR="$REPO_DIR/history/audio"
-  AUDIO_DATE="$(date +%Y-%m-%d)"
   # 音声本体（1本10〜40MB）はリポジトリを肥大化させるためGitには入れず、
   # GitHub Releasesのアセットとして配信する。Gitに入れるのはJSONとJSの目録だけ。
   AUDIO_REPO="${AUDIO_REPO:-motoki4869/ai_news}"
@@ -157,6 +157,9 @@ if [ "$STATUS" -eq 0 ]; then
     fi
     rm -f "$AUDIO_DATES_FILE"
   fi
+fi
+
+if [ "$STATUS" -eq 0 ]; then
   if [ "$IS_FALLBACK" -eq 1 ]; then
     notify "${SUMMARY}（Codex経由）" "AIニュース更新" "Glass"
   else
@@ -166,7 +169,7 @@ else
   if [ "$IS_FALLBACK" -eq 1 ]; then
     notify "Claude利用上限到達 → Codexフォールバックも失敗しました" "AIニュース更新 失敗" "Basso"
   else
-    notify "daily_news.shが失敗しました。logs/daily_news.err.logを確認してください" "AIニュース更新 失敗" "Basso"
+    notify "daily_news.shが失敗しました: ${ERROR_REASON}。logs/daily_news.err.logを確認してください" "AIニュース更新 失敗" "Basso"
   fi
 fi
 

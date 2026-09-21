@@ -1,6 +1,7 @@
 """generate_glossary_data.py の入力検証と出力処理のテスト。"""
 
 import importlib.util
+import stat
 import tempfile
 import unittest
 from pathlib import Path
@@ -24,14 +25,25 @@ class GenerateGlossaryDataTest(unittest.TestCase):
                 "| **AI** | Artificial Intelligence |\n"
             )
 
-    def test_rejects_empty_required_cell(self):
-        with self.assertRaises(MODULE.GlossaryParseError):
-            MODULE.build_sections(
-                "## 1. テスト\n"
-                "| 用語 | 正式名称 / 読み | 意味 |\n"
-                "|---|---|---|\n"
-                "| **AI** |  | 説明 |\n"
-            )
+    def test_allows_empty_expansion_when_no_expansion_exists(self):
+        sections = MODULE.build_sections(
+            "## 1. テスト\n"
+            "| 用語 | 正式名称 / 読み | 意味 |\n"
+            "|---|---|---|\n"
+            "| **AI** |  | 説明 |\n"
+        )
+
+        self.assertEqual(sections[0]["entries"][0]["sub"], "")
+
+    def test_rejects_empty_term_or_description(self):
+        for row in ("|  | 読み | 説明 |\n", "| **AI** | 読み |  |\n"):
+            with self.subTest(row=row), self.assertRaises(MODULE.GlossaryParseError):
+                MODULE.build_sections(
+                    "## 1. テスト\n"
+                    "| 用語 | 正式名称 / 読み | 意味 |\n"
+                    "|---|---|---|\n"
+                    + row
+                )
 
     def test_rejects_invalid_header(self):
         with self.assertRaises(MODULE.GlossaryParseError):
@@ -55,9 +67,12 @@ class GenerateGlossaryDataTest(unittest.TestCase):
     def test_atomic_write_replaces_output(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "glossary-data.js"
+            output.write_text("old content", encoding="utf-8")
+            output.chmod(0o644)
             MODULE.write_output(output, "new content")
 
             self.assertEqual(output.read_text(encoding="utf-8"), "new content")
+            self.assertEqual(stat.S_IMODE(output.stat().st_mode), 0o644)
             self.assertEqual(list(Path(tmp).glob(".glossary-data.js.*")), [])
 
     def test_main_preserves_existing_output_when_source_is_invalid(self):
