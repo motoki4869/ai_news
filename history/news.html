@@ -459,6 +459,31 @@ nav {
 .report-modal-body .rpt-divider { border-top: 1px solid var(--border); margin: 36px 0; }
 .report-modal-body .rpt-missing { color: var(--coral); }
 .report-modal-body .rpt-loading { color: var(--text-dim); text-align: center; padding: 48px 0; }
+.rpt-reading-guide {
+  margin: 0 0 28px;
+  padding: 16px 18px;
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(139,92,246,0.06));
+}
+.rpt-reading-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.rpt-guide-label, .rpt-summary-label, .rpt-toc-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em;
+  color: var(--cyan); text-transform: uppercase;
+}
+.rpt-reading-time { flex: 0 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--green); }
+.rpt-summary { padding-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.14); }
+.rpt-summary-label, .rpt-toc-label { display: block; margin-bottom: 6px; color: var(--text-dim); }
+.rpt-summary p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; margin: 0; color: var(--text); font-size: 0.84rem; line-height: 1.75; }
+.rpt-toc { padding-top: 12px; }
+.rpt-toc ol { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.rpt-toc li { margin: 0; padding-left: 0; }
+.rpt-toc li.rpt-toc-level-h3 { padding-left: 14px; }
+.rpt-toc li.rpt-toc-level-h4 { padding-left: 28px; }
+.rpt-toc button { display: block; width: 100%; padding: 3px 0; border: 0; background: none; color: var(--text-dim); font: inherit; font-size: 0.78rem; line-height: 1.5; text-align: left; cursor: pointer; }
+.rpt-toc button::before { content: '› '; color: var(--cyan); }
+.rpt-toc button:hover, .rpt-toc button:focus-visible { color: var(--green); }
+.rpt-section h2, .rpt-section h3, .rpt-section h4 { scroll-margin-top: 14px; }
 .report-modal-body .rpt-formula {
   color: var(--text);
   background: rgba(255,255,255,0.04); padding: 18px 14px; border-radius: 8px;
@@ -560,6 +585,9 @@ footer .logo {
   }
   .section-bar::-webkit-scrollbar { display: none; }
   .section-bar a { white-space: nowrap; font-size: 0.72rem; }
+  .report-modal-panel { width: min(94vw, 760px); max-height: 88vh; margin-top: 4vh; }
+  .report-modal-body { padding: 0 18px 36px; }
+  .rpt-reading-meta { align-items: flex-start; flex-direction: column; gap: 4px; }
 }
 </style>
 </head>

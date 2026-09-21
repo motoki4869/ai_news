@@ -26,3 +26,14 @@ test('最新トレンドはカード出典のレポートを先読みし、ア�
   );
   assert.match(REPORT_MODAL_JS, /preloadNewsReports\(\);/);
 });
+
+test('レポート全文に概要・章目次・読了目安を自動表示する', () => {
+  assert.match(REPORT_MODAL_JS, /function createReadingGuide\(section, reportIndex\)/);
+  assert.match(REPORT_MODAL_JS, /冒頭の3行要約/);
+  assert.match(REPORT_MODAL_JS, /読了目安 約\$\{minutes\}分/);
+  assert.match(REPORT_MODAL_JS, /heading\.scrollIntoView\(\{ behavior: 'smooth'/);
+  assert.match(REPORT_MODAL_JS, /section\.querySelectorAll\('h2, h3, h4'\)/);
+  assert.match(REPORT_MODAL_JS, /\.rpt-section > p, \.rpt-section > ul > li, \.rpt-section td, \.rpt-summary p/);
+  assert.match(NEWS_HTML, /\.rpt-reading-guide/);
+  assert.match(ARCHIVE_HTML, /\.rpt-reading-guide/);
+});

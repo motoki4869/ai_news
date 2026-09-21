@@ -120,6 +120,72 @@
     return !modal.hasAttribute('hidden');
   }
 
+  function createReadingGuide(section, reportIndex) {
+    const paragraphs = Array.from(section.querySelectorAll(':scope > p'));
+    const headings = Array.from(section.querySelectorAll('h2, h3, h4'));
+    const characterCount = section.textContent.replace(/\s+/g, '').length;
+    const minutes = Math.max(1, Math.ceil(characterCount / 500));
+    const guide = document.createElement('aside');
+    guide.className = 'rpt-reading-guide';
+
+    const meta = document.createElement('div');
+    meta.className = 'rpt-reading-meta';
+    meta.innerHTML = `
+      <span class="rpt-guide-label">長いレポートの読み方</span>
+      <span class="rpt-reading-time">読了目安 約${minutes}分</span>
+    `;
+    guide.appendChild(meta);
+
+    if (paragraphs.length) {
+      const summary = document.createElement('div');
+      summary.className = 'rpt-summary';
+      const summaryLabel = document.createElement('span');
+      summaryLabel.className = 'rpt-summary-label';
+      summaryLabel.textContent = '冒頭の3行要約';
+      const summaryText = document.createElement('p');
+      summaryText.textContent = paragraphs
+        .slice(0, 3)
+        .map(paragraph => paragraph.textContent.trim())
+        .filter(Boolean)
+        .join(' ');
+      summary.append(summaryLabel, summaryText);
+      guide.appendChild(summary);
+    }
+
+    // レポートの先頭にある h2 はタイトルなので、章目次からは除外する。
+    const firstElement = section.firstElementChild;
+    const tocHeadings = firstElement === headings[0] ? headings.slice(1) : headings;
+    if (tocHeadings.length) {
+      const toc = document.createElement('nav');
+      toc.className = 'rpt-toc';
+      toc.setAttribute('aria-label', 'レポートの章');
+      const tocLabel = document.createElement('span');
+      tocLabel.className = 'rpt-toc-label';
+      tocLabel.textContent = '章から読む';
+      const list = document.createElement('ol');
+
+      tocHeadings.forEach((heading, headingIndex) => {
+        const id = `rpt-${reportIndex}-section-${headingIndex}`;
+        heading.id = id;
+        const item = document.createElement('li');
+        item.className = `rpt-toc-level-${heading.tagName.toLowerCase()}`;
+        const link = document.createElement('button');
+        link.type = 'button';
+        link.textContent = heading.textContent;
+        link.addEventListener('click', () => {
+          heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+
+      toc.append(tocLabel, list);
+      guide.appendChild(toc);
+    }
+
+    section.insertBefore(guide, section.firstChild);
+  }
+
   function paint(results) {
     const sections = results.map(result => {
       if (result.html) {
@@ -131,6 +197,9 @@
       return `<section class="rpt-section"><h2>${result.name}</h2><p class="rpt-missing">${message}</p></section>`;
     });
     body.innerHTML = sections.join('<hr class="rpt-divider">');
+    body.querySelectorAll('.rpt-section').forEach((section, reportIndex) => {
+      if (!section.querySelector('.rpt-missing')) createReadingGuide(section, reportIndex);
+    });
     body.querySelectorAll('table.rpt-table').forEach(table => {
       const wrap = document.createElement('div');
       wrap.className = 'rpt-table-wrap';
@@ -139,7 +208,7 @@
     });
     // カード本文と同じ仕組みで、全文中の用語（MCP等）も用語集へリンクする。
     if (window.linkifyGlossaryTerms) {
-      window.linkifyGlossaryTerms(body, '.rpt-section p, .rpt-section li, .rpt-section td');
+      window.linkifyGlossaryTerms(body, '.rpt-section > p, .rpt-section > ul > li, .rpt-section td, .rpt-summary p');
     }
     if (window.renderMathInElement) {
       window.renderMathInElement(body, {
