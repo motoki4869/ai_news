@@ -314,6 +314,14 @@ nav {
 .term-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s, transform 0.6s, box-shadow 0.3s; }
 .term-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(139,92,246,0.14); }
 
+/* 記事本文の用語リンクから直接飛んできたときに、該当カードを一瞬光らせる */
+@keyframes jump-flash {
+  0% { box-shadow: 0 0 0 0 rgba(139,92,246,0); }
+  15% { box-shadow: 0 0 0 4px rgba(139,92,246,0.6); }
+  100% { box-shadow: 0 0 0 0 rgba(139,92,246,0); }
+}
+.term-card.jump-flash { animation: jump-flash 1.8s ease-out; }
+
 .term-card h3 {
   font-size: 1rem; font-weight: 700; line-height: 1.5;
   margin-bottom: 4px; overflow-wrap: anywhere;
@@ -754,6 +762,7 @@ let activeCat = '';
 function apply() {
   const q = searchInput.value.trim().toLowerCase();
   let hits = 0;
+  let firstHit = null;
 
   document.querySelectorAll('.section').forEach(sec => {
     const catOk = !activeCat || sec.dataset.cat === activeCat;
@@ -762,7 +771,11 @@ function apply() {
     sec.querySelectorAll('.term-card').forEach(card => {
       const match = catOk && (!q || card.dataset.q.includes(q));
       card.style.display = match ? '' : 'none';
-      if (match) { shown++; card.classList.add('visible'); }
+      if (match) {
+        shown++;
+        card.classList.add('visible');
+        if (!firstHit) firstHit = card;
+      }
     });
 
     sec.style.display = shown ? '' : 'none';
@@ -778,9 +791,20 @@ function apply() {
 
   // 絞り込みでセクションの表示・高さが変わるので、目次側も現在地を測り直す
   refreshSectionSpy();
+  return firstHit;
 }
 
-searchInput.addEventListener('input', apply);
+// ===== 検索状態をURLに反映する =====
+// 記事本文の用語（例: 「MCP」）から glossary.html?q=MCP のような直リンクで
+// 該当用語まで飛べるようにするため。カテゴリ絞り込みは対象外（用語検索のみ）。
+function syncSearchToUrl() {
+  const q = searchInput.value.trim();
+  const url = new URL(location.href);
+  if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
+  history.replaceState(null, '', url.pathname + url.search);
+}
+
+searchInput.addEventListener('input', () => { apply(); syncSearchToUrl(); });
 
 catFilters.addEventListener('click', e => {
   const btn = e.target.closest('button');
@@ -794,7 +818,15 @@ catFilters.addEventListener('click', e => {
   }
 });
 
-apply();
+// ===== 初期表示: URLの ?q= を検索欄に復元し、最初に一致した用語までジャンプする =====
+const initialQuery = new URLSearchParams(location.search).get('q');
+if (initialQuery) searchInput.value = initialQuery;
+const initialHit = apply();
+if (initialQuery && initialHit) {
+  initialHit.scrollIntoView({ behavior: 'auto', block: 'center' });
+  initialHit.classList.add('jump-flash');
+  setTimeout(() => initialHit.classList.remove('jump-flash'), 2200);
+}
 </script>
 
 </body>

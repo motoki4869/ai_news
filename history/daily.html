@@ -329,6 +329,15 @@ nav {
 .news-card strong { color: var(--text); }
 .news-card:has(.point-list) p { flex: 0 0 auto; }
 
+/* 用語集ページへのリンク（term-link.js が本文中の略語を自動的にこのクラスへ差し替える） */
+.gloss-link {
+  color: inherit; text-decoration: underline dotted rgba(139,92,246,0.55);
+  text-underline-offset: 3px;
+}
+.gloss-link:hover, .gloss-link:focus-visible {
+  color: var(--violet); text-decoration-color: var(--violet);
+}
+
 
 .news-card .point-list {
   list-style: none;
@@ -790,6 +799,8 @@ footer .logo {
 
 <script src="daily-data.js"></script>
 <script src="audio-data.js"></script>
+<script src="glossary-data.js"></script>
+<script src="term-link.js"></script>
 <script src="daily-navigation.js"></script>
 <script src="audio-seek.js"></script>
 <script src="audio-player.js"></script>
@@ -1259,6 +1270,8 @@ function renderDay() {
     }
     cardGrid.appendChild(article);
   });
+
+  if (window.linkifyGlossaryTerms) linkifyGlossaryTerms(cardGrid);
 
   // 再描画のたびにフェードインさせる
   requestAnimationFrame(() => {

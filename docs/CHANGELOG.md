@@ -7,6 +7,13 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### 用語集の検索状態をURLに反映、記事本文の用語から直接ジャンプできるように
+- **変更**: `history/glossary.html`の検索ボックスの入力値を`?q=`パラメータとしてURLに同期（`history.replaceState`）し、`glossary.html?q=MCP`のようなURLを直接開くと検索欄が自動入力され、絞り込んだ上で最初に一致した用語カードまでスクロールしてバイオレットの光るアニメーション（`.jump-flash`）で強調表示するようにした。あわせて新規ファイル`history/term-link.js`を追加し、`news.html`・`archive.html`・`daily.html`のニュースカード本文中に登場する用語集掲載済みの英字略語・製品名（MCP、RAG、OpenClaw等）を自動検出し、1カードにつき最初の1語だけを`glossary.html?q=<用語>`への内部リンクに変換する。news.html/archive.htmlのカードは全体がタップで全文モーダルを開く仕様のため、リンククリックがモーダル表示に伝播しないよう`stopPropagation`を追加した。daily.htmlは日付切り替えのたびにカードを再描画するため、`renderDay()`内で毎回リンク化を呼び直す形にした。
+- **理由**: レビュー指摘「用語集でMCPを検索できるが、検索状態がURLに反映されない。記事中の『MCP』から該当用語へ移動できると理解が途切れない」に対応するため。
+- **対象**: `history/glossary.html`, `history/news.html`, `history/archive.html`, `history/daily.html`, `history/term-link.js`（新規）
+- **確認**: ローカルサーバー起動後、cmux browserで`glossary.html?q=RHI`への直接遷移・強調表示、news.html/archive.html/daily.html各ページでの用語リンクの表示とクリック動作、およびnews.html/archive.htmlでリンククリック時に全文モーダルが誤って開かないことを確認した。
+- **commit**: `HEAD`
+
 ### AI DAILY LOGにその日の見出し一覧を追加、音声プレイヤーとの順序を調整
 - **変更**: `history/daily.html`の日別コンテンツに、その日のニュースカードの見出しを番号付きで並べた目次（`.headline-list`）を追加した。各見出しをクリックすると、対応するニュースカードの位置まで固定ナビの下にスムーススクロールする。カードには`daily-card-<index>`のIDと`scroll-margin-top`を付与し、ジャンプ先が固定ナビに隠れないようにした。日によって件数（3〜9件）が変わるため上限は設けず、実データの件数だけ表示する。表示順は「日付ヘッダー→音声プレイヤー→見出し一覧→カード一覧」とした（初期実装では見出し一覧を音声プレイヤーより上に置いていたが、ユーザーの指摘で入れ替えた）。
 - **理由**: 各カードの説明が丁寧な分、全体を把握するには縦に長くスクロールする必要があり、その日にどんな話題があったか一目で分からなかったため。

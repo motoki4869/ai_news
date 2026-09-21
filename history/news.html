@@ -385,6 +385,15 @@ nav {
 .news-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.55; }
 .news-card p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; flex: 1; }
 
+/* 用語集ページへのリンク（term-link.js が本文中の略語を自動的にこのクラスへ差し替える） */
+.gloss-link {
+  color: inherit; text-decoration: underline dotted rgba(139,92,246,0.55);
+  text-underline-offset: 3px;
+}
+.gloss-link:hover, .gloss-link:focus-visible {
+  color: var(--violet); text-decoration-color: var(--violet);
+}
+
 .src {
   margin-top: 14px;
   font-family: 'JetBrains Mono', monospace; font-size: 0.64rem;
@@ -967,7 +976,11 @@ footer .logo {
 
 <script src="reports-index.js"></script>
 <script src="report-modal.js"></script>
+<script src="glossary-data.js"></script>
+<script src="term-link.js"></script>
 <script>
+if (window.linkifyGlossaryTerms) linkifyGlossaryTerms(document);
+
 /* ===== Neural network background (green tint) ===== */
 const canvas = document.getElementById('neural-bg');
 const ctx = canvas.getContext('2d');
