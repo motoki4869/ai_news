@@ -40,3 +40,9 @@ claim_line_notification() {
   # mkdirは原子的なので、並行実行でも最初の1プロセスだけが成功する。
   mkdir "$claim_path" 2>/dev/null
 }
+
+release_line_notification_claim() {
+  local claim_path
+  claim_path="$(line_notification_claim_path "$1")"
+  rmdir "$claim_path" 2>/dev/null
+}

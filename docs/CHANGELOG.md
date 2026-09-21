@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### Claude Code再レビュー指摘の追加修正
+- **変更**: ロックのstale回収をtoken照合付きの原子的renameに変更し、owner不在ロックの期限回収、週次leaseトークンのファイル経由受け渡し、9章モデル表の必須セル検証を追加した。LINE送信失敗時のclaim解放と再送、当日分がない場合の通知抑止、失敗時音声commitの対象限定、明示的な日次commit対象、失敗理由の表示、stale残骸のgitignoreも追加した。
+- **理由**: 再レビューで、ロック回収のTOCTOU、owner欠落による恒久停止、週次leaseの解放失敗、空のモデル名公開、LINE送信失敗の再送不能、無関係な変更の音声commit混入、通知対象の誤送信が判明したため。
+- **対象**: `scripts/lib/news_update_lock.sh`、`scripts/daily_news.sh`、`scripts/lib/line_notification_dedupe.sh`、`scripts/lib/codex_fallback.sh`、`scripts/generate_glossary_data.py`、`.agents/skills/sync-news-html/SKILL.md`、`.gitignore`、`scripts/daily_news_prompt*.txt`、`test/`
+- **commit**: `HEAD`
+
 ### 日次・週次ニュース更新の再実行通知とロック処理の修正
 - **変更**: Claude Codeレビューで見つかった週次エージェント向けleaseロック、所有者確認付きのstale回収、同日再実行時のLINE通知claim、commit済みニュースに対する音声再試行、変更なしcommitの正常扱い、SUMMARY原因通知、用語集の正式名称空欄ルール、生成物パーミッション維持、テストの一時リポジトリ隔離を追加した。
 - **理由**: 失敗後の再実行でサイト更新・LINE通知・音声生成の一部だけが欠落する経路と、日次・週次のロックがプロセス寿命やPIDだけに依存して競合する経路をなくすため。

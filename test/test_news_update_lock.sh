@@ -78,4 +78,12 @@ if ! acquire_news_update_lock "$BASE_DIR"; then
   exit 1
 fi
 release_news_update_lock "$BASE_DIR" "$NEWS_UPDATE_LOCK_TOKEN"
+
+mkdir "$BASE_DIR/.news-update.lock"
+touch -t 200001010000 "$BASE_DIR/.news-update.lock"
+if ! acquire_news_update_lock "$BASE_DIR"; then
+  echo "ownerファイルがないstaleロックを回収できませんでした" >&2
+  exit 1
+fi
+release_news_update_lock "$BASE_DIR" "$NEWS_UPDATE_LOCK_TOKEN"
 echo "SUMMARY: ニュース更新ロックの取得・競合・解放を確認しました"

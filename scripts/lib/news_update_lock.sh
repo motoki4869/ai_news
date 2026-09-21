@@ -28,6 +28,16 @@ _news_update_process_start() {
   ps -p "$1" -o lstart= 2>/dev/null | sed 's/^ *//'
 }
 
+_news_update_mtime() {
+  stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null
+}
+
+_news_update_remove_lock_dir() {
+  local lock_dir="$1"
+  rm -f "$lock_dir"/owner "$lock_dir"/pid "$lock_dir"/.owner.*
+  rmdir "$lock_dir" 2>/dev/null || true
+}
+
 _news_update_write_owner() {
   local lock_dir="$1"
   local mode="$2"
@@ -54,7 +64,13 @@ _news_update_lock_is_stale() {
   local owner_file="$(_news_update_lock_owner_file "$repo_dir")"
   local mode pid process_start renewed_at now
 
-  [ -f "$owner_file" ] || return 1
+  if [ ! -f "$owner_file" ]; then
+    local lock_mtime now
+    lock_mtime="$(_news_update_mtime "$(_news_update_lock_dir "$repo_dir")")"
+    now="$(date +%s)"
+    [ -n "$lock_mtime" ] && [ $((now - lock_mtime)) -gt "$NEWS_UPDATE_LOCK_TTL_SECONDS" ]
+    return $?
+  fi
   mode="$(_news_update_lock_field mode "$owner_file")"
   pid="$(_news_update_lock_field pid "$owner_file")"
   process_start="$(_news_update_lock_field process_start "$owner_file")"
@@ -83,13 +99,22 @@ _news_update_reclaim_stale_lock() {
   local repo_dir="$1"
   local lock_dir="$(_news_update_lock_dir "$repo_dir")"
   local stale_dir="${lock_dir}.stale.$$-${RANDOM:-0}"
+  local expected_token actual_token
 
+  expected_token="$(_news_update_lock_field token "$(_news_update_lock_owner_file "$repo_dir")")"
   _news_update_lock_is_stale "$repo_dir" || return 1
   if ! mv "$lock_dir" "$stale_dir" 2>/dev/null; then
     return 1
   fi
-  rm -f "$stale_dir/owner" "$stale_dir"/.owner.*
-  rmdir "$stale_dir" 2>/dev/null || true
+
+  actual_token="$(_news_update_lock_field token "$stale_dir/owner")"
+  if [ "$actual_token" != "$expected_token" ]; then
+    if ! mv "$stale_dir" "$lock_dir" 2>/dev/null; then
+      _news_update_remove_lock_dir "$stale_dir"
+    fi
+    return 1
+  fi
+  _news_update_remove_lock_dir "$stale_dir"
   return 0
 }
 
@@ -116,7 +141,7 @@ acquire_news_update_lock() {
   fi
 
   if ! _news_update_write_owner "$lock_dir" "$mode" "$token"; then
-    rmdir "$lock_dir" 2>/dev/null || true
+    _news_update_remove_lock_dir "$lock_dir"
     echo "ニュース更新ロックの所有情報を書き込めません: $lock_dir" >&2
     return 1
   fi
@@ -155,10 +180,11 @@ release_news_update_lock() {
     return 1
   fi
 
-  rm -f "$owner_file" "$lock_dir/.owner.$$"
-  if ! rmdir "$lock_dir" 2>/dev/null; then
+  local retired_dir="${lock_dir}.released.$$-${RANDOM:-0}"
+  if ! mv "$lock_dir" "$retired_dir" 2>/dev/null; then
     return 1
   fi
+  _news_update_remove_lock_dir "$retired_dir"
   if [ "${NEWS_UPDATE_LOCK_TOKEN:-}" = "$expected_token" ]; then
     unset NEWS_UPDATE_LOCK_DIR NEWS_UPDATE_LOCK_TOKEN
   fi

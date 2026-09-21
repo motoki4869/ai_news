@@ -80,7 +80,8 @@ def parse_table(lines: list[tuple[int, str]]) -> tuple[list[str], list[list[str]
             raise GlossaryParseError(
                 f"{SRC_FILE}:{lineno}: 用語集の表は3列必要です（{len(cells)}列）: {line}"
             )
-        if not cells[0] or not cells[2]:
+        required_indices = (0, 1, 2) if tuple(header) == MODEL_HEADER else (0, 2)
+        if any(not cells[index] for index in required_indices):
             raise GlossaryParseError(
                 f"{SRC_FILE}:{lineno}: 用語集の表の必須セルが空です: {line}"
             )

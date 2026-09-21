@@ -45,6 +45,15 @@ class GenerateGlossaryDataTest(unittest.TestCase):
                     + row
                 )
 
+    def test_rejects_empty_model_name_in_model_section(self):
+        with self.assertRaises(MODULE.GlossaryParseError):
+            MODULE.build_sections(
+                "## 9. モデル\n"
+                "| 開発元 | モデル / シリーズ | 補足 |\n"
+                "|---|---|---|\n"
+                "| **Google** |  | 補足テキスト |\n"
+            )
+
     def test_rejects_invalid_header(self):
         with self.assertRaises(MODULE.GlossaryParseError):
             MODULE.build_sections(

@@ -52,9 +52,13 @@ fi
 
 SUMMARY_KIND="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
 SUMMARY="${SUMMARY_KIND:-SUMMARY行がありません}"
+if [[ "$SUMMARY_KIND" == ERROR:* ]]; then
+  ERROR_REASON="${SUMMARY_KIND#ERROR: }"
+else
+  ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
+fi
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
-ERROR_REASON="$SUMMARY"
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
 #
 # 以前は本文を文字列リテラルに直接埋め込み、`cut -c1-200` で長さを詰めていたが、
@@ -80,10 +84,13 @@ if git rev-parse --verify HEAD >/dev/null 2>&1 \
   AUDIO_READY=1
 fi
 
-if [ "$STATUS" -eq 0 ] && [ -s "$LINE_MSG_FILE" ] \
+if [ "$STATUS" -eq 0 ] && [ "$AUDIO_READY" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
     # ClaudeがBashで通知文を書いた場合でも、ここで短いLINE通知を送る。
-    send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"
+    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"; then
+      echo "LINE通知の送信に失敗したため、次回実行で再送します" >&2
+      release_line_notification_claim "$LINE_MSG_FILE" || true
+    fi
 fi
 
 if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then
@@ -137,9 +144,9 @@ if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then
       fi
       if ! git diff --quiet -- "${AUDIO_PATHS[@]}" || [ -n "$(git ls-files --others --exclude-standard -- "${AUDIO_PATHS[@]}")" ]; then
         git add "${AUDIO_PATHS[@]}"
-        if git diff --cached --quiet; then
+        if git diff --cached --quiet -- "${AUDIO_PATHS[@]}"; then
           echo "NotebookLM音声の変更はありません"
-        elif git commit -m "$AUDIO_DATE のAIニュース音声を追加"; then
+        elif git commit -m "$AUDIO_DATE のAIニュース音声を追加" -- "${AUDIO_PATHS[@]}"; then
           git push origin main || echo "NotebookLM音声のpushに失敗しました。ニュース更新は継続します。" >&2
         else
           echo "NotebookLM音声のコミットに失敗しました。ニュース更新は継続します。" >&2

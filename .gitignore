@@ -4,7 +4,7 @@ logs/
 data/analytics/
 everyday_news/line_message.txt
 .superpowers/
-.news-update.lock/
+.news-update.lock*
 scripts/notebooklm_audio.env
 everyday_news/.daily_audio_source.md
 __pycache__/

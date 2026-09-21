@@ -58,7 +58,7 @@ send_line_broadcast() {
   token="${LINE_CHANNEL_ACCESS_TOKEN:-$(jq -r '.env.LINE_CHANNEL_ACCESS_TOKEN // empty' "$settings_file")}"
   local body
   body=$(jq -n --arg t "$message" '{messages:[{type:"text",text:$t}]}')
-  curl -s -X POST https://api.line.me/v2/bot/message/broadcast \
+  curl -fsS -X POST https://api.line.me/v2/bot/message/broadcast \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $token" \
     -d "$body" >/dev/null
