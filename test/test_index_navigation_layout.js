@@ -24,8 +24,5 @@ test('スマホ幅ではAI HISTORYのナビリンクを左寄せで等間隔に�
   assert.match(INDEX_HTML, /<a\s+class="to-gen"\s+href="generative\.html">生成AI年表<\/a>/);
   assert.match(INDEX_HTML, /<a\s+class="to-news"\s+href="news\.html">最新トレンド<\/a>/);
   assert.match(INDEX_HTML, /<a\s+class="to-daily"\s+href="daily\.html">デイリー<\/a>/);
-  assert.match(
-    INDEX_HTML,
-    /<a\s+class="to-arena"\s+href="https:\/\/arena\.ai\/leaderboard\/"\s+target="_blank"\s+rel="noopener">AI Arena<\/a>/,
-  );
+  assert.match(INDEX_HTML, /<button\s+class="to-arena"\s+type="button"[^>]*>AI比較<\/button>/);
 });

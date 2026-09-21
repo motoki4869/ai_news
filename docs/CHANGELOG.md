@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### AI性能比較リンクの選択モーダル化
+- **変更**: AI HISTORY上部の「AI比較」ボタンから、Arena.aiとArtificial Analysisを選べるモーダルを表示するようにした。外部リンクは新しいタブで開き、閉じるボタン・背景クリック・Escapeキーに対応した。
+- **理由**: 性能比較サイトを1つに限定せず、目的に応じて選べるようにするため。
+- **対象**: `history/index.html`、`test/test_index_navigation_layout.js`、`test/test_index_benchmark_modal.js`
+- **commit**: `HEAD`
+
 ### AI Arenaへのナビゲーション追加
 - **変更**: AI HISTORY上部のナビに、文章・画像などのAIモデル比較ランキングへ移動できる「AI Arena」リンクを追加した。
 - **理由**: 分野別のAI性能比較を、AI HISTORYからすぐ確認できるようにするため。

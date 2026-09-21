@@ -126,7 +126,7 @@ nav {
    ここは意図的に絞っている。リンクを足すときは「このページの続きか」で判断する。 */
 .nav-links { display: flex; gap: 10px; align-items: center; }
 
-.nav-links a {
+.nav-links a, .nav-links button {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.06em;
   text-decoration: none; white-space: nowrap;
@@ -134,9 +134,11 @@ nav {
   color: rgb(var(--pill));
   border: 1px solid rgba(var(--pill), 0.35);
   background: rgba(var(--pill), 0.06);
+  cursor: pointer;
   transition: background 0.25s, box-shadow 0.25s;
 }
-.nav-links a:hover {
+.nav-links button { line-height: inherit; }
+.nav-links a:hover, .nav-links button:hover {
   background: rgba(var(--pill), 0.14);
   box-shadow: 0 0 14px rgba(var(--pill), 0.4);
 }
@@ -148,6 +150,26 @@ nav {
 .to-archive  { --pill: 138, 148, 184; }
 .to-glossary { --pill: 139, 92, 246; }
 .to-arena    { --pill: 255, 122, 180; }
+
+/* ===== AI benchmark modal ===== */
+.ai-benchmark-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 24px; }
+.ai-benchmark-modal[hidden] { display: none; }
+.ai-benchmark-backdrop { position: absolute; inset: 0; background: rgba(2, 3, 10, 0.72); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+.ai-benchmark-panel { position: relative; width: min(100%, 520px); padding: 24px; border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 18px; background: linear-gradient(150deg, rgba(16, 24, 52, 0.98), rgba(8, 10, 24, 0.99)); box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 28px rgba(0, 229, 255, 0.12); animation: ai-benchmark-in 0.18s ease-out both; }
+@keyframes ai-benchmark-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+.ai-benchmark-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.ai-benchmark-kicker { display: block; margin-bottom: 4px; color: var(--magenta); font: 700 0.68rem/1.4 'JetBrains Mono', monospace; letter-spacing: 0.12em; }
+.ai-benchmark-header h2 { color: var(--text); font-size: 1.15rem; line-height: 1.5; }
+.ai-benchmark-close { flex: 0 0 auto; width: 32px; height: 32px; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 50%; background: transparent; color: var(--text-dim); font-size: 1.2rem; line-height: 1; cursor: pointer; }
+.ai-benchmark-close:hover, .ai-benchmark-close:focus-visible { color: var(--green); border-color: var(--green); }
+.ai-benchmark-lead { margin: 16px 0; color: var(--text-dim); font-size: 0.82rem; line-height: 1.7; }
+.ai-benchmark-options { display: grid; gap: 10px; }
+.ai-benchmark-option { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 14px 16px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; background: rgba(0, 229, 255, 0.045); color: var(--text); text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+.ai-benchmark-option:hover, .ai-benchmark-option:focus-visible { border-color: rgba(0, 229, 255, 0.65); background: rgba(0, 229, 255, 0.1); transform: translateY(-1px); }
+.ai-benchmark-option strong { font-size: 0.92rem; }
+.ai-benchmark-option small { grid-column: 1; color: var(--text-dim); font-size: 0.74rem; line-height: 1.5; }
+.ai-benchmark-option::after { grid-column: 2; grid-row: 1 / span 2; content: '↗'; color: var(--cyan); font-size: 1.1rem; }
+body.ai-benchmark-modal-open { overflow: hidden; }
 
 /* ===== 目次（ページ内アンカー） =====
    ナビは別ページへの移動だけを担うので、ページ内の移動はこのバーが引き受ける。
@@ -632,7 +654,7 @@ footer .logo {
   nav { padding: 10px 14px; gap: 10px; flex-wrap: wrap; row-gap: 8px; }
   .nav-logo { order: 1; margin-right: 0; white-space: nowrap; }
   .nav-links { gap: 6px; flex-wrap: wrap; order: 3; justify-content: flex-start; width: 100%; }
-  .nav-links a { font-size: 0.72rem; padding: 4px 10px; }
+  .nav-links a, .nav-links button { font-size: 0.72rem; padding: 4px 10px; }
   /* スマホでも目次を出す。折り返して2段になると固定ヘッダーが高くなりすぎるので、
      1行に固定してはみ出す分は横スクロールで見せる。
      contain: layout がないと、内部の幅が document の scrollWidth に算入されて
@@ -685,11 +707,35 @@ footer .logo {
     <a class="to-news" href="news.html">最新トレンド</a>
     <a class="to-daily" href="daily.html">デイリー</a>
     <a class="to-glossary" href="glossary.html">用語集</a>
-    <a class="to-arena" href="https://arena.ai/leaderboard/" target="_blank" rel="noopener">AI Arena</a>
+    <button class="to-arena" type="button" aria-haspopup="dialog" aria-controls="ai-benchmark-modal">AI比較</button>
   </div>
   <input id="site-search" class="nav-search" type="search" placeholder="🔍 検索: モデル / 年 / 出来事">
 </nav>
 <span id="search-count"></span>
+
+<div id="ai-benchmark-modal" class="ai-benchmark-modal" role="dialog" aria-modal="true" aria-labelledby="ai-benchmark-title" aria-describedby="ai-benchmark-description" hidden>
+  <div class="ai-benchmark-backdrop" data-ai-benchmark-close></div>
+  <section class="ai-benchmark-panel">
+    <div class="ai-benchmark-header">
+      <div>
+        <span class="ai-benchmark-kicker">MODEL COMPARISON</span>
+        <h2 id="ai-benchmark-title">AI性能を比較する</h2>
+      </div>
+      <button class="ai-benchmark-close" type="button" aria-label="閉じる" data-ai-benchmark-close>×</button>
+    </div>
+    <p id="ai-benchmark-description" class="ai-benchmark-lead">用途に合わせて、2つの比較サイトから選べます。</p>
+    <div class="ai-benchmark-options">
+      <a class="ai-benchmark-option" href="https://arena.ai/leaderboard/" target="_blank" rel="noopener">
+        <strong>Arena.ai</strong>
+        <small>人間の投票による実用感・人気の比較</small>
+      </a>
+      <a class="ai-benchmark-option" href="https://artificialanalysis.ai/" target="_blank" rel="noopener">
+        <strong>Artificial Analysis</strong>
+        <small>性能・価格・速度を横断した比較</small>
+      </a>
+    </div>
+  </section>
+</div>
 
 <div class="content">
 
@@ -1338,6 +1384,34 @@ window.addEventListener('scroll', () => {
 /* ===== Keyword search ===== */
 const searchInput = document.getElementById('site-search');
 const searchCount = document.getElementById('search-count');
+
+/* ===== AI性能比較モーダル ===== */
+const aiBenchmarkTrigger = document.querySelector('.to-arena');
+const aiBenchmarkModal = document.getElementById('ai-benchmark-modal');
+const aiBenchmarkCloseButtons = aiBenchmarkModal.querySelectorAll('[data-ai-benchmark-close]');
+const aiBenchmarkCloseButton = aiBenchmarkModal.querySelector('.ai-benchmark-close');
+let aiBenchmarkPreviousFocus = null;
+
+function setAiBenchmarkModalOpen(open) {
+  if (open) {
+    aiBenchmarkPreviousFocus = document.activeElement;
+    aiBenchmarkModal.removeAttribute('hidden');
+    document.body.classList.add('ai-benchmark-modal-open');
+    aiBenchmarkCloseButton.focus();
+    return;
+  }
+  aiBenchmarkModal.setAttribute('hidden', '');
+  document.body.classList.remove('ai-benchmark-modal-open');
+  if (aiBenchmarkPreviousFocus) aiBenchmarkPreviousFocus.focus();
+}
+
+aiBenchmarkTrigger.addEventListener('click', () => setAiBenchmarkModalOpen(true));
+aiBenchmarkCloseButtons.forEach(button => {
+  button.addEventListener('click', () => setAiBenchmarkModalOpen(false));
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !aiBenchmarkModal.hasAttribute('hidden')) setAiBenchmarkModalOpen(false);
+});
 
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
