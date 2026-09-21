@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### Claude Code再レビューの重要指摘修正
+- **変更**: 週次leaseのrefresh失敗時に編集・commit・pushを中止する手順を追加した。日次LINE通知は作業ツリーではなくHEADにcommit済みの当日見出しを確認してから送るようにし、Codexフックの設定ファイル参照先とLINE送信のタイムアウトを修正した。未commit状態の通知抑止と同一日再送の回帰テストも追加した。
+- **理由**: Claude Code再レビューで、lease回収後も週次処理が編集を続ける経路、未pushのニュースをLINE通知する経路、Codexフックが存在しない設定ファイルを参照する問題、フックの送信待ちが長くclaim解放を阻害する問題が判明したため。
+- **対象**: `.agents/skills/sync-news-html/SKILL.md`、`.codex/hooks/line_notify.sh`、`scripts/daily_news.sh`、`scripts/lib/codex_fallback.sh`、`scripts/lib/test_line_notification_dedupe.sh`、`test/test_daily_news.sh`
+- **commit**: `HEAD`
+
 ### Claude Code再レビュー指摘の追加修正（第2回）
 - **変更**: 週次leaseの取得時に出力されたtokenを固定して扱い、stale回収後のrefresh競合を再判定するようにした。LINEフックを共通送信処理へ統一し、送信失敗時のclaim解放とcurlのtimeout・再試行を追加した。日次commit対象を全`everyday_news/*.md`へ明示し、日付に依存しない回帰テストと、通知条件を音声HEADの状態から分離した。
 - **理由**: Claude Code再レビューで、週次leaseが別実行のtokenを解放する競合、stale回収とrefreshの競合、フック経由の送信失敗時に再送できない経路、過去月の原本変更がcommit対象から漏れる経路、テストの日付固定、音声状態による通知抑止が判明したため。

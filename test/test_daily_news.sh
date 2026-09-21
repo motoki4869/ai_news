@@ -189,4 +189,30 @@ if git -C "$TEST_REPO" show --format= --name-only HEAD | grep -qx 'unrelated.md'
   exit 1
 fi
 
+# 作業ツリーに当日見出しがあっても、HEADにcommitされていなければLINE通知しない。
+git -C "$TEST_REPO" reset -q unrelated.md
+cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+# ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
+EOF
+git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
+git -C "$TEST_REPO" commit -q -m 'remove current day from seed'
+cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+
+## $TODAY
+
+- **【技術】未commitテスト**（[出典](https://example.com)）
+  作業ツリーだけに存在する当日ニュースです。
+EOF
+
+before_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
+if ! run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0; then
+  echo "未commit当日分の実行を失敗扱いしました" >&2
+  exit 1
+fi
+after_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
+if [ "$after_curl_count" -ne "$before_curl_count" ]; then
+  echo "未commit当日分をLINE通知しました" >&2
+  exit 1
+fi
+
 echo "SUMMARY: daily_news.shの失敗判定、同日LINE通知claim、commit済み音声再試行を確認しました"

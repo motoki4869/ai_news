@@ -26,7 +26,7 @@ claim_line_notification "$f" >/dev/null 2>&1 || exit 0
 
 msg=$(line_notification_text)
 
-if ! send_line_broadcast "$script_dir/../settings.local.json" "$msg"; then
+if ! send_line_broadcast "$script_dir/../../.claude/settings.local.json" "$msg"; then
   release_line_notification_claim "$f" || true
   exit 1
 fi

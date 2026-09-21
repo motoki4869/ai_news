@@ -58,7 +58,7 @@ send_line_broadcast() {
   token="${LINE_CHANNEL_ACCESS_TOKEN:-$(jq -r '.env.LINE_CHANNEL_ACCESS_TOKEN // empty' "$settings_file")}"
   local body
   body=$(jq -n --arg t "$message" '{messages:[{type:"text",text:$t}]}')
-  curl -fsS --max-time 20 --retry 2 --retry-delay 1 \
+  curl -fsS --max-time 8 --retry 1 --retry-delay 1 \
     -X POST https://api.line.me/v2/bot/message/broadcast \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $token" \
