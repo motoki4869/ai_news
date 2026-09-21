@@ -13,6 +13,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 - **対象**: `history/index.html`、`history/generative.html`、`test/test_index_benchmark_modal.js`
 - **commit**: `HEAD`
 
+### Arena.aiの説明文調整
+- **変更**: Arena.aiの説明を「人間の投票による実用性・人気の比較」に変更した。
+- **理由**: 比較対象の特徴を、より自然で正確な表現にするため。
+- **対象**: `history/index.html`、`history/generative.html`、`test/test_index_benchmark_modal.js`
+- **commit**: `HEAD`
+
 ### 生成AI年表の戻りリンク位置調整
 - **変更**: 生成AI年表上部ナビの「← AI HISTORY」をAI比較ボタンの右側へ移動した。
 - **理由**: 年表から比較サイトを開く導線を先に置き、全体年表への戻り先をナビ右側に整理するため。
