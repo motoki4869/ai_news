@@ -7,6 +7,13 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### スマホでのAI DAILY LOGカード本文の文字サイズを拡大
+- **変更**: `history/daily.html`のスマホ幅（`max-width: 768px`）向けに、ニュースカードの本文（`.news-card p`・箇条書き`.point-list li`）を0.83rem（約13.3px）から0.95rem（約15.2px）へ拡大し、行間を1.75から1.7に調整した。あわせてカードの余白を`22px 24px`から`24px 22px`に変更した。
+- **理由**: スマホでの本文の実測フォントサイズが約13.3pxと小さく読みにくいとの指摘があったため。
+- **対象**: `history/daily.html`
+- **確認**: ローカルサーバー起動後、cmux browserでモバイル幅（390×844）をエミュレートし、カード本文のcomputed font-size（15.2px）と表示崩れの無いことを確認した。
+- **commit**: `HEAD`
+
 ### 読者向けページの内部パス表記を自然な文言に修正
 - **変更**: `history/archive.html`（meta description・hero見出し・footer）、`history/news.html`（hero内source-note・footer）、`history/glossary.html`（hero内source-note・footer）、`history/daily.html`（footer）から、`ai_news/report`・`docs/glossary.md`・`ai_news/everyday_news`・「news.htmlから循環した」といった内部のリポジトリ構成・ファイルパスの直書きを削除し、「過去に掲載したトレンド」「参考レポート」「掲載用語」のような読者向けの自然な言い回しに書き換えた。
 - **理由**: サイト訪問者には文脈のない内部のディレクトリ・ファイル名がそのまま表示されており、実装の都合が透けて見える表記になっていたため。
