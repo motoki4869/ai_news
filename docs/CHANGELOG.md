@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### AI Arenaへのナビゲーション追加
+- **変更**: AI HISTORY上部のナビに、文章・画像などのAIモデル比較ランキングへ移動できる「AI Arena」リンクを追加した。
+- **理由**: 分野別のAI性能比較を、AI HISTORYからすぐ確認できるようにするため。
+- **対象**: `history/index.html`、`test/test_index_navigation_layout.js`
+- **commit**: `HEAD`
+
 ### デイリーニュースをもとに用語集へ18語を追加
 - **変更**: `everyday_news/*.md`のデイリーニュースを精査し、未収録だった18語（Claude Tag、Terminal-Bench / Terminal-Bench-Science、Artificial Analysis Intelligence Index、DeepSWE、Deep Think、Jalapeño、主権AI / ソブリンAI、FDE、RVG、WAICO、パックス・シリカ、SB 53、ZDR、DSA / VLOSE、EU KIDS Act、CyberGym、HEIR / FHE）を`docs/glossary.md`に追加し、既存のOpenAI行にGPT-Liveを追記した。`history/glossary-data.js`を再生成し、`term-link.js`による自動リンク機構を通じてデイリー側からもこれらの用語へのリンクが有効になった。
 - **理由**: ユーザーからの依頼で、デイリーニュースに登場するが用語集に未収録の語を洗い出して追加する必要があったため。
