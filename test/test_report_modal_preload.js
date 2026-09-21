@@ -81,12 +81,14 @@ test('スマホでも読了目安を導入ラベルと同じ行に置く', () =>
 
 test('左上の章一覧は左側から開くドロワーにする', () => {
   assert.match(NEWS_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
-  assert.match(NEWS_HTML, /\.report-modal-toc-sheet \{[^}]*width: min\(70%, 560px\)/);
+  assert.match(NEWS_HTML, /\.report-modal-toc-sheet \{[^}]*width: min\(80%, 640px\)/);
   assert.doesNotMatch(NEWS_HTML, /\.report-modal-toc-sheet \{[^}]*border-right: 1px solid rgba\(0,229,255,0\.25\)/);
+  assert.match(NEWS_HTML, /\.report-modal-toc-sheet \{[^}]*border-radius: 0 16px 16px 0/);
   assert.match(NEWS_HTML, /report-toc-in-left/);
   assert.match(ARCHIVE_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
-  assert.match(ARCHIVE_HTML, /\.report-modal-toc-sheet \{[^}]*width: min\(70%, 560px\)/);
+  assert.match(ARCHIVE_HTML, /\.report-modal-toc-sheet \{[^}]*width: min\(80%, 640px\)/);
   assert.doesNotMatch(ARCHIVE_HTML, /\.report-modal-toc-sheet \{[^}]*border-right: 1px solid rgba\(0,229,255,0\.25\)/);
+  assert.match(ARCHIVE_HTML, /\.report-modal-toc-sheet \{[^}]*border-radius: 0 16px 16px 0/);
   assert.match(ARCHIVE_HTML, /report-toc-in-left/);
 });
 
