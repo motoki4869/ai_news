@@ -74,6 +74,11 @@ test('レポート導入部の余白を広げ、要点下の点線を外す', ()
   }
 });
 
+test('スマホでも読了目安を導入ラベルと同じ行に置く', () => {
+  assert.doesNotMatch(NEWS_HTML, /\.rpt-reading-meta \{[^}]*flex-direction: column/);
+  assert.doesNotMatch(ARCHIVE_HTML, /\.rpt-reading-meta \{[^}]*flex-direction: column/);
+});
+
 test('左上の章一覧は左側から開くドロワーにする', () => {
   assert.match(NEWS_HTML, /\.report-modal-toc \{[^}]*justify-content: flex-start/);
   assert.match(NEWS_HTML, /border-right: 1px solid rgba\(0,229,255,0\.25\)/);
