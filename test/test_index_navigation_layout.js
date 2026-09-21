@@ -22,7 +22,7 @@ test('スマホ幅ではAI HISTORYのナビリンクを左寄せで等間隔に�
     /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-links\s+\.to-glossary\s*\{[^}]*margin-left:\s*auto;/s,
   );
   assert.match(INDEX_HTML, /<a\s+class="to-gen"\s+href="generative\.html">AI年表<\/a>/);
-  assert.match(INDEX_HTML, /<a\s+class="to-news"\s+href="news\.html">最新トレンド<\/a>/);
+  assert.match(INDEX_HTML, /<a\s+class="to-news"\s+href="news\.html">トレンド<\/a>/);
   assert.match(INDEX_HTML, /<a\s+class="to-daily"\s+href="daily\.html">デイリー<\/a>/);
   assert.match(INDEX_HTML, /<button\s+class="to-arena"\s+type="button"[^>]*>AI比較<\/button>/);
 });
