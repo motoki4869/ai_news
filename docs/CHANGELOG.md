@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### Claude Code再レビューの重要指摘修正（フック通知）
+- **変更**: Claude/CodexのLINE通知フックでもHEAD上の当日見出しを確認し、commit前の作業ツリーから通知しないようにした。未commit時のフック抑止テストを追加し、再送テストのclaim・日付・一時リポジトリを分離した。フックだけ短い送信timeoutを使い、日次本体の送信retry余裕は維持した。
+- **理由**: Claude Code再レビューで、Write/Edit直後のPostToolUseフックが日次処理のcommit・push前にLINE通知を送る経路が残っており、日次スクリプト側のHEAD確認だけでは未公開ニュースを通知し得ることが判明したため。
+- **対象**: `.claude/hooks/line_notify.sh`、`.codex/hooks/line_notify.sh`、`scripts/lib/codex_fallback.sh`、`scripts/lib/test_line_notification_dedupe.sh`、`test/test_daily_news.sh`
+- **commit**: `HEAD`
+
 ### Claude Code再レビューの重要指摘修正
 - **変更**: 週次leaseのrefresh失敗時に編集・commit・pushを中止する手順を追加した。日次LINE通知は作業ツリーではなくHEADにcommit済みの当日見出しを確認してから送るようにし、Codexフックの設定ファイル参照先とLINE送信のタイムアウトを修正した。未commit状態の通知抑止と同一日再送の回帰テストも追加した。
 - **理由**: Claude Code再レビューで、lease回収後も週次処理が編集を続ける経路、未pushのニュースをLINE通知する経路、Codexフックが存在しない設定ファイルを参照する問題、フックの送信待ちが長くclaim解放を阻害する問題が判明したため。

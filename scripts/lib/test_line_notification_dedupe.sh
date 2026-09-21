@@ -11,7 +11,23 @@ export LINE_CHANNEL_ACCESS_TOKEN=test-token
 
 stub_dir="${TMPDIR:-/tmp}/ai-news-line-notify-hook-test-$$"
 failure_stub_dir="${TMPDIR:-/tmp}/ai-news-line-notify-hook-failure-$$"
-trap 'rm -rf "$state_dir" "$stub_dir" "$failure_stub_dir"' EXIT
+hook_repo_dir="${TMPDIR:-/tmp}/ai-news-line-notify-hook-repo-$$"
+uncommitted_state_dir="${TMPDIR:-/tmp}/ai-news-line-notify-hook-uncommitted-$$"
+trap 'rm -rf "$state_dir" "$stub_dir" "$failure_stub_dir" "$hook_repo_dir" "$uncommitted_state_dir"' EXIT
+
+mkdir -p "$hook_repo_dir/everyday_news"
+git -C "$hook_repo_dir" init -q
+git -C "$hook_repo_dir" config user.email test@example.com
+git -C "$hook_repo_dir" config user.name test
+cat > "$hook_repo_dir/everyday_news/202609.md" <<'EOF'
+# 2026年9月 AIニュースまとめ
+
+## 2026-09-03
+
+## 2026-09-04
+EOF
+git -C "$hook_repo_dir" add everyday_news/202609.md
+git -C "$hook_repo_dir" commit -q -m 'seed hook repo'
 
 failures=0
 
@@ -73,6 +89,7 @@ run_hook() {
   local target_date="${3:-2026-09-03}"
   printf '%s' "$hook_input" | \
     PATH="$stub_dir:$PATH" \
+    LINE_NOTIFY_REPO_DIR="$hook_repo_dir" \
     LINE_NOTIFY_STATE_DIR="$target_state" \
     LINE_NOTIFY_DATE="$target_date" \
     bash "$hook"
@@ -85,6 +102,13 @@ assert_status "Codexフックの同日送信は抑止される" 0 \
 
 sent_count="$(find "$hook_state_dir" -type d -name '*.sent' -print 2>/dev/null | wc -l | tr -d ' ')"
 assert_value "両フックで送信権が1つだけ作られる" "1" "$sent_count"
+
+# HEADに当日見出しがない作業ツリーだけの更新はフックから送信しない。
+printf '\n## 2026-09-05\n' >> "$hook_repo_dir/everyday_news/202609.md"
+assert_status "未commit当日はフック送信を抑止する" 0 \
+  run_hook "$script_dir/../../.claude/hooks/line_notify.sh" "$uncommitted_state_dir" "2026-09-05"
+sent_count="$(find "$uncommitted_state_dir" -type d -name '*.sent' -print 2>/dev/null | wc -l | tr -d ' ')"
+assert_value "未commit当日は送信claimを作らない" "0" "$sent_count"
 
 # フックからのLINE送信が失敗した場合はclaimを解放し、同日再送を可能にする。
 mkdir -p "$failure_stub_dir"

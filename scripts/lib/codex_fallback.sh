@@ -54,11 +54,13 @@ mark_as_codex_fallback() {
 send_line_broadcast() {
   local settings_file="$1"
   local message="$2"
+  local max_time="${3:-20}"
+  local retry_count="${4:-2}"
   local token
   token="${LINE_CHANNEL_ACCESS_TOKEN:-$(jq -r '.env.LINE_CHANNEL_ACCESS_TOKEN // empty' "$settings_file")}"
   local body
   body=$(jq -n --arg t "$message" '{messages:[{type:"text",text:$t}]}')
-  curl -fsS --max-time 8 --retry 1 --retry-delay 1 \
+  curl -fsS --max-time "$max_time" --retry "$retry_count" --retry-delay 1 \
     -X POST https://api.line.me/v2/bot/message/broadcast \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $token" \

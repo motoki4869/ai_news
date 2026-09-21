@@ -87,6 +87,7 @@ git -C "$TEST_REPO" commit -q -m 'seed daily news'
 run_daily() {
   local claude_bin="$1"
   local output_file="$2"
+  local notify_state_dir="${4:-$TMP_DIR/notify-state}"
   set +e
   PATH="$TMP_DIR:$PATH" \
   REPO_DIR="$TEST_REPO" \
@@ -97,7 +98,7 @@ run_daily() {
   FAKE_CURL_FAIL="${3:-0}" \
   LINE_CHANNEL_ACCESS_TOKEN=test-token \
   LINE_NOTIFY_DATE="$TODAY" \
-  LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state" \
+  LINE_NOTIFY_STATE_DIR="$notify_state_dir" \
   NOTEBOOKLM_AUDIO_SCRIPT="$TMP_DIR/missing-audio" \
   GH_BIN="$TMP_DIR/missing-gh" \
     "$SCRIPT_ROOT/scripts/daily_news.sh" > "$output_file" 2>&1
@@ -205,7 +206,7 @@ cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 EOF
 
 before_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
-if ! run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0; then
+if ! run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0 "$TMP_DIR/notify-state-uncommitted"; then
   echo "未commit当日分の実行を失敗扱いしました" >&2
   exit 1
 fi
