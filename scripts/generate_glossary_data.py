@@ -8,7 +8,10 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
+import sys
+import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -21,8 +24,14 @@ THEME_BY_INDEX = [
     "t-biz", "t-gov", "t-security", "t-industry", "t-models",
 ]
 
-SEPARATOR_RE = re.compile(r"\|[\s:\-|]+\|?")
 HEADING_RE = re.compile(r"^##\s+(?:(\d+)\.\s*)?(.+)$")
+SEPARATOR_CELL_RE = re.compile(r"^:?-{3,}:?$")
+STANDARD_HEADER = ("用語", "正式名称 / 読み", "意味")
+MODEL_HEADER = ("開発元", "モデル / シリーズ", "補足")
+
+
+class GlossaryParseError(ValueError):
+    """用語集Markdownの表が想定形式に一致しないことを表す。"""
 
 
 def inline(text: str) -> str:
@@ -33,19 +42,55 @@ def inline(text: str) -> str:
     return text
 
 
-def parse_table(lines: list[str]) -> tuple[list[str], list[list[str]]]:
-    rows = [l.strip() for l in lines if l.strip().startswith("|")]
-    rows = [r for r in rows if not SEPARATOR_RE.fullmatch(r)]
-    cells = [[c.strip() for c in r.strip("|").split("|")] for r in rows]
-    if not cells:
+def _table_cells(line: str) -> list[str]:
+    return [cell.strip() for cell in line.strip().strip("|").split("|")]
+
+
+def _is_separator(cells: list[str]) -> bool:
+    return bool(cells) and all(SEPARATOR_CELL_RE.fullmatch(cell) for cell in cells)
+
+
+def parse_table(lines: list[tuple[int, str]]) -> tuple[list[str], list[list[str]]]:
+    rows = [(lineno, line.strip()) for lineno, line in lines if line.strip().startswith("|")]
+    if not rows:
         return [], []
-    return cells[0], cells[1:]
+
+    header_lineno, header_line = rows[0]
+    header = _table_cells(header_line)
+    expected_headers = (STANDARD_HEADER, MODEL_HEADER)
+    if tuple(header) not in expected_headers:
+        raise GlossaryParseError(
+            f"{SRC_FILE}:{header_lineno}: 用語集の表見出しが不正です: {header_line}"
+        )
+    if len(rows) < 2 or not _is_separator(_table_cells(rows[1][1])):
+        lineno = rows[1][0] if len(rows) > 1 else header_lineno
+        raise GlossaryParseError(
+            f"{SRC_FILE}:{lineno}: 用語集の表に区切り行がありません"
+        )
+
+    data: list[list[str]] = []
+    for lineno, line in rows[2:]:
+        cells = _table_cells(line)
+        if _is_separator(cells):
+            raise GlossaryParseError(
+                f"{SRC_FILE}:{lineno}: 表のデータ行に区切り行があります: {line}"
+            )
+        if len(cells) != 3:
+            raise GlossaryParseError(
+                f"{SRC_FILE}:{lineno}: 用語集の表は3列必要です（{len(cells)}列）: {line}"
+            )
+        if any(not cell for cell in cells):
+            raise GlossaryParseError(
+                f"{SRC_FILE}:{lineno}: 用語集の表の必須セルが空です: {line}"
+            )
+        data.append(cells)
+    return header, data
 
 
 def build_sections(md: str) -> list[dict]:
     sections: list[dict] = []
     current: dict | None = None
-    buffer: list[str] = []
+    buffer: list[tuple[int, str]] = []
 
     def flush() -> None:
         if current is None:
@@ -74,7 +119,7 @@ def build_sections(md: str) -> list[dict]:
             current["entries"] = entries
             sections.append(current)
 
-    for line in md.split("\n"):
+    for lineno, line in enumerate(md.split("\n"), 1):
         m = HEADING_RE.match(line.rstrip())
         if m:
             flush()
@@ -87,24 +132,56 @@ def build_sections(md: str) -> list[dict]:
             }
             continue
         if current is not None:
-            buffer.append(line)
+            buffer.append((lineno, line))
     flush()
     return sections
 
 
-def main() -> None:
+def write_output(path: Path, content: str) -> None:
+    """生成物を一時ファイルへ書いてから原子的に置換する。"""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            delete=False,
+        ) as temp_file:
+            temp_path = temp_file.name
+            temp_file.write(content)
+            temp_file.flush()
+            os.fsync(temp_file.fileno())
+        os.replace(temp_path, path)
+        temp_path = None
+    finally:
+        if temp_path is not None:
+            try:
+                os.unlink(temp_path)
+            except FileNotFoundError:
+                pass
+
+
+def main() -> int:
     md = SRC_FILE.read_text(encoding="utf-8")
-    sections = build_sections(md)
+    try:
+        sections = build_sections(md)
+    except GlossaryParseError as exc:
+        print(f"エラー: {exc}", file=sys.stderr)
+        print("history/glossary-data.js は更新していません。", file=sys.stderr)
+        return 1
     total = sum(len(s["entries"]) for s in sections)
     payload = json.dumps(sections, ensure_ascii=False, indent=2)
-    OUT_FILE.write_text(
+    write_output(
+        OUT_FILE,
         "/* 自動生成ファイル — 編集しないこと。\n"
         "   ソース: docs/glossary.md / 生成: scripts/generate_glossary_data.py */\n"
         f"window.GLOSSARY = {payload};\n",
-        encoding="utf-8",
     )
     print(f"wrote {OUT_FILE.relative_to(REPO_ROOT)}: {len(sections)} sections / {total} terms")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

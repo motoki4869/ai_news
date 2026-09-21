@@ -2,8 +2,7 @@
 
 `history/` 配下のサイト（デイリーニュース・最新トレンド・年表）と、その元データである `report/` 25本・`everyday_news/` に**実際に登場する用語**だけを収録した用語集。一般的なAI辞書ではなく「このサイトを読んでいて詰まる語」に絞っている。
 
-- 対象データ: `report/*.md`（2026-07-05〜2026-09-20）、`history/daily-data.js`（69日分）、`history/news.html`、`history/generative.html`、`everyday_news/2026*.md`
-- 最終更新: 2026-09-20
+- 対象データ: `report/*.md`、`history/daily-data.js`、`history/news.html`、`history/generative.html`、`everyday_news/2026*.md`
 
 ---
 

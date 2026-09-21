@@ -18,6 +18,13 @@ cd "$REPO_DIR"
 
 source "$REPO_DIR/scripts/lib/codex_fallback.sh"
 source "$REPO_DIR/scripts/lib/line_notification_dedupe.sh"
+source "$REPO_DIR/scripts/lib/news_update_lock.sh"
+
+if ! acquire_news_update_lock "$REPO_DIR"; then
+  echo "別の日次・週次ニュース更新が実行中のため、今回の更新を中止します" >&2
+  exit 1
+fi
+trap 'release_news_update_lock "$REPO_DIR"' EXIT
 
 LINE_MSG_MTIME_BEFORE=0
 [ -f "$LINE_MSG_FILE" ] && LINE_MSG_MTIME_BEFORE=$(stat -f %m "$LINE_MSG_FILE" 2>/dev/null || echo 0)
@@ -39,8 +46,18 @@ if [ "$STATUS" -ne 0 ] && is_claude_limit_reached "$OUTPUT"; then
   IS_FALLBACK=1
 fi
 
+if [ "$STATUS" -eq 0 ] && printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: ERROR:'; then
+  STATUS=1
+fi
+if [ "$STATUS" -eq 0 ] && ! printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: OK:'; then
+  echo "成功を示すSUMMARY: OK:がないため、日次更新を失敗扱いにします" >&2
+  STATUS=1
+fi
+
 SUMMARY="$(echo "$OUTPUT" | grep '^SUMMARY:' | tail -1 | sed 's/^SUMMARY: *//')"
 SUMMARY="${SUMMARY:-ニュースを更新しました}"
+SUMMARY="${SUMMARY#OK: }"
+SUMMARY="${SUMMARY#ERROR: }"
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
 #
 # 以前は本文を文字列リテラルに直接埋め込み、`cut -c1-200` で長さを詰めていたが、

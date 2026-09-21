@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-09-21
 
+### 日次・週次ニュース更新の失敗復旧と競合対策
+- **変更**: 日次更新の成功・失敗Summaryを機械判定可能な形式に統一し、生成失敗や成功Summary欠落を成功通知しないようにした。当日分が既に存在する場合も生成・commit処理を続行し、失敗後の同日再実行で復旧できるようにした。用語集生成器に表の見出し・列数・必須セルの検証と原子的な生成物置換を追加し、日次・週次更新で共有するリポジトリロックと回帰テストを追加した。日々陳腐化する用語集の日数・最終更新メタデータは削除した。
+- **理由**: solレビューで、失敗時の成功扱い、同日再実行のスキップ、壊れた用語行の黙った取りこぼし、生成物の非アトミック更新、テスト不足、日次・週次の同時実行によるGit index競合が判明したため。
+- **対象**: `scripts/daily_news.sh`、`scripts/lib/news_update_lock.sh`、`scripts/generate_glossary_data.py`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`.agents/skills/sync-news-html/SKILL.md`、`docs/glossary.md`、`.gitignore`、`test/`
+- **commit**: `HEAD`
+
 ### 日次ニュース更新時の用語集確認・再生成
 - **変更**: 日次ニュース生成用のClaude版・Codex版プロンプトに、当日追加したニュースから未収録用語を確認し、必要に応じて`docs/glossary.md`へ追加したうえで`history/glossary-data.js`を再生成する手順を追加した。用語集関連ファイルを日次コミットの対象にも含めた。
 - **理由**: 日次ニュースに登場した新しいAI用語が、週次レポート更新まで用語集へ反映されない期間をなくすため。

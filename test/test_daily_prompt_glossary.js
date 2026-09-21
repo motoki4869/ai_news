@@ -8,6 +8,10 @@ const PROMPTS = [
   path.join(ROOT, 'scripts', 'daily_news_prompt.txt'),
   path.join(ROOT, 'scripts', 'daily_news_prompt.codex.txt'),
 ];
+const GLOSSARY_SOURCE = fs.readFileSync(
+  path.join(ROOT, 'docs', 'glossary.md'),
+  'utf8',
+);
 
 test('日次ニュース更新プロンプトに用語集更新手順が含まれる', () => {
   for (const promptPath of PROMPTS) {
@@ -21,6 +25,10 @@ test('日次ニュース更新プロンプトに用語集更新手順が含ま�
       `${path.basename(promptPath)} が用語集生成物を扱っていません`);
     assert.match(prompt, /用語.*未収録|未収録.*用語/,
       `${path.basename(promptPath)} が新規用語の確認を指示していません`);
+    assert.match(prompt, /SUMMARY:\s*OK:/,
+      `${path.basename(promptPath)} が成功結果の機械判定形式を定義していません`);
+    assert.match(prompt, /SUMMARY:\s*ERROR:/,
+      `${path.basename(promptPath)} が失敗結果の機械判定形式を定義していません`);
   }
 });
 
@@ -31,4 +39,32 @@ test('日次ニュース更新プロンプトは用語集関連ファイルをco
     assert.match(prompt, /docs\/glossary\.md[\s\S]*history\/glossary-data\.js/,
       `${path.basename(promptPath)} が用語集関連ファイルのcommitを指示していません`);
   }
+});
+
+test('日次ニュース更新プロンプトは当日分が存在しても生成・commit手順を続行する', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(
+      prompt,
+      /既に.*存在[\s\S]*追加だけを行わず[\s\S]*手順8・9へ続けて進む/,
+      `${path.basename(promptPath)} が同日再実行時の復旧処理を指示していません`,
+    );
+  }
+});
+
+test('Claude版とCodex版の日次プロンプトは検索ツール名以外が一致する', () => {
+  const [claudePrompt, codexPrompt] = PROMPTS.map((promptPath) =>
+    fs.readFileSync(promptPath, 'utf8'),
+  );
+  const normalize = (prompt) => prompt
+    .replace(/WebSearchを使って/g, '<SEARCH_TOOL>を使って')
+    .replace(/browser_useツールを使って/g, '<SEARCH_TOOL>を使って');
+
+  assert.equal(normalize(claudePrompt), normalize(codexPrompt));
+});
+
+test('用語集原本に日次処理で陳腐化する固定メタデータを持たせない', () => {
+  assert.doesNotMatch(GLOSSARY_SOURCE, /history\/daily-data\.js`（\d+日分）/);
+  assert.doesNotMatch(GLOSSARY_SOURCE, /- 最終更新: \d{4}-\d{2}-\d{2}/);
 });
