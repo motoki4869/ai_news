@@ -15,7 +15,7 @@ const GENERATIVE_HTML = fs.readFileSync(
 for (const [pageName, html] of [['AI HISTORY', INDEX_HTML], ['生成AI年表', GENERATIVE_HTML]]) {
   test(`${pageName}のAI比較ボタンから2つの性能比較サイトを選べる`, () => {
     assert.match(html, /id="ai-benchmark-modal"[^>]*role="dialog"[^>]*aria-modal="true"/);
-    assert.match(html, /<h2 id="ai-benchmark-title">最新のAI性能を比較する<\/h2>/);
+    assert.match(html, /<h2 id="ai-benchmark-title">最新AIの性能を比較する<\/h2>/);
     assert.match(html, /<button[^>]*aria-controls="ai-benchmark-modal"[^>]*>AI比較<\/button>/);
     assert.match(html, /href="https:\/\/arena\.ai\/leaderboard\/"[^>]*target="_blank"[^>]*rel="noopener"/);
     assert.match(html, /href="https:\/\/artificialanalysis\.ai\/"[^>]*target="_blank"[^>]*rel="noopener"/);
