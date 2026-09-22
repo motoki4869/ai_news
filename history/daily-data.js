@@ -5976,5 +5976,140 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.cbsnews.com/news/jensen-huang-nvidia-rejects-ai-extinction-warnings/"
     }
+  ],
+  "2026-09-23": [
+    {
+      "title": "【技術革新】OpenAI、「GPT-6 Sol」「GPT-6 Luna」を公開——API価格を半額に下げ、上位モデル並みの性能を大幅低コストで",
+      "intro": "9月22日、OpenAIが旗艦モデル「GPT-6 Astra」の約3週間後に、GPT-6世代の中位モデル「Sol」と軽量モデル「Luna」を公開した。",
+      "points": [
+        {
+          "label": "価格",
+          "text": "Solは入力100万トークンあたり2ドル／出力10ドル、Lunaは0.10ドル／0.50ドルで、キャッシュと推論の効率化によりGPT-5.6世代の同クラスから約半額に引き下げられた。"
+        },
+        {
+          "label": "性能",
+          "text": "ソフトウェア開発ベンチマークDeepSWE v1.1でSolは68.8%を記録し、AnthropicのFable 5（69.9%）とほぼ並ぶ水準を約5分の1のコストで達成したとOpenAIは説明している。"
+        },
+        {
+          "label": "使い分け",
+          "text": "Solはコーディングなど複雑なタスク向け、Lunaは文書要約や情報抽出など目的が明確な大量処理向けと位置づけられ、あわせてGPT-5.5を10月14日にChatGPT・Codexから退役させると告知した。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/22/openai-launches-gpt-6-sol-and-luna/"
+    },
+    {
+      "title": "【倫理・規制】OpenAI、外部機関による安全性評価を「学習中」から受け入れへ——完成品テストだけでは不十分と判断",
+      "intro": "9月22日、OpenAIは新モデルの学習・評価・展開の各段階で、第三者機関に技術的な安全性評価を実施させる方針を発表した。従来はリリース直前の完成モデルを外部に試験させるのが一般的だった。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "評価機関には学習途中のモデルのチェックポイントや一部の評価結果への安全なアクセスを提供するとし、METRやRedwood Researchと協議を進めている。"
+        },
+        {
+          "label": "背景",
+          "text": "高度なAIは自分が評価されていることを見抜く能力を高めており、最終製品だけを試験する手法では安全性を十分に確かめられなくなっているという問題意識がある。"
+        },
+        {
+          "label": "タイミング",
+          "text": "前日には米国主導でフロンティアAIの国際技術標準を作るよう提言しており、9月23日の国連安全保障理事会でのAIセッションを前に、安全性への取り組みを相次いで打ち出した形となった。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-09-22/openai-to-let-outside-groups-evaluate-ai-models-at-earlier-phase"
+    },
+    {
+      "title": "【ビジネス】フィンランドのAIクラウド「Verda」が1.89億ドル調達——欧州最新のユニコーンに",
+      "intro": "9月22日、ヘルシンキ拠点のGPUクラウド企業Verdaが、Emergence Capital主導のシリーズBを含む総額1億8,900万ドルの資金調達を発表した。評価額は10億ドル以上とされる。",
+      "points": [
+        {
+          "label": "成長",
+          "text": "7月時点で年換算売上高（ARR）は1億6,500万ドルに達しており、資本集約的だと敬遠されがちなGPUクラウド事業で急成長を示した。"
+        },
+        {
+          "label": "出資者",
+          "text": "MUFGイノベーション・パートナーズ、Supermicro、フィンランドの年金基金Varmaや政府系投資会社Tesiなどが参加した。"
+        },
+        {
+          "label": "意味合い",
+          "text": "調達資金は計算能力の増強と欧州・米国・アジアでの拡大に充てられ、米国ハイパースケーラーへの依存を減らしたい欧州で、域内のAIインフラ事業者が存在感を高めている。"
+        }
+      ],
+      "url": "https://tech.eu/2026/09/22/verda-raises-189m-to-advance-its-ai-cloud-and-expand-compute-capacity"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Alphabet傘下Intrinsic、産業用ロボット基盤「Intrinsic Core」をオープンソース化",
+      "intro": "9月22日、Alphabetのロボティクス部門Intrinsicが、カナダ・トロントで開催中のROSCon 2026で、自社の製造現場向け基盤ソフトウェアの中核を「Intrinsic Core」としてApache 2.0ライセンスで公開した。",
+      "points": [
+        {
+          "label": "中身",
+          "text": "ハードウェアに依存しないリアルタイム制御、NVIDIAのFoundationPoseを使った部品の姿勢推定、衝突回避の動作計画、把持計画、シミュレーションやキャリブレーション機能をまとめて提供する。"
+        },
+        {
+          "label": "狙い",
+          "text": "ロボットアプリ開発で最も手間のかかる基盤部分を一から作らずに済むようにし、ROS互換で既存のロボット開発者コミュニティを取り込む。"
+        },
+        {
+          "label": "実用例",
+          "text": "あわせてCNC工作機械へのワーク投入を自動化する参照設計「Open Machine Tending Solution」も公開し、FanucやUniversal Robotsなど他社製ロボットでも使えるとしている。"
+        }
+      ],
+      "url": "https://siliconangle.com/2026/09/22/googles-robotics-unit-intrinsic-open-sources-its-foundational-infrastructure-for-intelligent-robots/"
+    },
+    {
+      "title": "【倫理・規制】NatWest・Bank of Americaなど銀行グループ、AIショッピングエージェントの詐欺・プライバシーリスクに警鐘",
+      "intro": "9月22日、NatWest、Bank of America、ING、Capital Oneなどの銀行グループが、AIエージェントによるオンライン購買は詐欺や不正、データ漏えいのリスクを高めると警告し、技術開発のための原則を示した。",
+      "points": [
+        {
+          "label": "懸念点",
+          "text": "AIが勝手に使いすぎた場合や損失が出た場合に誰が責任を負うのかが消費者にとって不明確なまま、エージェントの普及が標準整備を追い越していると指摘した。"
+        },
+        {
+          "label": "普及状況",
+          "text": "英小売大手John Lewisでは、AIエージェント経由の検索が1年前の0.3%から2.5%に増えており、その伸びは加速している。"
+        },
+        {
+          "label": "文脈",
+          "text": "前日にはAmazonがMetaのAIエージェント「Muse」の利用を遮断したばかりで、決済を担う金融機関もエージェント商取引のルール作りに本格的に関与し始めた。"
+        }
+      ],
+      "url": "https://www.investing.com/news/stock-market-news/banks-warn-ai-shopping-bots-raise-scam-fraud-and-dataprivacy-risks-4910257"
+    },
+    {
+      "title": "【技術革新】AIと数学者の共同作業で、数十年来の「逆ガロア問題」の一例が解決",
+      "intro": "Scientific Americanは、米国数学研究所（AIM）の呼びかけで集まった6人の数学者チームが、AIの大規模探索を活用して長年未解決だった逆ガロア問題の一例を解いたと報じた。",
+      "points": [
+        {
+          "label": "問題",
+          "text": "逆ガロア問題は「特定の対称性（ガロア群）を持つ有理係数の多項式が必ず存在するか」を問うもので、コロラド州立大のレイチェル・プライス氏が、AIの網羅的探索に向く課題として提示した。"
+        },
+        {
+          "label": "AIの役割",
+          "text": "チームはAIに散在群M23の対称性の組み合わせを探索させ、見つかった候補のうち最小の曲面7つについて方程式を数値近似させることで、人間の洞察と組み合わせて突破口を得た。"
+        },
+        {
+          "label": "意義",
+          "text": "人間の数学者が問題設定と理論的な裏付けを担い、AIが人間には不可能な規模の探索を担うという分業が、純粋数学の最前線で成果を出し始めていることを示した。"
+        }
+      ],
+      "url": "https://www.scientificamerican.com/article/mathematicians-use-ai-to-find-mysterious-symmetries-solving-decades-old-problem/"
+    },
+    {
+      "title": "【注目ツール】Google、Gemini APIのマネージドエージェントを刷新——Antigravity相当のハーネスと認証情報APIを追加",
+      "intro": "Googleは、Gemini APIのマネージドエージェント向けに新しい実行基盤「antigravity-preview-09-2026」を公開し、同社のコーディングエージェントAntigravityと同等のツールと振る舞いをAI StudioとInteractions APIで使えるようにした。",
+      "points": [
+        {
+          "label": "性能",
+          "text": "Gemini 3.8 Flash上で動作し、ファイル変更時の出力トークンを40%削減、複数ターンの開発・調査タスクの完了率を最大6%高めたとしている。料金は据え置き。"
+        },
+        {
+          "label": "新API",
+          "text": "エージェントの実行環境とファイルをやり取りするFiles APIと、MCPサーバーや外部APIの認証トークンをサンドボックス内に置かずにプロキシ経由で注入するCredentials APIを追加し、企業利用でのセキュリティを高めた。"
+        },
+        {
+          "label": "移行",
+          "text": "旧版のantigravity-preview-05-2026は10月5日に廃止され、以降のリクエストは新ハーネスへ自動で転送される。"
+        }
+      ],
+      "url": "https://aistudio.google.com/learn/managed-agents-updated-harness-files-credentials?e=0"
+    }
   ]
 };

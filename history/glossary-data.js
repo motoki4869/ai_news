@@ -292,6 +292,12 @@ window.GLOSSARY = [
         "sub": "American National Standards Institute / Robotic Industries Association 規格",
         "desc": "人間と同一空間で稼働する自律型ロボットに求められる産業安全規格。人間が一定距離内に侵入した際に200ミリ秒以内で完全停止・減速する監視機能や、転倒時に作業者を巻き込まない自律倒れ込み制御が要件となる。床面の傾斜・凹凸を3mm以内に抑えるサイトレディネスや500ルクス以上の照度確保と合わせ、ヒューマノイド現場配備の実務的なハードルとして扱われる。",
         "q": "ansi/a3 r15.06-2025 american national standards institute / robotic industries association 規格 人間と同一空間で稼働する自律型ロボットに求められる産業安全規格。人間が一定距離内に侵入した際に200ミリ秒以内で完全停止・減速する監視機能や、転倒時に作業者を巻き込まない自律倒れ込み制御が要件となる。床面の傾斜・凹凸を3mm以内に抑えるサイトレディネスや500ルクス以上の照度確保と合わせ、ヒューマノイド現場配備の実務的なハードルとして扱われる。"
+      },
+      {
+        "term": "<strong>ROS</strong>",
+        "sub": "Robot Operating System",
+        "desc": "ロボット開発で事実上の標準となっているオープンソースのミドルウェア群。センサー・制御・動作計画などの部品を共通の通信規格でつなぐ。2026年9月のROSCon 2026では、Alphabet傘下のIntrinsicがROS互換の産業用ロボット基盤「Intrinsic Core」をApache 2.0で公開し、既存のROS開発者コミュニティの取り込みを狙った。",
+        "q": "ros robot operating system ロボット開発で事実上の標準となっているオープンソースのミドルウェア群。センサー・制御・動作計画などの部品を共通の通信規格でつなぐ。2026年9月のroscon 2026では、alphabet傘下のintrinsicがros互換の産業用ロボット基盤「intrinsic core」をapache 2.0で公開し、既存のros開発者コミュニティの取り込みを狙った。"
       }
     ]
   },
@@ -732,10 +738,10 @@ window.GLOSSARY = [
         "q": "anthropic claude opus / sonnet / fable / mythos fable 5.1 は terminal-bench 4.0 で55.8%。mythos はサイバー能力が突出しており、mythos preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、project glasswing の40社パートナーにのみ厳格提供されている。"
       },
       {
-        "term": "GPT-5.6 Sol / Terra / Luna / Astra / GPT-Live",
+        "term": "GPT-6 Astra / Sol / Luna / GPT-Live",
         "sub": "<strong>OpenAI</strong>",
-        "desc": "Sol / Terra / Luna の3系統を2026年7月9日に一般公開。Astra は次世代モデルだが、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
-        "q": "openai gpt-5.6 sol / terra / luna / astra / gpt-live sol / terra / luna の3系統を2026年7月9日に一般公開。astra は次世代モデルだが、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
+        "desc": "GPT-5.6 の Sol / Terra / Luna の3系統を2026年7月9日に一般公開。2026年9月にはGPT-6世代として旗艦 Astra に続き、9月22日に Sol（コーディング等の複雑なタスク向け）と Luna（要約・抽出など大量処理向け）を公開し、API価格をGPT-5.6世代の約半額に下げた。Astra は公開前、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された経緯を持つ。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
+        "q": "openai gpt-6 astra / sol / luna / gpt-live gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
         "term": "Gemini 3 Pro / 3.1 Flash / 3.5 Pro 等",
