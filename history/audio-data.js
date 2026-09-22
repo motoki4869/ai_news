@@ -263,5 +263,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-22.m4a",
     "label": "2026-09-22のAIニュース音声",
     "title": "画面を飛び出し現実に衝突するAI"
+  },
+  "2026-09-23": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-23.m4a",
+    "label": "2026-09-23のAIニュース音声",
+    "title": "意志を持ち自律するAIインフラ"
   }
 };
