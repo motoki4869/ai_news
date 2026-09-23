@@ -268,5 +268,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-23.m4a",
     "label": "2026-09-23のAIニュース音声",
     "title": "意志を持ち自律するAIインフラ"
+  },
+  "2026-09-24": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-24.m4a",
+    "label": "2026-09-24のAIニュース音声",
+    "title": "多数決で意思決定するAIの衝撃"
   }
 };
