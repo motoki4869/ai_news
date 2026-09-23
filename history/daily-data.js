@@ -6111,5 +6111,140 @@ window.DAILY_NEWS = {
       ],
       "url": "https://aistudio.google.com/learn/managed-agents-updated-harness-files-credentials?e=0"
     }
+  ],
+  "2026-09-24": [
+    {
+      "title": "【倫理・規制】国連安保理でOpenAI・Anthropic・Hugging FaceのトップがAIリスクを証言——「人類全体へのリスク」と警告",
+      "intro": "9月23日、国連総会ハイレベルウィークに合わせ、議長国フランスが安全保障理事会で「AIと国際安全保障」の高級レベル会合を開き、主要AI企業のトップが直接ブリーフィングを行った。",
+      "points": [
+        {
+          "label": "登壇者",
+          "text": "OpenAIのサム・アルトマンCEO、Anthropicのダリオ・アモデイCEO、Hugging FaceのClément Delangue CEO、国連のAI独立国際科学パネル共同議長ヨシュア・ベンジオ氏が証言し、仏外相ジャン＝ノエル・バロ氏が議長を務めた。"
+        },
+        {
+          "label": "警告の中身",
+          "text": "AIが自己改良して人間の管理を外れる可能性に言及し、アモデイ氏は「うまく管理できなければ人類全体へのリスクになりうる」、ベンジオ氏は「危険は現実的で差し迫っている」と述べた。アルトマン氏は重要な判断をサンフランシスコの研究所だけで下すべきではないと民主的な統治を訴えた。"
+        },
+        {
+          "label": "各国の温度差",
+          "text": "トランプ政権はグローバルなAI規制を拒否し振興を優先する姿勢を示す一方、米中間ではAI関連の安全保障インシデントを相互通報する仕組みも議論されており、今週の米中首脳会談に向けた焦点となる。"
+        }
+      ],
+      "url": "https://www.bnnbloomberg.ca/business/artificial-intelligence/2026/09/23/ai-leaders-warn-un-of-security-risks-as-systems-grow-more-powerful/"
+    },
+    {
+      "title": "【技術革新】Claudeのエージェント群が「CRISPRに似た」未知の酵素システムを発見——950体が21時間で20万件を探索",
+      "intro": "9月23日、Anthropicは、Claudeのエージェントが巨大なDNA配列データベースから、これまで報告されていなかった酵素システム「ART（array-associated reverse transcriptases）」を自律的に見つけたと発表した。",
+      "points": [
+        {
+          "label": "探索の規模",
+          "text": "約950体のエージェントが21時間・2億1,000万トークンを使って20万件超の逆転写酵素を収集し、約3,500の候補システムから人間が精査する20件に絞り込んだ。"
+        },
+        {
+          "label": "発見の中身",
+          "text": "巨大ファージ由来の逆転写酵素、パートナー遺伝子、CRISPRアレイを思わせる反復配列の3要素からなり、アレイが短いRNAを生み出すことが初期実験で確認された。生物学的な機能はまだ不明で、Anthropicのベイエリアの研究所で検証実験が続いている。"
+        },
+        {
+          "label": "評価",
+          "text": "CRISPR研究の第一人者であるMITのフェン・チャン教授は「AIエージェントが生物学の発見に貢献できることを示す好例」と評価し、発表後には遺伝子編集関連銘柄が下落するなど市場も反応した。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/claude-discovers-novel-enzyme-system"
+    },
+    {
+      "title": "【ビジネス】学習データ供給のSnorkel AI、3.5億ドル調達で評価額3倍の35億ドルに——データ需要の急拡大を映す",
+      "intro": "9月22日（米国時間）、スタンフォード大学発のSnorkel AIが、Insight PartnersとS32が共同主導するシリーズEで3億5,000万ドルを調達し、評価額が35億ドルに達したと発表した。",
+      "points": [
+        {
+          "label": "急成長",
+          "text": "2025年5月の評価額13億ドルからほぼ3倍となり、年換算売上高は約3億7,500万ドルと1年で18倍に伸びた。"
+        },
+        {
+          "label": "事業転換",
+          "text": "データラベリング用ソフトの販売から、専門家と自社モデルを組み合わせて完成済みデータセットや強化学習環境を納める「データ・アズ・ア・サービス」へ軸足を移したことが成長をけん引した。"
+        },
+        {
+          "label": "業界の構図",
+          "text": "フロンティアAI企業による高品質な学習データの争奪が続き、MercorやHandshakeなど同業も売上を急拡大させており、データ供給が一大市場になりつつある。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/09/22/snorkel-ai-triples-valuation-to-3-5b-as-demand-for-ai-training-data-booms/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】AIドローンのTekever、5.8億ドル調達で評価額64億ドルに——ウクライナで実戦経験を積んだ防衛テック",
+      "intro": "9月23日、ポルトガル・英国拠点のAI自律ドローンメーカーTekeverが、UC Investments（カリフォルニア大学の投資部門）とBaillie Giffordが主導するシリーズDで5億8,000万ドルを調達したと発表した。",
+      "points": [
+        {
+          "label": "実績",
+          "text": "同社の監視ドローンは2022年以降ウクライナで5万時間超の運用飛行実績があり、英国防省からは10年間で最大4億ポンド規模の監視システム計画に選定されたばかりだった。"
+        },
+        {
+          "label": "資金使途",
+          "text": "調達資金は海外展開、生産能力と技術基盤の強化、企業買収に充てる。"
+        },
+        {
+          "label": "背景",
+          "text": "欧州で防衛予算の増額が続く中、AIによる自律化を組み込んだ防衛装備への投資マネーが急速に集まっている。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/09/23/ai-drone-maker-ukraine-war-defense-tech.html"
+    },
+    {
+      "title": "【注目ツール】Amazon、出品者向けツールを外部AIエージェントに開放——まずClaudeからAmazon事業を運営可能に",
+      "intro": "9月23日、Amazonは出品者向けイベント「Amazon Accelerate」で、AIアシスタント「Seller Assistant」の機能を外部AIから使える「Selling Partner」プラグインを発表した。自社のAmazon Quickに加え、AnthropicのClaudeでベータ提供する。",
+      "points": [
+        {
+          "label": "できること",
+          "text": "出品者はSeller Centralを開かずに、Claude上で在庫確認や価格変更、商品ページの更新、売上分析ができる。どのデータに触れさせるかは出品者が選び、各操作は実行前に承認する仕組み。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "まず米国ストアの出品者向けにベータ提供し、海外にも順次広げる。Seller Assistant本体にも記憶の保持や常時稼働のワークフロー、実データから画面を生成する「キャンバス」機能が加わった。"
+        },
+        {
+          "label": "意味合い",
+          "text": "Metaのエージェントを締め出した直後に、売り手側の業務では外部AIを公式に受け入れた形で、Amazonが自社の管理下でのエージェント連携を選別的に進めていることがうかがえる。"
+        }
+      ],
+      "url": "https://www.geekwire.com/2026/amazon-opens-its-seller-tools-to-outside-ai-agents-starting-with-anthropics-claude/"
+    },
+    {
+      "title": "【注目ツール】Meta Connect 2026、カメラなしAIグラス「Luna」と複合現実ヘッドセット「Phoenix」を発表",
+      "intro": "9月23日、Metaは米メンローパークで開いた年次イベントMeta Connect 2026で、AIグラスと複合現実デバイスを中心とした新製品群を発表し、VRヘッドセットからメガネ型への転換を鮮明にした。",
+      "points": [
+        {
+          "label": "Luna",
+          "text": "6つのマイクとオープンイヤースピーカー、Meta AI専用ボタンを備えた音声専用のAIグラス。他人を撮影するプライバシー懸念に配慮してカメラを取り除き、今秋に発売予定とした。"
+        },
+        {
+          "label": "Phoenix",
+          "text": "ポケットに入る計算ユニットと有線でつなぐメガネ型の複合現実ヘッドセットで、手と目の動きで操作する。価格は1,000〜2,000ドル程度と報じられ、発売は2027年前半の見込み。"
+        },
+        {
+          "label": "AI",
+          "text": "Ray-Ban Metaの第3世代も含め、新製品はMeta Superintelligence Labsの独自モデル「Muse Spark」を搭載し、グラスをAIアシスタントの主要な入り口に位置づける。"
+        }
+      ],
+      "url": "https://startupfortune.com/meta-unveils-2000-phoenix-headset-as-it-pivots-from-vr-to-smart-glasses/"
+    },
+    {
+      "title": "【倫理・規制】Cisco Talos、4つのLLMの多数決で攻撃手順を決める自律型マルウェア「CLOSEDQUORUM」を公表",
+      "intro": "9月22日（米国時間）、Cisco Talosは、AIが人間の操作者なしに侵入後の行動を決める「自律型C2（指令制御）」を備えたWindows向けマルウェアを、公に報告された初の事例として公表した。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "感染端末の情報をGemini、DeepSeek、Qwen、Mistralの4つの商用LLMに送り、認証情報の窃取、コード注入、永続化、横展開などの選択肢から次の行動を回答させ、最も票の多い行動を実行する。"
+        },
+        {
+          "label": "現状",
+          "text": "実際の攻撃での使用はまだ確認されていないが、開発者は2025年からカード詐欺系の犯罪フォーラムで活動していた痕跡がある。Talosはあわせて、AI組み込み型マルウェアを追跡するオープンソースのツールキット「CAIRN」を公開した。"
+        },
+        {
+          "label": "防御への示唆",
+          "text": "攻撃の工程がどんどん無人化していることを示す事例で、ドメインの遮断ではなく、想定外のプログラムから複数のLLM APIへ同時に通信が出るといった振る舞いを検知する対策が必要だとしている。"
+        }
+      ],
+      "url": "https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/"
+    }
   ]
 };
