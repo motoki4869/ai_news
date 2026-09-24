@@ -273,5 +273,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-24.m4a",
     "label": "2026-09-24のAIニュース音声",
     "title": "多数決で意思決定するAIの衝撃"
+  },
+  "2026-09-25": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-25.m4a",
+    "label": "2026-09-25のAIニュース音声",
+    "title": "勝手に裏口をこじ開けるAIエージェント"
   }
 };
