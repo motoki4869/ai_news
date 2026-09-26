@@ -9,6 +9,8 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 TEST_REPO="$TMP_DIR/repo"
 TODAY="$(date +%Y-%m-%d)"
 MONTH="$(date +%Y%m)"
+TODAY_MONTH=$((10#${TODAY:5:2}))
+TODAY_DAY=$((10#${TODAY:8:2}))
 mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude"
 
 cat > "$TMP_DIR/fake-claude-error" <<'EOF'
@@ -34,7 +36,7 @@ chmod +x "$TMP_DIR/fake-claude-ok-exit1"
 
 cat > "$TMP_DIR/fake-claude-ok" <<'EOF'
 #!/bin/sh
-printf '%s\n' 'おはようございます☀️ テストです。' > "$FAKE_LINE_MSG_FILE"
+printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"
 printf '%s\n' 'SUMMARY: OK: テスト更新'
 exit 0
 EOF
@@ -93,6 +95,8 @@ run_daily() {
   REPO_DIR="$TEST_REPO" \
   CLAUDE_BIN="$claude_bin" \
   FAKE_LINE_MSG_FILE="$TEST_REPO/everyday_news/line_message.txt" \
+  TODAY_MONTH="$TODAY_MONTH" \
+  TODAY_DAY="$TODAY_DAY" \
   FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
   FAKE_CURL_LOG="$TMP_DIR/curl.log" \
   FAKE_CURL_FAIL="${3:-0}" \
@@ -206,13 +210,13 @@ cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 EOF
 
 before_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
-if ! run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0 "$TMP_DIR/notify-state-uncommitted"; then
-  echo "未commit当日分の実行を失敗扱いしました" >&2
+if run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0 "$TMP_DIR/notify-state-uncommitted"; then
+  echo "未commit当日分を成功扱いしました" >&2
   exit 1
 fi
 after_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
-if [ "$after_curl_count" -ne "$before_curl_count" ]; then
-  echo "未commit当日分をLINE通知しました" >&2
+if [ "$after_curl_count" -ne "$((before_curl_count + 1))" ]; then
+  echo "未commit当日分の失敗理由をLINE通知しませんでした" >&2
   exit 1
 fi
 

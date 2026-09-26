@@ -88,6 +88,10 @@ run_hook() {
   local hook="$1"
   local target_state="${2:-$hook_state_dir}"
   local target_date="${3:-2026-09-03}"
+  local target_month=$((10#${target_date:5:2}))
+  local target_day=$((10#${target_date:8:2}))
+  printf 'おはようございます %s月%s日、テストです。\n' "$target_month" "$target_day" \
+    > "$hook_repo_dir/everyday_news/line_message.txt"
   printf '%s' "$hook_input" | \
     PATH="$stub_dir:$PATH" \
     LINE_NOTIFY_REPO_DIR="$hook_repo_dir" \
@@ -118,6 +122,8 @@ failure_state_dir="$failure_stub_dir/state"
 
 run_failing_hook() {
   local hook="$1"
+  printf '%s\n' 'おはようございます 9月4日、テストです。' \
+    > "$hook_repo_dir/everyday_news/line_message.txt"
   printf '%s' "$hook_input" | \
     PATH="$failure_stub_dir:$PATH" \
     LINE_NOTIFY_STATE_DIR="$failure_state_dir" \

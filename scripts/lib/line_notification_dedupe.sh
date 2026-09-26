@@ -11,22 +11,26 @@ line_notification_date() {
 
 # ルートURL（70年史の年表）ではなく、その日の日次ログへ直接着地させる。
 # daily.htmlはハッシュで日付を受け取るので、#YYYY-MM-DDを付ければ当日分が開く。
-line_notification_text() {
-  local message_file="${1:-}"
-  local message=""
-  local notification_date month day first_line
+line_notification_has_current_message() {
+  local message_file="$1"
+  local notification_date month day first_line date_pattern
+  [ -s "$message_file" ] || return 1
+  IFS= read -r first_line < "$message_file" || true
   notification_date="$(line_notification_date)"
   month=$((10#${notification_date:5:2}))
   day=$((10#${notification_date:8:2}))
-  if [ -n "$message_file" ] && [ -s "$message_file" ]; then
-    IFS= read -r first_line < "$message_file" || true
-  fi
-  if [ -n "$message_file" ] && [ -s "$message_file" ] \
-     && [[ "$first_line" == *"${month}月${day}日"* ]]; then
+  date_pattern="(^|[^0-9])${month}月${day}日([^0-9]|$)"
+  [[ "$first_line" =~ $date_pattern ]]
+}
+
+line_notification_text() {
+  local message_file="${1:-}"
+  local message=""
+  if [ -n "$message_file" ]; then
+    line_notification_has_current_message "$message_file" || return 1
     # LINEはMarkdownを描画しないため、line_message.txtの太字記号だけ取り除く。
     message="$(sed 's/\*\*//g' "$message_file")"
-  fi
-  if [ -z "$message" ]; then
+  else
     message="本日のAI_newsが更新されました"
   fi
   printf '%s\n\n🔗 今日のAIニュース\n%s\n' "$message" \

@@ -102,6 +102,14 @@ if git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null \
   NEWS_SECTION_COMMITTED=1
 fi
 
+if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -ne 1 ]; then
+  STATUS=1
+  ERROR_REASON="当日分のニュース見出しがcommit済みの履歴にありません"
+elif [ "$STATUS" -eq 0 ] && ! line_notification_has_current_message "$LINE_MSG_FILE"; then
+  STATUS=1
+  ERROR_REASON="当日の日付を含むLINE通知本文が生成されていません"
+fi
+
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
     if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text "$LINE_MSG_FILE")"; then
