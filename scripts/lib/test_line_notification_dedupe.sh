@@ -62,6 +62,7 @@ assert_value() {
 assert_value "LINE通知は当日の日次ログURLを載せる" \
   "本日のAI_newsが更新されました
 
+🔗 今日のAIニュース
 https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
 
 assert_value "LINE_NOTIFY_DATE未設定なら今日の日付を使う" \

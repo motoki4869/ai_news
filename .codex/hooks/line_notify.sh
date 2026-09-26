@@ -34,7 +34,7 @@ fi
 # 同じ日の日次メッセージは、Write/Editが複数回行われても1回だけ送る。
 claim_line_notification "$f" >/dev/null 2>&1 || exit 0
 
-msg=$(line_notification_text)
+msg=$(line_notification_text "$repo_dir/everyday_news/line_message.txt")
 
 if ! send_line_broadcast "$script_dir/../../.claude/settings.local.json" "$msg" 8 1; then
   release_line_notification_claim "$f" || true

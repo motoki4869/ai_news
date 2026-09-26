@@ -57,7 +57,8 @@ if [[ "$SUMMARY_KIND" == ERROR:* ]]; then
   ERROR_REASON="${ERROR_REASON#"${ERROR_REASON%%[![:space:]]*}"}"
   [ -n "$ERROR_REASON" ] || ERROR_REASON="エラー原因が空です"
 else
-  ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
+  ERROR_REASON="$(line_notification_error_detail "$OUTPUT")"
+  [ -n "$ERROR_REASON" ] || ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
 fi
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
@@ -93,11 +94,18 @@ fi
 
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
-    # ClaudeがBashで通知文を書いた場合でも、ここで短いLINE通知を送る。
-    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text)"; then
+    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text "$LINE_MSG_FILE")"; then
       echo "LINE通知の送信に失敗したため、次回実行で再送します" >&2
       release_line_notification_claim "$LINE_MSG_FILE" || true
     fi
+fi
+
+if [ "$STATUS" -ne 0 ] && claim_line_notification "$LINE_MSG_FILE.error" >/dev/null 2>&1; then
+  ERROR_LINE_MESSAGE="$(line_notification_failure_text "$ERROR_REASON" "$STATUS")"
+  if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$ERROR_LINE_MESSAGE"; then
+    echo "LINE失敗通知の送信に失敗しました。送信APIのエラーをログで確認してください" >&2
+    release_line_notification_claim "$LINE_MSG_FILE.error" || true
+  fi
 fi
 
 if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then

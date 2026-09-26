@@ -151,7 +151,7 @@ else
   exit 1
 fi
 
-if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 2 ]; then
+if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 3 ]; then
   echo "同日再実行でLINE通知を重複送信したか、初回通知を送信できませんでした" >&2
   cat "$TMP_DIR/curl.log" >&2
   exit 1
