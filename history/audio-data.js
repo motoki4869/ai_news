@@ -278,5 +278,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-25.m4a",
     "label": "2026-09-25のAIニュース音声",
     "title": "勝手に裏口をこじ開けるAIエージェント"
+  },
+  "2026-09-26": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-26.m4a",
+    "label": "2026-09-26のAIニュース音声",
+    "title": "電力不足でAIは宇宙へ向かう"
   }
 };
