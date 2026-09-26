@@ -14,7 +14,15 @@ line_notification_date() {
 line_notification_text() {
   local message_file="${1:-}"
   local message=""
+  local notification_date month day first_line
+  notification_date="$(line_notification_date)"
+  month=$((10#${notification_date:5:2}))
+  day=$((10#${notification_date:8:2}))
   if [ -n "$message_file" ] && [ -s "$message_file" ]; then
+    IFS= read -r first_line < "$message_file" || true
+  fi
+  if [ -n "$message_file" ] && [ -s "$message_file" ] \
+     && [[ "$first_line" == *"${month}月${day}日"* ]]; then
     # LINEはMarkdownを描画しないため、line_message.txtの太字記号だけ取り除く。
     message="$(sed 's/\*\*//g' "$message_file")"
   fi
@@ -55,6 +63,14 @@ line_notification_failure_text() {
   [ -n "$reason" ] || reason="詳細を特定できませんでした。daily_news.err.logを確認してください"
   printf '本日のAIニュース更新に失敗しました\n\n原因: %s\n終了コード: %s\n詳細ログ: logs/daily_news.err.log\n' \
     "$reason" "$status"
+}
+
+line_notification_error_claim_target() {
+  local target_file="$1"
+  local reason="$2"
+  local reason_key
+  reason_key="$(printf '%s\n' "$reason" | shasum -a 256 | awk '{print $1}')"
+  printf '%s.error.%s\n' "$target_file" "$reason_key"
 }
 
 line_notification_state_dir() {

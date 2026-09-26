@@ -11,6 +11,9 @@ case "$f" in
   *) exit 0 ;;
 esac
 
+# daily_news.shの実行中は、最終SUMMARYとcommit/pushの確認後に本体が送信する。
+[ "${LINE_NOTIFY_DEFER:-0}" = "1" ] && exit 0
+
 tool=$(echo "$input" | jq -r '.tool_name')
 
 if [ "$tool" = "Edit" ]; then

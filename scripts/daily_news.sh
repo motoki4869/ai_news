@@ -22,11 +22,21 @@ source "$SCRIPT_ROOT/scripts/lib/line_notification_dedupe.sh"
 source "$SCRIPT_ROOT/scripts/lib/news_update_lock.sh"
 
 if ! acquire_news_update_lock "$REPO_DIR"; then
-  echo "別の日次・週次ニュース更新が実行中のため、今回の更新を中止します" >&2
+  LOCK_ERROR="別の日次・週次ニュース更新が実行中のため、今回の更新を中止しました"
+  echo "$LOCK_ERROR" >&2
+  LOCK_ERROR_TARGET="$(line_notification_error_claim_target "$LINE_MSG_FILE" "$LOCK_ERROR")"
+  if claim_line_notification "$LOCK_ERROR_TARGET" >/dev/null 2>&1; then
+    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_failure_text "$LOCK_ERROR" 1)"; then
+      echo "更新ロック競合のLINE通知に失敗しました" >&2
+      release_line_notification_claim "$LOCK_ERROR_TARGET" || true
+    fi
+  fi
   exit 1
 fi
 trap 'release_news_update_lock "$REPO_DIR"' EXIT
 
+# 日次処理中のWrite/Editフックは本文を送らず、commit・pushとSUMMARY確認後に送る。
+export LINE_NOTIFY_DEFER=1
 OUTPUT="$("$CLAUDE_BIN" -p "$(cat "$PROMPT_FILE")" \
   --allowedTools "Read Write Edit WebSearch Bash" 2>&1)"
 STATUS=$?
@@ -100,11 +110,14 @@ if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG
     fi
 fi
 
-if [ "$STATUS" -ne 0 ] && claim_line_notification "$LINE_MSG_FILE.error" >/dev/null 2>&1; then
+if [ "$STATUS" -ne 0 ]; then
+  ERROR_LINE_TARGET="$(line_notification_error_claim_target "$LINE_MSG_FILE" "$ERROR_REASON")"
+fi
+if [ "$STATUS" -ne 0 ] && claim_line_notification "$ERROR_LINE_TARGET" >/dev/null 2>&1; then
   ERROR_LINE_MESSAGE="$(line_notification_failure_text "$ERROR_REASON" "$STATUS")"
   if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$ERROR_LINE_MESSAGE"; then
     echo "LINE失敗通知の送信に失敗しました。送信APIのエラーをログで確認してください" >&2
-    release_line_notification_claim "$LINE_MSG_FILE.error" || true
+    release_line_notification_claim "$ERROR_LINE_TARGET" || true
   fi
 fi
 
