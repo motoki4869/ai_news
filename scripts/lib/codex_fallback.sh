@@ -39,17 +39,47 @@ run_codex_fallback() {
     return 127
   fi
 
-  # Codex CLIのユーザー設定モデルをそのまま使うと、ChatGPTアカウントでは
-  # 未対応のモデル（例: gpt-6-luna）が選ばれ、API 400で処理が止まることがある。
-  # 日次バッチでは対応モデルを明示し、必要なら環境変数で上書きできるようにする。
-  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6-sol}"
+  # アカウントやCodex CLIの更新で利用可能なモデルが変わるため、固定名は使わず
+  # app-serverのmodel/listから現在利用可能な候補を取得する。環境変数は候補内に
+  # 存在するときだけ優先指定として使い、通常はAPIが示すデフォルトを先頭にする。
+  local resolver="$(dirname "${BASH_SOURCE[0]}")/resolve_codex_models.py"
+  local preferred_model="${CODEX_FALLBACK_MODEL:-}"
+  local candidate_output
+  candidate_output=$(PATH="$(dirname "$node_bin"):$PATH" python3 "$resolver" "$codex_bin" "$preferred_model") || {
+    echo "Codexの利用可能モデル一覧を取得できず、フォールバックを開始できません" >&2
+    return 1
+  }
+  local candidates=()
+  while IFS= read -r model; do
+    [ -n "$model" ] && candidates+=("$model")
+  done <<< "$candidate_output"
+  if [ "${#candidates[@]}" -eq 0 ]; then
+    echo "Codexの利用可能モデル一覧が空のため、フォールバックを開始できません" >&2
+    return 1
+  fi
 
-  PATH="$(dirname "$node_bin"):$PATH" "$codex_bin" exec --skip-git-repo-check \
-    -m "$fallback_model" \
-    -s workspace-write \
-    -c sandbox_workspace_write.network_access=true \
-    -C "$repo_dir" \
-    "$(cat "$prompt_file")"
+  local attempt_log
+  attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1
+  local status=1
+  local fallback_model
+  for fallback_model in "${candidates[@]}"; do
+    echo "Codexフォールバックモデル: $fallback_model" >&2
+    PATH="$(dirname "$node_bin"):$PATH" "$codex_bin" exec --skip-git-repo-check \
+      -m "$fallback_model" \
+      -s workspace-write \
+      -c sandbox_workspace_write.network_access=true \
+      -C "$repo_dir" \
+      "$(cat "$prompt_file")" 2>&1 | tee "$attempt_log"
+    status=${PIPESTATUS[0]}
+    [ "$status" -eq 0 ] && break
+
+    if ! grep -qiE "model.*(not supported|unsupported|not found)|not supported.*model" "$attempt_log"; then
+      break
+    fi
+    echo "モデル $fallback_model は実行時に利用不可でした。次の候補を試します。" >&2
+  done
+  rm -f "$attempt_log"
+  return "$status"
 }
 
 mark_as_codex_fallback() {
