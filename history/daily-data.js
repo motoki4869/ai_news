@@ -6381,5 +6381,102 @@ window.DAILY_NEWS = {
       ],
       "url": "https://techcrunch.com/2026/09/23/chatgpt-mobile-app-gets-voice-based-agentic-features/"
     }
+  ],
+  "2026-09-26": [
+    {
+      "title": "【フィジカルAI・産業インフラ】Google、AI計算衛星「Project Suncatcher」の軌道上試験へ",
+      "intro": "9月24日（米国時間）、Googleは宇宙で機械学習基盤を構築する研究計画の進捗を公開し、TPU搭載の試験衛星を打ち上げて軌道上で動作を確かめる段階に進むと説明しました。",
+      "points": [
+        {
+          "label": "試験内容",
+          "text": "放射線や熱など宇宙環境でGoogle製TPUがどのように動くかを実機で測定します。"
+        },
+        {
+          "label": "構想",
+          "text": "低軌道では地上より多くの日照を得られる可能性があり、将来は太陽光で動く衛星群をAI計算に使えるか検討します。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "発表済みの長期構想を、衛星打ち上げを伴う実証へ進める一方、実用化には通信・冷却・軌道上保守などの課題が残ります。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/google-project-suncatcher-facts/"
+    },
+    {
+      "title": "【ビジネス】Anthropic、Akamaiと7年・116億ドルのAIクラウド契約——計算基盤を分散",
+      "intro": "米国時間9月24日（日本時間25日）、AkamaiはAnthropicと7年間で約116億ドルのクラウド契約を結んだと発表しました。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "AnthropicはAkamai Cloudの分散インフラを使い、モデルの学習・提供を支えるCPU処理を拡大します。"
+        },
+        {
+          "label": "投資規模",
+          "text": "Akamaiは契約対応に約55億ドルの設備投資を見込み、追加購入が実現すれば契約総額は約200億ドルに達する可能性があります。"
+        },
+        {
+          "label": "資本関係",
+          "text": "Akamaiは契約拡大に連動して最大約5%相当の株式取得権をAnthropicへ付与し、供給契約と戦略的関係を結び付けました。"
+        }
+      ],
+      "url": "https://www.akamai.com/newsroom/press-release/akamai-announces-11-6-billion-multi-year-agreement-with-anthropic-to-support-growing-demand"
+    },
+    {
+      "title": "【資金調達】AIクラウドのNscale、34億ドル調達でデータセンター拡張を加速",
+      "intro": "9月25日、英国発のAIクラウド企業Nscaleは、Third Point主導の転換社債による資金調達で約33.6億ドルを確保したと発表しました。",
+      "points": [
+        {
+          "label": "内訳",
+          "text": "まず23.6億ドルを調達し、NVIDIAが11月中旬をめどに追加10億ドルを拠出する約束をしています。"
+        },
+        {
+          "label": "資金使途",
+          "text": "発電設備から液冷データセンター、大規模GPUクラスターまでを含むAIクラウド基盤の拡大に充てます。"
+        },
+        {
+          "label": "背景",
+          "text": "同社は契約済み総額を1,030億ドル超と説明しており、モデル企業や大口顧客の需要を先取りする設備投資競争が続いています。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/nscale-raises-3-36b-in-pre-ipo-convertible-financing-302890199.html"
+    },
+    {
+      "title": "【注目ツール】Microsoft、CopilotをHome・Code・Autopilotで再編——常時稼働エージェントを統合",
+      "intro": "9月25日、MicrosoftはCopilotアプリを刷新し、会話・共同作業、自然言語でのアプリ作成、継続的にタスクを進めるエージェントを一つの体験にまとめる方針を示しました。",
+      "points": [
+        {
+          "label": "Home",
+          "text": "ChatとCoworkをまとめ、文書や業務の相談・作業を始める入口にします。"
+        },
+        {
+          "label": "Code",
+          "text": "文章による指示からアプリやツールを作り、実行できる機能です。"
+        },
+        {
+          "label": "Autopilot",
+          "text": "ユーザーが離れている間も依頼した仕事を進める常時稼働型エージェントで、AIを質問応答から継続的な業務実行へ広げます。"
+        }
+      ],
+      "url": "https://www.geekwire.com/2026/microsoft-unveils-all-in-one-copilot-app-taking-on-anthropic-and-openai-in-new-push-to-boost-adoption/"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】英国最大級のAI計算拠点、送電網の遅れで稼働が2030年代へ",
+      "intro": "9月24日（米国時間）の報道によると、英国エセックス州でNscaleが計画するAIデータセンターは、送電網から必要な電力を得られる時期が2030年代前半〜半ばになる可能性があります。",
+      "points": [
+        {
+          "label": "当初計画",
+          "text": "同施設は2027年の稼働を目指す英国の主権AIインフラ計画として政府戦略でも取り上げられていました。"
+        },
+        {
+          "label": "制約",
+          "text": "施設建設だけでなく送電網の接続容量が開業時期を左右し、AI計算需要の拡大に電力インフラ整備が追いつかない実例となっています。"
+        },
+        {
+          "label": "今後",
+          "text": "Nscaleは計画への取り組みを続け、現地電源の確保も検討していると報じられています。"
+        }
+      ],
+      "url": "https://www.theguardian.com/technology/2026/sep/24/construction-largest-supercomputer-delayed"
+    }
   ]
 };

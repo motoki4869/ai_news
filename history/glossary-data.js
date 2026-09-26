@@ -368,6 +368,12 @@ window.GLOSSARY = [
         "q": "ppa power purchase agreement（電力購入契約） 電力を直接購入する長期契約。ハイパースケーラーが再エネや原子力を確保する主要手段で、microsoftはconstellation energyと20年契約を結び、スリーマイル島1号機の再稼働で835 mwを確保した。smrの商用化と同期した「smr-ready ppa」も視野に入る。"
       },
       {
+        "term": "<strong>TPU</strong>",
+        "sub": "Tensor Processing Unit（テンソル処理ユニット）",
+        "desc": "Googleが機械学習の計算向けに開発した専用プロセッサー。Project Suncatcherでは衛星に搭載し、地上と異なる放射線や熱環境でAI処理が可能かを軌道上で試す計画が進む。GPU以外の選択肢を広げるAIインフラの一つ。",
+        "q": "tpu tensor processing unit（テンソル処理ユニット） googleが機械学習の計算向けに開発した専用プロセッサー。project suncatcherでは衛星に搭載し、地上と異なる放射線や熱環境でai処理が可能かを軌道上で試す計画が進む。gpu以外の選択肢を広げるaiインフラの一つ。"
+      },
+      {
         "term": "<strong>IOWN / APN</strong>",
         "sub": "Innovative Optical and Wireless Network / All-Photonics Network",
         "desc": "NTTが推進する光ネットワーク構想と、その中核である端から端まで光のまま伝送する技術。光電変換の遅延と電力消費を削減し、東京〜福岡（約1,000km）等で実証済み。再エネ余剰地域へAI演算タスクを動的に移動させる運用が可能になる。",

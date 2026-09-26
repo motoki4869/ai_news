@@ -39,7 +39,13 @@ run_codex_fallback() {
     return 127
   fi
 
+  # Codex CLIのユーザー設定モデルをそのまま使うと、ChatGPTアカウントでは
+  # 未対応のモデル（例: gpt-6-luna）が選ばれ、API 400で処理が止まることがある。
+  # 日次バッチでは対応モデルを明示し、必要なら環境変数で上書きできるようにする。
+  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6-sol}"
+
   PATH="$(dirname "$node_bin"):$PATH" "$codex_bin" exec --skip-git-repo-check \
+    -m "$fallback_model" \
     -s workspace-write \
     -c sandbox_workspace_write.network_access=true \
     -C "$repo_dir" \
