@@ -57,13 +57,33 @@ assert_value() {
   fi
 }
 
-# 通知文は「更新された日の日次ログ」へ直接着地させる。LINE_NOTIFY_DATEは
-# 送信権の重複判定と同じ日付を使い、通知文とdedupeキーがずれないようにする。
+# 更新通知の既存フォーマットは維持し、追加用語だけを末尾へ載せる。
 assert_value "LINE通知は当日の日次ログURLを載せる" \
   "本日のAI_newsが更新されました
 
-🔗 今日のAIニュース
 https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
+https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
+
+sample_message_file="$state_dir/line_message.txt"
+mkdir -p "$state_dir"
+cat > "$sample_message_file" <<'EOF'
+おはようございます☀️ 9月1日、火曜日です。
+【産業】テストニュース
+・ニュース要約はLINEに載せません。
+
+📘 今日の用語集
+・**TPU**: Googleが機械学習向けに開発した専用プロセッサーです。
+
+今日もよろしくお願いします。
+EOF
+assert_value "LINE通知末尾には当日追加の用語だけを掲載する" \
+  "本日のAI_newsが更新されました
+
+https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01
+
+📘 今日追加した用語
+・TPU: Googleが機械学習向けに開発した専用プロセッサーです。" \
+  "$(line_notification_text "$sample_message_file")"
 
 assert_value "LINE_NOTIFY_DATE未設定なら今日の日付を使う" \
   "https://ai-news-sandy-seven.vercel.app/daily.html#$(date +%Y-%m-%d)" \

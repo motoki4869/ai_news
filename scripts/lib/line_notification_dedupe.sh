@@ -23,18 +23,34 @@ line_notification_has_current_message() {
   [[ "$first_line" =~ $date_pattern ]]
 }
 
+line_notification_added_terms() {
+  local message_file="$1"
+  awk '
+    /^📘 今日の用語集/ { in_glossary = 1; next }
+    in_glossary {
+      if ($0 ~ /^・/) { print; found = 1; next }
+      if (found) exit
+      if ($0 == "") next
+      exit
+    }
+  ' "$message_file" | sed 's/\*\*//g'
+}
+
 line_notification_text() {
   local message_file="${1:-}"
-  local message=""
+  local terms
   if [ -n "$message_file" ]; then
     line_notification_has_current_message "$message_file" || return 1
-    # LINEはMarkdownを描画しないため、line_message.txtの太字記号だけ取り除く。
-    message="$(sed 's/\*\*//g' "$message_file")"
+    terms="$(line_notification_added_terms "$message_file")"
   else
-    message="本日のAI_newsが更新されました"
+    terms=""
   fi
-  printf '%s\n\n🔗 今日のAIニュース\n%s\n' "$message" \
+  printf '%s\n\n%s' "本日のAI_newsが更新されました" \
     "https://ai-news-sandy-seven.vercel.app/daily.html#$(line_notification_date)"
+  if [ -n "$terms" ]; then
+    printf '\n\n📘 今日追加した用語\n%s' "$terms"
+  fi
+  printf '\n'
 }
 
 line_notification_error_detail() {
@@ -88,7 +104,7 @@ line_notification_claim_path() {
   local key
   # v2ではニュース本文を含む通知に切り替えた。旧版の固定文claimとは分離して、
   # 同日中に本文付き通知へ移行できるようにする。
-  key="$(printf '%s\n%s\n%s\n' "$target_file" "$notification_date" 'line-notification-v2' | shasum -a 256 | awk '{print $1}')"
+  key="$(printf '%s\n%s\n%s\n' "$target_file" "$notification_date" 'line-notification-v3' | shasum -a 256 | awk '{print $1}')"
   printf '%s/%s.sent\n' "$(line_notification_state_dir)" "$key"
 }
 
