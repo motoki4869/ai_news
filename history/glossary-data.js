@@ -314,6 +314,18 @@ window.GLOSSARY = [
     "id": "sec4",
     "entries": [
       {
+        "term": "<strong>CXL</strong>",
+        "sub": "Compute Express Link（計算エクスプレスリンク）",
+        "desc": "CPUとアクセラレータ、拡張メモリを低遅延で接続する相互接続規格。Samsungの検証では1TBのCXLメモリプールをvLLMとLMCacheに接続し、ローカルDRAM比で約92%の推論スループットを保った。HBMからあふれるKVキャッシュの共有・退避先として、AIサーバーのメモリ階層化に使われる。",
+        "q": "cxl compute express link（計算エクスプレスリンク） cpuとアクセラレータ、拡張メモリを低遅延で接続する相互接続規格。samsungの検証では1tbのcxlメモリプールをvllmとlmcacheに接続し、ローカルdram比で約92%の推論スループットを保った。hbmからあふれるkvキャッシュの共有・退避先として、aiサーバーのメモリ階層化に使われる。"
+      },
+      {
+        "term": "<strong>eSSD</strong>",
+        "sub": "Enterprise SSD（エンタープライズ向けソリッドステートドライブ）",
+        "desc": "データセンターや企業システム向けに耐久性・性能を調整したSSD。レポートではJPMorganの分析として、NANDフラッシュ需要に占めるeSSDの割合が2027年に48%へ達する見通しを紹介した。AI推論で増えるランダムアクセスやKVキャッシュ退避を支える用途が広がり、64〜128TB級QLC製品への移行が進む。",
+        "q": "essd enterprise ssd（エンタープライズ向けソリッドステートドライブ） データセンターや企業システム向けに耐久性・性能を調整したssd。レポートではjpmorganの分析として、nandフラッシュ需要に占めるessdの割合が2027年に48%へ達する見通しを紹介した。ai推論で増えるランダムアクセスやkvキャッシュ退避を支える用途が広がり、64〜128tb級qlc製品への移行が進む。"
+      },
+      {
         "term": "<strong>HBM / HBM4</strong>",
         "sub": "High Bandwidth Memory",
         "desc": "GPUのすぐ横に積層される広帯域メモリ。推論では演算能力よりメモリ帯域が先に頭打ちになるため、世代更新がそのまま性能に直結する。NVIDIA Vera Rubin は288GBのHBM4と22TB/sの帯域幅を備え、HBMの供給量自体がAIチップの出荷量を縛る構図になっている。",
