@@ -288,5 +288,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-27.m4a",
     "label": "2026-09-27のAIニュース音声",
     "title": "自律AIとキルスイッチの主導権争い"
+  },
+  "2026-09-28": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-28.m4a",
+    "label": "2026-09-28のAIニュース音声",
+    "title": "医療費を勝手に吊り上げる停止できないAI"
   }
 };
