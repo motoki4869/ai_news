@@ -293,5 +293,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-28.m4a",
     "label": "2026-09-28のAIニュース音声",
     "title": "医療費を勝手に吊り上げる停止できないAI"
+  },
+  "2026-09-29": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-29.m4a",
+    "label": "2026-09-29のAIニュース音声",
+    "title": "脱走するAIを封じる物理的な檻"
   }
 };
