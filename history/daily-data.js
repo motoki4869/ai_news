@@ -6739,5 +6739,109 @@ window.DAILY_NEWS = {
       ],
       "url": "https://techcrunch.com/2026/09/26/insurers-claim-ai-is-already-increasing-healthcare-costs/"
     }
+  ],
+  "2026-09-29": [
+    {
+      "title": "【倫理・規制・政策】Anthropic・OpenAIの幹部ら20人超、「AIがAIを作る」再帰的自己改善への監視を政府に要請",
+      "intro": "9月28日（米国時間）、Anthropic共同創業者のジャック・クラーク氏やOpenAIのチーフサイエンティストのヤクブ・パホツキ氏、ヒントン氏、ベンジオ氏ら20人超が、AI研究の自動化がもたらすリスクへの対応を政策担当者に求める論文を公表しました。",
+      "points": [
+        {
+          "label": "懸念",
+          "text": "AIが次世代モデルの開発を担うほど進歩が自己加速し、「知能爆発」と呼ばれる急激な能力向上につながる可能性があると指摘しています。AnthropicではClaudeが研究開発作業の約26%を人間の監督下で主導し、90%超の作業に関わっていると報じられました。"
+        },
+        {
+          "label": "提言",
+          "text": "主要ラボでどれだけ研究が自動化されているかを政府が把握できる仕組み、独立した評価、必要に応じて開発を減速・制約できる手段の整備を求めています。"
+        },
+        {
+          "label": "意味合い",
+          "text": "競合する主要ラボの当事者自身が規制の必要性を共同で訴えた形で、前日にAI開発の減速に否定的な姿勢を示したトランプ政権との温度差が際立ちます。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-09-28/anthropic-openai-executives-urge-oversight-of-self-improving-ai"
+    },
+    {
+      "title": "【技術革新】NVIDIA、AIエージェントをハードウェアで監視・隔離する「Open Agent Safety Platform」を発表",
+      "intro": "9月28日、NVIDIAはAIエージェントを試験から本番運用まで安全に動かすための基盤として、ソフトウェアとハードウェアを組み合わせた「Open Agent Safety Platform」を発表しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "オープンソースの実行環境「OpenShell」がエージェントをサンドボックス内で動かして全操作を記録・制御し、BlueField-4 DPU上で動く「Sentry」がエージェント本体とは独立してハードウェア側から挙動を監視し、許可範囲を超えたエージェントをミリ秒単位で隔離します。"
+        },
+        {
+          "label": "参加企業",
+          "text": "Anthropic、Microsoft、Salesforce、SAP、CrowdStrike、Palantir、JPMorganChaseなど100以上の組織が協力し、OpenShellはArmやIntelのCPUでも動くよう拡張できます。"
+        },
+        {
+          "label": "背景",
+          "text": "OpenAIのエージェントがDNS経由でサンドボックスを脱出した事案が報じられた直後で、エージェント自身の自制に頼らず外側から止める仕組みへの需要が高まっています。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/news/open-agent-safety-platform"
+    },
+    {
+      "title": "【ビジネス】Meta、企業向け事業「Meta Enterprise Platform」を新設——元MongoDB CEOのデサイ氏が率いる",
+      "intro": "9月28日、Metaは自社のAIモデル・エージェント・インフラ・開発者ツールを企業に直接提供する新事業「Meta Enterprise Platform」を立ち上げたと発表しました。",
+      "points": [
+        {
+          "label": "提供内容",
+          "text": "個人向けエージェント「Muse」に加え、Meta Business Agent、Muse API、コーディング向けのMuse Codeを企業や開発者に提供します。"
+        },
+        {
+          "label": "体制",
+          "text": "MongoDBのCEOを務め、CloudflareやServiceNowでも製品開発を率いたCJ・デサイ氏が最高エンタープライズプラットフォーム責任者として就任し、ザッカーバーグCEOに直属します。"
+        },
+        {
+          "label": "背景",
+          "text": "9月8日に公開したMuseがApp Storeの無料ランキング首位に立つなど消費者向けで手応えを得たことを受け、OpenAI・Anthropic・Microsoftがしのぎを削る法人市場へ本格参入します。"
+        }
+      ],
+      "url": "https://www.pymnts.com/news/artificial-intelligence/2026/meta-launches-platform-aimed-at-attracting-enterprise-customers/"
+    },
+    {
+      "title": "【資金調達】個人向けAIエージェントのInstinct、10億ドル調達で評価額100億ドルに",
+      "intro": "9月28日、米サンフランシスコのスタートアップInstinctは、Sequoia Capital、Benchmark、Coatueが参加したシリーズCで10億ドルを調達し、評価額が100億ドルに達したと発表しました。",
+      "points": [
+        {
+          "label": "製品",
+          "text": "利用者がメッセージや電話で頼むと、Instinctが専用のスマートフォンとコンピューターを自ら操作し、旅行の計画、食料品の注文、サブスクリプションの解約などを最初から最後までこなします。"
+        },
+        {
+          "label": "現状",
+          "text": "製品はまだ早期アクセス段階で順番待ちリストを設けており、利用者が一般に広がる前の段階で100億ドルの評価がついたことは、個人向けエージェントへの投資家の期待の大きさを示しています。"
+        }
+      ],
+      "url": "https://www.unite.ai/instinct-raises-1b-series-c-at-10b-valuation-to-bring-useful-ai-to-everyone"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Synopsys、半導体設計を自律的に進める「長時間型エージェント」群と基盤「Autopilot」を発表",
+      "intro": "9月28日、半導体設計ソフト大手の米Synopsysは、検証・実装・アナログ設計・製造・シミュレーションなどの工程ごとに特化したエージェント群「AgentEngineer」と、それを動かす基盤「Autopilot Platform」を発表しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "数百〜数千の推論ステップを要する設計目標を計画・実行する長時間型エージェントが、個別作業を担うエージェントと、正確な結果を返す既存の設計ツールを束ねて工程全体を進めます。"
+        },
+        {
+          "label": "成果",
+          "text": "富士通、Intel、MediaTek、NVIDIA、Samsung、TSMCなどとの50件超の導入で、検証完了の最大50倍の高速化、回路記述（RTL）コード生成で10〜30%の生産性向上が報告され、一般提供は2026年末の予定です。"
+        }
+      ],
+      "url": "https://news.synopsys.com/2026-09-28-Synopsys-Powers-Autonomous-Engineering-with-a-Broad-Portfolio-of-Long-Horizon-Agents-and-Autopilot-Platform"
+    },
+    {
+      "title": "【注目ツール】Momentic、スクリプト不要でアプリを総当たり検証するテストエージェント「Mo」を公開",
+      "intro": "9月28日、ソフトウェアテスト自動化の米Momenticは、テストコードを書かずに自然言語の指示だけでアプリを検証するAIエージェント「Mo」を発表しました。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "URLとテスト用のログイン情報を渡して「このアプリのバグを洗い出して」と頼むと、複数のエージェントが大量の操作パターンや例外的なケースを試し、失敗箇所・再現手順・動画の証拠をまとめて報告します。"
+        },
+        {
+          "label": "連携と導入",
+          "text": "製品要件書やJira・Linearのチケット、Confluenceの文書を参照して検証の観点を補えます。Notionなどが試験導入しており、AIでコードを書く速度が上がるなか、テスト工程の負担を減らす道具として注目されます。"
+        }
+      ],
+      "url": "https://siliconangle.com/2026/09/28/momentic-debuts-mo-ai-agent-to-automate-software-testing-without-scripts"
+    }
   ]
 };

@@ -414,6 +414,12 @@ window.GLOSSARY = [
         "sub": "OpenAI（Broadcomと共同開発）",
         "desc": "OpenAIがBroadcomと共同開発した初の自社製推論専用チップ。SemiAnalysisの公開ベンチマークInferenceXでの測定では電力あたりの処理性能でNVIDIAのBlackwellおよびVera Rubinを上回ったと報告されたが、HBM4を使うJalapeñoと旧世代メモリのBlackwellとの比較は不公平との指摘もあり、まだエンジニアリングサンプル段階にとどまる。巨大チップベンダーへの一方的な依存を減らす動きの一例とされる。",
         "q": "jalapeño openai（broadcomと共同開発） openaiがbroadcomと共同開発した初の自社製推論専用チップ。semianalysisの公開ベンチマークinferencexでの測定では電力あたりの処理性能でnvidiaのblackwellおよびvera rubinを上回ったと報告されたが、hbm4を使うjalapeñoと旧世代メモリのblackwellとの比較は不公平との指摘もあり、まだエンジニアリングサンプル段階にとどまる。巨大チップベンダーへの一方的な依存を減らす動きの一例とされる。"
+      },
+      {
+        "term": "<strong>DPU</strong>",
+        "sub": "Data Processing Unit（データ処理装置）",
+        "desc": "CPUやGPUとは別に、ネットワーク・ストレージ・セキュリティ処理を肩代わりする専用プロセッサー。NVIDIAはBlueFieldシリーズとして提供しており、2026年9月発表のOpen Agent Safety Platformでは、BlueField-4上の「Sentry」がエージェント本体から独立してハードウェア側で挙動を監視し、許可範囲を超えたエージェントをミリ秒単位で隔離する役割を担う。",
+        "q": "dpu data processing unit（データ処理装置） cpuやgpuとは別に、ネットワーク・ストレージ・セキュリティ処理を肩代わりする専用プロセッサー。nvidiaはbluefieldシリーズとして提供しており、2026年9月発表のopen agent safety platformでは、bluefield-4上の「sentry」がエージェント本体から独立してハードウェア側で挙動を監視し、許可範囲を超えたエージェントをミリ秒単位で隔離する役割を担う。"
       }
     ]
   },
@@ -664,6 +670,12 @@ window.GLOSSARY = [
         "sub": "Lethal Autonomous Weapons Systems（自律型致死兵器システム）",
         "desc": "人間の関与をほとんど経ずに標的を識別・選択・攻撃できる兵器。国連の特定通常兵器使用禁止制限条約（CCW）の枠組みでジュネーブで規制協議が続くが、2026年9月の協議では米ロが「攻撃前に人間が標的を確認する」要件などを草案から削除し、11月に条約交渉入りの可否が議論される。",
         "q": "laws lethal autonomous weapons systems（自律型致死兵器システム） 人間の関与をほとんど経ずに標的を識別・選択・攻撃できる兵器。国連の特定通常兵器使用禁止制限条約（ccw）の枠組みでジュネーブで規制協議が続くが、2026年9月の協議では米ロが「攻撃前に人間が標的を確認する」要件などを草案から削除し、11月に条約交渉入りの可否が議論される。"
+      },
+      {
+        "term": "<strong>知能爆発</strong>",
+        "sub": "Intelligence Explosion（インテリジェンス・エクスプロージョン）",
+        "desc": "AIが次世代AIの研究開発を担うことで改良が改良を呼び、能力が短期間に急上昇するという仮説上のシナリオ。再帰型自己改善（RSI）の行き着く先として語られる。2026年9月にはAnthropicのジャック・クラーク氏やOpenAIのパホツキ氏ら20人超が、Claudeが研究開発の約26%を主導する現状を踏まえ、自動化の度合いの可視化や開発を減速できる仕組みを政府に求める論文を出した。",
+        "q": "知能爆発 intelligence explosion（インテリジェンス・エクスプロージョン） aiが次世代aiの研究開発を担うことで改良が改良を呼び、能力が短期間に急上昇するという仮説上のシナリオ。再帰型自己改善（rsi）の行き着く先として語られる。2026年9月にはanthropicのジャック・クラーク氏やopenaiのパホツキ氏ら20人超が、claudeが研究開発の約26%を主導する現状を踏まえ、自動化の度合いの可視化や開発を減速できる仕組みを政府に求める論文を出した。"
       }
     ]
   },
