@@ -39,6 +39,8 @@ assert_true "Codex workspace credit切れを検出できる" is_codex_limit_reac
 assert_true "Codex workspace spend capを検出できる" is_codex_limit_reached "You hit your spend cap set in your workspace."
 assert_true "Codex内部エラーコードを検出できる" is_codex_limit_reached "usage_limit_exceeded"
 assert_false "一般的な通信エラーはCodex利用上限として誤検出しない" is_codex_limit_reached "Error: network timeout"
+long_output="$(printf 'usage_limit_exceeded\n'; printf '%*s' 262144 '' | tr ' ' x)"
+assert_true "長いログの先頭にあるCodex利用上限も検出できる" is_codex_limit_reached "$long_output"
 
 result="$(mark_as_codex_fallback "テスト通知")"
 assert_eq "マーカーが先頭に付与される" "⚠️Codex経由 テスト通知" "$result"

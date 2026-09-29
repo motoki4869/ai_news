@@ -10,8 +10,9 @@ is_claude_limit_reached() {
 
 is_codex_limit_reached() {
   local output="$1"
-  echo "$output" | grep -Eiq \
-    "you['’]ve hit your usage limit|your workspace is out of credits|you hit your spend cap|workspace (owner|member) usage limit reached|usage_limit_exceeded|workspace(owner|member)(creditsdepleted|usagelimitreached)"
+  grep -Eiq \
+    "you['’]ve hit your usage limit|your workspace is out of credits|you hit your spend cap|workspace (owner|member) usage limit reached|usage_limit_exceeded|workspace(owner|member)(creditsdepleted|usagelimitreached)" \
+    <<< "$output"
 }
 
 run_codex() {

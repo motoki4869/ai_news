@@ -19,6 +19,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 - **対象**: `scripts/daily_news.sh`、`scripts/lib/codex_fallback.sh`、`scripts/lib/test_codex_fallback.sh`、`test/test_daily_news.sh`、`README.md`
 - **commit**: `HEAD`
 
+### 長いCodexログでの利用上限検知を修正
+- **変更**: 利用上限メッセージ判定のパイプをhere-stringに置き換え、後続ログが長い場合も検出を保つ回帰テストを追加。
+- **理由**: `pipefail`有効時に`grep -q`が先に終了すると、入力側のSIGPIPEで一致判定まで失敗するため。
+- **対象**: `scripts/lib/codex_fallback.sh`、`scripts/lib/test_codex_fallback.sh`
+- **commit**: `HEAD`
+
 ## 2026-09-26
 
 ### LINE通知へニュース本文と更新失敗理由を掲載
