@@ -13,6 +13,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 - **対象**: `scripts/daily_news.sh`、`scripts/lib/codex_fallback.sh`、`README.md`、`test/test_daily_news.sh`
 - **commit**: `HEAD`
 
+### Codexの利用上限メッセージを検出
+- **変更**: Codex CLIの「You've hit your usage limit」、workspace credit切れ、spend capなどの文言も検出し、終了コードが0の場合でもClaude Codeへ切り替える。
+- **理由**: Codexが上限エラーを通常の失敗終了コードで返さないケースもフォールバック対象にするため。
+- **対象**: `scripts/daily_news.sh`、`scripts/lib/codex_fallback.sh`、`scripts/lib/test_codex_fallback.sh`、`test/test_daily_news.sh`、`README.md`
+- **commit**: `HEAD`
+
 ## 2026-09-26
 
 ### LINE通知へニュース本文と更新失敗理由を掲載

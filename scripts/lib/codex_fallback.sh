@@ -8,6 +8,12 @@ is_claude_limit_reached() {
   echo "$output" | grep -qE "You've hit your (weekly|session) limit"
 }
 
+is_codex_limit_reached() {
+  local output="$1"
+  echo "$output" | grep -Eiq \
+    "you['’]ve hit your usage limit|your workspace is out of credits|you hit your spend cap|workspace (owner|member) usage limit reached|usage_limit_exceeded|workspace(owner|member)(creditsdepleted|usagelimitreached)"
+}
+
 run_codex() {
   local repo_dir="$1"
   local prompt_file="$2"

@@ -27,6 +27,7 @@ case "$FAKE_CODEX_MODE" in
   error) printf '%s\n' 'SUMMARY: ERROR: 用語集生成に失敗しました'; exit 0 ;;
   no-ok) printf '%s\n' 'SUMMARY: 更新しました'; exit 0 ;;
   ok-exit1) printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'; exit 1 ;;
+  limit-zero) printf '%s\n' "ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage"; exit 0 ;;
   fail) printf '%s\n' 'Codexが起動できませんでした'; exit 1 ;;
   *) printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"; printf '%s\n' 'SUMMARY: OK: テスト更新'; exit 0 ;;
 esac
@@ -176,7 +177,21 @@ if ! grep -q 'SUMMARY: OK: Claudeフォールバック更新' "$TMP_DIR/output-f
   exit 1
 fi
 
-if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 6 ]; then
+if run_daily limit-zero "$TMP_DIR/output-limit-fallback.log" 0 "$TMP_DIR/notify-state-limit-fallback"; then
+  :
+else
+  echo "終了コード0でもCodex利用上限メッセージを検出してClaude Codeへ切り替わりませんでした" >&2
+  cat "$TMP_DIR/output-limit-fallback.log" >&2
+  exit 1
+fi
+if ! grep -q '利用上限を示すメッセージを検出' "$TMP_DIR/output-limit-fallback.log" \
+   || ! grep -q 'SUMMARY: OK: Claudeフォールバック更新' "$TMP_DIR/output-limit-fallback.log"; then
+  echo "Codex利用上限を検出したフォールバック結果が不正です" >&2
+  cat "$TMP_DIR/output-limit-fallback.log" >&2
+  exit 1
+fi
+
+if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 7 ]; then
   echo "同日再実行でLINE通知を重複送信したか、初回通知を送信できませんでした" >&2
   cat "$TMP_DIR/curl.log" >&2
   exit 1

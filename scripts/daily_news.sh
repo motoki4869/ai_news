@@ -43,8 +43,12 @@ STATUS=$?
 echo "$OUTPUT"
 
 IS_FALLBACK=0
-if [ "$STATUS" -ne 0 ]; then
-  echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
+if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT"; then
+  if is_codex_limit_reached "$OUTPUT"; then
+    echo "Codexの利用上限を示すメッセージを検出したため、Claude Code経由でフォールバック実行します"
+  else
+    echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
+  fi
   OUTPUT="$(run_claude_fallback "$REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
   STATUS=$?
   echo "$OUTPUT"
