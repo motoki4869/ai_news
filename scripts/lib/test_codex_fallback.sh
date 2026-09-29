@@ -45,6 +45,25 @@ assert_true "長いログの先頭にあるCodex利用上限も検出できる" 
 result="$(mark_as_codex_fallback "テスト通知")"
 assert_eq "マーカーが先頭に付与される" "⚠️Codex経由 テスト通知" "$result"
 
+test_dir="$(mktemp -d "${TMPDIR:-/tmp}/test-codex-fallback.XXXXXX")"
+cleanup_test_dir() {
+  rm -f "$test_dir/codex" "$test_dir/prompt.txt" "$test_dir/args.log"
+  rmdir "$test_dir"
+}
+trap cleanup_test_dir EXIT
+cat > "$test_dir/codex" <<'SH'
+#!/bin/bash
+printf '%s\n' "$*" >> "$CODEX_ARGS_LOG"
+SH
+chmod +x "$test_dir/codex"
+printf 'test prompt\n' > "$test_dir/prompt.txt"
+CODEX_ARGS_LOG="$test_dir/args.log" \
+CODEX_BIN="$test_dir/codex" \
+NODE_BIN="$(command -v node || command -v python3)" \
+run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
+assert_true "run_codexは固定モデル指定で起動する" grep -q -- '-m gpt-6-luna' "$test_dir/args.log"
+assert_false "Codex起動時にmodel/list用app-serverを起動しない" grep -Eq 'app-server|model/list' "$test_dir/args.log"
+
 if [ "$fail" -ne 0 ]; then
   echo "FAILED"
   exit 1
