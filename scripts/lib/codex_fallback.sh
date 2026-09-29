@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude利用上限到達時にCodex CLI経由で処理を代替実行するための共通ヘルパー。
+# 日次ニュース更新でCodex CLIとClaude Codeを起動するための共通ヘルパー。
 # investment・ai_news 両リポジトリに同一内容を複製配置している（意図的に非共有）。
 # 呼び出し元スクリプトから `source` して使うこと。
 
@@ -8,7 +8,7 @@ is_claude_limit_reached() {
   echo "$output" | grep -qE "You've hit your (weekly|session) limit"
 }
 
-run_codex_fallback() {
+run_codex() {
   local repo_dir="$1"
   local prompt_file="$2"
   # launchdは.zshrcを読まずPATHが/usr/bin:/bin:/usr/sbin:/sbinに限られるため、
@@ -63,7 +63,7 @@ run_codex_fallback() {
   local status=1
   local fallback_model
   for fallback_model in "${candidates[@]}"; do
-    echo "Codexフォールバックモデル: $fallback_model" >&2
+    echo "Codex実行モデル: $fallback_model" >&2
     PATH="$(dirname "$node_bin"):$PATH" "$codex_bin" exec --skip-git-repo-check \
       -m "$fallback_model" \
       -s workspace-write \
@@ -85,6 +85,32 @@ run_codex_fallback() {
 mark_as_codex_fallback() {
   local msg="$1"
   echo "⚠️Codex経由 ${msg}"
+}
+
+run_claude_fallback() {
+  local repo_dir="$1"
+  local prompt_file="$2"
+  local claude_bin="${3:-${CLAUDE_BIN:-/opt/homebrew/bin/claude}}"
+  if [ ! -x "$claude_bin" ]; then
+    echo "Claude Codeコマンドが見つからないため、フォールバックを実行できません: $claude_bin" >&2
+    return 127
+  fi
+
+  # launchdのPATHにはnodeが含まれないため、Claude CodeのCLIからも使えるよう補う。
+  local node_bin="${NODE_BIN:-$(command -v node || true)}"
+  if [ ! -x "$node_bin" ]; then
+    for candidate in /opt/homebrew/bin/node /usr/local/bin/node; do
+      [ -x "$candidate" ] && node_bin="$candidate" && break
+    done
+  fi
+  if [ ! -x "$node_bin" ]; then
+    echo "nodeコマンドが見つからないため、Claude Codeフォールバックを実行できません" >&2
+    return 127
+  fi
+
+  cd "$repo_dir" || return 1
+  PATH="$(dirname "$node_bin"):$PATH" "$claude_bin" -p "$(cat "$prompt_file")" \
+    --allowedTools "Read Write Edit WebSearch Bash" 2>&1
 }
 
 send_line_broadcast() {

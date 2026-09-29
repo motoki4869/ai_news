@@ -13,34 +13,40 @@ TODAY_MONTH=$((10#${TODAY:5:2}))
 TODAY_DAY=$((10#${TODAY:8:2}))
 mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude"
 
-cat > "$TMP_DIR/fake-claude-error" <<'EOF'
+cat > "$TMP_DIR/fake-codex" <<'EOF'
 #!/bin/sh
-printf '%s\n' 'SUMMARY: ERROR: 用語集生成に失敗しました'
-exit 0
+if [ "$1" = app-server ]; then
+  while IFS= read -r request; do
+    case "$request" in
+      *'"id": 2'*) printf '%s\n' '{"jsonrpc":"2.0","id":2,"result":{"data":[{"id":"test-model","isDefault":true}]}}' ;;
+    esac
+  done
+  exit 0
+fi
+case "$FAKE_CODEX_MODE" in
+  error) printf '%s\n' 'SUMMARY: ERROR: 用語集生成に失敗しました'; exit 0 ;;
+  no-ok) printf '%s\n' 'SUMMARY: 更新しました'; exit 0 ;;
+  ok-exit1) printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'; exit 1 ;;
+  fail) printf '%s\n' 'Codexが起動できませんでした'; exit 1 ;;
+  *) printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"; printf '%s\n' 'SUMMARY: OK: テスト更新'; exit 0 ;;
+esac
 EOF
-chmod +x "$TMP_DIR/fake-claude-error"
-
-cat > "$TMP_DIR/fake-claude-no-ok" <<'EOF'
-#!/bin/sh
-printf '%s\n' 'SUMMARY: 更新しました'
-exit 0
-EOF
-chmod +x "$TMP_DIR/fake-claude-no-ok"
-
-cat > "$TMP_DIR/fake-claude-ok-exit1" <<'EOF'
-#!/bin/sh
-printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'
-exit 1
-EOF
-chmod +x "$TMP_DIR/fake-claude-ok-exit1"
+chmod +x "$TMP_DIR/fake-codex"
 
 cat > "$TMP_DIR/fake-claude-ok" <<'EOF'
 #!/bin/sh
 printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"
-printf '%s\n' 'SUMMARY: OK: テスト更新'
+printf '%s\n' 'SUMMARY: OK: Claudeフォールバック更新'
 exit 0
 EOF
 chmod +x "$TMP_DIR/fake-claude-ok"
+
+cat > "$TMP_DIR/fake-claude-exit1" <<'EOF'
+#!/bin/sh
+printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'
+exit 1
+EOF
+chmod +x "$TMP_DIR/fake-claude-exit1"
 
 cat > "$TMP_DIR/osascript" <<'EOF'
 #!/bin/sh
@@ -87,13 +93,15 @@ git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
 
 run_daily() {
-  local claude_bin="$1"
+  local codex_mode="$1"
   local output_file="$2"
   local notify_state_dir="${4:-$TMP_DIR/notify-state}"
   set +e
   PATH="$TMP_DIR:$PATH" \
   REPO_DIR="$TEST_REPO" \
-  CLAUDE_BIN="$claude_bin" \
+  CODEX_BIN="$TMP_DIR/fake-codex" \
+  FAKE_CODEX_MODE="$codex_mode" \
+  CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
   FAKE_LINE_MSG_FILE="$TEST_REPO/everyday_news/line_message.txt" \
   TODAY_MONTH="$TODAY_MONTH" \
   TODAY_DAY="$TODAY_DAY" \
@@ -111,7 +119,7 @@ run_daily() {
   return "$RUN_STATUS"
 }
 
-if run_daily "$TMP_DIR/fake-claude-error" "$TMP_DIR/output-error.log"; then
+if run_daily error "$TMP_DIR/output-error.log"; then
   echo "SUMMARY: ERROR を終了コード0のまま成功扱いしました" >&2
   exit 1
 fi
@@ -127,35 +135,48 @@ if ! grep -q '用語集生成に失敗しました' "$TMP_DIR/osascript.log"; th
   exit 1
 fi
 
-if run_daily "$TMP_DIR/fake-claude-no-ok" "$TMP_DIR/output-no-ok.log"; then
+if run_daily no-ok "$TMP_DIR/output-no-ok.log"; then
   echo "SUMMARY: OK:がない更新を成功扱いしました" >&2
   exit 1
 fi
 
-if run_daily "$TMP_DIR/fake-claude-ok-exit1" "$TMP_DIR/output-ok-exit1.log"; then
+if run_daily ok-exit1 "$TMP_DIR/output-ok-exit1.log" 0 "$TMP_DIR/notify-state-exit1" "$TMP_DIR/fake-claude-exit1"; then
   echo "終了コード1の実行を成功扱いしました" >&2
   exit 1
 fi
-if ! grep -q 'SUMMARY: ERROR: がないまま終了コード 1' "$TMP_DIR/osascript.log"; then
+if ! grep -q 'Codexに続きClaude Codeでの更新も失敗しました' "$TMP_DIR/osascript.log"; then
   echo "失敗通知に成功要約を原因として表示しました" >&2
   exit 1
 fi
 
-if run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-ok-1.log" 1; then
+if run_daily ok "$TMP_DIR/output-ok-1.log" 1; then
   :
 else
   echo "正常Summaryの実行を失敗扱いしました" >&2
   exit 1
 fi
 
-if run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-ok-2.log" 0; then
+if run_daily ok "$TMP_DIR/output-ok-2.log" 0; then
   :
 else
   echo "LINE通知失敗後の同日再送を失敗扱いしました" >&2
   exit 1
 fi
 
-if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 3 ]; then
+if run_daily fail "$TMP_DIR/output-fallback.log" 0 "$TMP_DIR/notify-state-fallback"; then
+  :
+else
+  echo "Codex失敗後のClaude Codeフォールバックを成功扱いしませんでした" >&2
+  cat "$TMP_DIR/output-fallback.log" >&2
+  exit 1
+fi
+if ! grep -q 'SUMMARY: OK: Claudeフォールバック更新' "$TMP_DIR/output-fallback.log"; then
+  echo "Codex失敗後にClaude Codeへ切り替わりませんでした" >&2
+  cat "$TMP_DIR/output-fallback.log" >&2
+  exit 1
+fi
+
+if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 6 ]; then
   echo "同日再実行でLINE通知を重複送信したか、初回通知を送信できませんでした" >&2
   cat "$TMP_DIR/curl.log" >&2
   exit 1
@@ -167,7 +188,9 @@ git -C "$TEST_REPO" add unrelated.md
 set +e
 PATH="$TMP_DIR:$PATH" \
 REPO_DIR="$TEST_REPO" \
-CLAUDE_BIN="$TMP_DIR/fake-claude-no-ok" \
+CODEX_BIN="$TMP_DIR/fake-codex" \
+FAKE_CODEX_MODE=no-ok \
+CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
   FAKE_AUDIO_LOG="$TMP_DIR/audio.log" \
@@ -210,7 +233,7 @@ cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 EOF
 
 before_curl_count="$(wc -l < "$TMP_DIR/curl.log" | tr -d ' ')"
-if run_daily "$TMP_DIR/fake-claude-ok" "$TMP_DIR/output-uncommitted.log" 0 "$TMP_DIR/notify-state-uncommitted"; then
+if run_daily ok "$TMP_DIR/output-uncommitted.log" 0 "$TMP_DIR/notify-state-uncommitted"; then
   echo "未commit当日分を成功扱いしました" >&2
   exit 1
 fi

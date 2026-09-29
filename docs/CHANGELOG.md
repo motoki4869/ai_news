@@ -5,6 +5,14 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-09-29
+
+### 毎朝のニュース収集をCodex優先に変更
+- **変更**: 日次ジョブでCodex CLIを先に実行し、起動または実行に失敗した場合にClaude Codeへ切り替える。フォールバック経路と実行結果の通知、日次ジョブのテストを新しい順序に合わせた。
+- **理由**: 毎朝のニュース収集で使うエージェントをClaude Code優先からCodex優先へ変更するため。
+- **対象**: `scripts/daily_news.sh`、`scripts/lib/codex_fallback.sh`、`README.md`、`test/test_daily_news.sh`
+- **commit**: `HEAD`
+
 ## 2026-09-26
 
 ### LINE通知へニュース本文と更新失敗理由を掲載

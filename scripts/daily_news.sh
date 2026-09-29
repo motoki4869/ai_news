@@ -37,16 +37,15 @@ trap 'release_news_update_lock "$REPO_DIR"' EXIT
 
 # 日次処理中のWrite/Editフックは本文を送らず、commit・pushとSUMMARY確認後に送る。
 export LINE_NOTIFY_DEFER=1
-OUTPUT="$("$CLAUDE_BIN" -p "$(cat "$PROMPT_FILE")" \
-  --allowedTools "Read Write Edit WebSearch Bash" 2>&1)"
+echo "Codexで日次ニュース更新を開始します"
+OUTPUT="$(run_codex "$REPO_DIR" "$CODEX_PROMPT_FILE" 2>&1)"
 STATUS=$?
-
 echo "$OUTPUT"
 
 IS_FALLBACK=0
-if [ "$STATUS" -ne 0 ] && is_claude_limit_reached "$OUTPUT"; then
-  echo "Claude利用上限に到達したため、Codex経由でフォールバック実行します"
-  OUTPUT="$(run_codex_fallback "$REPO_DIR" "$CODEX_PROMPT_FILE" 2>&1)"
+if [ "$STATUS" -ne 0 ]; then
+  echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
+  OUTPUT="$(run_claude_fallback "$REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
   STATUS=$?
   echo "$OUTPUT"
   IS_FALLBACK=1
@@ -68,7 +67,13 @@ if [[ "$SUMMARY_KIND" == ERROR:* ]]; then
   [ -n "$ERROR_REASON" ] || ERROR_REASON="エラー原因が空です"
 else
   ERROR_REASON="$(line_notification_error_detail "$OUTPUT")"
-  [ -n "$ERROR_REASON" ] || ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
+  if [ -z "$ERROR_REASON" ]; then
+    if printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: OK:'; then
+      ERROR_REASON="SUMMARY: OK: は出力されましたが、コマンドが終了コード ${STATUS} で終了しました"
+    else
+      ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
+    fi
+  fi
 fi
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
@@ -204,13 +209,13 @@ fi
 
 if [ "$STATUS" -eq 0 ]; then
   if [ "$IS_FALLBACK" -eq 1 ]; then
-    notify "${SUMMARY}（Codex経由）" "AIニュース更新" "Glass"
+    notify "${SUMMARY}（Claude Code経由）" "AIニュース更新" "Glass"
   else
     notify "$SUMMARY" "AIニュース更新" "Glass"
   fi
 else
   if [ "$IS_FALLBACK" -eq 1 ]; then
-    notify "Claude利用上限到達 → Codexフォールバックも失敗しました" "AIニュース更新 失敗" "Basso"
+    notify "Codexに続きClaude Codeでの更新も失敗しました" "AIニュース更新 失敗" "Basso"
   else
     notify "daily_news.shが失敗しました: ${ERROR_REASON}。logs/daily_news.err.logを確認してください" "AIニュース更新 失敗" "Basso"
   fi
