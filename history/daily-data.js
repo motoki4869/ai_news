@@ -6843,5 +6843,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://siliconangle.com/2026/09/28/momentic-debuts-mo-ai-agent-to-automate-software-testing-without-scripts"
     }
+  ],
+  "2026-09-30": [
+    {
+      "title": "【技術】OpenAI、DevDayで常時稼働型エージェント「Dots」とGPT-6.1 Solを発表",
+      "intro": "9月29日、OpenAIはサンフランシスコの年次開発者会議DevDayで、利用者に代わって継続的にタスクを進めるAIエージェント「Dots」と、モデル「GPT-6.1 Sol」を発表しました。",
+      "points": [
+        {
+          "label": "製品",
+          "text": "Dotsは依頼を受けて継続的に作業する「いつでも使える」アシスタントとして紹介され、GPT-6.1 Solなど複数の製品更新も発表されました。"
+        },
+        {
+          "label": "安全性",
+          "text": "サム・アルトマンCEOは、エージェントの安全・セキュリティ・監視への投資を増やすと説明しました。"
+        }
+      ],
+      "url": "https://apnews.com/article/sam-altman-openai-conference-dots-agent-77b6b8888145869206996d7509d24256"
+    },
+    {
+      "title": "【規制・政策】米政権とAI大手6社、自主協定に署名——社内統制と独立監査を約束",
+      "intro": "9月29日、トランプ大統領とAI企業の幹部はホワイトハウスで、AI開発を各社が自主的に監督する協定を発表しました。",
+      "points": [
+        {
+          "label": "約束した内容",
+          "text": "企業内の統制を整え、独立した外部監査人に有効性を評価してもらい、各社の取締役会が監査報告を確認するとしています。"
+        },
+        {
+          "label": "位置づけ",
+          "text": "法的拘束力のある規制ではなく、協定の実効性や第三者監査の運用が今後の焦点です。"
+        }
+      ],
+      "url": "https://apnews.com/article/trump-ai-anthropic-musk-595796511f110fc006cca0d01329733e"
+    },
+    {
+      "title": "【行政・注目ツール】米政府のAI案内サイト「America.gov」、政治的な質問への回答を相次いで変更",
+      "intro": "9月29日、米政府は行政サービスの案内を目的とするAIチャット機能をAmerica.govに公開しましたが、政治的に敏感な質問へ一度は回答した後、ほどなく回答を拒むよう挙動を変えました。",
+      "points": [
+        {
+          "label": "経緯",
+          "text": "当初は2020年大統領選などの質問に事実に沿って回答しましたが、短時間で政治的な質問には答えないという応答に切り替わりました。"
+        },
+        {
+          "label": "課題",
+          "text": "公共サービスにAIを使う際、回答の一貫性や運用変更を誰が判断するかが問われています。"
+        }
+      ],
+      "url": "https://apnews.com/article/trump-ai-anthropic-musk-595796511f110fc006cca0d01329733e"
+    },
+    {
+      "title": "【フィジカルAI・産業インフラ】Efficient Computer、AIチップ量産へ9,700万ドル調達——小型ロボットからデータセンターへ",
+      "intro": "9月29日、カーネギーメロン大学発の米Efficient Computerは、評価額6億5,000万ドルで9,700万ドル超を調達し、データフロー型プロセッサの生産拡大を発表しました。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "同社のElectron E1は量産段階に入り、初期出荷先はドローンや小型ロボットです。"
+        },
+        {
+          "label": "狙い",
+          "text": "同社は従来型プロセッサより10倍以上の電力効率を目指すデータセンター向け展開も進め、AI計算の電力負担を下げようとしています。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/efficient-computer-taking-on-ais-energy-problem-announces-97m-to-scale-its-processors-from-physical-ai-to-the-datacenter-302892552.html"
+    },
+    {
+      "title": "【資金調達】EliseAI、3億5,000万ドル調達で評価額40億ドルに——住宅・医療の事務を自動化",
+      "intro": "9月29日、住宅・医療分野の業務を自動化する米EliseAIは、a16zとBessemer Venture Partners主導の資金調達で3億5,000万ドルを集め、評価額が40億ドルになりました。",
+      "points": [
+        {
+          "label": "提供領域",
+          "text": "住宅では賃貸募集や保守、医療では予約・保険確認・紹介など、顧客対応から事務処理までをAIエージェントで扱います。"
+        },
+        {
+          "label": "事業拡大",
+          "text": "調達資金を製品開発や営業・導入体制の拡大に充て、ニューヨークに続く第2の技術拠点をサンフランシスコに設ける計画です。"
+        }
+      ],
+      "url": "https://www.globenewswire.com/news-release/2026/09/29/3370681/0/en/eliseai-raises-350-million-at-4-billion-valuation-to-bring-ai-deeper-into-housing-and-healthcare-operations.html"
+    },
+    {
+      "title": "【ビジネス】OpenAIの年換算売上高、700億ドルに迫る——法人売上は第3四半期に倍増",
+      "intro": "9月29日、Axiosは関係者の話として、OpenAIの年換算売上高が約700億ドルに達しつつあり、法人向け売上が第3四半期の開始から2倍以上になったと報じました。",
+      "points": [
+        {
+          "label": "伸び",
+          "text": "消費者向けでも第3四半期に増えた売上が2025年通年の増加額を上回ったとされます。"
+        },
+        {
+          "label": "読み方",
+          "text": "年換算値は直近の売上ペースを1年分に置き換えた推計で、年間の確定売上高ではありません。IPO準備が伝えられるなか、収益の伸びと計算資源への巨額投資の両方が注目されています。"
+        }
+      ],
+      "url": "https://www.axios.com/2026/09/29/scoop-openais-annual-recurring-revenue-nears-70b"
+    }
   ]
 };

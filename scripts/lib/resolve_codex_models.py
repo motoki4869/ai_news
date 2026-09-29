@@ -2,6 +2,7 @@
 """Resolve currently available Codex models using the local app-server protocol."""
 
 import json
+import os
 import selectors
 import subprocess
 import sys
@@ -24,6 +25,7 @@ def main() -> int:
     )
     selector = selectors.DefaultSelector()
     assert process.stdout is not None and process.stdin is not None
+    os.set_blocking(process.stdout.fileno(), False)
     selector.register(process.stdout, selectors.EVENT_READ)
 
     requests = (
@@ -49,24 +51,35 @@ def main() -> int:
             process.stdin.write(json.dumps(request) + "\n")
             process.stdin.flush()
 
-        deadline = time.monotonic() + 20
+        timeout_seconds = float(os.environ.get("CODEX_MODEL_LIST_TIMEOUT_SECONDS", "20"))
+        deadline = time.monotonic() + timeout_seconds
         models = None
+        pending = bytearray()
         while time.monotonic() < deadline:
             if process.poll() is not None:
                 break
             if not selector.select(timeout=min(0.5, deadline - time.monotonic())):
                 continue
-            line = process.stdout.readline()
-            if not line:
-                break
             try:
-                response = json.loads(line)
-            except json.JSONDecodeError:
+                chunk = os.read(process.stdout.fileno(), 4096)
+            except BlockingIOError:
                 continue
-            if response.get("id") != 2:
-                continue
-            models = response.get("result", {}).get("data")
-            break
+            if not chunk:
+                break
+            pending.extend(chunk)
+            while b"\n" in pending:
+                line, _, remainder = pending.partition(b"\n")
+                pending = bytearray(remainder)
+                try:
+                    response = json.loads(line)
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    continue
+                if response.get("id") != 2:
+                    continue
+                models = response.get("result", {}).get("data")
+                break
+            if models is not None:
+                break
 
         if not isinstance(models, list):
             print("Codex app-serverからmodel/listの応答を取得できませんでした", file=sys.stderr)
