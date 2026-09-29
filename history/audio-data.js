@@ -298,5 +298,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-29.m4a",
     "label": "2026-09-29のAIニュース音声",
     "title": "脱走するAIを封じる物理的な檻"
+  },
+  "2026-09-30": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-30.m4a",
+    "label": "2026-09-30のAIニュース音声",
+    "title": "AIが道具から自律型エージェントへ"
   }
 };
