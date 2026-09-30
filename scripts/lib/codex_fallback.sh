@@ -2,6 +2,7 @@
 # 日次ニュース更新でCodex CLIとClaude Codeを起動するための共通ヘルパー。
 # investment・ai_news 両リポジトリに同一内容を複製配置している（意図的に非共有）。
 # 呼び出し元スクリプトから `source` して使うこと。
+CODEX_FALLBACK_LIB_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 is_claude_limit_reached() {
   local output="$1"
@@ -46,9 +47,22 @@ run_codex() {
     return 127
   fi
 
-  # 日次処理では利用モデルを選び直す必要がないため、model/listを呼ばず
-  # gpt-6-lunaを直接指定する。必要な場合だけ環境変数で上書きできる。
-  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6-luna}"
+  # model/listから利用可能なSolモデルを確認し、数値バージョンが最新のものを選ぶ。
+  # app-server照会に失敗した場合も日次処理を止めないよう、既知の最新モデルへ戻す。
+  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6.1-sol}"
+  if [ -z "${CODEX_FALLBACK_MODEL:-}" ]; then
+    local model_list
+    if model_list=$(CODEX_MODEL_LIST_TIMEOUT_SECONDS="${CODEX_MODEL_LIST_TIMEOUT_SECONDS:-5}" \
+      python3 "$CODEX_FALLBACK_LIB_DIR/resolve_codex_models.py" "$codex_bin" "latest-sol" 2>&1); then
+      if [[ "$model_list" =~ ^gpt-[0-9]+(\.[0-9]+)*-sol$ ]]; then
+        fallback_model="$model_list"
+      else
+        echo "CodexのSolモデル一覧から有効なモデルIDを選べないため、$fallback_model を使用します: $model_list" >&2
+      fi
+    else
+      echo "CodexのSolモデル一覧を取得できないため、$fallback_model を使用します: $model_list" >&2
+    fi
+  fi
 
   local attempt_log
   attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1

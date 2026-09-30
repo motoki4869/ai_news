@@ -60,8 +60,9 @@ printf 'test prompt\n' > "$test_dir/prompt.txt"
 CODEX_ARGS_LOG="$test_dir/args.log" \
 CODEX_BIN="$test_dir/codex" \
 NODE_BIN="$(command -v node || command -v python3)" \
+CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
 run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
-assert_true "run_codexは固定モデル指定で起動する" grep -q -- '-m gpt-6-luna' "$test_dir/args.log"
+assert_true "環境変数で指定したCodexモデルを利用する" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
 assert_false "Codex起動時にmodel/list用app-serverを起動しない" grep -Eq 'app-server|model/list' "$test_dir/args.log"
 
 if [ "$fail" -ne 0 ]; then

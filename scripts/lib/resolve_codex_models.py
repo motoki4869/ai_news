@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import selectors
 import subprocess
 import sys
@@ -96,6 +97,20 @@ def main() -> int:
         if not available:
             print("Codex app-serverが利用可能モデルを返しませんでした", file=sys.stderr)
             return 1
+
+        if preferred == "latest-sol":
+            # model/listの返却順は将来変わる可能性があるため、IDの数値バージョンで選ぶ。
+            sol_models = []
+            for model in available:
+                match = re.fullmatch(r"gpt-([0-9]+(?:\.[0-9]+)*)-sol", model["id"])
+                if match:
+                    version = tuple(int(part) for part in match.group(1).split("."))
+                    sol_models.append((version, model["id"]))
+            if not sol_models:
+                print("Codex app-serverに利用可能なSolモデルがありません", file=sys.stderr)
+                return 1
+            print(max(sol_models)[1])
+            return 0
 
         ordered = []
         if preferred:
