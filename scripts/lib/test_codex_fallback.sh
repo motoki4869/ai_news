@@ -47,7 +47,7 @@ assert_eq "マーカーが先頭に付与される" "⚠️Codex経由 テスト
 
 test_dir="$(mktemp -d "${TMPDIR:-/tmp}/test-codex-fallback.XXXXXX")"
 cleanup_test_dir() {
-  rm -f "$test_dir/codex" "$test_dir/prompt.txt" "$test_dir/args.log"
+  rm -f "$test_dir/codex" "$test_dir/codex-model-server" "$test_dir/node" "$test_dir/prompt.txt" "$test_dir/args.log"
   rmdir "$test_dir"
 }
 trap cleanup_test_dir EXIT
@@ -63,7 +63,36 @@ NODE_BIN="$(command -v node || command -v python3)" \
 CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
 run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
 assert_true "環境変数で指定したCodexモデルを利用する" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
-assert_false "Codex起動時にmodel/list用app-serverを起動しない" grep -Eq 'app-server|model/list' "$test_dir/args.log"
+assert_false "モデルを明示指定した場合は一覧取得を省略する" grep -Eq 'app-server|model/list' "$test_dir/args.log"
+
+cat > "$test_dir/node" <<'SH'
+#!/bin/bash
+exit 0
+SH
+chmod +x "$test_dir/node"
+cat > "$test_dir/codex-model-server" <<'SH'
+#!/bin/bash
+if [ "$1" = app-server ]; then
+  printf 'node=%s\n' "$(command -v node || true)" >> "$CODEX_ARGS_LOG"
+  count=0
+  while [ "$count" -lt 3 ] && IFS= read -r _; do
+    count=$((count + 1))
+  done
+  printf '%s\n' '{"jsonrpc":"2.0","id":2,"result":{"data":[{"id":"gpt-6-sol"},{"id":"gpt-6.1-sol"}]}}'
+  while :; do sleep 1; done
+fi
+printf '%s\n' "$*" >> "$CODEX_ARGS_LOG"
+SH
+chmod +x "$test_dir/codex-model-server"
+: > "$test_dir/args.log"
+PATH="/usr/bin:/bin:/usr/sbin:/sbin" \
+CODEX_ARGS_LOG="$test_dir/args.log" \
+CODEX_BIN="$test_dir/codex-model-server" \
+NODE_BIN="$test_dir/node" \
+CODEX_FALLBACK_MODEL="" \
+run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
+assert_true "launchd相当のPATHでもapp-serverから最新Solを選ぶ" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
+assert_true "model/list用app-serverからnodeを解決できるPATHを渡す" grep -q "node=$test_dir/node" "$test_dir/args.log"
 
 if [ "$fail" -ne 0 ]; then
   echo "FAILED"

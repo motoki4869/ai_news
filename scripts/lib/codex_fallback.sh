@@ -48,11 +48,12 @@ run_codex() {
   fi
 
   # model/listから利用可能なSolモデルを確認し、数値バージョンが最新のものを選ぶ。
-  # app-server照会に失敗した場合も日次処理を止めないよう、既知の最新モデルへ戻す。
-  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6.1-sol}"
+  # app-server照会に失敗した場合も日次処理を止めないよう、現環境で確認済みのモデルへ戻す。
+  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-5.6-sol}"
   if [ -z "${CODEX_FALLBACK_MODEL:-}" ]; then
     local model_list
-    if model_list=$(CODEX_MODEL_LIST_TIMEOUT_SECONDS="${CODEX_MODEL_LIST_TIMEOUT_SECONDS:-5}" \
+    if model_list=$(PATH="$(dirname "$node_bin"):$PATH" \
+      CODEX_MODEL_LIST_TIMEOUT_SECONDS="${CODEX_MODEL_LIST_TIMEOUT_SECONDS:-5}" \
       python3 "$CODEX_FALLBACK_LIB_DIR/resolve_codex_models.py" "$codex_bin" "latest-sol" 2>&1); then
       if [[ "$model_list" =~ ^gpt-[0-9]+(\.[0-9]+)*-sol$ ]]; then
         fallback_model="$model_list"
