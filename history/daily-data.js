@@ -6935,5 +6935,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.axios.com/2026/09/29/scoop-openais-annual-recurring-revenue-nears-70b"
     }
+  ],
+  "2026-10-01": [
+    {
+      "title": "【資金調達】OpenAI、評価額1.4兆ドルで300億ドル以上の調達を協議——上場延期を補う大型ラウンド",
+      "intro": "9月30日、OpenAIが少なくとも300億ドルの新たな資金調達を投資家と協議しているとBloombergが報じました。目標とする調達前評価額は約1.4兆ドルで、協議は初期段階です。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "同社は安全性への懸念に対応するため、2026年中の上場を見送る方針を示しており、今回の調達は上場に代わる資金確保策とされています。"
+        },
+        {
+          "label": "規模",
+          "text": "実現すれば、3月に実施した1220億ドルの調達に続く大型ラウンドとなります。報道時点で条件は確定しておらず、OpenAIはコメントを控えています。"
+        }
+      ],
+      "url": "https://www.businesstimes.com.sg/international/openai-targets-us30-billion-new-funding-us1-4-trillion-value/"
+    },
+    {
+      "title": "【産業インフラ】CScale、AIチップを光でつなぐ技術に1億4500万ドル調達——故障しても計算を止めない設計",
+      "intro": "9月30日、米CScaleはAI計算基盤向けの光接続技術を開発するため、シリーズCで1億4500万ドルを調達して事業を公表しました。NVIDIAとIntel Capitalも出資しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "光インターコネクトは、多数のAIアクセラレーターを高速・低遅延で接続する技術です。同社は光部品の故障が起きても影響を局所に閉じ込め、計算を継続できる設計を掲げています。"
+        },
+        {
+          "label": "重要性",
+          "text": "AIクラスターの巨大化で、チップ間接続の帯域と信頼性が性能を左右します。累計調達額は1億8800万ドルですが、製品の性能指標や商用導入先はまだ詳しく公表されていません。"
+        }
+      ],
+      "url": "https://www.datacenterdynamics.com/en/news/optical-interconnect-startup-cscale-emerges-from-stealth-following-investment-from-nvidia-and-intel/"
+    },
+    {
+      "title": "【資金調達】Ascerta、1800万ドル調達でAI費用管理から「導入効果の測定」へ拡大",
+      "intro": "9月30日、米Pay-iはAscertaへの改名と1800万ドルのシリーズA調達を発表しました。企業がAIツールの利用費だけでなく、業務上の成果と投資対効果を追えるようにします。",
+      "points": [
+        {
+          "label": "具体例",
+          "text": "同社によると、ある顧客は1回平均0.40ドルのエージェント実行に、70ドルかかる例外が1日に何百回も発生していると把握しました。"
+        },
+        {
+          "label": "接続先",
+          "text": "Microsoft Copilot、Amazon Bedrock AgentCore、Salesforce Agentforce、GitHub Copilot、Claude Codeなどの利用状況を人・チーム・ツール別に測定します。"
+        }
+      ],
+      "url": "https://www.geekwire.com/2026/pay-i-rebrands-as-ascerta-and-raises-18m-to-help-enterprises-track-ai-business-value/"
+    },
+    {
+      "title": "【注目ツール】Tote AI、コンビニの販売・端末データを自然言語で調べる「HQ Genie AI」を公開",
+      "intro": "9月30日、米Tote AIはコンビニ運営者向けのAIエージェント「HQ Genie AI」を公開しました。Toteの既存顧客は、店舗の販売・在庫・端末データを会話で照会できます。",
+      "points": [
+        {
+          "label": "業務",
+          "text": "店舗ごとの日次売上や返金状況を質問でき、試験提供中の機能では定時の売上要約や端末状態の確認も自動実行します。"
+        },
+        {
+          "label": "統制",
+          "text": "回答は利用者の既存権限内のデータに限り、データを変更する操作には人の承認が必要です。Huck's Marketなどで既に運用されています。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/tote-ai-launches-hq-genie-ai-an-industry-first-ai-agent-for-faster-smarter-convenience-store-operations-302893894.html"
+    },
+    {
+      "title": "【規制・政策】英中銀総裁、先端AIの規制論に先立つ導入前後の試験と介入手段を提言",
+      "intro": "9月30日、英イングランド銀行のアンドリュー・ベイリー総裁は、先端AIの統治について寄稿し、導入前後の厳格なモデル試験と、社会が必要時に介入できる手段を優先すべきだと論じました。",
+      "points": [
+        {
+          "label": "論点",
+          "text": "自己改善するAIの振る舞いを理解し、事故や未遂から学んでから、適切な規制の形を定めるべきだとしています。"
+        },
+        {
+          "label": "金融への影響",
+          "text": "AIは決済網や銀行へのサイバー脅威を高度化させる一方、金融機関自身もAIを使います。総裁は、利用モデルの能力と弱点の試験が金融安定にも必要だと述べています。"
+        }
+      ],
+      "url": "https://www.bankofengland.co.uk/bank-insights/2026/frontier-ai-and-the-question-of-governance"
+    }
   ]
 };
