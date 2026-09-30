@@ -8,8 +8,8 @@ ai_news の変更履歴。新しい日付を上に追記する。
 ## 2026-09-30
 
 ### 日次Codexで最新のSolモデルを自動選択
-- **変更**: 日次処理のCodex起動時に利用可能なモデル一覧を取得し、数値バージョンが最も新しいSolモデルを選ぶ。一覧取得ではlaunchd環境でもNode.jsを解決できるようPATHを補い、失敗時は確認済みの`gpt-5.6-sol`を使う。明示的な環境変数による上書きも維持する。
-- **理由**: launchdの最小PATHにはNode.jsが含まれず、model/listの子プロセスが起動できていなかったため。PATHを補って一覧取得を復旧し、更新後のモデルにも追従できるようにする。
+- **変更**: 日次処理ではChatGPTデスクトップアプリ同梱のCodex CLIを優先し、利用可能なモデル一覧から数値バージョンが最も新しいSolを選ぶ。launchdでもNode.jsとPythonを解決できるPATH・実行ファイルを使い、一覧取得に失敗した場合は`gpt-6-sol`を使う。明示的な環境変数による上書きも維持する。
+- **理由**: Homebrew版Codex CLIが古く、`model/list`にGPT-6 Solを載せていなかったため。モデルピッカーを提供する現行のデスクトップアプリ同梱版を使い、最新Solの選択とlaunchdでの起動を両立する。
 - **対象**: `scripts/lib/codex_fallback.sh`、`scripts/lib/resolve_codex_models.py`、`scripts/lib/test_codex_fallback.sh`
 - **commit**: `HEAD`
 

@@ -25,10 +25,11 @@ run_codex() {
   # 解決しただけでは `env: node: No such file or directory` (127) で落ちる。
   # そこで codex と node の両方を明示的に解決し、node のあるディレクトリを PATH の
   # 先頭に足してから起動する（codexが内部で起動する子プロセスもnodeを見つけられるように）。
-  local codex_bin="${CODEX_BIN:-$(command -v codex || true)}"
-  if [ ! -x "$codex_bin" ]; then
-    for candidate in /opt/homebrew/bin/codex /usr/local/bin/codex; do
-      [ -x "$candidate" ] && codex_bin="$candidate" && break
+  local codex_bin="${CODEX_BIN:-}"
+  if [ -z "$codex_bin" ]; then
+    # launchdのPATHから見つかるHomebrew版より、モデル一覧が新しいデスクトップ同梱版を優先する。
+    for candidate in /Applications/ChatGPT.app/Contents/Resources/codex "$(command -v codex || true)" /opt/homebrew/bin/codex /usr/local/bin/codex; do
+      [ -n "$candidate" ] && [ -x "$candidate" ] && codex_bin="$candidate" && break
     done
   fi
   if [ ! -x "$codex_bin" ]; then
@@ -48,13 +49,21 @@ run_codex() {
   fi
 
   # model/listから利用可能なSolモデルを確認し、数値バージョンが最新のものを選ぶ。
-  # app-server照会に失敗した場合も日次処理を止めないよう、現環境で確認済みのモデルへ戻す。
-  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-5.6-sol}"
+  # app-server照会に失敗した場合も日次処理を止めないよう、現アプリで確認済みのモデルへ戻す。
+  local fallback_model="${CODEX_FALLBACK_MODEL:-gpt-6-sol}"
   if [ -z "${CODEX_FALLBACK_MODEL:-}" ]; then
     local model_list
-    if model_list=$(PATH="$(dirname "$node_bin"):$PATH" \
+    local python_bin="${PYTHON_BIN:-$(command -v python3 || true)}"
+    if [ ! -x "$python_bin" ]; then
+      for candidate in /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3; do
+        [ -x "$candidate" ] && python_bin="$candidate" && break
+      done
+    fi
+    if [ ! -x "$python_bin" ]; then
+      echo "python3コマンドが見つからないため、Codexのモデル一覧を取得できません。$fallback_model を使用します" >&2
+    elif model_list=$(PATH="$(dirname "$node_bin"):$PATH" \
       CODEX_MODEL_LIST_TIMEOUT_SECONDS="${CODEX_MODEL_LIST_TIMEOUT_SECONDS:-5}" \
-      python3 "$CODEX_FALLBACK_LIB_DIR/resolve_codex_models.py" "$codex_bin" "latest-sol" 2>&1); then
+      "$python_bin" "$CODEX_FALLBACK_LIB_DIR/resolve_codex_models.py" "$codex_bin" "latest-sol" 2>&1); then
       if [[ "$model_list" =~ ^gpt-[0-9]+(\.[0-9]+)*-sol$ ]]; then
         fallback_model="$model_list"
       else
