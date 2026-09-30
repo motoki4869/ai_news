@@ -303,5 +303,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-09-30.m4a",
     "label": "2026-09-30のAIニュース音声",
     "title": "AIが道具から自律型エージェントへ"
+  },
+  "2026-10-01": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-01.m4a",
+    "label": "2026-10-01のAIニュース音声",
+    "title": "AIコスト暴走と制御の現実"
   }
 };
