@@ -7012,5 +7012,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.bankofengland.co.uk/bank-insights/2026/frontier-ai-and-the-question-of-governance"
     }
+  ],
+  "2026-10-02": [
+    {
+      "title": "【技術】Google、Gemini 4 Argonを発表——高度なサイバー防御を優先し、一般公開は段階的に",
+      "intro": "10月1日（日本時間）、Googleは複雑で長時間の推論に対応する新モデル「Gemini 4 Argon」を発表し、まず信頼できるサイバー防御担当者に提供すると明らかにしました。",
+      "points": [
+        {
+          "label": "提供範囲",
+          "text": "Fairwindプログラムを通じて防御担当者に先行提供し、開発者・企業・一般利用者への公開は評価と安全対策を進めながら段階的に行います。"
+        },
+        {
+          "label": "実績と価格",
+          "text": "Googleによると、脆弱性修正を測るCWE-bench v1で最高点に並ぶ68%を記録しました。公開時の導入価格は入力100万トークン当たり2ドル、出力は10ドルの予定です。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/"
+    },
+    {
+      "title": "【規制】米カリフォルニア州、AIだけで解雇を決めることを禁止——職場での人間の監督を法制化",
+      "intro": "10月1日（日本時間）、米カリフォルニア州のニューサム知事が、雇用判断や職場監視にAIを使う際の労働者保護を定めた一連の法案に署名したことが報じられました。",
+      "points": [
+        {
+          "label": "雇用判断",
+          "text": "SB 947は懲戒や解雇をAIの判断だけに委ねることを禁じ、SB 951はAIが大量解雇などの原因になった場合の通知を求めます。"
+        },
+        {
+          "label": "対象の広がり",
+          "text": "職場の監視に加え、医療では臨床判断に人間の裁量を残し、生成物の来歴情報を保護する措置も同時に打ち出されました。"
+        }
+      ],
+      "url": "https://www.gov.ca.gov/2026/09/30/californias-nation-leading-ai-framework-just-got-stronger-governor-newsom-signs-more-first-in-the-nation-worker-protections-and-more/"
+    },
+    {
+      "title": "【注目ツール】Google、Geminiに再利用できる「Skills」を導入——定型作業をスラッシュ入力で呼び出し",
+      "intro": "10月1日（日本時間）、Googleはよく使う指示を保存して繰り返し実行できる「Skills」をGeminiのチャットに世界向けに導入すると発表しました。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "指示を一度保存し、スラッシュと名前を入力して呼び出します。複数のSkillsの組み合わせや、文書・PDF・画像を参照資料として添付する使い方にも対応します。"
+        },
+        {
+          "label": "移行",
+          "text": "既存の「Gems」は順次Skillsへ自動移行され、Workspaceの企業・教育向けには今後数週間で提供される予定です。"
+        }
+      ],
+      "url": "https://blog.google/products-and-platforms/products/gemini/automate-tasks-with-skills/"
+    },
+    {
+      "title": "【ビジネス】英Barclays、Claudeを銀行業務全体へ拡大——1日12万通のメール処理にも活用",
+      "intro": "10月1日、英銀行BarclaysとAnthropicは、ソフトウェア開発や顧客対応などにClaudeを広げる協業の拡大を発表しました。",
+      "points": [
+        {
+          "label": "導入規模",
+          "text": "社内の情報検索はすでに1万6,000人超が利用し、累計100万回超の検索を処理しました。市場部門では毎日約12万通の顧客メールの分類と処理経路の判断を支援しています。"
+        },
+        {
+          "label": "開発現場",
+          "text": "2026年末までに開発者の半数、2027年には大半のソフトウェア技術者がClaude Codeを使う計画で、基幹システムの更新にも活用します。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/barclays-scales-claude"
+    },
+    {
+      "title": "【資金調達】Armadin、2億5,550万ドルを調達——AIで攻撃経路を常時検証する市場が拡大",
+      "intro": "10月1日、米サイバーセキュリティ企業ArmadinはシリーズBで2億5,550万ドルを調達し、評価額が25億ドルを超えたと発表しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "専門分野の異なるAIエージェント群が企業のシステムを攻撃者の視点で継続的に調べ、小さな弱点がつながって大きな侵害に至る経路を検証します。"
+        },
+        {
+          "label": "投資と需要",
+          "text": "a16zとAccelが共同で主導し、累計調達額は4億4,500万ドルです。同社は大企業や政府機関向けにすでに運用していると説明しています。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/armadin-raises-255-5-million-series-b-to-scale-effective-autonomous-security-302895278.html"
+    },
+    {
+      "title": "【フィジカルAI】自動運転トラックのKodiak AI、AWSを主要クラウドに——公道での無人運行へ安全検証を拡大",
+      "intro": "10月1日、米Kodiak AIは自動運転トラックのAI開発と安全シミュレーションを支える主要クラウドとしてAWSを採用したと発表しました。",
+      "points": [
+        {
+          "label": "検証方法",
+          "text": "自社の「BreakPoint」はセンサー信号に現実的な誤りを注入し、衝突につながるまれな状況を探します。同社によると、実走行では何万マイルも必要な事例を数分で見つけられます。"
+        },
+        {
+          "label": "実用段階",
+          "text": "GPU計算資源を使って多数の走行シナリオを試し、2026年後半に予定するテキサス州の公道での無人トラック運行に備えます。"
+        }
+      ],
+      "url": "https://investors.kodiak.ai/news-releases/news-release-details/kodiak-ai-chooses-aws-ai-powered-autonomous-trucking-technology"
+    }
   ]
 };

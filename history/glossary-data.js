@@ -816,10 +816,10 @@ window.GLOSSARY = [
         "q": "openai gpt-6 astra / gpt-6.1 sol / sol / luna / gpt-live gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
-        "term": "Gemini 3 Pro / 3.1 Flash / 3.5 Pro 等",
+        "term": "Gemini 4 Argon / 3.8 Flash",
         "sub": "<strong>Google / DeepMind</strong>",
-        "desc": "Gemini系列を開発。Flash が軽量・低価格、Pro が高性能という位置づけで、用途に応じて使い分ける前提の構成になっている。Gemini 3.5 Pro は200万トークンのコンテキストウィンドウを備え、長文脈の扱いで先行している。",
-        "q": "google / deepmind gemini 3 pro / 3.1 flash / 3.5 pro 等 gemini系列を開発。flash が軽量・低価格、pro が高性能という位置づけで、用途に応じて使い分ける前提の構成になっている。gemini 3.5 pro は200万トークンのコンテキストウィンドウを備え、長文脈の扱いで先行している。"
+        "desc": "Gemini系列を開発し、Flashは速度と価格、上位モデルは複雑な作業への対応を重視する。&lt;br&gt;2026年10月1日（日本時間）に発表したGemini 4 Argonは、サイバー防御担当者へ先行提供し、脆弱性修正を測るCWE-bench v1で68%を記録したとGoogleが説明している。&lt;br&gt;一般向け公開は段階的に進める予定で、導入価格は入力100万トークン当たり2ドル、出力10ドル。旧世代のGemini 3.5 Proは200万トークンの文脈長を備える。",
+        "q": "google / deepmind gemini 4 argon / 3.8 flash gemini系列を開発し、flashは速度と価格、上位モデルは複雑な作業への対応を重視する。<br>2026年10月1日（日本時間）に発表したgemini 4 argonは、サイバー防御担当者へ先行提供し、脆弱性修正を測るcwe-bench v1で68%を記録したとgoogleが説明している。<br>一般向け公開は段階的に進める予定で、導入価格は入力100万トークン当たり2ドル、出力10ドル。旧世代のgemini 3.5 proは200万トークンの文脈長を備える。"
       },
       {
         "term": "MAI-Cyber-1-Flash 等",
