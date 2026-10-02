@@ -18,6 +18,7 @@ LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 cd "$REPO_DIR"
 
 source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
+source "$SCRIPT_ROOT/scripts/lib/daily_news_output.sh"
 source "$SCRIPT_ROOT/scripts/lib/line_notification_dedupe.sh"
 source "$SCRIPT_ROOT/scripts/lib/news_update_lock.sh"
 
@@ -55,10 +56,10 @@ if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT"; then
   IS_FALLBACK=1
 fi
 
-if [ "$STATUS" -eq 0 ] && printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: ERROR:'; then
+if [ "$STATUS" -eq 0 ] && has_output_line_prefix "$OUTPUT" 'SUMMARY: ERROR:'; then
   STATUS=1
 fi
-if [ "$STATUS" -eq 0 ] && ! printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: OK:'; then
+if [ "$STATUS" -eq 0 ] && ! has_output_line_prefix "$OUTPUT" 'SUMMARY: OK:'; then
   echo "成功を示すSUMMARY: OK:がないため、日次更新を失敗扱いにします" >&2
   STATUS=1
 fi
@@ -72,7 +73,7 @@ if [[ "$SUMMARY_KIND" == ERROR:* ]]; then
 else
   ERROR_REASON="$(line_notification_error_detail "$OUTPUT")"
   if [ -z "$ERROR_REASON" ]; then
-    if printf '%s\n' "$OUTPUT" | grep -q '^SUMMARY: OK:'; then
+    if has_output_line_prefix "$OUTPUT" 'SUMMARY: OK:'; then
       ERROR_REASON="SUMMARY: OK: は出力されましたが、コマンドが終了コード ${STATUS} で終了しました"
     else
       ERROR_REASON="SUMMARY: ERROR: がないまま終了コード ${STATUS} で終了しました"
@@ -102,12 +103,12 @@ AUDIO_DATE="$(date +%Y-%m-%d)"
 AUDIO_SOURCE_FILE="everyday_news/${AUDIO_DATE:0:4}${AUDIO_DATE:5:2}.md"
 AUDIO_READY=0
 if git rev-parse --verify HEAD >/dev/null 2>&1 \
-   && git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null | grep -q "^## $AUDIO_DATE$"; then
+   && git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null | grep "^## $AUDIO_DATE$" >/dev/null; then
   AUDIO_READY=1
 fi
 NEWS_SECTION_COMMITTED=0
 if git show "HEAD:$AUDIO_SOURCE_FILE" 2>/dev/null \
-   | grep -Eq "^##[[:space:]]+$AUDIO_DATE([[:space:]].*)?$"; then
+   | grep -E "^##[[:space:]]+$AUDIO_DATE([[:space:]].*)?$" >/dev/null; then
   NEWS_SECTION_COMMITTED=1
 fi
 

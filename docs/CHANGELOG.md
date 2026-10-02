@@ -5,6 +5,14 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-10-02
+
+### 日次ニュースの成功判定で長いログを安全に処理
+- **変更**: `SUMMARY: OK:` / `SUMMARY: ERROR:` の検出をシェルの行頭・改行境界判定に変更し、`grep -q` の早期終了によるSIGPIPEを防止。日付見出しの確認も入力を最後まで読み取る方式に変更し、回帰テストを追加した。
+- **理由**: 成功行の後ろに長い実行ログが続くと、`set -o pipefail` 下で `printf | grep -q` がBroken pipeになり、更新成功後も日次ジョブが終了コード1を返していたため。
+- **対象**: `scripts/daily_news.sh`、`scripts/lib/daily_news_output.sh`、`scripts/lib/test_daily_news_output.sh`
+- **commit**: `HEAD`
+
 ## 2026-09-30
 
 ### 日次Codexで最新のSolモデルを自動選択
