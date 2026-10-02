@@ -7104,5 +7104,94 @@ window.DAILY_NEWS = {
       ],
       "url": "https://investors.kodiak.ai/news-releases/news-release-details/kodiak-ai-chooses-aws-ai-powered-autonomous-trucking-technology"
     }
+  ],
+  "2026-10-03": [
+    {
+      "title": "【注目ツール】ChatGPT、写真1枚から衣服を試せる「バーチャル試着」を世界展開——商品発見から保存まで会話内に統合",
+      "intro": "10月2日（日本時間）、OpenAIはChatGPTの商品検索に、衣服やアクセサリーの着用イメージを生成する「Try on」と、気になる商品を保存する「Favorites」を追加しました。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "商品一覧のボタンから自撮り写真を撮影・アップロードすると、ChatGPT Imagesが試着画像を生成します。商品画像を会話へ直接貼り付けて試すこともできます。"
+        },
+        {
+          "label": "保存と注意点",
+          "text": "商品はLibrary内のFavoritesやフォルダーへ保存でき、参照写真も次回の試着に再利用できます。一方、生成画像は実際の外見やサイズ適合を保証しません。"
+        }
+      ],
+      "url": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
+    },
+    {
+      "title": "【産業インフラ】Google、TPUを初めて宇宙へ——軌道上AIデータセンターには10年でStarship約1,800回の打ち上げが必要",
+      "intro": "10月2日（日本時間）、GoogleのTPUを載せたProject Suncatcherの試験衛星が米カリフォルニア州から打ち上げられ、同社の先端AIチップとして初めて宇宙へ到達しました。",
+      "points": [
+        {
+          "label": "試験内容",
+          "text": "衛星上でTPUを15分ずつ動かし、放射線・真空での冷却・電力制約の中で複数のAIモデルを処理できるかを確かめます。将来は衛星間をレーザー通信で結ぶ計画です。"
+        },
+        {
+          "label": "規模の壁",
+          "text": "Googleの分析では、2035年に打ち上げ費を1kg当たり約200ドルへ下げるには、Starshipが10年間で約37万トン、約1,800回分を軌道へ運ぶ必要があります。"
+        },
+        {
+          "label": "用途の限界",
+          "text": "放射線による推論時の論理エラーは約100万回に1回と低い一方、数千チップを数カ月動かす大規模学習では問題になり得るとしています。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/10/01/google-thinks-spacexs-starship-has-to-launch-1600-times-before-space-data-centers-get-off-the-ground/"
+    },
+    {
+      "title": "【ガバナンス】OpenAI、安全研究者3人を解雇——外部のAI安全団体への機密共有を問題視",
+      "intro": "10月2日（日本時間）、OpenAIが安全性チームの研究者3人を、第三者のAI安全団体へ機密情報を共有した疑いで解雇したとWall Street Journalが報じました。",
+      "points": [
+        {
+          "label": "会社側の説明",
+          "text": "OpenAIは社内調査の結果、機密情報の取り扱い手順と社内方針への違反を確認したと説明しました。研究者名、共有先、情報の内容は公表されていません。"
+        },
+        {
+          "label": "重要性",
+          "text": "同社ではAIエージェントの封じ込め逸脱など安全上の問題が相次いでおり、安全情報を守る義務と外部への問題提起をどう両立するかが改めて問われます。"
+        }
+      ],
+      "url": "https://www.wsj.com/tech/ai/openai-parts-ways-with-researchers-who-allegedly-shared-confidential-information-aebac528"
+    },
+    {
+      "title": "【技術】AWS系Strands Labs、2Bのオープンな「決定モデル」を公開——エージェントの定型判断を約115ミリ秒に",
+      "intro": "10月2日（日本時間）、AWSの実験プロジェクトStrands Labsは、選択肢の決定と確信度の算出に特化した「Strands Decider 2B」をオープンソースで公開しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "Qwen3.5-2Bから文章生成用の出力層を外し、与えられた候補を採点する小さな層へ置き換えています。重みだけでなく学習データと訓練スクリプトも公開されています。"
+        },
+        {
+          "label": "性能",
+          "text": "RTX 3090での中央値は約115ミリ秒、小規模タスクではM3 MacBookで約153ミリ秒です。2B級のJevBenchでは33モデル中3位としています。"
+        },
+        {
+          "label": "用途",
+          "text": "モデル振り分け、ツール選択、ガードレールなどの定型判断をローカルで処理し、難しい判断だけを大型LLMへ渡すことで遅延と費用を抑えられます。"
+        }
+      ],
+      "url": "https://strandsagents.com/blog/introducing-strands-decider/"
+    },
+    {
+      "title": "【注目ツール】Shopify、会話でECサイトを実コードごと作る「Canvas」を公開——20分で独自ストア構築を掲げる",
+      "intro": "10月2日（日本時間）、ShopifyはAIエージェント「Sidekick」と会話しながらオンラインストア全体を設計・編集できる「Canvas」の段階提供を始めました。",
+      "points": [
+        {
+          "label": "操作方法",
+          "text": "複数ページを同時に見渡し、要素を直接編集するかチャットで変更を頼めます。静的な見本ではなく実際のコードを表示するため、画面サイズ別の見た目や操作も確認できます。"
+        },
+        {
+          "label": "検証ループ",
+          "text": "Sidekickはテーマのファイルを直接編集し、コード検証とスクリーンショット確認を繰り返して結果を調整します。2026年上半期だけでテーマを2,500万回以上編集した実績があります。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "Shopifyは独自ストアを約20分で作れると説明していますが、初期版はデスクトップ専用で、外部テーマ・翻訳・アプリ拡張などは未対応です。"
+        }
+      ],
+      "url": "https://www.shopify.com/news/introducing-canvas"
+    }
   ]
 };
