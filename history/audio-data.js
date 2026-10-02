@@ -313,5 +313,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-02.m4a",
     "label": "2026-10-02のAIニュース音声",
     "title": "AI解雇禁止と無人トラックの衝撃"
+  },
+  "2026-10-03": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-03.m4a",
+    "label": "2026-10-03のAIニュース音声",
+    "title": "自律AIと宇宙データセンターの衝撃"
   }
 };
