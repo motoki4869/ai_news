@@ -323,5 +323,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-04.m4a",
     "label": "2026-10-04のAIニュース音声",
     "title": "画面を破り現実世界を動かすAI"
+  },
+  "2026-10-05": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-05.m4a",
+    "label": "2026-10-05のAIニュース音声",
+    "title": "自律AIの加速と破られたデジタルの檻"
   }
 };
