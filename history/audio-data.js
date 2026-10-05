@@ -332,6 +332,6 @@ window.DAILY_AUDIO = {
   "2026-10-06": {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-06.m4a",
     "label": "2026-10-06のAIニュース音声",
-    "title": "700のAIエージェント侵入とOpenAIの法的危機"
+    "title": "暴走するAIエージェントをどう止めるか"
   }
 };
