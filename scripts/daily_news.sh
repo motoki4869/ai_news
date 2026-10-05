@@ -14,8 +14,19 @@ if [ ! -x "$PYTHON_BIN" ]; then
   done
 fi
 LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
+DAILY_SOURCE_FILE="$REPO_DIR/logs/daily_news_source.txt"
+DAILY_NEWS_SOURCE="codex"
+if [ -f "$DAILY_SOURCE_FILE" ]; then
+  IFS=$'\t' read -r SAVED_SOURCE_DATE SAVED_SOURCE_AGENT _ < "$DAILY_SOURCE_FILE" || true
+  if [ "${SAVED_SOURCE_DATE:-}" = "$(date +%Y-%m-%d)" ] \
+     && [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
+    DAILY_NEWS_SOURCE="claude"
+  fi
+fi
 
 cd "$REPO_DIR"
+AI_NEWS_REAL_GIT="$(command -v git)"
+export AI_NEWS_REAL_GIT
 
 # AI実行プロセスが行うcommit・pushにも最低件数の検査を適用する。
 # git config環境変数でこの日次プロセスと子プロセスだけにhooksPathを設定する。
@@ -92,17 +103,54 @@ else
     fi
   fi
 fi
-if [ "$STATUS" -eq 0 ] && {
-  ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
-    --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" \
-  || ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
-    --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" --revision HEAD
-}; then
-  STATUS=1
-  ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
-fi
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
+
+commit_and_push_daily_news() {
+  local news_file="everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
+  local current_branch index_file target
+  local -a targets=()
+  current_branch="$(git -C "$REPO_DIR" branch --show-current)"
+  if [ "$current_branch" != "main" ]; then
+    echo "AIニュースの日次commit・push先はmainですが、現在のブランチは${current_branch:-detached HEAD}です" >&2
+    return 1
+  fi
+
+  for target in "$news_file" history/daily-data.js docs/glossary.md history/glossary-data.js; do
+    if [ -e "$REPO_DIR/$target" ] || git -C "$REPO_DIR" ls-files --error-unmatch "$target" >/dev/null 2>&1; then
+      targets+=("$target")
+    fi
+  done
+
+  index_file="$(mktemp "${TMPDIR:-/tmp}/ai-news-daily-index.XXXXXX")" || return 1
+  rm -f "$index_file"
+  if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" read-tree HEAD \
+     || ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" add -- "${targets[@]}"; then
+    rm -f "$index_file" "${index_file}.lock"
+    echo "日次ニュース更新対象を専用Gitインデックスへ登録できませんでした" >&2
+    return 1
+  fi
+
+  if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" diff --cached --quiet; then
+    if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" commit \
+      -m "$AI_NEWS_DATE のAIニュースを更新"; then
+      rm -f "$index_file" "${index_file}.lock"
+      echo "日次ニュースのcommitに失敗しました" >&2
+      return 1
+    fi
+  fi
+  rm -f "$index_file" "${index_file}.lock"
+
+  if ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+    --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" --revision HEAD; then
+    echo "commit済みの日次ニュース件数が最低5件に届きません" >&2
+    return 1
+  fi
+  if ! git -C "$REPO_DIR" push origin main; then
+    echo "日次ニュースのpushに失敗しました" >&2
+    return 1
+  fi
+}
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
 #
 # 以前は本文を文字列リテラルに直接埋め込み、`cut -c1-200` で長さを詰めていたが、
@@ -123,6 +171,26 @@ end run' "$1" "$2" "$3" || true
 mark_as_claude_fallback() {
   printf '⚠️Claude Code経由\n%s' "$1"
 }
+
+if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+  --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS"; then
+  STATUS=1
+  ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
+fi
+if [ "$STATUS" -eq 0 ]; then
+  if [ "$IS_FALLBACK" -eq 1 ]; then
+    DAILY_NEWS_SOURCE="claude"
+  fi
+  if ! mkdir -p "$(dirname "$DAILY_SOURCE_FILE")" \
+     || ! printf '%s\t%s\n' "$AI_NEWS_DATE" "$DAILY_NEWS_SOURCE" > "$DAILY_SOURCE_FILE"; then
+    STATUS=1
+    ERROR_REASON="LINE通知の経由情報を保存できませんでした"
+  fi
+fi
+if [ "$STATUS" -eq 0 ] && ! commit_and_push_daily_news; then
+  STATUS=1
+  ERROR_REASON="日次ニュースの件数検査後のcommit・pushに失敗しました"
+fi
 
 AUDIO_DATE="$(date +%Y-%m-%d)"
 AUDIO_SOURCE_FILE="everyday_news/${AUDIO_DATE:0:4}${AUDIO_DATE:5:2}.md"
@@ -148,7 +216,7 @@ fi
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
     LINE_MESSAGE="$(line_notification_text "$LINE_MSG_FILE")"
-    if [ "$IS_FALLBACK" -eq 1 ]; then
+    if [ "$DAILY_NEWS_SOURCE" = "claude" ]; then
       LINE_MESSAGE="$(mark_as_claude_fallback "$LINE_MESSAGE")"
     fi
     if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$LINE_MESSAGE"; then

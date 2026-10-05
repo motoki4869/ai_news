@@ -24,6 +24,18 @@ if [ "$1" = app-server ]; then
   exit 0
 fi
 case "$FAKE_CODEX_MODE" in
+  update-five)
+    today="$(date +%Y-%m-%d)"
+    month="$(date +%Y%m)"
+    cat >> "$REPO_DIR/everyday_news/$month.md" <<NEWS
+
+- **【産業】親スクリプトcommitテスト**（[出典](https://example.com/parent-commit)）
+  日次スクリプトがモデル終了後にcommit・pushすることを確認します。
+NEWS
+    printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"
+    printf '%s\n' 'SUMMARY: OK: 6件目を追加しました'
+    exit 0
+    ;;
   low-count)
     today="$(date +%Y-%m-%d)"
     month="$(date +%Y%m)"
@@ -102,9 +114,11 @@ exit 0
 EOF
 chmod +x "$TMP_DIR/fake-gh"
 
-git -C "$TEST_REPO" init -q
+git -C "$TEST_REPO" init -q -b main
 git -C "$TEST_REPO" config user.email test@example.com
 git -C "$TEST_REPO" config user.name test
+git init --bare -q "$TMP_DIR/origin.git"
+git -C "$TEST_REPO" remote add origin "$TMP_DIR/origin.git"
 cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 # ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
 
@@ -119,6 +133,7 @@ EOF
 done
 git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
+git -C "$TEST_REPO" push -q -u origin main
 
 run_daily() {
   local codex_mode="$1"
@@ -225,8 +240,41 @@ if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 7 ]; t
   exit 1
 fi
 
+before_parent_commit="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if ! run_daily update-five "$TMP_DIR/output-parent-commit.log" 0 "$TMP_DIR/notify-state-parent-commit"; then
+  echo "日次スクリプトによるcommit・pushを成功扱いしませんでした" >&2
+  cat "$TMP_DIR/output-parent-commit.log" >&2
+  exit 1
+fi
+after_parent_commit="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+remote_head="$(git --git-dir="$TMP_DIR/origin.git" rev-parse refs/heads/main)"
+if [ "$after_parent_commit" -ne "$((before_parent_commit + 1))" ] \
+   || [ "$remote_head" != "$(git -C "$TEST_REPO" rev-parse HEAD)" ]; then
+  echo "日次スクリプトが対象ファイルをcommit・pushしませんでした" >&2
+  cat "$TMP_DIR/output-parent-commit.log" >&2
+  exit 1
+fi
+
 if ! grep -q '⚠️Claude Code経由' "$TMP_DIR/curl-body.log"; then
   echo "Claude Codeフォールバック成功時のLINE通知先頭に経由表示がありません" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
+if run_daily fail "$TMP_DIR/output-fallback-line-retry.log" 1 "$TMP_DIR/notify-state-fallback-line-retry"; then
+  :
+else
+  echo "LINE通知だけが失敗したClaude Codeフォールバックを更新失敗扱いしました" >&2
+  exit 1
+fi
+if run_daily ok "$TMP_DIR/output-codex-line-retry.log" 0 "$TMP_DIR/notify-state-fallback-line-retry"; then
+  :
+else
+  echo "Claude Code経由のLINE再送テストでCodexの再実行に失敗しました" >&2
+  exit 1
+fi
+if [ "$(grep -c '⚠️Claude Code経由' "$TMP_DIR/curl-body.log")" -lt 3 ]; then
+  echo "LINE再送時に元のClaude Code経由表示が保持されませんでした" >&2
   cat "$TMP_DIR/curl-body.log" >&2
   exit 1
 fi
@@ -239,6 +287,7 @@ fi
 after_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if [ "$before_commit_count" -ne "$after_commit_count" ] \
    || ! grep -q 'commit・pushを中止' "$TMP_DIR/output-low-count.log" \
+   || ! grep -q 'AIエージェントからのcommit・pushは禁止' "$TMP_DIR/output-low-count.log" \
    || ! grep -q '必要数は5件' "$TMP_DIR/output-low-count.log"; then
   echo "5件未満の更新をcommit前または日次処理側で停止できませんでした" >&2
   cat "$TMP_DIR/output-low-count.log" >&2

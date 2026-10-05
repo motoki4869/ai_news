@@ -1,0 +1,42 @@
+#!/bin/bash
+set -euo pipefail
+
+real_git="${AI_NEWS_REAL_GIT:-/usr/bin/git}"
+args=("$@")
+index=0
+subcommand=""
+
+while [ "$index" -lt "${#args[@]}" ]; do
+  argument="${args[$index]}"
+  case "$argument" in
+    -C|-c|--git-dir|--work-tree|--namespace|--exec-path|--config-env|--super-prefix)
+      index=$((index + 2))
+      ;;
+    --)
+      index=$((index + 1))
+      if [ "$index" -lt "${#args[@]}" ]; then
+        subcommand="${args[$index]}"
+      fi
+      break
+      ;;
+    --bare|--no-replace-objects|--no-optional-locks|--literal-pathspecs|--glob-pathspecs|--noglob-pathspecs|--icase-pathspecs|--no-pager|--paginate|-p)
+      index=$((index + 1))
+      ;;
+    -* )
+      index=$((index + 1))
+      ;;
+    * )
+      subcommand="$argument"
+      break
+      ;;
+  esac
+done
+
+case "$subcommand" in
+  commit|push|send-pack|receive-pack|commit-tree)
+    echo "AIエージェントからのcommit・pushは禁止されています。日次スクリプトが件数検査後に実行します。" >&2
+    exit 1
+    ;;
+esac
+
+exec "$real_git" "${args[@]}"

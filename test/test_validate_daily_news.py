@@ -39,6 +39,12 @@ class ValidateDailyNewsTest(unittest.TestCase):
         self.assertIn("4件", result.stderr)
         self.assertIn("5件", result.stderr)
 
+    def test_rejects_the_same_story_repeated_five_times(self):
+        duplicate = "- **【技術】同じニュース**（[出典](https://example.com/same)）\n  概要です。"
+        result = self.validate("# 2026年10月 AIニュースまとめ\n\n## 2026-10-06\n\n" + "\n\n".join([duplicate] * 5))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("重複を除くと1件", result.stderr)
+
     def test_counts_only_the_requested_date_section(self):
         content = news_section(5, "2026-10-05") + "\n" + news_section(1, "2026-10-06")
         result = self.validate(content)

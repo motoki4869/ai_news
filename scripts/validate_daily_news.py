@@ -7,16 +7,21 @@ import argparse
 import re
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 
-NEWS_ITEM = re.compile(r"^- \*\*.+\*\*（\[出典\]\(https?://[^)]+\)）\s*$")
+NEWS_ITEM = re.compile(
+    r"^- \*\*(?P<title>.+?)\*\*（\[出典\]\((?P<url>https?://[^)]+)\)）\s*$"
+)
 SECTION = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})(?:\s.*)?$")
 
 
 def count_news_items(markdown: str, target_date: str) -> int:
     in_target_section = False
-    count = 0
+    titles: set[str] = set()
+    urls: set[str] = set()
     for line in markdown.splitlines():
         section_match = SECTION.match(line)
         if section_match:
@@ -24,9 +29,23 @@ def count_news_items(markdown: str, target_date: str) -> int:
                 break
             in_target_section = section_match.group(1) == target_date
             continue
-        if in_target_section and NEWS_ITEM.match(line):
-            count += 1
-    return count
+        if in_target_section:
+            item = NEWS_ITEM.match(line)
+            if not item:
+                continue
+            title = " ".join(unicodedata.normalize("NFKC", item.group("title")).split()).casefold()
+            parts = urlsplit(item.group("url"))
+            query = urlencode(
+                [(key, value) for key, value in parse_qsl(parts.query) if not key.casefold().startswith("utm_")]
+            )
+            url = urlunsplit(
+                (parts.scheme.casefold(), parts.netloc.casefold(), parts.path.rstrip("/"), query, "")
+            )
+            if title in titles or url in urls:
+                continue
+            titles.add(title)
+            urls.add(url)
+    return len(titles)
 
 
 def main() -> int:
@@ -63,7 +82,7 @@ def main() -> int:
     count = count_news_items(markdown, args.date)
     if count < args.min_items:
         print(
-            f"当日分のニュースが最低件数に届きません: {args.date} は{count}件、必要数は{args.min_items}件です。commit・pushを中止します。",
+            f"当日分のニュースが最低件数に届きません: {args.date} は重複を除くと{count}件、必要数は{args.min_items}件です。commit・pushを中止します。",
             file=sys.stderr,
         )
         return 1

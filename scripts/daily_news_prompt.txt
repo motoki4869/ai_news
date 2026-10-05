@@ -47,14 +47,13 @@
    - 各ニュースの本文は簡潔な1〜2文にとどめ、長い説明文で段落を作らない。
    - 最後に空行を挟んで、締めくくりの一言（今日一日を前向きに送り出す短いメッセージ、絵文字1つ程度）。
    - 用語集欄を含めて全体で3500文字以内に収める。超える場合はニュース本文や用語の説明をさらに短くして調整し、当日分のニュースと追加・更新用語の項目は残す。
-9. 手順8で用語集を確認しLINE通知文を作成した後、サイト用データを更新してからコミット・pushする。
-   - 手順8で用語集の確認・編集を完了している。用語を追加・修正した場合も原本だけを編集し、生成物を直接編集しない。
-   - まず `python3 scripts/generate_daily_data.py` をBashで実行する。これは `everyday_news/*.md` を読んで `history/daily-data.js`（AI DAILY LOGページのカレンダー＋カード表示用データ）を全件再生成するスクリプト。続けて `python3 scripts/generate_glossary_data.py` を実行し、`docs/glossary.md` から `history/glossary-data.js` を再生成する。
-   - どちらかのスクリプトが異常終了した場合（終了コードが0以外）はコミット・pushを行わない。`generate_daily_data.py` のエラーは、`everyday_news/<YYYYMM>.md` に書いた内容が想定形式（見出し行 `- **見出し**（[出典](URL)）` ＋ 導入文の行 ＋ `・**ラベル**: 説明` の箇条書き行、という3行種の並び）から外れていないか確認する。`generate_glossary_data.py` のエラーは、`docs/glossary.md` の表見出し・列数・必須セルが正しいか確認する。stderrに出たファイル名・行番号の該当箇所を直してから、もう一度両方のスクリプトを実行する。直しても通らない場合は、コミットせずに手順10へ進み、`SUMMARY: ERROR: <原因>`を出力する。
-   - スクリプトが正常終了コード0で終わっても、stderrに `警告:` で始まる行が出ていないか確認する。出ていた場合、同じ日付の見出し（`## YYYY-MM-DD`）が同一ファイル内に複数回書かれている（過去に日付誤記で実際に発生した事故と同種）。該当ファイルを開き、誤って重複した見出しの日付を正しい日付に直してから、もう一度スクリプトを実行する。正しい日付が分からない場合や直しても警告が消えない場合は、コミットせずに手順10へ進み、`SUMMARY: ERROR: <ファイル名と日付>`を出す。
-   - 警告が無く正常終了したら、commit前に `python3 scripts/validate_daily_news.py --date <実行日> --min-items 5` を実行する。当日セクションが5件未満、またはセクションが見つからない場合は、理由を出して手順10へ進み、`SUMMARY: ERROR: 当日分ニュースが最低5件に届かない` を出す。検査通過後、変更した`everyday_news/*.md`と`history/daily-data.js`を`git add`し、用語集を変更した場合だけ`docs/glossary.md`と`history/glossary-data.js`も`git add`する（line_message.txtはgitignore対象なので含めない）。`git diff --cached --quiet`で変更が無い場合はcommitを行わず正常扱いにする。変更がある場合だけ`<YYYY-MM-DD> のAIニュースを追加`のようなメッセージでコミットし、このリポジトリの`main`ブランチにpushする。
+9. 手順8の後、サイト用データを更新して実行結果をまとめる。
+   - `python3 scripts/generate_daily_data.py` と `python3 scripts/generate_glossary_data.py` を実行し、`history/daily-data.js` と `history/glossary-data.js` を最新化する。
+   - どちらかが異常終了した場合は原因を直して再実行する。stderrに `警告:` が出た場合は日付見出しの重複を確認し、解消できなければ `SUMMARY: ERROR: <原因>` を出す。
+   - 最後に `python3 scripts/validate_daily_news.py --date <実行日> --min-items 5` を実行する。当日セクションが5件未満、または見つからない場合は `SUMMARY: ERROR: 当日分ニュースが最低5件に届かない` を出す。
+   - **AI自身はgit add・commit・pushを行わず、日次スクリプトに任せる。** 日次スクリプトが対象ファイルと件数を再検査してからmainへcommit・pushする。生成スクリプトと検査が成功した場合だけ成功SUMMARYを出す。
 10. 最後に、実行結果を呼び出し元スクリプトが検知できるよう、標準出力の最終行に必ず1行だけ次の形式で出す（前後に余計な行を挟まない）。
-   - 生成・commit・pushまで完了した場合: `SUMMARY: OK: <今日追加したニュースの見出しを1〜2文で日本語要約>`
-   - 手順7で当日分が既にあり、追加せずに生成・commit・pushまで完了した場合: `SUMMARY: OK: 本日分は追加済みのため更新なし`
-   - 変更が無くcommitを省略した場合: `SUMMARY: OK: 更新対象の変更なし`
-   - 生成、commit、pushのいずれかに失敗した場合: `SUMMARY: ERROR: <原因>`。この形式を出した場合、追加の成功Summaryは出さない。
+   - 生成データの更新と件数検査が完了した場合: `SUMMARY: OK: <今日追加したニュースの見出しを1〜2文で日本語要約>`
+   - 手順7で当日分が既にあり、追加せずに生成データの更新と件数検査が完了した場合: `SUMMARY: OK: 本日分は追加済みのため更新なし`
+   - 変更が無い場合: `SUMMARY: OK: 更新対象の変更なし`
+   - 生成または件数検査に失敗した場合: `SUMMARY: ERROR: <原因>`。この形式を出した場合、追加の成功Summaryは出さない。

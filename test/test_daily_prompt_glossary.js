@@ -32,21 +32,18 @@ test('日次ニュース更新プロンプトに用語集更新手順が含ま�
   }
 });
 
-test('日次ニュース更新プロンプトは用語集関連ファイルをcommit対象に含める', () => {
-  for (const promptPath of PROMPTS) {
-    const prompt = fs.readFileSync(promptPath, 'utf8');
-
-    const addLine = prompt.split('\n').find((line) => line.includes('git add'));
-    assert.ok(addLine, `${path.basename(promptPath)} にgit addの指示がありません`);
-    assert.match(addLine, /everyday_news\/\*\.md/,
-      `${path.basename(promptPath)} が日次原本のcommit対象を明示していません`);
-    assert.match(addLine, /history\/daily-data\.js/,
-      `${path.basename(promptPath)} が日次生成物のcommit対象を明示していません`);
-    assert.match(addLine, /docs\/glossary\.md/,
-      `${path.basename(promptPath)} が用語集原本のcommit対象を明示していません`);
-    assert.match(addLine, /history\/glossary-data\.js/,
-      `${path.basename(promptPath)} が用語集生成物のcommit対象を明示していません`);
+test('日次スクリプトはニュースと用語集の原本・生成物をcommit対象に含める', () => {
+  const script = fs.readFileSync(path.join(ROOT, 'scripts', 'daily_news.sh'), 'utf8');
+  for (const target of [
+    'local news_file="everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"',
+    'history/daily-data.js',
+    'docs/glossary.md',
+    'history/glossary-data.js',
+  ]) {
+    assert.ok(script.includes(target), `日次スクリプトが${target}をcommit対象に含めていません`);
   }
+  assert.match(script, /GIT_INDEX_FILE=".*?" git -C "\$REPO_DIR" read-tree HEAD/,
+    '日次スクリプトがユーザーのstaged変更から独立したcommitを作りません');
 });
 
 test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {
@@ -69,6 +66,14 @@ test('日次ニュース更新プロンプトは5件未満の成功を禁止し�
       `${path.basename(promptPath)} が最低5件を指定していません`);
     assert.match(prompt, /validate_daily_news\.py[\s\S]*--min-items 5/,
       `${path.basename(promptPath)} がcommit前の件数検査を指示していません`);
+  }
+});
+
+test('日次ニュース更新プロンプトはAI自身にcommit・pushさせない', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+    assert.match(prompt, /AI自身はgit add・commit・pushを行わず、日次スクリプトに任せる/,
+      `${path.basename(promptPath)} がcommit・pushを呼び出し元へ委ねていません`);
   }
 });
 
