@@ -328,5 +328,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-05.m4a",
     "label": "2026-10-05のAIニュース音声",
     "title": "自律AIの加速と破られたデジタルの檻"
+  },
+  "2026-10-06": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-06.m4a",
+    "label": "2026-10-06のAIニュース音声",
+    "title": "700のAIエージェント侵入とOpenAIの法的危機"
   }
 };
