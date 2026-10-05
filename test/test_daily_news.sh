@@ -23,6 +23,7 @@ if [ "$1" = app-server ]; then
   done
   exit 0
 fi
+printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
 case "$FAKE_CODEX_MODE" in
   update-five)
     today="$(date +%Y-%m-%d)"
@@ -32,7 +33,7 @@ case "$FAKE_CODEX_MODE" in
 - **【産業】親スクリプトcommitテスト**（[出典](https://example.com/parent-commit)）
   日次スクリプトがモデル終了後にcommit・pushすることを確認します。
 NEWS
-    printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"
+    printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
     printf '%s\n' 'SUMMARY: OK: 6件目を追加しました'
     exit 0
     ;;
@@ -57,14 +58,15 @@ NEWS
   ok-exit1) printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'; exit 1 ;;
   limit-zero) printf '%s\n' "ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage"; exit 0 ;;
   fail) printf '%s\n' 'Codexが起動できませんでした'; exit 1 ;;
-  *) printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"; printf '%s\n' 'SUMMARY: OK: テスト更新'; exit 0 ;;
+  *) printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"; printf '%s\n' 'SUMMARY: OK: テスト更新'; exit 0 ;;
 esac
 EOF
 chmod +x "$TMP_DIR/fake-codex"
 
 cat > "$TMP_DIR/fake-claude-ok" <<'EOF'
 #!/bin/sh
-printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$FAKE_LINE_MSG_FILE"
+printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
+printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
 printf '%s\n' 'SUMMARY: OK: Claudeフォールバック更新'
 exit 0
 EOF
@@ -145,7 +147,8 @@ run_daily() {
   CODEX_BIN="$TMP_DIR/fake-codex" \
   FAKE_CODEX_MODE="$codex_mode" \
   CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
-  FAKE_LINE_MSG_FILE="$TEST_REPO/everyday_news/line_message.txt" \
+  AI_NEWS_AGENT_WORKSPACE="$TMP_DIR/agent-workspace" \
+  FAKE_AGENT_CONTEXT_LOG="$TMP_DIR/agent-context.log" \
   TODAY_MONTH="$TODAY_MONTH" \
   TODAY_DAY="$TODAY_DAY" \
   FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
@@ -176,6 +179,8 @@ fi
 
 if ! grep -q '用語集生成に失敗しました' "$TMP_DIR/osascript.log"; then
   echo "SUMMARY: ERRORの原因が失敗通知に含まれていません" >&2
+  cat "$TMP_DIR/osascript.log" >&2
+  cat "$TMP_DIR/output-error.log" >&2
   exit 1
 fi
 
@@ -197,6 +202,7 @@ if run_daily ok "$TMP_DIR/output-ok-1.log" 1; then
   :
 else
   echo "正常Summaryの実行を失敗扱いしました" >&2
+  cat "$TMP_DIR/output-ok-1.log" >&2
   exit 1
 fi
 
@@ -241,6 +247,8 @@ if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 7 ]; t
 fi
 
 before_parent_commit="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+printf 'user staged change\n' > "$TEST_REPO/unrelated.md"
+git -C "$TEST_REPO" add unrelated.md
 if ! run_daily update-five "$TMP_DIR/output-parent-commit.log" 0 "$TMP_DIR/notify-state-parent-commit"; then
   echo "日次スクリプトによるcommit・pushを成功扱いしませんでした" >&2
   cat "$TMP_DIR/output-parent-commit.log" >&2
@@ -252,6 +260,20 @@ if [ "$after_parent_commit" -ne "$((before_parent_commit + 1))" ] \
    || [ "$remote_head" != "$(git -C "$TEST_REPO" rev-parse HEAD)" ]; then
   echo "日次スクリプトが対象ファイルをcommit・pushしませんでした" >&2
   cat "$TMP_DIR/output-parent-commit.log" >&2
+  exit 1
+fi
+if [ "$(git -C "$TEST_REPO" diff --cached --name-only)" != "unrelated.md" ] \
+   || ! git -C "$TEST_REPO" diff --quiet HEAD -- "everyday_news/$MONTH.md"; then
+  echo "日次commitが通常Gitインデックスの無関係なstaged変更を壊しました" >&2
+  git -C "$TEST_REPO" status --short >&2
+  exit 1
+fi
+if [ ! -s "$TMP_DIR/agent-context.log" ] \
+   || grep -q "|$TEST_REPO|" "$TMP_DIR/agent-context.log" \
+   || grep -q '/.git' "$TMP_DIR/agent-context.log" \
+   || grep -q 'AI_NEWS_REAL_GIT' "$TMP_DIR/agent-context.log"; then
+  echo "AIプロセスに本体リポジトリまたは実git経路を渡しました" >&2
+  cat "$TMP_DIR/agent-context.log" >&2
   exit 1
 fi
 
@@ -294,22 +316,27 @@ if [ "$before_commit_count" -ne "$after_commit_count" ] \
   exit 1
 fi
 # commitフックを明示的に迂回したケースでも、push対象revisionをpre-pushが拒否する。
-git -C "$TEST_REPO" -c core.hooksPath=/dev/null commit -q -m 'simulate bypassed commit hook'
-bad_news_commit="$(git -C "$TEST_REPO" rev-parse HEAD)"
-cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+HOOK_TEST_REPO="$TMP_DIR/pre-push-test"
+git clone -q "$TEST_REPO" "$HOOK_TEST_REPO"
+git -C "$HOOK_TEST_REPO" config user.email test@example.com
+git -C "$HOOK_TEST_REPO" config user.name test
+cat > "$HOOK_TEST_REPO/everyday_news/$MONTH.md" <<EOF
 # ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
 
 ## $TODAY
 EOF
-for news_number in 1 2 3 4 5; do
-  cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+for news_number in 1; do
+  cat >> "$HOOK_TEST_REPO/everyday_news/$MONTH.md" <<EOF
 
 - **【技術】テストニュース$news_number**（[出典](https://example.com/$news_number)）
   テスト用の当日ニュースです。
 EOF
 done
+git -C "$HOOK_TEST_REPO" add "everyday_news/$MONTH.md"
+git -C "$HOOK_TEST_REPO" -c core.hooksPath=/dev/null commit -q -m 'simulate bypassed commit hook'
+bad_news_commit="$(git -C "$HOOK_TEST_REPO" rev-parse HEAD)"
 if (
-  cd "$TEST_REPO"
+  cd "$HOOK_TEST_REPO"
   printf 'refs/heads/main %s refs/heads/main %040d\n' "$bad_news_commit" 0 \
     | AI_NEWS_MIN_ITEMS=5 \
       AI_NEWS_DATE="$TODAY" \
@@ -318,6 +345,7 @@ if (
         "$SCRIPT_ROOT/scripts/git-hooks/pre-push"
 ) > "$TMP_DIR/output-low-count-pre-push.log" 2>&1; then
   echo "5件未満のニュースを含むcommitをpush前に止められませんでした" >&2
+  cat "$TMP_DIR/output-low-count-pre-push.log" >&2
   exit 1
 fi
 if ! grep -q '必要数は5件' "$TMP_DIR/output-low-count-pre-push.log"; then
@@ -325,7 +353,6 @@ if ! grep -q '必要数は5件' "$TMP_DIR/output-low-count-pre-push.log"; then
   cat "$TMP_DIR/output-low-count-pre-push.log" >&2
   exit 1
 fi
-git -C "$TEST_REPO" reset --hard -q HEAD^
 
 printf '%s\n' staged-change > "$TEST_REPO/unrelated.md"
 git -C "$TEST_REPO" add unrelated.md

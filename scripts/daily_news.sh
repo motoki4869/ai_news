@@ -25,20 +25,8 @@ if [ -f "$DAILY_SOURCE_FILE" ]; then
 fi
 
 cd "$REPO_DIR"
-AI_NEWS_REAL_GIT="$(command -v git)"
-export AI_NEWS_REAL_GIT
-
-# AI実行プロセスが行うcommit・pushにも最低件数の検査を適用する。
-# git config環境変数でこの日次プロセスと子プロセスだけにhooksPathを設定する。
-GIT_HOOKS_CONFIG_INDEX="${GIT_CONFIG_COUNT:-0}"
-export "GIT_CONFIG_KEY_${GIT_HOOKS_CONFIG_INDEX}=core.hooksPath"
-export "GIT_CONFIG_VALUE_${GIT_HOOKS_CONFIG_INDEX}=$SCRIPT_ROOT/scripts/git-hooks"
-GIT_HOOKS_CONFIG_INDEX=$((GIT_HOOKS_CONFIG_INDEX + 1))
-export GIT_CONFIG_COUNT="$GIT_HOOKS_CONFIG_INDEX"
-export AI_NEWS_MIN_ITEMS=5
-export AI_NEWS_DATE="$(date +%Y-%m-%d)"
-export AI_NEWS_VALIDATOR="$SCRIPT_ROOT/scripts/validate_daily_news.py"
-export AI_NEWS_PYTHON_BIN="$PYTHON_BIN"
+AI_NEWS_DATE="$(date +%Y-%m-%d)"
+AI_NEWS_MIN_ITEMS=5
 
 source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
 source "$SCRIPT_ROOT/scripts/lib/daily_news_output.sh"
@@ -61,22 +49,104 @@ trap 'release_news_update_lock "$REPO_DIR"' EXIT
 
 # 日次処理中のWrite/Editフックは本文を送らず、commit・pushとSUMMARY確認後に送る。
 export LINE_NOTIFY_DEFER=1
-echo "Codexで日次ニュース更新を開始します"
-OUTPUT="$(run_codex "$REPO_DIR" "$CODEX_PROMPT_FILE" 2>&1)"
-STATUS=$?
-echo "$OUTPUT"
-
 IS_FALLBACK=0
-if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT"; then
-  if is_codex_limit_reached "$OUTPUT"; then
-    echo "Codexの利用上限を示すメッセージを検出したため、Claude Code経由でフォールバック実行します"
-  else
-    echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
+OUTPUT=""
+STATUS=1
+
+AGENT_REPO_DIR="${AI_NEWS_AGENT_WORKSPACE:-${TMPDIR:-/private/tmp}/ai-news-agent-workspace}"
+prepare_agent_workspace() {
+  local path source target
+  local -a required_files=(
+    docs/glossary.md
+    history/daily-data.js
+    history/glossary-data.js
+    scripts/generate_daily_data.py
+    scripts/generate_glossary_data.py
+    scripts/validate_daily_news.py
+  )
+  mkdir -p "$AGENT_REPO_DIR" || return 1
+  if [ -n "$(find "$AGENT_REPO_DIR" -name .git -print -quit)" ]; then
+    echo "AI作業用コピー内に.gitが存在します。安全のため更新を中止します: $AGENT_REPO_DIR" >&2
+    return 1
   fi
-  OUTPUT="$(run_claude_fallback "$REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
+  for path in "${required_files[@]}"; do
+    source="$REPO_DIR/$path"
+    target="$AGENT_REPO_DIR/$path"
+    [ -f "$source" ] || continue
+    [ ! -L "$source" ] || return 1
+    mkdir -p "$(dirname "$target")" || return 1
+    cp -p "$source" "$target" || return 1
+  done
+  while IFS= read -r -d '' path; do
+    case "$path" in
+      *.md)
+        [ ! -L "$REPO_DIR/$path" ] || return 1
+        mkdir -p "$AGENT_REPO_DIR/$(dirname "$path")" || return 1
+        cp -p "$REPO_DIR/$path" "$AGENT_REPO_DIR/$path" || return 1
+        ;;
+    esac
+  done < <(git -C "$REPO_DIR" ls-files -z -- everyday_news)
+  if [ -f "$LINE_MSG_FILE" ]; then
+    [ ! -L "$LINE_MSG_FILE" ] || return 1
+    cp -p "$LINE_MSG_FILE" "$AGENT_REPO_DIR/everyday_news/line_message.txt" || return 1
+  fi
+  # 前回の失敗で作業ツリーに残った用語集の変更を再通知できるよう、HEAD版も渡す。
+  if [ -f "$REPO_DIR/docs/glossary.md" ]; then
+    [ ! -L "$REPO_DIR/docs/glossary.md" ] || return 1
+    if ! git -C "$REPO_DIR" show HEAD:docs/glossary.md > "$AGENT_REPO_DIR/docs/glossary.base.md"; then
+      echo "HEAD版の用語集をAI作業用コピーへ用意できませんでした" >&2
+      return 1
+    fi
+  else
+    mkdir -p "$AGENT_REPO_DIR/docs" || return 1
+    : > "$AGENT_REPO_DIR/docs/glossary.base.md" || return 1
+  fi
+  return 0
+}
+
+sync_agent_outputs() {
+  local path source target
+  local -a outputs=(
+    "everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
+    everyday_news/line_message.txt
+    docs/glossary.md
+    history/daily-data.js
+    history/glossary-data.js
+  )
+  for path in "${outputs[@]}"; do
+    source="$AGENT_REPO_DIR/$path"
+    target="$REPO_DIR/$path"
+    [ -f "$source" ] || continue
+    [ ! -L "$source" ] && [ ! -L "$target" ] || return 1
+    mkdir -p "$(dirname "$target")" || return 1
+    cp -p "$source" "$target" || return 1
+  done
+}
+
+if ! prepare_agent_workspace; then
+  OUTPUT="SUMMARY: ERROR: AI作業用コピーを安全に準備できませんでした"
+  STATUS=1
+else
+  echo "Codexで日次ニュース更新を開始します"
+  OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_codex "$AGENT_REPO_DIR" "$CODEX_PROMPT_FILE" 2>&1)"
   STATUS=$?
   echo "$OUTPUT"
-  IS_FALLBACK=1
+
+  if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT"; then
+    if is_codex_limit_reached "$OUTPUT"; then
+      echo "Codexの利用上限を示すメッセージを検出したため、Claude Code経由でフォールバック実行します"
+    else
+      echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
+    fi
+    OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_claude_fallback "$AGENT_REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
+    STATUS=$?
+    echo "$OUTPUT"
+    IS_FALLBACK=1
+  fi
+  if ! sync_agent_outputs; then
+    OUTPUT+=$'\nSUMMARY: ERROR: AI作業用コピーから成果物を戻せませんでした'
+    STATUS=1
+  fi
 fi
 
 if [ "$STATUS" -eq 0 ] && has_output_line_prefix "$OUTPUT" 'SUMMARY: ERROR:'; then
@@ -108,7 +178,7 @@ SUMMARY="${SUMMARY#ERROR: }"
 
 commit_and_push_daily_news() {
   local news_file="everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
-  local current_branch index_file target
+  local current_branch target
   local -a targets=()
   current_branch="$(git -C "$REPO_DIR" branch --show-current)"
   if [ "$current_branch" != "main" ]; then
@@ -122,34 +192,49 @@ commit_and_push_daily_news() {
     fi
   done
 
-  index_file="$(mktemp "${TMPDIR:-/tmp}/ai-news-daily-index.XXXXXX")" || return 1
-  rm -f "$index_file"
-  if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" read-tree HEAD \
-     || ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" add -- "${targets[@]}"; then
-    rm -f "$index_file" "${index_file}.lock"
-    echo "日次ニュース更新対象を専用Gitインデックスへ登録できませんでした" >&2
+  if ! git -C "$REPO_DIR" diff --cached --quiet -- "${targets[@]}"; then
+    echo "日次ニュースの更新対象に既存のstaged変更があるため、上書きを避けて処理を中止します" >&2
+    return 1
+  fi
+  if ! git -C "$REPO_DIR" add -- "${targets[@]}"; then
+    git -C "$REPO_DIR" reset -q HEAD -- "${targets[@]}" || true
+    echo "日次ニュース更新対象をGitインデックスへ登録できませんでした" >&2
     return 1
   fi
 
-  if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" diff --cached --quiet; then
-    if ! GIT_INDEX_FILE="$index_file" git -C "$REPO_DIR" commit \
-      -m "$AI_NEWS_DATE のAIニュースを更新"; then
-      rm -f "$index_file" "${index_file}.lock"
+  if ! git -C "$REPO_DIR" diff --cached --quiet -- "${targets[@]}"; then
+    if ! git_with_daily_news_hooks -C "$REPO_DIR" commit --only \
+      -m "$AI_NEWS_DATE のAIニュースを更新" -- "${targets[@]}"; then
+      git -C "$REPO_DIR" reset -q HEAD -- "${targets[@]}" || true
       echo "日次ニュースのcommitに失敗しました" >&2
       return 1
     fi
   fi
-  rm -f "$index_file" "${index_file}.lock"
 
   if ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
     --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" --revision HEAD; then
     echo "commit済みの日次ニュース件数が最低5件に届きません" >&2
     return 1
   fi
-  if ! git -C "$REPO_DIR" push origin main; then
+  if ! git_with_daily_news_hooks -C "$REPO_DIR" push origin main; then
     echo "日次ニュースのpushに失敗しました" >&2
     return 1
   fi
+}
+
+# 5件検査フックの設定と実行時情報は、親プロセスが所有するcommit/pushだけへ渡す。
+git_with_daily_news_hooks() {
+  local config_index="${GIT_CONFIG_COUNT:-0}"
+  local -a git_env=(
+    "GIT_CONFIG_COUNT=$((config_index + 1))"
+    "GIT_CONFIG_KEY_${config_index}=core.hooksPath"
+    "GIT_CONFIG_VALUE_${config_index}=$SCRIPT_ROOT/scripts/git-hooks"
+    "AI_NEWS_MIN_ITEMS=$AI_NEWS_MIN_ITEMS"
+    "AI_NEWS_DATE=$AI_NEWS_DATE"
+    "AI_NEWS_VALIDATOR=$SCRIPT_ROOT/scripts/validate_daily_news.py"
+    "AI_NEWS_PYTHON_BIN=$PYTHON_BIN"
+  )
+  env "${git_env[@]}" git "$@"
 }
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
 #
@@ -181,15 +266,16 @@ if [ "$STATUS" -eq 0 ]; then
   if [ "$IS_FALLBACK" -eq 1 ]; then
     DAILY_NEWS_SOURCE="claude"
   fi
-  if ! mkdir -p "$(dirname "$DAILY_SOURCE_FILE")" \
-     || ! printf '%s\t%s\n' "$AI_NEWS_DATE" "$DAILY_NEWS_SOURCE" > "$DAILY_SOURCE_FILE"; then
-    STATUS=1
-    ERROR_REASON="LINE通知の経由情報を保存できませんでした"
-  fi
 fi
 if [ "$STATUS" -eq 0 ] && ! commit_and_push_daily_news; then
   STATUS=1
   ERROR_REASON="日次ニュースの件数検査後のcommit・pushに失敗しました"
+fi
+if [ "$STATUS" -eq 0 ] \
+   && { ! mkdir -p "$(dirname "$DAILY_SOURCE_FILE")" \
+     || ! printf '%s\t%s\n' "$AI_NEWS_DATE" "$DAILY_NEWS_SOURCE" > "$DAILY_SOURCE_FILE"; }; then
+  STATUS=1
+  ERROR_REASON="LINE通知の経由情報を保存できませんでした"
 fi
 
 AUDIO_DATE="$(date +%Y-%m-%d)"

@@ -77,10 +77,8 @@ run_codex() {
   local attempt_log
   attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1
   local agent_bin_dir="$CODEX_FALLBACK_LIB_DIR/../agent-bin"
-  local real_git_bin="${AI_NEWS_REAL_GIT:-$(command -v git || true)}"
   echo "Codex実行モデル: $fallback_model" >&2
   PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" \
-    AI_NEWS_REAL_GIT="$real_git_bin" \
     "$codex_bin" exec --skip-git-repo-check \
     -m "$fallback_model" \
     -s workspace-write \
@@ -120,11 +118,9 @@ run_claude_fallback() {
 
   cd "$repo_dir" || return 1
   local agent_bin_dir="$CODEX_FALLBACK_LIB_DIR/../agent-bin"
-  local real_git_bin="${AI_NEWS_REAL_GIT:-$(command -v git || true)}"
   PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" \
-    AI_NEWS_REAL_GIT="$real_git_bin" \
     "$claude_bin" -p "$(cat "$prompt_file")" \
-    --allowedTools "Read Write Edit WebSearch Bash" 2>&1
+    --allowedTools "Read Write Edit WebSearch Bash(python3 scripts/generate_daily_data.py) Bash(python3 scripts/generate_glossary_data.py) Bash(python3 scripts/validate_daily_news.py *)" 2>&1
 }
 
 send_line_broadcast() {

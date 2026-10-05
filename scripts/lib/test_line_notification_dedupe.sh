@@ -62,8 +62,6 @@ assert_value "LINE通知は当日の日次ログURLを載せる" \
   "本日のAI_newsが更新されました
 
 https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
-https://ai-news-sandy-seven.vercel.app/daily.html#2026-09-01" "$(line_notification_text)"
-
 sample_message_file="$state_dir/line_message.txt"
 mkdir -p "$state_dir"
 cat > "$sample_message_file" <<'EOF'
@@ -146,6 +144,7 @@ run_failing_hook() {
     > "$hook_repo_dir/everyday_news/line_message.txt"
   printf '%s' "$hook_input" | \
     PATH="$failure_stub_dir:$PATH" \
+    LINE_NOTIFY_REPO_DIR="$hook_repo_dir" \
     LINE_NOTIFY_STATE_DIR="$failure_state_dir" \
     LINE_NOTIFY_DATE="2026-09-04" \
     bash "$hook"

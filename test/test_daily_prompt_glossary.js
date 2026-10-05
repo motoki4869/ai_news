@@ -42,8 +42,10 @@ test('日次スクリプトはニュースと用語集の原本・生成物をco
   ]) {
     assert.ok(script.includes(target), `日次スクリプトが${target}をcommit対象に含めていません`);
   }
-  assert.match(script, /GIT_INDEX_FILE=".*?" git -C "\$REPO_DIR" read-tree HEAD/,
-    '日次スクリプトがユーザーのstaged変更から独立したcommitを作りません');
+  assert.match(script, /git_with_daily_news_hooks -C "\$REPO_DIR" commit --only[\s\S]*"\$\{targets\[@\]\}"/,
+    '日次スクリプトが更新対象だけをcommitして通常Gitインデックスを同期しません');
+  assert.match(script, /AI作業用コピー.*\.gitが存在します/,
+    'AIへ.gitのない作業用コピーを渡していません');
 });
 
 test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {

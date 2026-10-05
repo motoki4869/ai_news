@@ -45,6 +45,22 @@ class ValidateDailyNewsTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("重複を除くと1件", result.stderr)
 
+    def test_counts_transitively_linked_title_url_duplicates_once(self):
+        section = """# 2026年10月 AIニュースまとめ
+
+## 2026-10-06
+
+- **【技術】見出しA**（[出典](https://example.com/1)）
+  概要です。
+- **【技術】見出しB**（[出典](https://example.com/1)）
+  概要です。
+- **【技術】見出しB**（[出典](https://example.com/2)）
+  概要です。
+"""
+        result = self.validate(section)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("重複を除くと1件", result.stderr)
+
     def test_counts_only_the_requested_date_section(self):
         content = news_section(5, "2026-10-05") + "\n" + news_section(1, "2026-10-06")
         result = self.validate(content)

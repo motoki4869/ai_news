@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-real_git="${AI_NEWS_REAL_GIT:-/usr/bin/git}"
+real_git="/usr/bin/git"
 args=("$@")
 index=0
 subcommand=""

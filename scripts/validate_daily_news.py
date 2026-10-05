@@ -20,8 +20,20 @@ SECTION = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})(?:\s.*)?$")
 
 def count_news_items(markdown: str, target_date: str) -> int:
     in_target_section = False
-    titles: set[str] = set()
-    urls: set[str] = set()
+    parents: dict[tuple[str, str], tuple[str, str]] = {}
+
+    def find(item: tuple[str, str]) -> tuple[str, str]:
+        parents.setdefault(item, item)
+        if parents[item] != item:
+            parents[item] = find(parents[item])
+        return parents[item]
+
+    def union(left: tuple[str, str], right: tuple[str, str]) -> None:
+        left_root = find(left)
+        right_root = find(right)
+        if left_root != right_root:
+            parents[right_root] = left_root
+
     for line in markdown.splitlines():
         section_match = SECTION.match(line)
         if section_match:
@@ -41,11 +53,8 @@ def count_news_items(markdown: str, target_date: str) -> int:
             url = urlunsplit(
                 (parts.scheme.casefold(), parts.netloc.casefold(), parts.path.rstrip("/"), query, "")
             )
-            if title in titles or url in urls:
-                continue
-            titles.add(title)
-            urls.add(url)
-    return len(titles)
+            union(("title", title), ("url", url))
+    return len({find(item) for item in parents})
 
 
 def main() -> int:
