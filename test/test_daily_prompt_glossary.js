@@ -49,15 +49,26 @@ test('日次ニュース更新プロンプトは用語集関連ファイルをco
   }
 });
 
-test('日次ニュース更新プロンプトは当日分が存在しても生成・commit手順を続行する', () => {
+test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {
   for (const promptPath of PROMPTS) {
     const prompt = fs.readFileSync(promptPath, 'utf8');
 
     assert.match(
       prompt,
-      /既に.*存在[\s\S]*追加だけを行わず[\s\S]*手順8・9へ続けて進む/,
-      `${path.basename(promptPath)} が同日再実行時の復旧処理を指示していません`,
+      /実行日と完全一致する日付のセクション[\s\S]*5件未満なら不足分を調査して補い/,
+      `${path.basename(promptPath)} が同日再実行時に5件まで補うよう指示していません`,
     );
+  }
+});
+
+test('日次ニュース更新プロンプトは5件未満の成功を禁止し機械検査する', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(prompt, /必ず5件以上/,
+      `${path.basename(promptPath)} が最低5件を指定していません`);
+    assert.match(prompt, /validate_daily_news\.py[\s\S]*--min-items 5/,
+      `${path.basename(promptPath)} がcommit前の件数検査を指示していません`);
   }
 });
 

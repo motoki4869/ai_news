@@ -17,6 +17,18 @@ LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 
 cd "$REPO_DIR"
 
+# AI実行プロセスが行うcommit・pushにも最低件数の検査を適用する。
+# git config環境変数でこの日次プロセスと子プロセスだけにhooksPathを設定する。
+GIT_HOOKS_CONFIG_INDEX="${GIT_CONFIG_COUNT:-0}"
+export "GIT_CONFIG_KEY_${GIT_HOOKS_CONFIG_INDEX}=core.hooksPath"
+export "GIT_CONFIG_VALUE_${GIT_HOOKS_CONFIG_INDEX}=$SCRIPT_ROOT/scripts/git-hooks"
+GIT_HOOKS_CONFIG_INDEX=$((GIT_HOOKS_CONFIG_INDEX + 1))
+export GIT_CONFIG_COUNT="$GIT_HOOKS_CONFIG_INDEX"
+export AI_NEWS_MIN_ITEMS=5
+export AI_NEWS_DATE="$(date +%Y-%m-%d)"
+export AI_NEWS_VALIDATOR="$SCRIPT_ROOT/scripts/validate_daily_news.py"
+export AI_NEWS_PYTHON_BIN="$PYTHON_BIN"
+
 source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
 source "$SCRIPT_ROOT/scripts/lib/daily_news_output.sh"
 source "$SCRIPT_ROOT/scripts/lib/line_notification_dedupe.sh"
@@ -80,6 +92,15 @@ else
     fi
   fi
 fi
+if [ "$STATUS" -eq 0 ] && {
+  ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+    --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" \
+  || ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+    --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS" --revision HEAD
+}; then
+  STATUS=1
+  ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
+fi
 SUMMARY="${SUMMARY#OK: }"
 SUMMARY="${SUMMARY#ERROR: }"
 # macOS通知を出す。本文はAppleScriptのソースに埋め込まず、引数(argv)として渡す。
@@ -97,6 +118,10 @@ notify() {  # $1=本文 $2=タイトル $3=サウンド名
 	if (count of body) > 200 then set body to (text 1 thru 200 of body) & "…"
 	display notification body with title (item 2 of argv) sound name (item 3 of argv)
 end run' "$1" "$2" "$3" || true
+}
+
+mark_as_claude_fallback() {
+  printf '⚠️Claude Code経由\n%s' "$1"
 }
 
 AUDIO_DATE="$(date +%Y-%m-%d)"
@@ -122,7 +147,11 @@ fi
 
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
-    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$(line_notification_text "$LINE_MSG_FILE")"; then
+    LINE_MESSAGE="$(line_notification_text "$LINE_MSG_FILE")"
+    if [ "$IS_FALLBACK" -eq 1 ]; then
+      LINE_MESSAGE="$(mark_as_claude_fallback "$LINE_MESSAGE")"
+    fi
+    if ! send_line_broadcast "$REPO_DIR/.claude/settings.local.json" "$LINE_MESSAGE"; then
       echo "LINE通知の送信に失敗したため、次回実行で再送します" >&2
       release_line_notification_claim "$LINE_MSG_FILE" || true
     fi

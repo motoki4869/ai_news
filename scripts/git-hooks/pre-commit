@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -z "${AI_NEWS_MIN_ITEMS:-}" ]; then
+  exit 0
+fi
+
+repo_root="$(git rev-parse --show-toplevel)"
+validator="${AI_NEWS_VALIDATOR:-$repo_root/scripts/validate_daily_news.py}"
+python_bin="${AI_NEWS_PYTHON_BIN:-python3}"
+exec "$python_bin" "$validator" \
+  --repo "$repo_root" \
+  --date "${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" \
+  --min-items "$AI_NEWS_MIN_ITEMS"

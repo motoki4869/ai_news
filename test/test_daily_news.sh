@@ -24,6 +24,22 @@ if [ "$1" = app-server ]; then
   exit 0
 fi
 case "$FAKE_CODEX_MODE" in
+  low-count)
+    today="$(date +%Y-%m-%d)"
+    month="$(date +%Y%m)"
+    cat > "$REPO_DIR/everyday_news/$month.md" <<NEWS
+# $month AIニュースまとめ
+
+## $today
+
+- **【技術】少数ニュース**（[出典](https://example.com/one)）
+  1件だけのテストニュースです。
+NEWS
+    git add "everyday_news/$month.md"
+    git commit -m 'should be blocked by minimum news count'
+    printf '%s\n' 'SUMMARY: OK: 少数ニュース'
+    exit 0
+    ;;
   error) printf '%s\n' 'SUMMARY: ERROR: 用語集生成に失敗しました'; exit 0 ;;
   no-ok) printf '%s\n' 'SUMMARY: 更新しました'; exit 0 ;;
   ok-exit1) printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'; exit 1 ;;
@@ -58,6 +74,14 @@ chmod +x "$TMP_DIR/osascript"
 cat > "$TMP_DIR/curl" <<'EOF'
 #!/bin/sh
 printf '%s\n' called >> "$FAKE_CURL_LOG"
+previous=''
+for argument in "$@"; do
+  if [ "$previous" = '-d' ]; then
+    printf '%s\n' "$argument" >> "$FAKE_CURL_BODY_LOG"
+    break
+  fi
+  previous="$argument"
+done
 if [ "${FAKE_CURL_FAIL:-0}" = 1 ]; then
   exit 1
 fi
@@ -85,11 +109,14 @@ cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 # ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
 
 ## $TODAY
-
-- **【技術】テスト**（[出典](https://example.com)）
-  テスト用の当日ニュースです。
-  ・**影響**: 音声再試行の確認に使います。
 EOF
+for news_number in 1 2 3 4 5; do
+  cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+
+- **【技術】テストニュース$news_number**（[出典](https://example.com/$news_number)）
+  テスト用の当日ニュースです。
+EOF
+done
 git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
 
@@ -108,6 +135,7 @@ run_daily() {
   TODAY_DAY="$TODAY_DAY" \
   FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
   FAKE_CURL_LOG="$TMP_DIR/curl.log" \
+  FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \
   FAKE_CURL_FAIL="${3:-0}" \
   LINE_CHANNEL_ACCESS_TOKEN=test-token \
   LINE_NOTIFY_DATE="$TODAY" \
@@ -197,6 +225,59 @@ if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 7 ]; t
   exit 1
 fi
 
+if ! grep -q '⚠️Claude Code経由' "$TMP_DIR/curl-body.log"; then
+  echo "Claude Codeフォールバック成功時のLINE通知先頭に経由表示がありません" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
+before_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if run_daily low-count "$TMP_DIR/output-low-count.log" 0 "$TMP_DIR/notify-state-low-count"; then
+  echo "1件だけの日次更新を成功扱いしました" >&2
+  exit 1
+fi
+after_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$before_commit_count" -ne "$after_commit_count" ] \
+   || ! grep -q 'commit・pushを中止' "$TMP_DIR/output-low-count.log" \
+   || ! grep -q '必要数は5件' "$TMP_DIR/output-low-count.log"; then
+  echo "5件未満の更新をcommit前または日次処理側で停止できませんでした" >&2
+  cat "$TMP_DIR/output-low-count.log" >&2
+  exit 1
+fi
+# commitフックを明示的に迂回したケースでも、push対象revisionをpre-pushが拒否する。
+git -C "$TEST_REPO" -c core.hooksPath=/dev/null commit -q -m 'simulate bypassed commit hook'
+bad_news_commit="$(git -C "$TEST_REPO" rev-parse HEAD)"
+cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+# ${TODAY:0:4}年${TODAY:5:2}月 AIニュースまとめ
+
+## $TODAY
+EOF
+for news_number in 1 2 3 4 5; do
+  cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
+
+- **【技術】テストニュース$news_number**（[出典](https://example.com/$news_number)）
+  テスト用の当日ニュースです。
+EOF
+done
+if (
+  cd "$TEST_REPO"
+  printf 'refs/heads/main %s refs/heads/main %040d\n' "$bad_news_commit" 0 \
+    | AI_NEWS_MIN_ITEMS=5 \
+      AI_NEWS_DATE="$TODAY" \
+      AI_NEWS_VALIDATOR="$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+      AI_NEWS_PYTHON_BIN="$(command -v python3)" \
+        "$SCRIPT_ROOT/scripts/git-hooks/pre-push"
+) > "$TMP_DIR/output-low-count-pre-push.log" 2>&1; then
+  echo "5件未満のニュースを含むcommitをpush前に止められませんでした" >&2
+  exit 1
+fi
+if ! grep -q '必要数は5件' "$TMP_DIR/output-low-count-pre-push.log"; then
+  echo "pre-pushフックが件数不足の理由を示しませんでした" >&2
+  cat "$TMP_DIR/output-low-count-pre-push.log" >&2
+  exit 1
+fi
+git -C "$TEST_REPO" reset --hard -q HEAD^
+
 printf '%s\n' staged-change > "$TEST_REPO/unrelated.md"
 git -C "$TEST_REPO" add unrelated.md
 
@@ -208,6 +289,7 @@ FAKE_CODEX_MODE=no-ok \
 CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
+FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \
   FAKE_AUDIO_LOG="$TMP_DIR/audio.log" \
   LINE_NOTIFY_DATE="$TODAY" \
 LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state-audio" \

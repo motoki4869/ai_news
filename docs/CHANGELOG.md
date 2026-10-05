@@ -5,6 +5,14 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-10-06
+
+### Claude Code経由のLINE表示と日次ニュース最低件数の検査
+- **変更**: Claude Codeへフォールバックした日のLINE通知先頭に経由表示を付ける。日次実行のcommit・pushフックと通知前検査で当日ニュース5件以上を必須にし、両エージェントの指示にも最低件数と不足時の失敗扱いを明記した。
+- **理由**: Claude Code経由で収集したことがLINE通知から分からず、当日ニュース1件だけでも成功としてcommit・pushされていたため。
+- **対象**: `scripts/daily_news.sh`、`scripts/validate_daily_news.py`、`scripts/git-hooks/`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`test/`
+- **commit**: `HEAD`
+
 ## 2026-10-02
 
 ### 日次ニュースの成功判定で長いログを安全に処理
