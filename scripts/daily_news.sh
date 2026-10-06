@@ -91,6 +91,22 @@ daily_targets_have_staged_changes() {
   ! git -C "$REPO_DIR" diff --cached --quiet -- "${DAILY_OUTPUTS[@]}"
 }
 
+daily_targets_have_unstaged_changes() {
+  local path
+  if ! git -C "$REPO_DIR" diff --quiet -- "${DAILY_OUTPUTS[@]}"; then
+    return 0
+  fi
+  # line_message.txt is intentionally ignored and is not part of the commit.
+  for path in "${DAILY_OUTPUTS[@]}"; do
+    [ "$path" = everyday_news/line_message.txt ] && continue
+    if [ -e "$REPO_DIR/$path" ] \
+       && ! git -C "$REPO_DIR" ls-files --error-unmatch -- "$path" >/dev/null 2>&1; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 agent_output_is_complete() {
   local final_line="${1##*$'\n'}"
   [[ "$final_line" == 'SUMMARY: OK:'* ]] \
@@ -137,7 +153,7 @@ prepare_agent_workspace() {
         cp -p "$REPO_DIR/$path" "$AGENT_REPO_DIR/$path" || return 1
         ;;
     esac
-  done < <(git -C "$REPO_DIR" ls-files -z -- everyday_news)
+  done < <(git -C "$REPO_DIR" ls-files --cached --others --exclude-standard -z -- everyday_news)
   if [ -f "$LINE_MSG_FILE" ]; then
     [ ! -L "$LINE_MSG_FILE" ] || return 1
     cp -p "$LINE_MSG_FILE" "$AGENT_REPO_DIR/everyday_news/line_message.txt" || return 1
@@ -183,6 +199,9 @@ sync_agent_outputs() {
 
 if daily_targets_have_staged_changes; then
   OUTPUT="SUMMARY: ERROR: 日次ニュースの更新対象に既存のstaged変更があるため、AI作業を開始しません"
+  STATUS=1
+elif daily_targets_have_unstaged_changes; then
+  OUTPUT="SUMMARY: ERROR: 日次ニュースの更新対象に既存のunstaged変更があるため、AI作業を開始しません"
   STATUS=1
 elif ! DAILY_TARGET_STATE="$(snapshot_daily_targets)"; then
   OUTPUT="SUMMARY: ERROR: 更新対象の開始時状態を記録できませんでした"
@@ -347,9 +366,8 @@ if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_n
   ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
 fi
 if [ "$STATUS" -eq 0 ]; then
-  if [ "$IS_FALLBACK" -eq 1 ]; then
-    DAILY_NEWS_SOURCE="claude"
-  fi
+  DAILY_NEWS_SOURCE="codex"
+  [ "$IS_FALLBACK" -eq 0 ] || DAILY_NEWS_SOURCE="claude"
 fi
 if [ "$STATUS" -eq 0 ] && ! commit_and_push_daily_news; then
   STATUS=1
@@ -459,8 +477,8 @@ if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then
         git add "${AUDIO_PATHS[@]}"
         if git diff --cached --quiet -- "${AUDIO_PATHS[@]}"; then
           echo "NotebookLM音声の変更はありません"
-        elif git commit -m "$AUDIO_DATE のAIニュース音声を追加" -- "${AUDIO_PATHS[@]}"; then
-          git push origin main || echo "NotebookLM音声のpushに失敗しました。ニュース更新は継続します。" >&2
+        elif git_with_daily_news_hooks commit -m "$AUDIO_DATE のAIニュース音声を追加" -- "${AUDIO_PATHS[@]}"; then
+          git_with_daily_news_hooks push origin main || echo "NotebookLM音声のpushに失敗しました。ニュース更新は継続します。" >&2
         else
           echo "NotebookLM音声のコミットに失敗しました。ニュース更新は継続します。" >&2
         fi

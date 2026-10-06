@@ -5,6 +5,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SCRIPT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ai-news-daily-test.XXXXXX")"
 trap 'rm -rf "$TMP_DIR"' EXIT
+mkdir -p "$TMP_DIR/codex-home"
+printf '{}\n' > "$TMP_DIR/codex-home/auth.json"
 
 TEST_REPO="$TMP_DIR/repo"
 TODAY="$(date +%Y-%m-%d)"
@@ -26,11 +28,11 @@ if [ "$1" = app-server ]; then
   done
   exit 0
 fi
-printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
+printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$REPO_DIR/agent-context.log"
 case "$FAKE_CODEX_MODE" in
   wait-conflict)
-    printf ready > "$FAKE_CONFLICT_READY"
-    while [ ! -f "$FAKE_CONFLICT_DONE" ]; do sleep 0.05; done
+    printf ready > "$REPO_DIR/conflict.ready"
+    while [ ! -f "$REPO_DIR/conflict.done" ]; do sleep 0.05; done
     printf '# AIが編集した用語集\n' > "$REPO_DIR/docs/glossary.md"
     printf '%s\n' 'SUMMARY: OK: 競合検査テスト'
     exit 0
@@ -62,6 +64,15 @@ case "$FAKE_CODEX_MODE" in
 NEWS
     printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
     printf '%s\n' 'SUMMARY: OK: 6件目を追加しました'
+    exit 0
+    ;;
+  check-untracked)
+    if ! grep -q '未追跡の入力' "$REPO_DIR/everyday_news/202501.md"; then
+      printf '%s\n' 'SUMMARY: ERROR: 未追跡Markdownが作業用コピーにありません'
+      exit 1
+    fi
+    printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
+    printf '%s\n' 'SUMMARY: OK: 未追跡Markdownを確認しました'
     exit 0
     ;;
   low-count)
@@ -124,7 +135,7 @@ chmod +x "$TMP_DIR/fake-codex"
 cat > "$TMP_DIR/fake-claude-ok" <<'EOF'
 #!/bin/sh
 printf '%s\n' "$*" >> "$FAKE_CLAUDE_ARGS_LOG"
-printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
+printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$REPO_DIR/agent-context.log"
 printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
 printf '%s\n' 'SUMMARY: OK: Claudeフォールバック更新'
 exit 0
@@ -179,6 +190,9 @@ chmod +x "$TMP_DIR/fake-audio"
 
 cat > "$TMP_DIR/fake-gh" <<'EOF'
 #!/bin/sh
+if [ "$1" = release ] && [ "$2" = view ] && [ -n "${FAKE_GH_ASSET:-}" ]; then
+  printf '%s\n' "$FAKE_GH_ASSET"
+fi
 exit 0
 EOF
 chmod +x "$TMP_DIR/fake-gh"
@@ -212,14 +226,12 @@ run_daily() {
   PATH="$TMP_DIR:$PATH" \
   REPO_DIR="$TEST_REPO" \
   CODEX_BIN="$TMP_DIR/fake-codex" \
+  CODEX_HOME="$TMP_DIR/codex-home" \
   FAKE_CODEX_MODE="$codex_mode" \
   CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
   AI_NEWS_AGENT_WORKSPACE="$TMP_DIR/agent-workspace" \
-  FAKE_AGENT_CONTEXT_LOG="$TMP_DIR/agent-context.log" \
   FAKE_CLAUDE_ARGS_LOG="$TMP_DIR/claude-args.log" \
   FAKE_REAL_REPO="$TEST_REPO" \
-  FAKE_CONFLICT_READY="$TMP_DIR/conflict.ready" \
-  FAKE_CONFLICT_DONE="$TMP_DIR/conflict.done" \
   TODAY_MONTH="$TODAY_MONTH" \
   TODAY_DAY="$TODAY_DAY" \
   FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
@@ -234,6 +246,8 @@ run_daily() {
     "$SCRIPT_ROOT/scripts/daily_news.sh" > "$output_file" 2>&1
   RUN_STATUS=$?
   set -e
+  find "$TMP_DIR/agent-workspace" -name agent-context.log -type f -exec cat {} + \
+    > "$TMP_DIR/agent-context.log"
   return "$RUN_STATUS"
 }
 
@@ -375,11 +389,27 @@ if [ "$(wc -l < "$TMP_DIR/agent-context.log")" -ne "$context_before" ] \
 fi
 git -C "$TEST_REPO" restore --staged --worktree -- "everyday_news/$MONTH.md"
 
-printf '# 外部更新前\n' > "$TEST_REPO/docs/glossary.md"
+printf '\nunstaged user edit\n' >> "$TEST_REPO/docs/glossary.md"
+context_before="$(wc -l < "$TMP_DIR/agent-context.log")"
+workspaces_before="$(find "$TMP_DIR/agent-workspace" -mindepth 1 -maxdepth 1 -type d | wc -l)"
+if run_daily update-five "$TMP_DIR/output-unstaged-target.log" 0 "$TMP_DIR/notify-state-unstaged-target"; then
+  echo "更新対象にunstaged変更があるのにAI作業を開始しました" >&2
+  exit 1
+fi
+if [ "$(wc -l < "$TMP_DIR/agent-context.log")" -ne "$context_before" ] \
+   || [ "$(find "$TMP_DIR/agent-workspace" -mindepth 1 -maxdepth 1 -type d | wc -l)" -ne "$workspaces_before" ] \
+   || ! tail -1 "$TMP_DIR/osascript.log" | grep -q '既存のunstaged変更'; then
+  echo "unstaged変更の事前検査がAI作業より後に行われました" >&2
+  cat "$TMP_DIR/output-unstaged-target.log" >&2
+  exit 1
+fi
+git -C "$TEST_REPO" restore --worktree -- docs/glossary.md
+
 (
-  while [ ! -f "$TMP_DIR/conflict.ready" ]; do sleep 0.05; done
+  while [ -z "$(find "$TMP_DIR/agent-workspace" -name conflict.ready -print -quit)" ]; do sleep 0.05; done
+  conflict_ready="$(find "$TMP_DIR/agent-workspace" -name conflict.ready -print -quit)"
   printf '# 実行中のユーザー編集\n' > "$TEST_REPO/docs/glossary.md"
-  printf done > "$TMP_DIR/conflict.done"
+  printf done > "${conflict_ready%.ready}.done"
 ) &
 conflict_watcher=$!
 if run_daily wait-conflict "$TMP_DIR/output-sync-conflict.log" 0 "$TMP_DIR/notify-state-sync-conflict"; then
@@ -394,6 +424,20 @@ if [ "$(cat "$TEST_REPO/docs/glossary.md")" != '# 実行中のユーザー編集
   exit 1
 fi
 git -C "$TEST_REPO" restore --worktree -- docs/glossary.md
+
+cat > "$TEST_REPO/everyday_news/202501.md" <<'NEWS'
+# 2025年01月 AIニュースまとめ
+
+## 2025-01-01
+
+- **【技術】未追跡の入力**（[出典](https://example.com/untracked)）
+  作業用コピーへの入力です。
+NEWS
+if ! run_daily check-untracked "$TMP_DIR/output-untracked.log" 0 "$TMP_DIR/notify-state-untracked"; then
+  echo "未追跡MarkdownをAI作業用コピーに渡せませんでした" >&2
+  cat "$TMP_DIR/output-untracked.log" >&2
+  exit 1
+fi
 
 if ! run_daily boundary-probe "$TMP_DIR/output-boundary.log" 0 "$TMP_DIR/notify-state-boundary"; then
   echo "本体repoへの絶対パスアクセス境界を確認できませんでした" >&2
@@ -448,14 +492,19 @@ else
   echo "LINE通知だけが失敗したClaude Codeフォールバックを更新失敗扱いしました" >&2
   exit 1
 fi
+if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ]; then
+  echo "Claude Code成功時の経由マーカーが保存されませんでした" >&2
+  exit 1
+fi
 if run_daily ok "$TMP_DIR/output-codex-line-retry.log" 0 "$TMP_DIR/notify-state-fallback-line-retry"; then
   :
 else
   echo "Claude Code経由のLINE再送テストでCodexの再実行に失敗しました" >&2
   exit 1
 fi
-if [ "$(grep -c '⚠️Claude Code経由' "$TMP_DIR/curl-body.log")" -lt 3 ]; then
-  echo "LINE再送時に元のClaude Code経由表示が保持されませんでした" >&2
+if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != codex ] \
+   || tail -1 "$TMP_DIR/curl-body.log" | grep -q '⚠️Claude Code経由'; then
+  echo "後続のCodex成功時に古いClaude経由表示が残りました" >&2
   cat "$TMP_DIR/curl-body.log" >&2
   exit 1
 fi
@@ -520,12 +569,15 @@ set +e
 PATH="$TMP_DIR:$PATH" \
 REPO_DIR="$TEST_REPO" \
 CODEX_BIN="$TMP_DIR/fake-codex" \
+CODEX_HOME="$TMP_DIR/codex-home" \
 FAKE_CODEX_MODE=no-ok \
 CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
 FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \
+  FAKE_GH_ASSET="$TODAY.m4a" \
   FAKE_AUDIO_LOG="$TMP_DIR/audio.log" \
+  GIT_TRACE2_EVENT="$TMP_DIR/audio-git-trace.json" \
   LINE_NOTIFY_DATE="$TODAY" \
 LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state-audio" \
 NOTEBOOKLM_AUDIO_SCRIPT="$TMP_DIR/fake-audio" \
@@ -546,6 +598,13 @@ if ! git -C "$TEST_REPO" diff --cached --name-only | grep -qx 'unrelated.md'; th
 fi
 if git -C "$TEST_REPO" show --format= --name-only HEAD | grep -qx 'unrelated.md'; then
   echo "音声リトライが無関係な変更をcommitしました" >&2
+  exit 1
+fi
+if ! git -C "$TEST_REPO" show --format= --name-only HEAD | grep -qx 'history/audio-data.js' \
+   || ! grep -q 'pre-push' "$TMP_DIR/audio-git-trace.json" \
+   || [ "$(git --git-dir="$TMP_DIR/origin.git" rev-parse refs/heads/main)" != "$(git -C "$TEST_REPO" rev-parse HEAD)" ]; then
+  echo "音声リトライのcommit・pushで最低5件のpre-pushフックが実行されませんでした" >&2
+  cat "$TMP_DIR/output-audio.log" >&2
   exit 1
 fi
 

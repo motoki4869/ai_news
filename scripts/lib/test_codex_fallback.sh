@@ -46,9 +46,12 @@ result="$(mark_as_codex_fallback "テスト通知")"
 assert_eq "マーカーが先頭に付与される" "⚠️Codex経由 テスト通知" "$result"
 
 test_dir="$(mktemp -d "${TMPDIR:-/tmp}/test-codex-fallback.XXXXXX")"
+test_dir="$(cd "$test_dir" && pwd -P)"
+mkdir -p "$test_dir/codex-home"
+printf '{}\n' > "$test_dir/codex-home/auth.json"
 cleanup_test_dir() {
-  rm -f "$test_dir/codex" "$test_dir/codex-model-server" "$test_dir/node" "$test_dir/prompt.txt" "$test_dir/args.log"
-  rmdir "$test_dir"
+  find "$test_dir" -type f -delete
+  find "$test_dir" -depth -type d -exec rmdir {} +
 }
 trap cleanup_test_dir EXIT
 cat > "$test_dir/codex" <<'SH'
@@ -58,12 +61,13 @@ SH
 chmod +x "$test_dir/codex"
 printf 'test prompt\n' > "$test_dir/prompt.txt"
 CODEX_ARGS_LOG="$test_dir/args.log" \
+CODEX_HOME="$test_dir/codex-home" \
 CODEX_BIN="$test_dir/codex" \
 NODE_BIN="$(command -v node || command -v python3)" \
 CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
 run_codex "$test_dir" "$test_dir/prompt.txt" "$test_dir/real-repo" >/dev/null 2>&1
 assert_true "環境変数で指定したCodexモデルを利用する" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
-assert_true "Codexを昇格なし・通信なしのsandboxで起動する" grep -q -- 'approval_policy=never.*sandbox_workspace_write.network_access=false' "$test_dir/args.log"
+assert_true "外側のSeatbelt内でCodexの内側のsandboxを無効にする" grep -q -- '-s danger-full-access -c approval_policy=never' "$test_dir/args.log"
 assert_true "最新ニュース用のWeb検索を有効にする" grep -q -- 'web_search=live' "$test_dir/args.log"
 assert_true "通常のCodex設定と追加アプリを読み込まない" grep -q -- '--ignore-user-config --ephemeral' "$test_dir/args.log"
 assert_false "モデルを明示指定した場合は一覧取得を省略する" grep -Eq 'app-server|model/list' "$test_dir/args.log"
@@ -90,6 +94,7 @@ chmod +x "$test_dir/codex-model-server"
 : > "$test_dir/args.log"
 PATH="/usr/bin:/bin:/usr/sbin:/sbin" \
 CODEX_ARGS_LOG="$test_dir/args.log" \
+CODEX_HOME="$test_dir/codex-home" \
 CODEX_BIN="$test_dir/codex-model-server" \
 NODE_BIN="$test_dir/node" \
 CODEX_FALLBACK_MODEL="" \

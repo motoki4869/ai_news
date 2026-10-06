@@ -75,43 +75,51 @@ run_codex() {
     fi
   fi
 
+  local auth_source="${CODEX_HOME:-$HOME/.codex}/auth.json"
+  local runtime_dir runtime_home runtime_codex_home runtime_tmp
+  runtime_dir="$(mktemp -d "$repo_dir/.codex-runtime.XXXXXX")" || return 1
+  runtime_home="$runtime_dir/home"
+  runtime_codex_home="$runtime_home/.codex"
+  runtime_tmp="$runtime_dir/tmp"
+  mkdir -p "$runtime_codex_home" "$runtime_tmp" || return 1
   local attempt_log
   attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1
+  cd "$repo_dir" || return 1
+  if ! cp "$auth_source" "$runtime_codex_home/auth.json" \
+     || ! chmod 600 "$runtime_codex_home/auth.json"; then
+    rm -f "$runtime_codex_home/auth.json"
+    echo "Codexの認証情報を隔離された作業用コピーへ用意できませんでした" >&2
+    return 1
+  fi
   local agent_bin_dir="$repo_dir/scripts/agent-bin"
   echo "Codex実行モデル: $fallback_model" >&2
-  cd "$repo_dir" || return 1
-  # CLI本体の認証通信は維持しつつ、外側のSeatbeltで本体repoとGit認証経路を
-  # 拒否する。Codexの内側のsandboxは作業用コピー以外への書込みとshell通信を拒否。
+  # macOSはSeatbeltの入れ子を許さない。外側のSeatbeltだけで本体repoと
+  # Git/SSH認証経路を隠し、書込みを今回の作業用コピーへ限定する。
   /usr/bin/sandbox-exec \
     -f "$CODEX_FALLBACK_LIB_DIR/agent-sandbox.sb" \
     -D "REPO_DIR=$original_repo_dir" \
-    -D "SSH_DIR=$HOME/.ssh" \
-    -D "GH_DIR=$HOME/.config/gh" \
-    -D "GIT_CONFIG_DIR=$HOME/.config/git" \
-    -D "KEYCHAIN_DIR=$HOME/Library/Keychains" \
-    -D "GIT_CONFIG_FILE=$HOME/.gitconfig" \
-    -D "GIT_CREDENTIALS_FILE=$HOME/.git-credentials" \
-    -D "NETRC_FILE=$HOME/.netrc" \
+    -D "HOME_DIR=$HOME" \
+    -D "CODEX_AUTH_SOURCE=$auth_source" \
+    -D "SCRATCH_BASE_DIR=$(dirname "$repo_dir")" \
+    -D "SCRATCH_DIR=$repo_dir" \
     -D "SSH_AUTH_SOCKET=${SSH_AUTH_SOCK:-/private/tmp/ai-news-no-ssh-agent-socket}" \
     /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
       -u GIT_CONFIG_GLOBAL -u GIT_CONFIG_SYSTEM -u GIT_CREDENTIAL_HELPER \
+      HOME="$runtime_home" CODEX_HOME="$runtime_codex_home" TMPDIR="$runtime_tmp" \
       PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" REPO_DIR="$repo_dir" \
     "$codex_bin" exec --skip-git-repo-check --ignore-user-config --ephemeral \
     -m "$fallback_model" \
-    -s workspace-write \
+    -s danger-full-access \
     -c approval_policy=never \
     -c agents.enabled=false \
     -c apps._default.enabled=false \
     -c web_search=live \
     -c allow_login_shell=false \
-    -c sandbox_workspace_write.network_access=false \
-    -c sandbox_workspace_write.exclude_slash_tmp=true \
-    -c sandbox_workspace_write.exclude_tmpdir_env_var=true \
-    -c 'sandbox_workspace_write.writable_roots=[]' \
     -c shell_environment_policy.inherit=none \
     -C "$repo_dir" \
     "$(cat "$prompt_file")"$'\n'"実行日: ${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" 2>&1 | tee "$attempt_log"
   local status=${PIPESTATUS[0]}
+  rm -f "$runtime_codex_home/auth.json"
   rm -f "$attempt_log"
   return "$status"
 }

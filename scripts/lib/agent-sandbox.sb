@@ -1,20 +1,20 @@
-;; The Codex process needs its own login and network connection. Its model-run
-;; commands get a second, network-disabled workspace-write sandbox from Codex.
-;; This outer macOS boundary denies the original repository and Git credentials
-;; even when a command uses an absolute path or bypasses PATH shims.
+;; macOS cannot apply Codex's Seatbelt inside this Seatbelt. This is the sole
+;; filesystem boundary for Codex and every command it starts. Codex retains
+;; network access for authentication and WebSearch.
 (version 1)
 (allow default)
+(deny file-write*)
+(allow file-write* (subpath (param "SCRATCH_DIR")))
+(allow file-write* (literal "/dev/null"))
+;; Hide the user's home (including other repositories and Git/SSH credentials).
+;; Codex gets an ephemeral HOME and auth copy inside this run's scratch directory.
+(deny file-read* (subpath (param "HOME_DIR")))
+(deny file-read* (literal (param "CODEX_AUTH_SOURCE")))
+;; Previous scratch runs may contain private work. Only this run is readable.
+(deny file-read* (subpath (param "SCRATCH_BASE_DIR")))
+(allow file-read-metadata (literal (param "SCRATCH_BASE_DIR")))
+(allow file-read* (subpath (param "SCRATCH_DIR")))
 (deny file-read* file-write* (subpath (param "REPO_DIR")))
-(deny file-read* file-write* (subpath (param "SSH_DIR")))
-(deny file-read* file-write* (subpath (param "GH_DIR")))
-(deny file-read* file-write* (subpath (param "GIT_CONFIG_DIR")))
-(deny file-read* file-write* (subpath (param "KEYCHAIN_DIR")))
-(deny file-read* file-write* (literal (param "GIT_CONFIG_FILE")))
-(deny file-read* file-write* (literal (param "GIT_CREDENTIALS_FILE")))
-(deny file-read* file-write* (literal (param "NETRC_FILE")))
 (deny file-read* file-write* (literal (param "SSH_AUTH_SOCKET")))
-;; securityd uses more than one Mach service name. Deny every Mach lookup so
-;; git-credential-osxkeychain cannot use a service omitted from this list.
-(deny mach-lookup)
-(allow mach-lookup (global-name "com.apple.cfprefsd.xpc.agent"))
-(allow mach-lookup (global-name "com.apple.cfprefsd.xpc.daemon"))
+;; Keep preferences services available to Codex; block keychain IPC.
+(deny mach-lookup (regex #".*[Ss]ecurity.*|.*[Kk]eychain.*"))

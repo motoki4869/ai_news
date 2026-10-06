@@ -1,56 +1,38 @@
-# HANDOFF (2026-09-18, from Codex)
+# HANDOFF (2026-10-06 12:28, from Codex)
 
 ## やっていたこと
-AI_newsサイト（`history/` 配下の静的サイト、本番 https://ai-news-sandy-seven.vercel.app）の
-「0ベースの見直し」で洗い出した改善案（優先度1〜9、`docs/site-improvement-backlog.md`）を、
-ユーザーと1項目ずつ相談しながら優先度順に実装しています。
-途中でCodexフォールバックが定時実行から起動できない不具合が見つかり、そちらも対応しました。
+日次AIニュース更新で、Claude Code経由のLINE表示が抜けることと、ニュースが1件でも成功扱いになることを再発防止する修正。Codex/Claudeの隔離、最低5件保証、更新対象の競合保護を実装中。ユーザー指示により、ここから先の作業はClaude Codeが引き継ぐ。
 
 ## 完了済み
-- 優先度9-b: `daily.html` の音声プレイヤーを自作UIに置き換え（`00352fd`）。
-  9-a（明朝化）と9-c（index年表の再設計）はユーザー判断で**やらない**。
-- Codexフォールバックの起動不具合を ai_news / investment 両方で修正（ai_news `624ad55`、investment `fe1df1a`）。
-- iPad・PC幅（900px以上）で音声パネルを2列グリッドに組み直し、速度ボタンと「視聴済み」を
-  プレイヤーの真上（右上）へ移動（`d13f8a0`）。狭い画面の並びは変更なし。
-- 最新トレンド末尾の生成AI年表リンクと、デイリーログ末尾の最新トレンドリンクを削除。
-- 用語集の上下ナビをAI HISTORYの順に統一（最新トレンド → デイリー）。末尾は「← AI HISTORY 全体年表」「最新トレンド →」「デイリーログ →」。
-- 両リポジトリとも作業ツリーはクリーン、push済み。
+- `8c1f474` でClaude経由のLINE表示、重複除外後の最低5件検査を追加。
+- `a3738de` と `01d9a84` で親スクリプト側のcommit/push、独立したAI作業コピー、重複記事の推移的な統合、通常Git indexの保全を追加。
+- `237d7da` でCodex/Claude実行隔離、開始時staged変更の拒否、実行中の同時編集検出、成功SUMMARYと5件検査後のみ同期する処理を追加。Solの実装後、Claude Opusのクロスレビューで追加指摘が見つかった。
+- 追加指摘の実装は未コミットで作業ツリーにある。SolはCodex実行を外側のmacOS Seatbeltだけにし、内側Codex sandboxを`danger-full-access`に変更。使い捨てHOME/CODEX_HOMEを作業コピー配下に置き、元repo・元HOME・SSH等を拒否する方式へ変更。実CLIで、scratch内の読み書き成功と元repoへのアクセス拒否を確認した（Solの実行ログ `/private/tmp/ai-news-sol-review-fixes.log`）。
+- 未コミット差分に、開始前unstaged変更の拒否、音声commit/pushにも5件フックを適用、成功後にClaude/Codex経路マーカーを毎回更新、未追跡Markdownもデータ生成用scratchへコピーする修正を含む。
+- `test/test_real_codex_sandbox.sh` を追加したが、最終版でまだ実行していない。
+- Solの直近実装を止めた。追加差分はWIP commit済み。Solの作業中プロセスは終了済み。
 
 ## 次の一手
-- ユーザーの回答待ち: `test/test_daily_navigation.js` の
-  「`.day-head h2` に `scroll-margin-top: 64px`」を期待する失敗テストを直すか。
-  実装は `calc(var(--nav-h) + 18px)` が正しい（スマホでロゴが2行になる対策）ので、
-  直すならテスト側の期待値を変える。**この1件は本セッションの変更とは無関係の既存の失敗**。
-- 明日6:30の日次バッチで上限に当たった場合、`logs/daily_news.log` を確認する。
-  フォールバックの**起動経路は直したが、上限の検出はまだ実地検証できていない**（下記）。
-- 未着手で保留のバックログ: 優先度4（OGP / canonical / sitemap）。
-  やらないと決まったもの: 優先度2 / 6B / 7 / 9-a / 9-c。見送り: 優先度8（配色整理＋背景canvasフェード）。
+- まず `git status -sb` と `git log --oneline -5` を確認する。WIP commit後もローカルmainはoriginより先行している。` .playwright-mcp/` は元からの無関係な未追跡物なので追加・変更しない。
+- Solの未コミット分に対して、`bash scripts/lib/test_codex_fallback.sh`、`bash test/test_daily_news.sh`、`bash test/test_news_update_lock.sh`、Python unittest、`node --test test/*.js`、`git diff --check`を再実行する。`sandbox-exec`テストはCodexの内側sandbox内から呼ぶと`Operation not permitted`になるため、通常のmacOS環境で実行する。
+- `bash test/test_real_codex_sandbox.sh`を通常環境で実行し、Codexの実CLIが作業コピーを読めて書けること、本repo・元HOME/SSH情報・作業コピー外へアクセスできないことを確認する。Codex API利用が必要。
+- 差分を確認し、特にCodex認証JSONのコピー/削除、外側Seatbeltの許可範囲、音声再試行経路、未追跡Markdownの生成データ反映、元repoのunstaged編集をpushしないことを点検する。git shim alias回避の指摘も隔離方式に照らして判断する。
+- `docs/CHANGELOG.md`にWIP分を追記・更新する。
+- 最後にクロスレビューを一度実施する。Solへの最初のレビューは実施済み、Claude Opusレビューで下記の重大/Medium指摘が出ており、Solが対処中だった。
+- すべて解決したら既存の `origin/main` へpushし、`git status -sb`を確認する。ユーザーは「ここから残りはClaude Codeに」と指示している。
 
 ## 注意点・ハマりどころ
-- **ユーザーとの進め方**: 各項目を実装する前に「なぜ必要か」を初学者向けに解説し、
-  やるかどうかの判断を仰ぐ。勝手に先に進めない。コミットしたら必ずpushまで行う。
-- **上限検出は未検証**: `is_claude_limit_reached()` は
-  `You've hit your (weekly|session) limit` の文字列一致。実際のClaude CLIの文言が違うと
-  そもそもフォールバックに入らない。実際に上限に当たるまで確認できない。
-- **launchdのPATHは `/usr/bin:/bin:/usr/sbin:/sbin` しかない**。`.zshrc` は読まれず、
-  ロケールも渡らない（Cロケール）。今回の不具合も、`codex` が見つからない→
-  解決しても `codex` は `#!/usr/bin/env node` のNodeスクリプトなので `node` も見つからない、
-  という2段構えだった。検証は必ず `env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=$HOME` で行う。
-- `scripts/lib/codex_fallback.sh` は ai_news と investment に**意図的に同一内容を複製配置**している。
-  片方を直したらもう片方も直す（現在の差分は `send_line_broadcast` の `curl` オプションのみ）。
-- **ブラウザ確認は `cmux browser`**（claude-in-chrome拡張ではない）。サーフェスは `--surface surface:5`。
-  ビューポートのリサイズ機能が無いため、**localhost の同一オリジンで iframe を作り、
-  その幅を変えて `getBoundingClientRect()` を測る**方法を使った（`documentElement.style.zoom` では
-  メディアクエリが切り替わらない）。ローカルは `history/` で `python3 -m http.server 8801`。
-- `node --test test/` はディレクトリ指定だと `__pycache__` を拾って落ちる。`node --test test/*.js` を使う。
-- 音声パネルのCSSは、狭い画面が `.audio-copy` のグリッド、900px以上が `.audio-inner` のグリッドで、
-  `.audio-copy { display: contents }` により升目の名前（kicker/title/desc/actions）を共用している。
-  片方だけ触ると崩れるので、変更したら両方の幅で実測すること。
+- 直近のClaude Opusレビュー（`8c1f474...HEAD`）のCriticalは「外側sandbox-execとCodexの内側workspace-write sandboxを重ねるとmacOSで内側sandboxが起動せず、実Codexのファイル読み取りが失敗」。Solは外側Seatbeltのみへ変更し、`danger-full-access`で実CLI動作を確認したが、追加した最終統合テストは未実行。
+- 同レビューのMediumは「開始前のunstaged編集を日次commitへ含める」「音声commit/pushが5件フックを通らない」「未追跡Markdownが生成データから漏れる」。Solの現在の差分では対策コードと回帰テストを追加したが、未検証。
+- 同レビューのLowは「Claude経路マーカーが同日の後続Codex成功後も残る」「scratch作業コピーが蓄積」「git shimは短縮aliasで回避可能」。Solは経路マーカーを更新するテストを追加。作業コピーの自動削除はユーザーのファイル削除方針により追加していない。alias指摘は確認が必要。
+- Solのテスト実行はCodex tool sandbox内だったため、`sandbox-exec`を呼ぶ`test_codex_fallback.sh`が失敗した。これは隔離方式の回帰失敗とは限らない。こちらでは前の版で通常環境の`test_codex_fallback.sh`と`test/test_daily_news.sh`が成功しているが、Sol追加後の最終版は未確認。
+- Solの直接レビュー/実装用Codex呼び出しは途中で利用上限に到達したことがある。現在はユーザー指定でClaude Codeへ引き継ぐ。
+- 現在のコード差分はGitで引き継ぐ。HANDOFFは次の引継ぎ時も削除せず上書きする。
 
 ## 関連ファイル
-- `docs/site-improvement-backlog.md` — 優先度1〜9の一覧と、各項目の判断・実測データ
-- `docs/CHANGELOG.md` — 見た目・挙動が変わった変更の記録（1依頼＝1エントリ、新しい日付が上）
-- `history/daily.html` — 日次ログページ。音声プレイヤーのHTML/CSS/JSはすべてこの中
-- `history/audio-player.js` — 自作プレイヤーの計算部分（`formatTime` / `bufferedEnd` / `percentOf`）
-- `scripts/lib/codex_fallback.sh` — Claude上限時のCodexフォールバック共通ヘルパー（investmentにも複製）
-- `scripts/daily_news.sh` — 6:30のlaunchdジョブ本体（`com.motoki.ainews.daily`）
+- `scripts/daily_news.sh` — 日次更新、隔離scratch、生成/検証、commit・push・音声再試行
+- `scripts/lib/codex_fallback.sh` — Codex/Claudeの起動境界とフォールバック
+- `scripts/lib/agent-sandbox.sb` — Codex実行時のmacOS Seatbelt
+- `scripts/validate_daily_news.py` — 重複除外後の最低5件検査
+- `test/test_daily_news.sh`、`scripts/lib/test_codex_fallback.sh` — 日次処理の回帰テスト
+- `test/test_real_codex_sandbox.sh` — 実Codex CLI隔離の統合テスト（未実行）
