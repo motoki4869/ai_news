@@ -8,16 +8,17 @@ ai_news の変更履歴。新しい日付を上に追記する。
 ## 2026-10-06
 
 ### 日次AI実行の隔離と更新対象の競合検査
-- **変更**: Codexを本体repo・Git/SSH認証情報へのアクセスを拒否するmacOS Seatbeltと通信不可のworkspace-writeで実行し、Claude CodeをBashなしの`--restricted`で実行する。生成スクリプトと最低5件の検査を親スクリプトに移した。更新対象のstaged変更はAI作業用コピーの準備前に検出し、同期直前には対象ファイルの内容とindexを開始時の状態と照合する。Codex失敗時は新しい作業用コピーでClaude Codeを実行し、最終行の成功SUMMARYと生成・件数検査が揃った場合だけ本体へ同期する。
-- **理由**: `.git`のないコピーとPATH上のGit制限だけでは、AI実行から本体repoの絶対パスや認証済みpush経路にアクセスできたため。また、従来のstaged検査は成果物を本体へコピーした後だったため、既存変更を上書きする恐れがあった。失敗・未完了のAI出力やCodexの途中成果が本体に混入する経路も防ぐため。
-- **対象**: `scripts/daily_news.sh`、`scripts/lib/agent-sandbox.sb`、`scripts/lib/codex_fallback.sh`、`scripts/generate_daily_data.py`、`scripts/generate_glossary_data.py`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`scripts/lib/test_codex_fallback.sh`、`test/test_daily_news.sh`
-- **commit**: `HEAD`
+- **変更**: Codexを外側のmacOS Seatbeltだけで隔離して実行する（本体repo・元HOME・Git/SSH認証情報・キーチェーンへのアクセスを拒否し、書き込みは今回の作業用コピーに限定。HOMEと`CODEX_HOME`は作業用コピー内の使い捨てディレクトリに差し替え、認証JSONは実行後に消す）。Claude CodeはBashなしの`--restricted`で実行し、Claude CodeをBashなしの`--restricted`で実行する。生成スクリプトと最低5件の検査を親スクリプトに移した。更新対象のstaged変更はAI作業用コピーの準備前に検出し、同期直前には対象ファイルの内容とindexを開始時の状態と照合する。Codex失敗時は新しい作業用コピーでClaude Codeを実行し、最終行の成功SUMMARYと生成・件数検査が揃った場合だけ本体へ同期する。あわせて、更新対象に開始前のunstaged変更があれば開始しない、音声のcommit・pushにも最低5件の検査フックを通す、成功のたびにClaude/Codex経由マーカーを更新する、未追跡のMarkdownも作業用コピーへ渡す、の4点を加えた。
+- **理由**: `.git`のないコピーとPATH上のGit制限だけでは、AI実行から本体repoの絶対パスや認証済みpush経路にアクセスできたため。macOSはSeatbeltの入れ子を許さず、外側Seatbelt＋Codex内側のworkspace-write sandboxでは実Codexがファイルを読めなかったため、外側の1層に一本化した。ユーザーの書きかけの編集が日次commitに混ざる、音声commitだけ件数検査を素通りする、同日の後続Codex成功後も「Claude Code経由」表示が残る、という経路もクロスレビューで見つかったため。また、従来のstaged検査は成果物を本体へコピーした後だったため、既存変更を上書きする恐れがあった。失敗・未完了のAI出力やCodexの途中成果が本体に混入する経路も防ぐため。
+- **対象**: `scripts/daily_news.sh`、`scripts/lib/agent-sandbox.sb`、`scripts/lib/codex_fallback.sh`、`scripts/generate_daily_data.py`、`scripts/generate_glossary_data.py`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`scripts/lib/test_codex_fallback.sh`、`test/test_daily_news.sh`、`test/test_real_codex_sandbox.sh`
+- **commit**: `01d9a84`, `237d7da`, `3d0b2aa`, 本エントリ追記時のコミット
+- **確認**: 実Codex CLIで、作業用コピーの読み書きとコマンド実行ができ、本体repo・`~/.codex/auth.json`・`~/.ssh`・作業用コピー外への書き込みが拒否されることを`test/test_real_codex_sandbox.sh`で確認した。
 
 ### Claude Code経由のLINE表示と日次ニュース最低件数の検査
 - **変更**: Claude Codeへフォールバックした日のLINE通知先頭に経由表示を付け、通知失敗後の同日再送でも経路を維持する。ニュース件数は重複グループをまとめて5件以上を必須とし、AIは`.git`のない作業用コピーだけを編集する。親スクリプトが成果物を許可リスト経由で戻し、検査後に更新対象だけを通常Gitインデックスからcommit・pushする。
 - **理由**: Claude Code経由で収集したことがLINE通知から分からず、当日ニュース1件だけでも成功としてcommit・pushされていたため。単純な重複判定ではタイトルとURLが連鎖して一致する記事群を漏らし、専用インデックスによるcommitではユーザーの通常インデックスとの不整合が起きるため。
 - **対象**: `scripts/daily_news.sh`、`scripts/agent-bin/git`、`scripts/validate_daily_news.py`、`scripts/git-hooks/`、`scripts/lib/codex_fallback.sh`、`scripts/lib/test_line_notification_dedupe.sh`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`test/`
-- **commit**: `HEAD`
+- **commit**: `8c1f474`, `a3738de`
 
 ## 2026-10-02
 

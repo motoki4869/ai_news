@@ -105,6 +105,7 @@ run_codex() {
     -D "SSH_AUTH_SOCKET=${SSH_AUTH_SOCK:-/private/tmp/ai-news-no-ssh-agent-socket}" \
     /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
       -u GIT_CONFIG_GLOBAL -u GIT_CONFIG_SYSTEM -u GIT_CREDENTIAL_HELPER \
+      -u NODE_OPTIONS \
       HOME="$runtime_home" CODEX_HOME="$runtime_codex_home" TMPDIR="$runtime_tmp" \
       PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" REPO_DIR="$repo_dir" \
     "$codex_bin" exec --skip-git-repo-check --ignore-user-config --ephemeral \

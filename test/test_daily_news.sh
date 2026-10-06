@@ -190,7 +190,9 @@ chmod +x "$TMP_DIR/fake-audio"
 
 cat > "$TMP_DIR/fake-gh" <<'EOF'
 #!/bin/sh
-if [ "$1" = release ] && [ "$2" = view ] && [ -n "${FAKE_GH_ASSET:-}" ]; then
+# 音声生成（fake-audio）が呼ばれた後だけ、リリースにアセットがある状態を再現する。
+if [ "$1" = release ] && [ "$2" = view ] && [ -n "${FAKE_GH_ASSET:-}" ] \
+   && [ -s "${FAKE_AUDIO_LOG:-/nonexistent}" ]; then
   printf '%s\n' "$FAKE_GH_ASSET"
 fi
 exit 0
