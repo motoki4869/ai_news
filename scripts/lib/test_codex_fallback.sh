@@ -62,12 +62,14 @@ chmod +x "$test_dir/codex"
 printf 'test prompt\n' > "$test_dir/prompt.txt"
 CODEX_ARGS_LOG="$test_dir/args.log" \
 CODEX_HOME="$test_dir/codex-home" \
+AI_NEWS_CODEX_RUNTIME_BASE="$test_dir/codex-runtime" \
 CODEX_BIN="$test_dir/codex" \
 NODE_BIN="$(command -v node || command -v python3)" \
 CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
 run_codex "$test_dir" "$test_dir/prompt.txt" "$test_dir/real-repo" >/dev/null 2>&1
 assert_true "環境変数で指定したCodexモデルを利用する" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
-assert_true "外側のSeatbelt内でCodexの内側のsandboxを無効にする" grep -q -- '-s danger-full-access -c approval_policy=never' "$test_dir/args.log"
+assert_true "Codexのコマンドを専用の権限プロファイルで実行する" grep -q -- '-c default_permissions="ai_news_agent"' "$test_dir/args.log"
+assert_false "Codexのsandboxを無効にしない" grep -q -- 'danger-full-access' "$test_dir/args.log"
 assert_true "最新ニュース用のWeb検索を有効にする" grep -q -- 'web_search=live' "$test_dir/args.log"
 assert_true "通常のCodex設定と追加アプリを読み込まない" grep -q -- '--ignore-user-config --ephemeral' "$test_dir/args.log"
 assert_false "モデルを明示指定した場合は一覧取得を省略する" grep -Eq 'app-server|model/list' "$test_dir/args.log"
@@ -95,12 +97,40 @@ chmod +x "$test_dir/codex-model-server"
 PATH="/usr/bin:/bin:/usr/sbin:/sbin" \
 CODEX_ARGS_LOG="$test_dir/args.log" \
 CODEX_HOME="$test_dir/codex-home" \
+AI_NEWS_CODEX_RUNTIME_BASE="$test_dir/codex-runtime" \
 CODEX_BIN="$test_dir/codex-model-server" \
 NODE_BIN="$test_dir/node" \
 CODEX_FALLBACK_MODEL="" \
 run_codex "$test_dir" "$test_dir/prompt.txt" "$test_dir/real-repo" >/dev/null 2>&1
 assert_true "launchd相当のPATHでもapp-serverから最新Solを選ぶ" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
 assert_true "model/list用app-serverからnodeを解決できるPATHを渡す" grep -q "node=$test_dir/node" "$test_dir/args.log"
+
+cat > "$test_dir/codex-refresh" <<'SH'
+#!/bin/bash
+case "$FAKE_AUTH_MODE" in
+  refresh) printf '{"token":"refreshed"}\n' > "$CODEX_HOME/auth.json" ;;
+  source-changed) printf '{"token":"user-login"}\n' > "$FAKE_AUTH_SOURCE" ;;
+esac
+SH
+chmod +x "$test_dir/codex-refresh"
+run_auth_case() {
+  printf '{"token":"original"}\n' > "$test_dir/codex-home/auth.json"
+  FAKE_AUTH_MODE="$1" \
+  FAKE_AUTH_SOURCE="$test_dir/codex-home/auth.json" \
+  CODEX_HOME="$test_dir/codex-home" \
+  AI_NEWS_CODEX_RUNTIME_BASE="$test_dir/codex-runtime" \
+  CODEX_BIN="$test_dir/codex-refresh" \
+  NODE_BIN="$(command -v node || command -v python3)" \
+  CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
+  run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
+}
+run_auth_case refresh
+assert_true "Codexが更新したトークンを元の認証情報へ戻す" grep -q refreshed "$test_dir/codex-home/auth.json"
+run_auth_case source-changed
+assert_true "実行中に元側だけ更新された認証情報を古いコピーで上書きしない" grep -q user-login "$test_dir/codex-home/auth.json"
+assert_eq "実行後に認証情報の一時コピーを残さない" "" "$(find "$test_dir/codex-runtime" -name auth.json -print)"
+assert_eq "作業用コピー内に認証情報を置かない" "" "$(find "$test_dir" -path "$test_dir/codex-home" -prune -o -path "$test_dir/codex-runtime" -prune -o -name auth.json -print)"
+printf '{}\n' > "$test_dir/codex-home/auth.json"
 
 if [ "$fail" -ne 0 ]; then
   echo "FAILED"

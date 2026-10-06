@@ -38,16 +38,20 @@ case "$FAKE_CODEX_MODE" in
     exit 0
     ;;
   boundary-probe)
-    if /bin/cat "$FAKE_REAL_REPO/docs/glossary.md" >/dev/null 2>&1; then
-      printf '%s\n' '本体repoを読み取れました'
-      exit 1
-    fi
-    if printf bad > "$FAKE_REAL_REPO/docs/glossary.md" 2>/dev/null; then
-      printf '%s\n' '本体repoを書き換えられました'
-      exit 1
-    fi
-    if /usr/bin/git -C "$FAKE_REAL_REPO" push origin main >/dev/null 2>&1; then
-      printf '%s\n' '本体repoからpushできました'
+    # 本体repoへの境界はCodexのコマンド用サンドボックスが担う（実CLIでの確認は
+    # test/test_codex_command_sandbox.sh）。ここでは起動条件と認証情報の置き場所を確認する。
+    case " $* " in
+      *' default_permissions="ai_news_agent" '*) ;;
+      *) printf '%s\n' '権限プロファイルが指定されていません'; exit 1 ;;
+    esac
+    case " $* " in
+      *danger-full-access*) printf '%s\n' 'sandboxが無効化されています'; exit 1 ;;
+    esac
+    case "$CODEX_HOME/" in
+      "$REPO_DIR/"*) printf '%s\n' 'CODEX_HOMEが作業用コピー内にあります'; exit 1 ;;
+    esac
+    if [ -n "$(find "$REPO_DIR" -name auth.json -print -quit)" ]; then
+      printf '%s\n' '作業用コピー内に認証情報があります'
       exit 1
     fi
     printf '%s\n' 'BOUNDARY: OK'
@@ -229,6 +233,7 @@ run_daily() {
   REPO_DIR="$TEST_REPO" \
   CODEX_BIN="$TMP_DIR/fake-codex" \
   CODEX_HOME="$TMP_DIR/codex-home" \
+  AI_NEWS_CODEX_RUNTIME_BASE="$TMP_DIR/codex-runtime" \
   FAKE_CODEX_MODE="$codex_mode" \
   CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
   AI_NEWS_AGENT_WORKSPACE="$TMP_DIR/agent-workspace" \
@@ -572,6 +577,7 @@ PATH="$TMP_DIR:$PATH" \
 REPO_DIR="$TEST_REPO" \
 CODEX_BIN="$TMP_DIR/fake-codex" \
 CODEX_HOME="$TMP_DIR/codex-home" \
+AI_NEWS_CODEX_RUNTIME_BASE="$TMP_DIR/codex-runtime" \
 FAKE_CODEX_MODE=no-ok \
 CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
@@ -617,6 +623,7 @@ cat > "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 EOF
 git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
 git -C "$TEST_REPO" commit -q -m 'remove current day from seed'
+git -C "$TEST_REPO" push -q origin main
 cat >> "$TEST_REPO/everyday_news/$MONTH.md" <<EOF
 
 ## $TODAY
@@ -636,4 +643,65 @@ if [ "$after_curl_count" -ne "$((before_curl_count + 1))" ]; then
   exit 1
 fi
 
-echo "SUMMARY: daily_news.shの失敗判定、同日LINE通知claim、commit済み音声再試行を確認しました"
+git -C "$TEST_REPO" checkout -q -- "everyday_news/$MONTH.md"
+
+# 日次処理以外の未push commitがあれば、AI作業もpushも行わない。
+printf 'user work\n' > "$TEST_REPO/user-work.md"
+git -C "$TEST_REPO" add user-work.md
+git -C "$TEST_REPO" commit -q -m 'user work in progress'
+remote_before="$(git --git-dir="$TMP_DIR/origin.git" rev-parse refs/heads/main)"
+context_before="$(wc -l < "$TMP_DIR/agent-context.log")"
+if run_daily update-five "$TMP_DIR/output-unpushed.log" 0 "$TMP_DIR/notify-state-unpushed"; then
+  echo "未pushのユーザーcommitがあるのに日次更新を成功扱いしました" >&2
+  exit 1
+fi
+if [ "$(git --git-dir="$TMP_DIR/origin.git" rev-parse refs/heads/main)" != "$remote_before" ] \
+   || [ "$(wc -l < "$TMP_DIR/agent-context.log")" -ne "$context_before" ] \
+   || ! tail -1 "$TMP_DIR/osascript.log" | grep -q '未pushのcommit'; then
+  echo "未pushのユーザーcommitを検出する前にAI作業またはpushが行われました" >&2
+  cat "$TMP_DIR/output-unpushed.log" >&2
+  exit 1
+fi
+git -C "$TEST_REPO" push -q origin main
+
+# 音声一覧ファイルにユーザーの未commit編集があれば、音声処理で上書き・commitしない。
+# 音声処理に進むよう、当日分5件をcommit済みにしておく。
+git -C "$TEST_REPO" show "$(git -C "$TEST_REPO" rev-parse ":/remove current day from seed")~1:everyday_news/$MONTH.md" > "$TEST_REPO/everyday_news/$MONTH.md"
+grep -q "^## $TODAY$" "$TEST_REPO/everyday_news/$MONTH.md"
+git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
+git -C "$TEST_REPO" commit -q -m "$TODAY のAIニュースを更新"
+git -C "$TEST_REPO" push -q origin main
+mkdir -p "$TEST_REPO/history"
+git -C "$TEST_REPO" show HEAD:history/audio-data.js > "$TEST_REPO/history/audio-data.js"
+printf '// user edit\n' >> "$TEST_REPO/history/audio-data.js"
+audio_head_before="$(git -C "$TEST_REPO" rev-parse HEAD)"
+: > "$TMP_DIR/audio-dirty.log"
+set +e
+PATH="$TMP_DIR:$PATH" \
+REPO_DIR="$TEST_REPO" \
+CODEX_BIN="$TMP_DIR/fake-codex" \
+CODEX_HOME="$TMP_DIR/codex-home" \
+AI_NEWS_CODEX_RUNTIME_BASE="$TMP_DIR/codex-runtime" \
+FAKE_CODEX_MODE=no-ok \
+CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
+FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
+FAKE_CURL_LOG="$TMP_DIR/curl.log" \
+FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \
+FAKE_GH_ASSET="$TODAY.m4a" \
+FAKE_AUDIO_LOG="$TMP_DIR/audio-dirty.log" \
+LINE_NOTIFY_DATE="$TODAY" \
+LINE_NOTIFY_STATE_DIR="$TMP_DIR/notify-state-audio-dirty" \
+NOTEBOOKLM_AUDIO_SCRIPT="$TMP_DIR/fake-audio" \
+GH_BIN="$TMP_DIR/fake-gh" \
+  "$SCRIPT_ROOT/scripts/daily_news.sh" > "$TMP_DIR/output-audio-dirty.log" 2>&1
+set -e
+if [ -s "$TMP_DIR/audio-dirty.log" ] \
+   || [ "$(git -C "$TEST_REPO" rev-parse HEAD)" != "$audio_head_before" ] \
+   || [ "$(tail -1 "$TEST_REPO/history/audio-data.js")" != '// user edit' ] \
+   || ! grep -q '音声一覧ファイルに未commitの変更がある' "$TMP_DIR/output-audio-dirty.log"; then
+  echo "音声一覧ファイルの未commit編集を上書きまたはcommitしました" >&2
+  cat "$TMP_DIR/output-audio-dirty.log" >&2
+  exit 1
+fi
+
+echo "SUMMARY: daily_news.shの失敗判定、同日LINE通知claim、commit済み音声再試行、未push commitと音声一覧の保護を確認しました"

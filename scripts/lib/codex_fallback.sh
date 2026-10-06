@@ -4,6 +4,16 @@
 # 呼び出し元スクリプトから `source` して使うこと。
 CODEX_FALLBACK_LIB_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
+# Codexが起動するコマンドの権限プロファイル（Codex本体の認証・モデル通信・Web検索には効かない）。
+# 読めるのはシステムの最小限と作業用コピー(-C)だけで、本体repo・HOME・認証情報・/tmpは
+# 読み書きできず、ネットワークも使えない。macOSはSeatbeltを入れ子にできないため、
+# 外側からsandbox-execで包まず、この1層だけで境界を作る。
+# 実CLIでの確認: test/test_codex_command_sandbox.sh（API不要）、test/test_real_codex_sandbox.sh
+CODEX_COMMAND_PERMISSIONS=(
+  -c 'default_permissions="ai_news_agent"'
+  -c 'permissions={ai_news_agent={filesystem={":minimal"="read", ":slash_tmp"="deny", ":workspace_roots"={"."="write"}}, network={enabled=false}}}'
+)
+
 is_claude_limit_reached() {
   local output="$1"
   echo "$output" | grep -qE "You've hit your (weekly|session) limit"
@@ -75,42 +85,43 @@ run_codex() {
     fi
   fi
 
+  # Codex本体は認証情報を読む必要があるが、Codexが起動するコマンドからは読ませない。
+  # 認証用のCODEX_HOMEは作業用コピーの外（HOME配下）に作り、コマンド側は
+  # CODEX_COMMAND_PERMISSIONSで作業用コピーとシステムの最小限しか読めないようにする。
   local auth_source="${CODEX_HOME:-$HOME/.codex}/auth.json"
-  local runtime_dir runtime_home runtime_codex_home runtime_tmp
-  runtime_dir="$(mktemp -d "$repo_dir/.codex-runtime.XXXXXX")" || return 1
+  local runtime_base="${AI_NEWS_CODEX_RUNTIME_BASE:-$HOME/Library/Caches/ai-news-codex-runtime}"
+  local runtime_dir runtime_home runtime_codex_home runtime_tmp stale_auth
+  mkdir -p "$runtime_base" && chmod 700 "$runtime_base" || return 1
+  # 前回が強制終了で認証のコピーを消せなかった場合に備えて掃除する。
+  for stale_auth in "$runtime_base"/run.*/home/.codex/auth.json; do
+    [ -f "$stale_auth" ] || continue
+    rm -f "$stale_auth" || echo "前回の実行で残ったCodex認証情報のコピーを削除できませんでした: $stale_auth" >&2
+  done
+  runtime_dir="$(mktemp -d "$runtime_base/run.XXXXXX")" || return 1
   runtime_home="$runtime_dir/home"
   runtime_codex_home="$runtime_home/.codex"
-  runtime_tmp="$runtime_dir/tmp"
+  runtime_tmp="$repo_dir/.codex-tmp"
   mkdir -p "$runtime_codex_home" "$runtime_tmp" || return 1
   local attempt_log
   attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1
   cd "$repo_dir" || return 1
-  if ! cp "$auth_source" "$runtime_codex_home/auth.json" \
-     || ! chmod 600 "$runtime_codex_home/auth.json"; then
+  if ! (umask 077 && cp "$auth_source" "$runtime_codex_home/auth.json"); then
     rm -f "$runtime_codex_home/auth.json"
-    echo "Codexの認証情報を隔離された作業用コピーへ用意できませんでした" >&2
+    echo "Codexの認証情報を作業用コピーの外の一時領域へ用意できませんでした" >&2
     return 1
   fi
+  local initial_auth_sum
+  initial_auth_sum="$(cksum < "$runtime_codex_home/auth.json")"
   local agent_bin_dir="$repo_dir/scripts/agent-bin"
   echo "Codex実行モデル: $fallback_model" >&2
-  # macOSはSeatbeltの入れ子を許さない。外側のSeatbeltだけで本体repoと
-  # Git/SSH認証経路を隠し、書込みを今回の作業用コピーへ限定する。
-  /usr/bin/sandbox-exec \
-    -f "$CODEX_FALLBACK_LIB_DIR/agent-sandbox.sb" \
-    -D "REPO_DIR=$original_repo_dir" \
-    -D "HOME_DIR=$HOME" \
-    -D "CODEX_AUTH_SOURCE=$auth_source" \
-    -D "SCRATCH_BASE_DIR=$(dirname "$repo_dir")" \
-    -D "SCRATCH_DIR=$repo_dir" \
-    -D "SSH_AUTH_SOCKET=${SSH_AUTH_SOCK:-/private/tmp/ai-news-no-ssh-agent-socket}" \
-    /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
+  /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
       -u GIT_CONFIG_GLOBAL -u GIT_CONFIG_SYSTEM -u GIT_CREDENTIAL_HELPER \
       -u NODE_OPTIONS \
       HOME="$runtime_home" CODEX_HOME="$runtime_codex_home" TMPDIR="$runtime_tmp" \
       PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" REPO_DIR="$repo_dir" \
     "$codex_bin" exec --skip-git-repo-check --ignore-user-config --ephemeral \
     -m "$fallback_model" \
-    -s danger-full-access \
+    "${CODEX_COMMAND_PERMISSIONS[@]}" \
     -c approval_policy=never \
     -c agents.enabled=false \
     -c apps._default.enabled=false \
@@ -118,9 +129,21 @@ run_codex() {
     -c allow_login_shell=false \
     -c shell_environment_policy.inherit=none \
     -C "$repo_dir" \
-    "$(cat "$prompt_file")"$'\n'"実行日: ${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" 2>&1 | tee "$attempt_log"
+    "$(cat "$prompt_file")"$'\n'"実行日: ${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" < /dev/null 2>&1 | tee "$attempt_log"
   local status=${PIPESTATUS[0]}
-  rm -f "$runtime_codex_home/auth.json"
+  # 実行中にこのCodexがトークンを更新した場合だけ元へ戻す。古いrefresh tokenのままだと
+  # 通常のCodexがログアウト状態になることがある（元側だけが更新された場合は触らない）。
+  if [ -s "$runtime_codex_home/auth.json" ] \
+     && [ "$(cksum < "$runtime_codex_home/auth.json")" != "$initial_auth_sum" ] \
+     && "${PYTHON_BIN:-/usr/bin/python3}" -c 'import json,sys; json.load(open(sys.argv[1]))' "$runtime_codex_home/auth.json" 2>/dev/null; then
+    (umask 077 && cp "$runtime_codex_home/auth.json" "$auth_source.ai-news.$$" \
+      && mv -f "$auth_source.ai-news.$$" "$auth_source") \
+      || echo "更新されたCodex認証情報を元の場所へ戻せませんでした" >&2
+  fi
+  if ! rm -f "$runtime_codex_home/auth.json"; then
+    echo "Codex認証情報の一時コピーを削除できませんでした: $runtime_codex_home/auth.json" >&2
+    [ "$status" -ne 0 ] || status=1
+  fi
   rm -f "$attempt_log"
   return "$status"
 }

@@ -107,6 +107,20 @@ daily_targets_have_unstaged_changes() {
   return 1
 }
 
+# 日次処理のpushは、ローカルmainにある未pushのcommitもまとめて送る。日次処理自身の
+# commit（前回のpush失敗分）以外が残っていれば、ユーザーの作業を公開しないよう開始しない。
+unpushed_user_commits() {
+  if ! git -C "$REPO_DIR" fetch -q origin main >/dev/null 2>&1; then
+    echo "origin/mainを取得できませんでした。ローカルの追跡情報で未pushのcommitを確認します" >&2
+  fi
+  if ! git -C "$REPO_DIR" rev-parse --verify -q refs/remotes/origin/main >/dev/null; then
+    printf '%s\n' '(origin/mainの追跡情報がありません)'
+    return
+  fi
+  git -C "$REPO_DIR" log --format=%s refs/remotes/origin/main..HEAD \
+    | grep -Ev '^[0-9]{4}-[0-9]{2}-[0-9]{2} のAIニュース(を追加|を更新|音声を追加)$' || true
+}
+
 agent_output_is_complete() {
   local final_line="${1##*$'\n'}"
   [[ "$final_line" == 'SUMMARY: OK:'* ]] \
@@ -202,6 +216,9 @@ if daily_targets_have_staged_changes; then
   STATUS=1
 elif daily_targets_have_unstaged_changes; then
   OUTPUT="SUMMARY: ERROR: 日次ニュースの更新対象に既存のunstaged変更があるため、AI作業を開始しません"
+  STATUS=1
+elif [ -n "$(unpushed_user_commits)" ]; then
+  OUTPUT="SUMMARY: ERROR: mainに日次処理以外の未pushのcommitがあるため、AI作業を開始しません"
   STATUS=1
 elif ! DAILY_TARGET_STATE="$(snapshot_daily_targets)"; then
   OUTPUT="SUMMARY: ERROR: 更新対象の開始時状態を記録できませんでした"
@@ -438,7 +455,11 @@ if [ "$STATUS" -eq 0 ] || [ "$AUDIO_READY" -eq 1 ]; then
   GH_BIN="${GH_BIN:-$(command -v gh || true)}"
   [ -x "$GH_BIN" ] || GH_BIN=/opt/homebrew/bin/gh
 
-  if [ ! -x "$AUDIO_SCRIPT" ]; then
+  if ! git diff --quiet HEAD -- history/audio-data.js history/audio-titles.json \
+     || [ -n "$(git ls-files --others --exclude-standard -- history/audio-data.js history/audio-titles.json)" ]; then
+    # 音声処理はこの2ファイルを書き換えてcommitするため、ユーザーの未commit編集を上書きしない。
+    echo "音声一覧ファイルに未commitの変更があるため、音声更新をスキップします" >&2
+  elif [ ! -x "$AUDIO_SCRIPT" ]; then
     echo "NotebookLM音声スクリプトがないため、音声更新をスキップします: $AUDIO_SCRIPT" >&2
   elif [ ! -x "$GH_BIN" ]; then
     echo "ghコマンドが見つからないため、音声更新をスキップします: $GH_BIN" >&2

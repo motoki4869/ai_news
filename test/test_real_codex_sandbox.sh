@@ -1,10 +1,11 @@
 #!/bin/bash
-# macOS の実 Codex CLI と Seatbelt を使う統合テスト。手動で通常環境から実行する。
+# macOS の実 Codex CLI（モデル呼び出しあり）で日次処理と同じ起動方法を確かめる統合テスト。
+# API利用枠を消費するため手動で通常環境から実行する。境界だけなら test_codex_command_sandbox.sh で足りる。
 set -euo pipefail
 
 SCRIPT_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
-if [ "$(uname -s)" != Darwin ] || [ ! -x /usr/bin/sandbox-exec ]; then
-  echo "macOS の sandbox-exec が必要です" >&2
+if [ "$(uname -s)" != Darwin ]; then
+  echo "macOS が必要です" >&2
   exit 1
 fi
 
@@ -32,6 +33,7 @@ if /bin/cat "$original_repo/README.md" >/dev/null 2>&1; then exit 21; fi
 if /bin/cat "$original_home/.codex/auth.json" >/dev/null 2>&1; then exit 22; fi
 if /bin/ls "$original_home/.ssh" >/dev/null 2>&1; then exit 23; fi
 if printf forbidden > "$outside_probe" 2>/dev/null; then exit 24; fi
+if /usr/bin/curl -sS -m 5 https://example.com >/dev/null 2>&1; then exit 25; fi
 printf 'boundary-ok\n' > boundary.txt
 SH
 printf '%s\n' '必ずシェルコマンド `/bin/sh ./probe.sh` を実行してください。終了後は DONE とだけ返してください。' > "$scratch/prompt.txt"
@@ -51,4 +53,4 @@ if [ "$(cat "$scratch/output.txt" 2>/dev/null)" != real-codex-read-ok ] \
   echo "実 Codex のファイル読み取り、コマンド実行、隔離境界の検証に失敗しました: $scratch" >&2
   exit 1
 fi
-echo "実 Codex のコマンド実行と作業用コピー読み書き、repo・認証情報・外部書き込みの拒否を確認しました: $scratch"
+echo "実 Codex のコマンド実行と作業用コピー読み書き、repo・認証情報・外部書き込み・ネットワークの拒否を確認しました: $scratch"
