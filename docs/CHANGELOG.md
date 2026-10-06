@@ -5,6 +5,14 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-10-07
+
+### Codex版日次プロンプトでCodexが使えるツールを案内
+- **変更**: `scripts/daily_news_prompt.codex.txt`の冒頭に、Codexでのツールの置き換え（ファイル閲覧はシェルの`cat`・`sed -n`・`rg`等、作成・編集は`apply_patch`、調査は`web_search`）を明記した。「コマンドは実行しない」は`date`・`python3`の生成/検査スクリプト・`git`などを指し、閲覧用コマンドと`apply_patch`は含まないと定義した。存在しない`browser_use`ツールの記述は`web_search`に直した。
+- **理由**: 10/6の隔離強化で入った「コマンドは実行しない」と「Writeツールで書く」という指示に対し、`codex exec`には専用の読み取り・Writeツールが無い。そのため10/7朝、Codexは「必須ツールが利用できない」として何も編集せず`SUMMARY: ERROR`を返した。終了コードは0だったのでClaude Codeへのフォールバックも発動せず、当日分が未更新になった。コマンド自体は権限プロファイルで作業用コピー内に閉じ込められているため、閲覧と`apply_patch`を許しても隔離は崩れない。
+- **対象**: `scripts/daily_news_prompt.codex.txt`、`test/test_daily_prompt_glossary.js`
+- **commit**: 本エントリ追記時のコミット
+
 ## 2026-10-06
 
 ### 日次AI実行の隔離と更新対象の競合検査

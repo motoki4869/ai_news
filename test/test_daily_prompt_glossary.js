@@ -115,13 +115,14 @@ test('日次ニュース更新プロンプトの警告失敗経路もSUMMARY: ER
   }
 });
 
-test('Claude版とCodex版の日次プロンプトは検索ツール名以外が一致する', () => {
+test('Claude版とCodex版の日次プロンプトは検索ツール名とCodex向けツール説明以外が一致する', () => {
   const [claudePrompt, codexPrompt] = PROMPTS.map((promptPath) =>
     fs.readFileSync(promptPath, 'utf8'),
   );
   const normalize = (prompt) => prompt
     .replace(/WebSearchを使って/g, '<SEARCH_TOOL>を使って')
-    .replace(/browser_useツールを使って/g, '<SEARCH_TOOL>を使って');
+    .replace(/web_searchツールを使って/g, '<SEARCH_TOOL>を使って')
+    .replace(/^【Codexでのツールの使い方[\s\S]*?【ここまで】\n\n/, '');
 
   assert.equal(normalize(claudePrompt), normalize(codexPrompt));
 });
@@ -129,4 +130,13 @@ test('Claude版とCodex版の日次プロンプトは検索ツール名以外が
 test('用語集原本に日次処理で陳腐化する固定メタデータを持たせない', () => {
   assert.doesNotMatch(GLOSSARY_SOURCE, /history\/daily-data\.js`（\d+日分）/);
   assert.doesNotMatch(GLOSSARY_SOURCE, /- 最終更新: \d{4}-\d{2}-\d{2}/);
+});
+
+test('Codex版の日次プロンプトはCodexに存在するツールで作業できるよう案内する', () => {
+  const codexPrompt = fs.readFileSync(PROMPTS[1], 'utf8');
+
+  assert.match(codexPrompt, /^【Codexでのツールの使い方/);
+  assert.match(codexPrompt, /apply_patch/);
+  assert.match(codexPrompt, /web_searchツール/);
+  assert.doesNotMatch(codexPrompt, /browser_use/);
 });
