@@ -11,7 +11,7 @@
 - ユーザー指示により、Codexへのクロスレビューは今後行わない。
 
 ## 次の一手
-- Codexの利用上限が解けたら（2026-10-06 17:06以降）`bash test/test_real_codex_sandbox.sh`を通常環境で実行し、モデル経由の`codex exec`でも権限プロファイルが効くことを確認する。`codex exec`のヘッダーには`sandbox: workspace-write`と表示されるが、`codex sandbox`では独自プロファイルが効くことを確認済み。
+- （完了）2026-10-06 17:15に`bash test/test_real_codex_sandbox.sh`を実行し、`codex exec`経由でも権限プロファイルが効くことを確認済み。
 - 翌朝の定時実行のログ（`logs/daily_news.*.log`）でCodex経路が成功しているか確認する。
 
 ## 注意点・ハマりどころ
@@ -25,4 +25,4 @@
 - `scripts/lib/codex_fallback.sh` — `CODEX_COMMAND_PERMISSIONS`と`run_codex`
 - `scripts/daily_news.sh` — 開始前検査（staged/unstaged/未push）、同期、音声処理
 - `test/test_codex_command_sandbox.sh` — 実CLIでのコマンド境界の確認
-- `test/test_real_codex_sandbox.sh` — モデル呼び出しを伴う統合テスト（新方式では未実行）
+- `test/test_real_codex_sandbox.sh` — モデル呼び出しを伴う統合テスト（新方式で通過済み）

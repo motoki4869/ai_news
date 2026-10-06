@@ -12,7 +12,7 @@ ai_news の変更履歴。新しい日付を上に追記する。
 - **理由**: `.git`のないコピーとPATH上のGit制限だけでは、AI実行から本体repoの絶対パスや認証済みpush経路にアクセスできたため。macOSはSeatbeltの入れ子を許さず、外側Seatbelt＋Codex内側のsandboxでは実Codexがファイルを読めなかった。一方、外側Seatbeltだけにするとコマンドから作業用コピー内の認証JSONを読めてネットワークにも出られたため、コマンドだけを縛れるCodexの権限プロファイルに切り替えた。ユーザーの書きかけの編集が日次commitに混ざる、音声commitだけ件数検査を素通りする、同日の後続Codex成功後も「Claude Code経由」表示が残る、ユーザーの未pushのcommitや音声一覧の編集が日次pushに混ざる、という経路もクロスレビューで見つかったため。また、従来のstaged検査は成果物を本体へコピーした後だったため、既存変更を上書きする恐れがあった。失敗・未完了のAI出力やCodexの途中成果が本体に混入する経路も防ぐため。
 - **対象**: `scripts/daily_news.sh`、`scripts/lib/agent-sandbox.sb`（権限プロファイルへの移行で廃止）、`scripts/lib/codex_fallback.sh`、`scripts/generate_daily_data.py`、`scripts/generate_glossary_data.py`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`scripts/lib/test_codex_fallback.sh`、`test/test_daily_news.sh`、`test/test_codex_command_sandbox.sh`、`test/test_real_codex_sandbox.sh`
 - **commit**: `01d9a84`, `237d7da`, `3d0b2aa`, 本エントリ追記時のコミット
-- **確認**: 実Codex CLI（Homebrew版0.160.0とChatGPTアプリ同梱版0.158.0）の`codex sandbox`で、同じ権限プロファイルのコマンドが作業用コピーだけを読み書きでき、本体repo・認証情報・HOME・`/tmp`・ネットワークを拒否されることを`test/test_codex_command_sandbox.sh`で確認した。モデル呼び出しを伴う`test/test_real_codex_sandbox.sh`は、Codexの利用上限のため新方式では未実行。
+- **確認**: 実Codex CLI（Homebrew版0.160.0とChatGPTアプリ同梱版0.158.0）の`codex sandbox`で、同じ権限プロファイルのコマンドが作業用コピーだけを読み書きでき、本体repo・認証情報・HOME・`/tmp`・ネットワークを拒否されることを`test/test_codex_command_sandbox.sh`で確認した。モデル呼び出しを伴う`test/test_real_codex_sandbox.sh`でも、`codex exec`から起動したコマンドが作業用コピーを読み書きでき、本体repo・認証情報・`~/.ssh`・外部への書き込み・ネットワークを拒否されることを確認した（2026-10-06 17:15）。
 
 ### Claude Code経由のLINE表示と日次ニュース最低件数の検査
 - **変更**: Claude Codeへフォールバックした日のLINE通知先頭に経由表示を付け、通知失敗後の同日再送でも経路を維持する。ニュース件数は重複グループをまとめて5件以上を必須とし、AIは`.git`のない作業用コピーだけを編集する。親スクリプトが成果物を許可リスト経由で戻し、検査後に更新対象だけを通常Gitインデックスからcommit・pushする。
