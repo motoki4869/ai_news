@@ -15,9 +15,9 @@
 - 翌朝の定時実行のログ（`logs/daily_news.*.log`）でCodex経路が成功しているか確認する。
 
 ## 注意点・ハマりどころ
-- `scripts/lib/agent-sandbox.sb`は使われなくなった。削除（`_deleted/`へ退避）はユーザー確認待ち。
+- `scripts/lib/agent-sandbox.sb`は廃止し、`_deleted/`へ退避済み。
 - `~/Library/Caches/ai-news-codex-runtime/run.*`はCodexのログ等で実行ごとに増える。自動削除はファイル削除ポリシーのため未実装。
-- リポジトリ直下の`~/`ディレクトリ（`.cmuxterm/codex-turn-ledger.json`）は、cmuxのCodexフックが`~`を展開せずに作ったもの。コミットしていない。扱いはユーザー確認待ち。
+- cmuxのCodexフックがリポジトリ直下に`~/`ディレクトリを作ることがある（`~`を展開しないため）。今回の分は`_deleted/~`へ退避済み。
 - `scripts/lib/codex_fallback.sh`はinvestmentリポジトリにも複製があるが、今回はai_news側だけを変更した。
 - Codexのtool sandbox内から`codex sandbox`を呼ぶとSeatbeltの入れ子になり失敗する。テストは通常のmacOS環境で実行する。
 
