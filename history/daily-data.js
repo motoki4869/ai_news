@@ -7424,5 +7424,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://newsroom.accenture.com/blogs/2026/accenture-launches-advanced-intelligence-group-to-help-clients-solve-their-most-complex-ai-challenges"
     }
+  ],
+  "2026-10-07": [
+    {
+      "title": "【技術】Mistral、1兆規模のLarge 4を試験公開——欧州発のマルチモーダルAIを大型化",
+      "intro": "10月6日、仏Mistral AIは画像と文章を扱う「Mistral Large 4」の公開プレビューを開始しました。APIで試せますが、モデルの重みは月末に公開する予定です。",
+      "points": [
+        {
+          "label": "構造",
+          "text": "総パラメータは約1兆で、入力ごとに490億を動かすMoE（混合エキスパート）構造を採用しています。大型化と計算効率の両立を狙います。"
+        },
+        {
+          "label": "評価の留保",
+          "text": "同社はコーディングやエージェント業務、金融などで高い性能を主張しています。公開プレビューと今後の重み公開を通じた外部検証が注目されます。"
+        }
+      ],
+      "url": "https://mistral.ai/news/mistral-large-4/"
+    },
+    {
+      "title": "【技術】Reflection、初モデルBeamを発表——5010億の規模から230億だけを動かす効率重視の設計",
+      "intro": "10月6日（日本時間）、米Reflection AIが初のモデル「Beam」を発表したと報じられました。公式発表は米国時間10月5日付で、コーディング・推論・エージェント業務を対象にしています。",
+      "points": [
+        {
+          "label": "学習と構造",
+          "text": "総パラメータ5010億、稼働230億のMoEモデルです。事前学習には23.8兆トークンを使い、強化学習では4週間で1億回超の試行を生成したと説明しています。"
+        },
+        {
+          "label": "提供段階",
+          "text": "最終的な安全性試験と評価を進めており、重みや技術報告は今月後半に公開する予定です。発表時点で重みを自由にダウンロードできる状態ではありません。"
+        }
+      ],
+      "url": "https://reflection.ai/blog/introducing-beam"
+    },
+    {
+      "title": "【産業】NVIDIA、通信向けNemotron 3 LTMと調整手順を公表——ネットワーク運用を自社データで特化",
+      "intro": "10月6日、NVIDIAは通信事業者向けAIの取り組みを公表し、300億パラメータの「Nemotron 3 Large Telco Model（LTM）」と、事業者ごとのデータで調整する手順を紹介しました。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "AdaptKeyが公開の通信データで調整したモデルで、業界用語の理解、ネットワーク設定、顧客障害の初期切り分けなどを支援します。"
+        },
+        {
+          "label": "導入方法",
+          "text": "NVIDIA NeMoの公開ライブラリーを使い、各社のネットワークや顧客対応手順に合わせて追加学習する工程を提供します。SoftBankもNemotronなどを通信特化モデルの基盤に使っていると説明しています。"
+        }
+      ],
+      "url": "https://blogs.nvidia.com/blog/telecom-operators-open-models/"
+    },
+    {
+      "title": "【セキュリティ】Anthropic、CVPを3段階に拡大——高度なサイバー能力を防御担当者へ段階提供",
+      "intro": "10月6日、Anthropicは審査済みのセキュリティ担当者向け「Cyber Verification Program（CVP）」を拡大しました。Project Glasswingと統合し、用途に応じてモデルの制限を調整します。",
+      "points": [
+        {
+          "label": "利用区分",
+          "text": "防御業務向け、許可された侵入試験向け、重要な安全システム向けの3段階です。Claude Opus 5.5、Sonnet 5.5、Mythos 5.1などが対象となります。"
+        },
+        {
+          "label": "監督",
+          "text": "最も制限の少ない区分は米政府と協力して組織を審査します。侵入試験向けでも物理的被害や大規模な混乱につながる操作は実行時に遮断するとしています。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/cyber-verification-program"
+    },
+    {
+      "title": "【規制】英国、医療AI委員会の44提言を全面受け入れ——導入後の監視まで規制を拡張",
+      "intro": "10月6日、英国政府は医療AI規制に関する独立委員会の44提言をすべて受け入れると発表しました。同時に、医薬品・医療製品規制庁（MHRA）が実証制度「AI Airlock」の第3段階の募集を開始しました。",
+      "points": [
+        {
+          "label": "新たな判断",
+          "text": "委員会報告自体は9月10日公表で、今回のニュースは政府の正式な受け入れと実施方針の提示です。AIの開発から導入・更新までを継続的に評価する枠組みを目指します。"
+        },
+        {
+          "label": "実証の焦点",
+          "text": "第3段階では、医療AI機器を導入した後の監視・管理方法を開発者や医療関係者と試します。得られた証拠を今後の規制当局の指針と政策に反映します。"
+        }
+      ],
+      "url": "https://www.gov.uk/government/news/government-backs-recommendations-of-nhs-doctors-led-ai-commission"
+    }
   ]
 };
