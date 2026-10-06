@@ -11,7 +11,10 @@ TODAY="$(date +%Y-%m-%d)"
 MONTH="$(date +%Y%m)"
 TODAY_MONTH=$((10#${TODAY:5:2}))
 TODAY_DAY=$((10#${TODAY:8:2}))
-mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude"
+mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude" \
+  "$TEST_REPO/docs" "$TEST_REPO/scripts/agent-bin"
+printf '# 用語集\n' > "$TEST_REPO/docs/glossary.md"
+cp "$SCRIPT_ROOT/scripts/agent-bin/git" "$TEST_REPO/scripts/agent-bin/git"
 
 cat > "$TMP_DIR/fake-codex" <<'EOF'
 #!/bin/sh
@@ -25,6 +28,30 @@ if [ "$1" = app-server ]; then
 fi
 printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
 case "$FAKE_CODEX_MODE" in
+  wait-conflict)
+    printf ready > "$FAKE_CONFLICT_READY"
+    while [ ! -f "$FAKE_CONFLICT_DONE" ]; do sleep 0.05; done
+    printf '# AIが編集した用語集\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'SUMMARY: OK: 競合検査テスト'
+    exit 0
+    ;;
+  boundary-probe)
+    if /bin/cat "$FAKE_REAL_REPO/docs/glossary.md" >/dev/null 2>&1; then
+      printf '%s\n' '本体repoを読み取れました'
+      exit 1
+    fi
+    if printf bad > "$FAKE_REAL_REPO/docs/glossary.md" 2>/dev/null; then
+      printf '%s\n' '本体repoを書き換えられました'
+      exit 1
+    fi
+    if /usr/bin/git -C "$FAKE_REAL_REPO" push origin main >/dev/null 2>&1; then
+      printf '%s\n' '本体repoからpushできました'
+      exit 1
+    fi
+    printf '%s\n' 'BOUNDARY: OK'
+    printf '%s\n' 'SUMMARY: OK: 境界確認'
+    exit 0
+    ;;
   update-five)
     today="$(date +%Y-%m-%d)"
     month="$(date +%Y%m)"
@@ -53,6 +80,37 @@ NEWS
     printf '%s\n' 'SUMMARY: OK: 少数ニュース'
     exit 0
     ;;
+  error-dirty)
+    printf '# 失敗したAIの途中成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'SUMMARY: ERROR: 編集を完了できませんでした'
+    exit 0
+    ;;
+  no-ok-dirty)
+    printf '# 不完全なAIの途中成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'SUMMARYがありません'
+    exit 0
+    ;;
+  trailing-dirty)
+    printf '# 途中終了したAIの成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'SUMMARY: OK: 編集完了' 'ただし最終応答は未完了'
+    exit 0
+    ;;
+  mixed-summary-dirty)
+    printf '# エラーを含むAIの成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'SUMMARY: ERROR: 検査失敗' 'SUMMARY: OK: 編集完了'
+    exit 0
+    ;;
+  invalid-dirty)
+    printf '# 検査に失敗するAIの途中成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '# 壊れたニュース\n' > "$REPO_DIR/everyday_news/$(date +%Y%m).md"
+    printf '%s\n' 'SUMMARY: OK: 編集完了'
+    exit 0
+    ;;
+  fail-dirty)
+    printf '# Codexの途中成果\n' > "$REPO_DIR/docs/glossary.md"
+    printf '%s\n' 'Codexが途中で失敗しました'
+    exit 1
+    ;;
   error) printf '%s\n' 'SUMMARY: ERROR: 用語集生成に失敗しました'; exit 0 ;;
   no-ok) printf '%s\n' 'SUMMARY: 更新しました'; exit 0 ;;
   ok-exit1) printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'; exit 1 ;;
@@ -65,6 +123,7 @@ chmod +x "$TMP_DIR/fake-codex"
 
 cat > "$TMP_DIR/fake-claude-ok" <<'EOF'
 #!/bin/sh
+printf '%s\n' "$*" >> "$FAKE_CLAUDE_ARGS_LOG"
 printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$FAKE_AGENT_CONTEXT_LOG"
 printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
 printf '%s\n' 'SUMMARY: OK: Claudeフォールバック更新'
@@ -78,6 +137,14 @@ printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'
 exit 1
 EOF
 chmod +x "$TMP_DIR/fake-claude-exit1"
+
+cat > "$TMP_DIR/fake-claude-dirty" <<'EOF'
+#!/bin/sh
+printf '# Claudeの途中成果\n' > "$REPO_DIR/docs/glossary.md"
+printf '%s\n' 'SUMMARY: OK: 未完了の成功表示'
+exit 1
+EOF
+chmod +x "$TMP_DIR/fake-claude-dirty"
 
 cat > "$TMP_DIR/osascript" <<'EOF'
 #!/bin/sh
@@ -133,7 +200,7 @@ for news_number in 1 2 3 4 5; do
   テスト用の当日ニュースです。
 EOF
 done
-git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
+git -C "$TEST_REPO" add "everyday_news/$MONTH.md" docs/glossary.md scripts/agent-bin/git
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
 git -C "$TEST_REPO" push -q -u origin main
 
@@ -149,6 +216,10 @@ run_daily() {
   CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
   AI_NEWS_AGENT_WORKSPACE="$TMP_DIR/agent-workspace" \
   FAKE_AGENT_CONTEXT_LOG="$TMP_DIR/agent-context.log" \
+  FAKE_CLAUDE_ARGS_LOG="$TMP_DIR/claude-args.log" \
+  FAKE_REAL_REPO="$TEST_REPO" \
+  FAKE_CONFLICT_READY="$TMP_DIR/conflict.ready" \
+  FAKE_CONFLICT_DONE="$TMP_DIR/conflict.done" \
   TODAY_MONTH="$TODAY_MONTH" \
   TODAY_DAY="$TODAY_DAY" \
   FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
@@ -225,6 +296,12 @@ if ! grep -q 'SUMMARY: OK: Claudeフォールバック更新' "$TMP_DIR/output-f
   cat "$TMP_DIR/output-fallback.log" >&2
   exit 1
 fi
+if ! grep -q -- '--restricted --strict-mcp-config --no-chrome --tools Read,Write,Edit,WebSearch' "$TMP_DIR/claude-args.log" \
+   || grep -q 'Bash' "$TMP_DIR/claude-args.log"; then
+  echo "Claude Codeに制限外のコマンド実行ツールを渡しました" >&2
+  cat "$TMP_DIR/claude-args.log" >&2
+  exit 1
+fi
 
 if run_daily limit-zero "$TMP_DIR/output-limit-fallback.log" 0 "$TMP_DIR/notify-state-limit-fallback"; then
   :
@@ -243,6 +320,88 @@ fi
 if [ ! -f "$TMP_DIR/curl.log" ] || [ "$(wc -l < "$TMP_DIR/curl.log")" -ne 7 ]; then
   echo "同日再実行でLINE通知を重複送信したか、初回通知を送信できませんでした" >&2
   cat "$TMP_DIR/curl.log" >&2
+  exit 1
+fi
+
+glossary_before="$(cat "$TEST_REPO/docs/glossary.md")"
+news_before="$(git -C "$TEST_REPO" hash-object "everyday_news/$MONTH.md")"
+for mode in error-dirty no-ok-dirty trailing-dirty mixed-summary-dirty invalid-dirty; do
+  if run_daily "$mode" "$TMP_DIR/output-$mode.log" 0 "$TMP_DIR/notify-state-$mode"; then
+    echo "失敗したAIの成果物を成功扱いしました: $mode" >&2
+    exit 1
+  fi
+  if [ "$(cat "$TEST_REPO/docs/glossary.md")" != "$glossary_before" ] \
+     || [ "$(git -C "$TEST_REPO" hash-object "everyday_news/$MONTH.md")" != "$news_before" ]; then
+    echo "失敗または未検査のAI成果物が本体repoへ同期されました: $mode" >&2
+    exit 1
+  fi
+done
+
+if ! run_daily fail-dirty "$TMP_DIR/output-fail-dirty.log" 0 "$TMP_DIR/notify-state-fail-dirty"; then
+  echo "Codexの途中失敗後にClaude Codeへ正常に切り替わりませんでした" >&2
+  cat "$TMP_DIR/output-fail-dirty.log" >&2
+  exit 1
+fi
+if [ "$(cat "$TEST_REPO/docs/glossary.md")" != "$glossary_before" ] \
+   || ! grep -q 'SUMMARY: OK: Claudeフォールバック更新' "$TMP_DIR/output-fail-dirty.log"; then
+  echo "Codexの途中成果がClaude Codeの成果物に混入しました" >&2
+  exit 1
+fi
+
+if run_daily fail-dirty "$TMP_DIR/output-fallback-dirty.log" 0 \
+   "$TMP_DIR/notify-state-fallback-dirty" "$TMP_DIR/fake-claude-dirty"; then
+  echo "失敗したClaude Codeの途中成果を成功扱いしました" >&2
+  exit 1
+fi
+if [ "$(cat "$TEST_REPO/docs/glossary.md")" != "$glossary_before" ]; then
+  echo "失敗したClaude Codeの途中成果が本体repoへ同期されました" >&2
+  exit 1
+fi
+
+printf '\nstaged user edit\n' >> "$TEST_REPO/everyday_news/$MONTH.md"
+git -C "$TEST_REPO" add "everyday_news/$MONTH.md"
+context_before="$(wc -l < "$TMP_DIR/agent-context.log")"
+workspaces_before="$(find "$TMP_DIR/agent-workspace" -mindepth 1 -maxdepth 1 -type d | wc -l)"
+if run_daily update-five "$TMP_DIR/output-staged-target.log" 0 "$TMP_DIR/notify-state-staged-target"; then
+  echo "更新対象にstaged変更があるのにAI作業を開始しました" >&2
+  exit 1
+fi
+if [ "$(wc -l < "$TMP_DIR/agent-context.log")" -ne "$context_before" ] \
+   || [ "$(find "$TMP_DIR/agent-workspace" -mindepth 1 -maxdepth 1 -type d | wc -l)" -ne "$workspaces_before" ] \
+   || ! git -C "$TEST_REPO" diff --cached --name-only | grep -qx "everyday_news/$MONTH.md"; then
+  echo "staged変更の事前検査がコピー準備・AI実行より後に行われました" >&2
+  cat "$TMP_DIR/output-staged-target.log" >&2
+  exit 1
+fi
+git -C "$TEST_REPO" restore --staged --worktree -- "everyday_news/$MONTH.md"
+
+printf '# 外部更新前\n' > "$TEST_REPO/docs/glossary.md"
+(
+  while [ ! -f "$TMP_DIR/conflict.ready" ]; do sleep 0.05; done
+  printf '# 実行中のユーザー編集\n' > "$TEST_REPO/docs/glossary.md"
+  printf done > "$TMP_DIR/conflict.done"
+) &
+conflict_watcher=$!
+if run_daily wait-conflict "$TMP_DIR/output-sync-conflict.log" 0 "$TMP_DIR/notify-state-sync-conflict"; then
+  echo "実行中に更新された本体ファイルを上書きしました" >&2
+  exit 1
+fi
+wait "$conflict_watcher"
+if [ "$(cat "$TEST_REPO/docs/glossary.md")" != '# 実行中のユーザー編集' ] \
+   || ! grep -q '実行開始後に更新対象' "$TMP_DIR/output-sync-conflict.log"; then
+  echo "同期直前の競合検査が外部変更を保持しませんでした" >&2
+  cat "$TMP_DIR/output-sync-conflict.log" >&2
+  exit 1
+fi
+git -C "$TEST_REPO" restore --worktree -- docs/glossary.md
+
+if ! run_daily boundary-probe "$TMP_DIR/output-boundary.log" 0 "$TMP_DIR/notify-state-boundary"; then
+  echo "本体repoへの絶対パスアクセス境界を確認できませんでした" >&2
+  cat "$TMP_DIR/output-boundary.log" >&2
+  exit 1
+fi
+if ! grep -q 'BOUNDARY: OK' "$TMP_DIR/output-boundary.log"; then
+  echo "本体repoへのアクセス拒否を確認できませんでした" >&2
   exit 1
 fi
 

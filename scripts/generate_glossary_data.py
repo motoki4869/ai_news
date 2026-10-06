@@ -15,7 +15,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(os.environ.get("AI_NEWS_GENERATION_ROOT", Path(__file__).resolve().parent.parent)).resolve()
 SRC_FILE = REPO_ROOT / "docs" / "glossary.md"
 OUT_FILE = REPO_ROOT / "history" / "glossary-data.js"
 

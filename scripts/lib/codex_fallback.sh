@@ -19,6 +19,7 @@ is_codex_limit_reached() {
 run_codex() {
   local repo_dir="$1"
   local prompt_file="$2"
+  local original_repo_dir="${3:-$repo_dir}"
   # launchdは.zshrcを読まずPATHが/usr/bin:/bin:/usr/sbin:/sbinに限られるため、
   # codexをPATH頼りで呼ぶと「command not found」(127)になりフォールバックが機能しない。
   # さらにcodexの実体は #!/usr/bin/env node のNodeスクリプトなので、codexのパスを
@@ -76,15 +77,40 @@ run_codex() {
 
   local attempt_log
   attempt_log=$(mktemp "${TMPDIR:-/tmp}/ai-news-codex-fallback.XXXXXX") || return 1
-  local agent_bin_dir="$CODEX_FALLBACK_LIB_DIR/../agent-bin"
+  local agent_bin_dir="$repo_dir/scripts/agent-bin"
   echo "Codex実行モデル: $fallback_model" >&2
-  PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" \
-    "$codex_bin" exec --skip-git-repo-check \
+  cd "$repo_dir" || return 1
+  # CLI本体の認証通信は維持しつつ、外側のSeatbeltで本体repoとGit認証経路を
+  # 拒否する。Codexの内側のsandboxは作業用コピー以外への書込みとshell通信を拒否。
+  /usr/bin/sandbox-exec \
+    -f "$CODEX_FALLBACK_LIB_DIR/agent-sandbox.sb" \
+    -D "REPO_DIR=$original_repo_dir" \
+    -D "SSH_DIR=$HOME/.ssh" \
+    -D "GH_DIR=$HOME/.config/gh" \
+    -D "GIT_CONFIG_DIR=$HOME/.config/git" \
+    -D "KEYCHAIN_DIR=$HOME/Library/Keychains" \
+    -D "GIT_CONFIG_FILE=$HOME/.gitconfig" \
+    -D "GIT_CREDENTIALS_FILE=$HOME/.git-credentials" \
+    -D "NETRC_FILE=$HOME/.netrc" \
+    -D "SSH_AUTH_SOCKET=${SSH_AUTH_SOCK:-/private/tmp/ai-news-no-ssh-agent-socket}" \
+    /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
+      -u GIT_CONFIG_GLOBAL -u GIT_CONFIG_SYSTEM -u GIT_CREDENTIAL_HELPER \
+      PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" REPO_DIR="$repo_dir" \
+    "$codex_bin" exec --skip-git-repo-check --ignore-user-config --ephemeral \
     -m "$fallback_model" \
     -s workspace-write \
-    -c sandbox_workspace_write.network_access=true \
+    -c approval_policy=never \
+    -c agents.enabled=false \
+    -c apps._default.enabled=false \
+    -c web_search=live \
+    -c allow_login_shell=false \
+    -c sandbox_workspace_write.network_access=false \
+    -c sandbox_workspace_write.exclude_slash_tmp=true \
+    -c sandbox_workspace_write.exclude_tmpdir_env_var=true \
+    -c 'sandbox_workspace_write.writable_roots=[]' \
+    -c shell_environment_policy.inherit=none \
     -C "$repo_dir" \
-    "$(cat "$prompt_file")" 2>&1 | tee "$attempt_log"
+    "$(cat "$prompt_file")"$'\n'"実行日: ${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" 2>&1 | tee "$attempt_log"
   local status=${PIPESTATUS[0]}
   rm -f "$attempt_log"
   return "$status"
@@ -117,10 +143,15 @@ run_claude_fallback() {
   fi
 
   cd "$repo_dir" || return 1
-  local agent_bin_dir="$CODEX_FALLBACK_LIB_DIR/../agent-bin"
-  PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" \
-    "$claude_bin" -p "$(cat "$prompt_file")" \
-    --allowedTools "Read Write Edit WebSearch Bash(python3 scripts/generate_daily_data.py) Bash(python3 scripts/generate_glossary_data.py) Bash(python3 scripts/validate_daily_news.py *)" 2>&1
+  local agent_bin_dir="$repo_dir/scripts/agent-bin"
+  /usr/bin/env -u SSH_AUTH_SOCK -u GIT_ASKPASS -u GIT_SSH_COMMAND \
+    -u GIT_CONFIG_GLOBAL -u GIT_CONFIG_SYSTEM -u GIT_CREDENTIAL_HELPER \
+    PATH="$agent_bin_dir:$(dirname "$node_bin"):$PATH" REPO_DIR="$repo_dir" \
+    "$claude_bin" --restricted --strict-mcp-config --no-chrome \
+      --tools Read,Write,Edit,WebSearch \
+      --allowedTools Read,Write,Edit,WebSearch \
+      --permission-mode acceptEdits --permission-prompts none \
+      -p "$(cat "$prompt_file")"$'\n'"実行日: ${AI_NEWS_DATE:-$(date +%Y-%m-%d)}" 2>&1
 }
 
 send_line_broadcast() {

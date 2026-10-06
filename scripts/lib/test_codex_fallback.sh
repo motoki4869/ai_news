@@ -61,8 +61,11 @@ CODEX_ARGS_LOG="$test_dir/args.log" \
 CODEX_BIN="$test_dir/codex" \
 NODE_BIN="$(command -v node || command -v python3)" \
 CODEX_FALLBACK_MODEL="gpt-6.1-sol" \
-run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
+run_codex "$test_dir" "$test_dir/prompt.txt" "$test_dir/real-repo" >/dev/null 2>&1
 assert_true "環境変数で指定したCodexモデルを利用する" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
+assert_true "Codexを昇格なし・通信なしのsandboxで起動する" grep -q -- 'approval_policy=never.*sandbox_workspace_write.network_access=false' "$test_dir/args.log"
+assert_true "最新ニュース用のWeb検索を有効にする" grep -q -- 'web_search=live' "$test_dir/args.log"
+assert_true "通常のCodex設定と追加アプリを読み込まない" grep -q -- '--ignore-user-config --ephemeral' "$test_dir/args.log"
 assert_false "モデルを明示指定した場合は一覧取得を省略する" grep -Eq 'app-server|model/list' "$test_dir/args.log"
 
 cat > "$test_dir/node" <<'SH'
@@ -90,7 +93,7 @@ CODEX_ARGS_LOG="$test_dir/args.log" \
 CODEX_BIN="$test_dir/codex-model-server" \
 NODE_BIN="$test_dir/node" \
 CODEX_FALLBACK_MODEL="" \
-run_codex "$test_dir" "$test_dir/prompt.txt" >/dev/null 2>&1
+run_codex "$test_dir" "$test_dir/prompt.txt" "$test_dir/real-repo" >/dev/null 2>&1
 assert_true "launchd相当のPATHでもapp-serverから最新Solを選ぶ" grep -q -- '-m gpt-6.1-sol' "$test_dir/args.log"
 assert_true "model/list用app-serverからnodeを解決できるPATHを渡す" grep -q "node=$test_dir/node" "$test_dir/args.log"
 

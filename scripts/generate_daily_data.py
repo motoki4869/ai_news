@@ -13,7 +13,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(os.environ.get("AI_NEWS_GENERATION_ROOT", Path(__file__).resolve().parent.parent)).resolve()
 SRC_DIR = REPO_ROOT / "everyday_news"
 OUT_FILE = REPO_ROOT / "history" / "daily-data.js"
 

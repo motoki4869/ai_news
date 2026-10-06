@@ -3,6 +3,7 @@ set -uo pipefail
 
 SCRIPT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPO_DIR="${REPO_DIR:-$SCRIPT_ROOT}"
+REPO_DIR="$(cd "$REPO_DIR" && pwd -P)"
 PROMPT_FILE="${PROMPT_FILE:-$SCRIPT_ROOT/scripts/daily_news_prompt.txt}"
 CODEX_PROMPT_FILE="${CODEX_PROMPT_FILE:-$SCRIPT_ROOT/scripts/daily_news_prompt.codex.txt}"
 CLAUDE_BIN="${CLAUDE_BIN:-/opt/homebrew/bin/claude}"
@@ -27,6 +28,7 @@ fi
 cd "$REPO_DIR"
 AI_NEWS_DATE="$(date +%Y-%m-%d)"
 AI_NEWS_MIN_ITEMS=5
+export AI_NEWS_DATE
 
 source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
 source "$SCRIPT_ROOT/scripts/lib/daily_news_output.sh"
@@ -53,9 +55,50 @@ IS_FALLBACK=0
 OUTPUT=""
 STATUS=1
 
-AGENT_REPO_DIR="${AI_NEWS_AGENT_WORKSPACE:-${TMPDIR:-/private/tmp}/ai-news-agent-workspace}"
+AGENT_BASE_DIR="${AI_NEWS_AGENT_WORKSPACE:-${TMPDIR:-/private/tmp}/ai-news-agent-workspace}"
+AGENT_REPO_DIR=""
+DAILY_OUTPUTS=(
+  "everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
+  everyday_news/line_message.txt
+  docs/glossary.md
+  history/daily-data.js
+  history/glossary-data.js
+)
+
+snapshot_daily_targets() {
+  local path target
+  git -C "$REPO_DIR" rev-parse HEAD || return 1
+  for path in "${DAILY_OUTPUTS[@]}"; do
+    target="$REPO_DIR/$path"
+    if [ -L "$target" ] || [ -L "$(dirname "$target")" ]; then
+      echo "更新対象にシンボリックリンクがあります: $path" >&2
+      return 1
+    fi
+    printf '%s\n' "$path"
+    git -C "$REPO_DIR" ls-files --stage -- "$path" || return 1
+    if [ -f "$target" ]; then
+      git -C "$REPO_DIR" hash-object -- "$target" || return 1
+    elif [ -e "$target" ]; then
+      echo "更新対象が通常ファイルではありません: $path" >&2
+      return 1
+    else
+      printf '%s\n' '(absent)'
+    fi
+  done
+}
+
+daily_targets_have_staged_changes() {
+  ! git -C "$REPO_DIR" diff --cached --quiet -- "${DAILY_OUTPUTS[@]}"
+}
+
+agent_output_is_complete() {
+  local final_line="${1##*$'\n'}"
+  [[ "$final_line" == 'SUMMARY: OK:'* ]] \
+    && ! has_output_line_prefix "$1" 'SUMMARY: ERROR:'
+}
+
 prepare_agent_workspace() {
-  local path source target
+  local path source target base
   local -a required_files=(
     docs/glossary.md
     history/daily-data.js
@@ -63,8 +106,17 @@ prepare_agent_workspace() {
     scripts/generate_daily_data.py
     scripts/generate_glossary_data.py
     scripts/validate_daily_news.py
+    scripts/agent-bin/git
   )
-  mkdir -p "$AGENT_REPO_DIR" || return 1
+  [ ! -L "$AGENT_BASE_DIR" ] || return 1
+  mkdir -p "$AGENT_BASE_DIR" || return 1
+  base="$(cd "$AGENT_BASE_DIR" && pwd -P)" || return 1
+  case "$base/" in
+    "$REPO_DIR/"*) echo "AI作業用コピーを本体repo内に作成できません" >&2; return 1 ;;
+  esac
+  AGENT_REPO_DIR="$(mktemp -d "$base/run.XXXXXX")" || return 1
+  mkdir -p "$AGENT_REPO_DIR/everyday_news" "$AGENT_REPO_DIR/docs" \
+    "$AGENT_REPO_DIR/history" "$AGENT_REPO_DIR/scripts/agent-bin" || return 1
   if [ -n "$(find "$AGENT_REPO_DIR" -name .git -print -quit)" ]; then
     echo "AI作業用コピー内に.gitが存在します。安全のため更新を中止します: $AGENT_REPO_DIR" >&2
     return 1
@@ -105,15 +157,21 @@ prepare_agent_workspace() {
 }
 
 sync_agent_outputs() {
-  local path source target
-  local -a outputs=(
-    "everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
-    everyday_news/line_message.txt
-    docs/glossary.md
-    history/daily-data.js
-    history/glossary-data.js
-  )
-  for path in "${outputs[@]}"; do
+  local path source target current_state
+  if daily_targets_have_staged_changes; then
+    echo "同期直前に更新対象のstaged変更を検出したため、本体への同期を中止します" >&2
+    return 1
+  fi
+  current_state="$(snapshot_daily_targets)" || return 1
+  if [ "$current_state" != "$DAILY_TARGET_STATE" ]; then
+    echo "実行開始後に更新対象の作業ツリーまたはindexが変化したため、本体への同期を中止します" >&2
+    return 1
+  fi
+  if [ -n "$(find "$AGENT_REPO_DIR" -type l -print -quit)" ]; then
+    echo "AI作業用コピーにシンボリックリンクがあるため、本体への同期を中止します" >&2
+    return 1
+  fi
+  for path in "${DAILY_OUTPUTS[@]}"; do
     source="$AGENT_REPO_DIR/$path"
     target="$REPO_DIR/$path"
     [ -f "$source" ] || continue
@@ -123,12 +181,18 @@ sync_agent_outputs() {
   done
 }
 
-if ! prepare_agent_workspace; then
+if daily_targets_have_staged_changes; then
+  OUTPUT="SUMMARY: ERROR: 日次ニュースの更新対象に既存のstaged変更があるため、AI作業を開始しません"
+  STATUS=1
+elif ! DAILY_TARGET_STATE="$(snapshot_daily_targets)"; then
+  OUTPUT="SUMMARY: ERROR: 更新対象の開始時状態を記録できませんでした"
+  STATUS=1
+elif ! prepare_agent_workspace; then
   OUTPUT="SUMMARY: ERROR: AI作業用コピーを安全に準備できませんでした"
   STATUS=1
 else
   echo "Codexで日次ニュース更新を開始します"
-  OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_codex "$AGENT_REPO_DIR" "$CODEX_PROMPT_FILE" 2>&1)"
+  OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_codex "$AGENT_REPO_DIR" "$CODEX_PROMPT_FILE" "$REPO_DIR" 2>&1)"
   STATUS=$?
   echo "$OUTPUT"
 
@@ -138,22 +202,42 @@ else
     else
       echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
     fi
-    OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_claude_fallback "$AGENT_REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
-    STATUS=$?
-    echo "$OUTPUT"
     IS_FALLBACK=1
+    # Codexが途中まで編集した内容をClaudeの成功成果物へ混ぜない。
+    if ! prepare_agent_workspace; then
+      OUTPUT="SUMMARY: ERROR: フォールバック用の新しい作業用コピーを準備できませんでした"
+      STATUS=1
+    else
+      OUTPUT="$(REPO_DIR="$AGENT_REPO_DIR" run_claude_fallback "$AGENT_REPO_DIR" "$PROMPT_FILE" "$CLAUDE_BIN" 2>&1)"
+      STATUS=$?
+      echo "$OUTPUT"
+    fi
   fi
-  if ! sync_agent_outputs; then
-    OUTPUT+=$'\nSUMMARY: ERROR: AI作業用コピーから成果物を戻せませんでした'
+  if [ -n "$(find "$AGENT_REPO_DIR" -type l -print -quit)" ]; then
+    OUTPUT+=$'\nSUMMARY: ERROR: AI作業用コピーにシンボリックリンクがあります'
     STATUS=1
+  elif [ "$STATUS" -eq 0 ] && agent_output_is_complete "$OUTPUT"; then
+    if ! AI_NEWS_GENERATION_ROOT="$AGENT_REPO_DIR" "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/generate_daily_data.py" \
+       || ! AI_NEWS_GENERATION_ROOT="$AGENT_REPO_DIR" "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/generate_glossary_data.py" \
+       || ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_news.py" \
+            --repo "$AGENT_REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS"; then
+      OUTPUT+=$'\nSUMMARY: ERROR: 作業用コピーの生成または最低5件の検査に失敗しました'
+      STATUS=1
+    fi
+  fi
+  if [ "$STATUS" -eq 0 ] && agent_output_is_complete "$OUTPUT"; then
+    if ! sync_agent_outputs; then
+      OUTPUT+=$'\nSUMMARY: ERROR: AI作業用コピーから成果物を戻せませんでした'
+      STATUS=1
+    fi
   fi
 fi
 
 if [ "$STATUS" -eq 0 ] && has_output_line_prefix "$OUTPUT" 'SUMMARY: ERROR:'; then
   STATUS=1
 fi
-if [ "$STATUS" -eq 0 ] && ! has_output_line_prefix "$OUTPUT" 'SUMMARY: OK:'; then
-  echo "成功を示すSUMMARY: OK:がないため、日次更新を失敗扱いにします" >&2
+if [ "$STATUS" -eq 0 ] && ! agent_output_is_complete "$OUTPUT"; then
+  echo "最終行に成功を示すSUMMARY: OK:がないため、日次更新を失敗扱いにします" >&2
   STATUS=1
 fi
 
