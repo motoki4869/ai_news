@@ -333,5 +333,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-06.m4a",
     "label": "2026-10-06のAIニュース音声",
     "title": "暴走するAIエージェントをどう止めるか"
+  },
+  "2026-10-07": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-07.m4a",
+    "label": "2026-10-07のAIニュース音声",
+    "title": "巨大化の終焉と特化型AIの台頭"
   }
 };
