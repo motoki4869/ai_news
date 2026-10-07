@@ -7501,5 +7501,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.gov.uk/government/news/government-backs-recommendations-of-nhs-doctors-led-ai-commission"
     }
+  ],
+  "2026-10-08": [
+    {
+      "title": "【注目ツール】Google、文章からゲームを作るPlaygroundを公開——制作と共有をブラウザーに集約",
+      "intro": "10月7日、Googleはコードを書かずに文章の指示でゲームを作成できる実験的サービス「Playground」を発表しました。米国の18歳以上を対象に提供を開始します。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "作成したゲームを友人へ共有したり、公開ギャラリーへ投稿したりできます。一部のジャンルでは複数人プレイとランキングにも対応します。"
+        },
+        {
+          "label": "提供段階",
+          "text": "作成機能へのアクセスはGoogle Oneの契約に応じて段階的に展開します。より高度な3D制作向けのUnity Spark連携は今後の予定で、現時点では試験中です。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/technology/ai/playground-experimental-gaming-platform/"
+    },
+    {
+      "title": "【フィジカルAI】KUKAとTD SYNNEXが販売提携——自律移動ロボットを欧州のIT販路へ展開",
+      "intro": "10月7日、KUKA GroupとIT流通大手TD SYNNEXはスペイン・バルセロナで販売契約を発表しました。欧州の販売パートナーへ、自律移動ロボット（AMR）と導入支援を提供します。",
+      "points": [
+        {
+          "label": "展開地域",
+          "text": "英国、フランス、スペイン、ベネルクスから開始し、今後数四半期で地域を追加する予定です。協働ロボットや教育パッケージ、産業ソフトウェアへの拡大も見込みます。"
+        },
+        {
+          "label": "導入支援",
+          "text": "技術研修や販売支援を組み合わせ、ロボットなど現場の設備とAI・クラウド・データ基盤を結びつける事業の育成を狙います。"
+        }
+      ],
+      "url": "https://www.kuka.com/ja-jp/%E4%BC%9A%E7%A4%BE%E6%A6%82%E8%A6%81/%E3%83%97%E3%83%AC%E3%82%B9/news/2026/10/kuka-group-and-td-synnex-partner-to-advance-physical-ai"
+    },
+    {
+      "title": "【資金調達】Healthleap、3800万ドルの調達を発表——50超の病院で患者リスクをAIで抽出",
+      "intro": "10月7日、米HealthleapはシードとシリーズAを合わせて3800万ドルの資金調達を発表しました。診療記録を読み、未診断の疾患などで注意が必要な入院患者を医療チームへ知らせるAIを提供しています。",
+      "points": [
+        {
+          "label": "運用規模",
+          "text": "同社によると、Penn Medicine、Houston Methodist、Cedars-Sinai、Emory Healthcareなど50超の病院で、成人入院患者の記録を毎日確認しています。"
+        },
+        {
+          "label": "資金の用途",
+          "text": "Sequoia Capital、First Round Capital、Hummingbird Venturesが出資しています。対象疾患の拡大と、開発・営業・顧客支援・製品チームの増強に充てます。"
+        }
+      ],
+      "url": "https://www.webwire.com/ViewPressRel.asp?aId=361525"
+    },
+    {
+      "title": "【安全性】Common Sense Media、ChatGPTの未成年向け保護を低評価——保護者通知の不作動を検証",
+      "intro": "10月7日、米Common Sense MediaのYouth AI Safety Instituteは、ChatGPT for Teensを未成年にとって「許容できないリスク」と評価しました。今回のニュースは8月の製品公開ではなく、その保護機能に対する独立評価の公表です。",
+      "points": [
+        {
+          "label": "試験結果",
+          "text": "4000件超の指示を用いて評価し、新規の保護者連携アカウントでは自傷などを最大1時間話しても通知が届かなかったと報告しました。一方、性的なロールプレイの拒否など機能した保護もあります。"
+        },
+        {
+          "label": "評価への反応",
+          "text": "同団体は改善と独立検証まで未成年の利用を制限するよう求めています。OpenAIは報道への回答で、試験方法が実際の保護機能の動作を正確に反映していないと反論しています。"
+        }
+      ],
+      "url": "https://www.commonsensemedia.org/press-releases/chatgpt-for-teens-poses-unacceptable-risk-to-kids-common-sense-media-finds"
+    },
+    {
+      "title": "【規制・政策】IMF総裁、AI投資の恩恵の偏在を警告——世界的な経済格差の拡大が政策課題に",
+      "intro": "10月7日、国際通貨基金（IMF）のゲオルギエバ専務理事はシンガポールで講演し、AI投資が経済成長を動かす一方、多くの国がその恩恵から取り残される危険を指摘しました。",
+      "points": [
+        {
+          "label": "成長の偏り",
+          "text": "米国、中国、インドのデータセンターなどへの投資や、半導体・ロボット製造を担う国に成長が集中していると説明しました。"
+        },
+        {
+          "label": "政策の焦点",
+          "text": "AIへのアクセスを世界へ広げ、変革の利益をより多くの国が得られるようにする必要性を強調しました。新たな規制の成立ではなく、国際的な政策対応を促す発言です。"
+        }
+      ],
+      "url": "https://www.malaymail.com/news/money/2026/10/07/imf-boss-warns-ai-boom-could-widen-global-inequality/238104"
+    }
   ]
 };
