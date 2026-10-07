@@ -146,6 +146,13 @@ exit 0
 EOF
 chmod +x "$TMP_DIR/fake-claude-ok"
 
+cat > "$TMP_DIR/fake-claude-error" <<'EOF'
+#!/bin/sh
+printf '%s\n' 'SUMMARY: ERROR: Claudeでも編集を完了できませんでした'
+exit 0
+EOF
+chmod +x "$TMP_DIR/fake-claude-error"
+
 cat > "$TMP_DIR/fake-claude-exit1" <<'EOF'
 #!/bin/sh
 printf '%s\n' 'SUMMARY: OK: 成功したように見える要約'
@@ -258,25 +265,30 @@ run_daily() {
   return "$RUN_STATUS"
 }
 
-if run_daily error "$TMP_DIR/output-error.log"; then
+if run_daily error "$TMP_DIR/output-error.log" 0 "$TMP_DIR/notify-state-error" "$TMP_DIR/fake-claude-error"; then
   echo "SUMMARY: ERROR を終了コード0のまま成功扱いしました" >&2
   exit 1
 fi
 
-if ! grep -q 'daily_news.shが失敗しました' "$TMP_DIR/osascript.log"; then
-  echo "失敗通知が送られていません" >&2
+if ! grep -q 'SUMMARY: OK:で終わらなかったため' "$TMP_DIR/output-error.log"; then
+  echo "CodexのSUMMARY: ERROR後にClaude Codeへフォールバックしませんでした" >&2
   cat "$TMP_DIR/output-error.log" >&2
   exit 1
 fi
 
-if ! grep -q '用語集生成に失敗しました' "$TMP_DIR/osascript.log"; then
-  echo "SUMMARY: ERRORの原因が失敗通知に含まれていません" >&2
-  cat "$TMP_DIR/osascript.log" >&2
+if ! tail -1 "$TMP_DIR/osascript.log" | grep -q 'Codexに続きClaude Codeでの更新も失敗しました'; then
+  echo "Codex・Claude Codeとも失敗した通知が送られていません" >&2
   cat "$TMP_DIR/output-error.log" >&2
   exit 1
 fi
 
-if run_daily no-ok "$TMP_DIR/output-no-ok.log"; then
+if ! grep -q 'Claudeでも編集を完了できませんでした' "$TMP_DIR/curl-body.log"; then
+  echo "フォールバック後のSUMMARY: ERRORの原因がLINE失敗通知に含まれていません" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
+if run_daily no-ok "$TMP_DIR/output-no-ok.log" 0 "$TMP_DIR/notify-state-no-ok" "$TMP_DIR/fake-claude-error"; then
   echo "SUMMARY: OK:がない更新を成功扱いしました" >&2
   exit 1
 fi
@@ -347,7 +359,8 @@ fi
 glossary_before="$(cat "$TEST_REPO/docs/glossary.md")"
 news_before="$(git -C "$TEST_REPO" hash-object "everyday_news/$MONTH.md")"
 for mode in error-dirty no-ok-dirty trailing-dirty mixed-summary-dirty invalid-dirty; do
-  if run_daily "$mode" "$TMP_DIR/output-$mode.log" 0 "$TMP_DIR/notify-state-$mode"; then
+  if run_daily "$mode" "$TMP_DIR/output-$mode.log" 0 "$TMP_DIR/notify-state-$mode" \
+     "$TMP_DIR/fake-claude-error"; then
     echo "失敗したAIの成果物を成功扱いしました: $mode" >&2
     exit 1
   fi
@@ -579,7 +592,7 @@ CODEX_BIN="$TMP_DIR/fake-codex" \
 CODEX_HOME="$TMP_DIR/codex-home" \
 AI_NEWS_CODEX_RUNTIME_BASE="$TMP_DIR/codex-runtime" \
 FAKE_CODEX_MODE=no-ok \
-CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
+CLAUDE_BIN="$TMP_DIR/fake-claude-error" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
 FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \
@@ -683,7 +696,7 @@ CODEX_BIN="$TMP_DIR/fake-codex" \
 CODEX_HOME="$TMP_DIR/codex-home" \
 AI_NEWS_CODEX_RUNTIME_BASE="$TMP_DIR/codex-runtime" \
 FAKE_CODEX_MODE=no-ok \
-CLAUDE_BIN="$TMP_DIR/fake-claude-ok" \
+CLAUDE_BIN="$TMP_DIR/fake-claude-error" \
 FAKE_OSASCRIPT_LOG="$TMP_DIR/osascript.log" \
 FAKE_CURL_LOG="$TMP_DIR/curl.log" \
 FAKE_CURL_BODY_LOG="$TMP_DIR/curl-body.log" \

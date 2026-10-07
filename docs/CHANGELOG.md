@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-10-07
 
+### CodexがSUMMARY: ERRORで終わった日もClaude Codeへフォールバック
+- **変更**: Codexの終了コードが0でも、最終行が`SUMMARY: OK:`で終わらなければ（`SUMMARY: ERROR:`やSUMMARYなし）、新しい作業用コピーでClaude Codeを実行する。従来の切り替え条件は「終了コードが0以外」と「利用上限の検出」の2つだけだった。
+- **理由**: 10/7朝、Codexがツール不足を理由に`SUMMARY: ERROR`を終了コード0で返し、Claude Codeへの切り替えが発動しないまま当日分が未更新になったため。ERRORで終わらない仕様は、9/29にCodexを主担当にした際、Claude主担当時代のテストがそのまま引き継がれて残ったもので、意図して決めたものではなかった。件数不足など内容が理由のERRORでは空振りになりうるが、その損失はClaudeの使用量1回分にとどまる。
+- **対象**: `scripts/daily_news.sh`、`test/test_daily_news.sh`
+- **commit**: 本エントリ追記時のコミット
+
 ### Codex版日次プロンプトでCodexが使えるツールを案内
 - **変更**: `scripts/daily_news_prompt.codex.txt`の冒頭に、Codexでのツールの置き換え（ファイル閲覧はシェルの`cat`・`sed -n`・`rg`等、作成・編集は`apply_patch`、調査は`web_search`）を明記した。「コマンドは実行しない」は`date`・`python3`の生成/検査スクリプト・`git`などを指し、閲覧用コマンドと`apply_patch`は含まないと定義した。存在しない`browser_use`ツールの記述は`web_search`に直した。
 - **理由**: 10/6の隔離強化で入った「コマンドは実行しない」と「Writeツールで書く」という指示に対し、`codex exec`には専用の読み取り・Writeツールが無い。そのため10/7朝、Codexは「必須ツールが利用できない」として何も編集せず`SUMMARY: ERROR`を返した。終了コードは0だったのでClaude Codeへのフォールバックも発動せず、当日分が未更新になった。コマンド自体は権限プロファイルで作業用コピー内に閉じ込められているため、閲覧と`apply_patch`を許しても隔離は崩れない。

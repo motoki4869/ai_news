@@ -232,9 +232,13 @@ else
   STATUS=$?
   echo "$OUTPUT"
 
-  if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT"; then
+  # 終了コード0でもSUMMARY: OK:で終わらなければ、Codexが作業を完了できなかったとみなす
+  # （2026-10-07、Codexがツール不足を理由にSUMMARY: ERRORを返し、未更新のまま終わった）。
+  if [ "$STATUS" -ne 0 ] || is_codex_limit_reached "$OUTPUT" || ! agent_output_is_complete "$OUTPUT"; then
     if is_codex_limit_reached "$OUTPUT"; then
       echo "Codexの利用上限を示すメッセージを検出したため、Claude Code経由でフォールバック実行します"
+    elif [ "$STATUS" -eq 0 ]; then
+      echo "Codexが成功を示すSUMMARY: OK:で終わらなかったため、Claude Code経由でフォールバック実行します"
     else
       echo "Codexでの更新に失敗したため、Claude Code経由でフォールバック実行します"
     fi
