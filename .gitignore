@@ -11,3 +11,4 @@ __pycache__/
 # 音声本体はGitHub Releases(タグ: audio)で配信するためGit管理しない
 history/audio/
 _deleted/
+.playwright-mcp/
