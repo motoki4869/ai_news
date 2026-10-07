@@ -338,5 +338,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-07.m4a",
     "label": "2026-10-07のAIニュース音声",
     "title": "巨大化の終焉と特化型AIの台頭"
+  },
+  "2026-10-08": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-08.m4a",
+    "label": "2026-10-08のAIニュース音声",
+    "title": "病院と工場を動かすAIインフラ"
   }
 };
