@@ -35,9 +35,17 @@ class GlossaryParseError(ValueError):
     """用語集Markdownの表が想定形式に一致しないことを表す。"""
 
 
+BR_TAG_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
+
+
+def strip_br(text: str) -> str:
+    """AIが「3行以上」を改行と誤解して書いた<br>を除く。エスケープされると文字のまま表示されるため。"""
+    return BR_TAG_RE.sub("", text)
+
+
 def inline(text: str) -> str:
     """セル内のMarkdown装飾をHTMLへ。エスケープしてから最小限の変換だけ行う。"""
-    text = html.escape(text)
+    text = html.escape(strip_br(text))
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
     return text
@@ -115,7 +123,7 @@ def build_sections(md: str) -> list[dict]:
                 "sub": inline(sub),
                 "desc": inline(desc),
                 # 検索用: 装飾を落とした素のテキスト
-                "q": " ".join(row).replace("**", "").lower(),
+                "q": strip_br(" ".join(row)).replace("**", "").lower(),
             })
         if entries:
             current["entries"] = entries

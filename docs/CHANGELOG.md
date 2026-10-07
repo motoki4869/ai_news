@@ -7,6 +7,12 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ## 2026-10-07
 
+### 用語集カードに`<br>`が文字のまま表示される不具合を修正
+- **変更**: `docs/glossary.md`の意味 / 補足列に入っていた`<br>`（10用語・計20個）を削除した。生成スクリプトでも`<br>`を取り除いてからエスケープするようにし、再混入しても表示されないようにした。用語集の更新方針と日次プロンプト（Claude版・Codex版）に、「3行以上」は画面上で折り返したときの行数であり、`<br>`や改行は書かないことを明記した。
+- **理由**: 日次更新のAIが「意味 / 補足列は3行以上」を改行を入れる指示と解釈し、10/1以降に`<br>`を書き込んでいた。生成スクリプトはセルをHTMLエスケープするため、スマホの用語集カード（Mistral Large 4など）に`<br>`がそのまま表示されていた。
+- **対象**: `docs/glossary.md`、`history/glossary-data.js`、`scripts/generate_glossary_data.py`、`scripts/daily_news_prompt.txt`、`scripts/daily_news_prompt.codex.txt`、`test/test_generate_glossary_data.py`
+- **commit**: 本エントリ追記時のコミット
+
 ### CodexがSUMMARY: ERRORで終わった日もClaude Codeへフォールバック
 - **変更**: Codexの終了コードが0でも、最終行が`SUMMARY: OK:`で終わらなければ（`SUMMARY: ERROR:`やSUMMARYなし）、新しい作業用コピーでClaude Codeを実行する。従来の切り替え条件は「終了コードが0以外」と「利用上限の検出」の2つだけだった。
 - **理由**: 10/7朝、Codexがツール不足を理由に`SUMMARY: ERROR`を終了コード0で返し、Claude Codeへの切り替えが発動しないまま当日分が未更新になったため。ERRORで終わらない仕様は、9/29にCodexを主担当にした際、Claude主担当時代のテストがそのまま引き継がれて残ったもので、意図して決めたものではなかった。件数不足など内容が理由のERRORでは空振りになりうるが、その損失はClaudeの使用量1回分にとどまる。

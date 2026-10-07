@@ -63,6 +63,18 @@ class GenerateGlossaryDataTest(unittest.TestCase):
                 "| **AI** | Artificial Intelligence | 説明 |\n"
             )
 
+    def test_strips_br_tags_from_cells(self):
+        sections = MODULE.build_sections(
+            "## 1. テスト\n"
+            "| 用語 | 正式名称 / 読み | 意味 |\n"
+            "|---|---|---|\n"
+            "| **AI** | Artificial Intelligence | 一文目。<br>二文目。<BR/>三文目。 |\n"
+        )
+
+        entry = sections[0]["entries"][0]
+        self.assertEqual(entry["desc"], "一文目。二文目。三文目。")
+        self.assertNotIn("br", entry["q"])
+
     def test_builds_valid_section(self):
         sections = MODULE.build_sections(
             "## 1. テスト\n"
