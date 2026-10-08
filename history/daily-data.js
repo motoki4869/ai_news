@@ -7578,5 +7578,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.malaymail.com/news/money/2026/10/07/imf-boss-warns-ai-boom-could-widen-global-inequality/238104"
     }
+  ],
+  "2026-10-09": [
+    {
+      "title": "【フィジカルAI】米DOE、自動実験の4事業を選定——ロボットの実証から研究所共通の基盤へ",
+      "intro": "10月8日、米エネルギー省（DOE）は国立研究所が主導するロボティクス・自動実験の4事業を選定したと発表しました。AIとロボットを結び、複数施設で再利用できる研究基盤を整えます。",
+      "points": [
+        {
+          "label": "技術の焦点",
+          "text": "Argonneは経験から改善する基盤、Brookhavenは科学的結果の信頼性検証、Oak Ridgeは設備間の接続、SLACは試料操作から計測・解析までの自動化を担当します。"
+        },
+        {
+          "label": "予算と条件",
+          "text": "総額3000万ドルを予定し、2026年度分は200万ドルです。後年度分は議会の予算措置に依存し、今回の選定も交渉開始のためのもので、交付の確約ではありません。"
+        }
+      ],
+      "url": "https://www.energy.gov/science/articles/doe-announces-four-national-laboratory-led-selections-advance-robotics-and"
+    },
+    {
+      "title": "【政策】米NSF、AI対応の研究機器へ最大7500万ドルを計画——科学の自動化を制度面から支援",
+      "intro": "10月8日、米国立科学財団（NSF）は科学研究を加速する新施策を発表しました。AIとデータ活用を設計段階から組み込む研究機器の開発に、5年間で最大7500万ドルの投資を見込んでいます。",
+      "points": [
+        {
+          "label": "実施段階",
+          "text": "7月発表のクラウド型実験施設ネットワークを土台に、機器開発の公募を近く行う予定です。今回の発表は投資方針で、個別の採択や支出完了ではありません。"
+        },
+        {
+          "label": "研究支援の改革",
+          "text": "新しい審査・資金配分の仕組みを検証する専門部署も設けます。研究機器の自動化と並行して、研究を支える制度自体の改善を進めます。"
+        }
+      ],
+      "url": "https://www.nsf.gov/news/nsf-lays-foundation-next-generation-technologies-support"
+    },
+    {
+      "title": "【産業インフラ】LumenとEminence Grey、主権AI基盤で提携——機密データの保管と通信を一体管理",
+      "intro": "10月8日、米Lumen TechnologiesとEminence Greyは政府機関・企業向け主権AI基盤の提携を発表しました。顧客が機密データと運用を管理できる分散型の計算環境を目指します。",
+      "points": [
+        {
+          "label": "構成",
+          "text": "Eminence Greyの専用AI基盤とLumenの物理インフラ・制御可能な通信網を組み合わせます。データの所在だけでなく、拠点間の移動やアクセス権限も管理する設計です。"
+        },
+        {
+          "label": "導入条件",
+          "text": "専用GPU設備などの構成を事前予約する仕組みを検討しています。利用開始時期や構成、実装の詳細は顧客の要件に応じるとしています。"
+        }
+      ],
+      "url": "https://ir.lumen.com/news/news-details/2026/Eminence-Grey-and-Lumen-Partner-to-Deliver-Sovereign-AI-Infrastructure-Across-the-U-S--2026-AssvtZO2CD/default.aspx"
+    },
+    {
+      "title": "【資金調達】金融向けAIのTODAY、280万ユーロを調達——3500人超の助言担当者の日常業務を支援",
+      "intro": "10月8日、コペンハーゲンとベルリンを拠点とするTODAYは280万ユーロのシード調達を発表しました。HTGFとInsurtech Gatewayが共同主導し、金融・保険の助言担当者向けAI基盤の開発と商用展開を支援します。",
+      "points": [
+        {
+          "label": "実用機能",
+          "text": "顧客面談の文字起こし、事務処理、営業支援、着信対応をAIで補助します。同社によると3500人超が利用し、事務作業の削減は週平均5時間です。"
+        },
+        {
+          "label": "展開先",
+          "text": "ドイツ・オーストリア・スイスで事業を拡大します。効果の数値は同社の説明であり、独立した比較試験の結果ではありません。"
+        }
+      ],
+      "url": "https://www.usetoday.io/blog/today-secures-2-8m-seed-funding/"
+    },
+    {
+      "title": "【ビジネス】CB Insights、AI投資集計を公表——調達額33%減でも大型案件へ85%集中",
+      "intro": "10月8日、CB Insightsは2026年第3四半期のAI投資調査を公表しました。資金調達総額は1033億ドルで、前四半期の1531億ドルから33%減少しました。",
+      "points": [
+        {
+          "label": "資金の偏り",
+          "text": "調達額の85%が154件の大型ラウンドに集中しました。投資額の減少と、大型案件への資金集中が同時に進んでいます。"
+        },
+        {
+          "label": "新興企業の動き",
+          "text": "新たに評価額10億ドルへ達した企業は42社で、四半期として18カ月ぶりの多さでした。今回のニュースは過去の調達の再紹介ではなく、最新の集計結果の公表です。"
+        }
+      ],
+      "url": "https://www.cbinsights.com/research/report/ai-trends-q3-2026/"
+    }
   ]
 };
