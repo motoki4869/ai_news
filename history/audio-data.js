@@ -343,5 +343,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-08.m4a",
     "label": "2026-10-08のAIニュース音声",
     "title": "病院と工場を動かすAIインフラ"
+  },
+  "2026-10-09": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-09.m4a",
+    "label": "2026-10-09のAIニュース音声",
+    "title": "画面から物理インフラへ拡張するAI"
   }
 };
