@@ -348,5 +348,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-09.m4a",
     "label": "2026-10-09のAIニュース音声",
     "title": "画面から物理インフラへ拡張するAI"
+  },
+  "2026-10-10": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-10.m4a",
+    "label": "2026-10-10のAIニュース音声",
+    "title": "脳波帽子とAIロボットが消す思考の摩擦"
   }
 };
