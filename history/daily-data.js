@@ -7655,5 +7655,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.cbinsights.com/research/report/ai-trends-q3-2026/"
     }
+  ],
+  "2026-10-10": [
+    {
+      "title": "【技術】Alibaba、Qwen-Image-2.1-Turboを公開——画像生成・編集を8ステップに短縮",
+      "intro": "10月9日（日本時間）、AlibabaのQwenチームは画像生成・編集モデル「Qwen-Image-2.1-Turbo」の重みを公開しました。既存のQwen-Image-2.1を高速化した派生版です。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "画像を仕上げるデノイジング（ノイズ除去）を8ステップで行います。画像生成部分は70億パラメータで、文章からの生成と入力画像の編集を同じモデルで扱います。"
+        },
+        {
+          "label": "用途と条件",
+          "text": "背景が透明な画像の生成や、参照画像を使った変換にも対応します。配布はQwen Research Licenseに基づき、商用利用には別途契約が必要です。"
+        }
+      ],
+      "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo"
+    },
+    {
+      "title": "【フィジカルAI】Ultra、5000万ドルのシリーズAを公表——倉庫ロボットの月額提供を拡大",
+      "intro": "10月9日、米ブルックリンのUltraは倉庫向けAIロボットの展開を拡大するため、5000万ドルのシリーズA調達を公表しました。Framework Venturesが主導し、以前のシードを含む公表調達総額は6200万ドルです。",
+      "points": [
+        {
+          "label": "実用対象",
+          "text": "据え置き型のOperator（OP1）が梱包・仕分け・セット組みを担います。同社は米国の複数の倉庫で稼働する実機を紹介しています。"
+        },
+        {
+          "label": "提供形態",
+          "text": "ロボットを月額で提供するRaaSを採用し、ハードウェアと現場導入はUltra、制御用AIはPhysical Intelligenceが担います。設備の一括購入に伴う初期負担を抑えて導入する形です。（[補足報道](https://runtimewire.com/article/ultra-raises-62m-warehouse-robotics)）"
+        }
+      ],
+      "url": "https://ultra.tech/"
+    },
+    {
+      "title": "【資金調達】Sabiの5000万ドル調達が報道——脳信号をAIへの指示に変える帽子を開発",
+      "intro": "10月9日（日本時間）、Forbesは米SabiがKhosla Ventures主導のシードで5000万ドルを調達したと報じました。頭部の外から脳信号を読み、AIへの文字入力に変換する帽子型機器を開発しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "手術を伴わないBCI（脳とコンピューターをつなぐインターフェース）を目指します。同社は10万時間のラベル付き脳信号データで学習したモデルを使い、意図した言葉を指示へ変換する構想を説明しています。"
+        },
+        {
+          "label": "開発段階",
+          "text": "日常的に使える入力機器を目指す研究開発段階であり、思考を自在に読める製品の完成を示した発表ではありません。キーボードや音声以外のAI入力手段を探る投資です。"
+        }
+      ],
+      "url": "https://www.forbes.com/sites/rashishrivastava/2026/10/09/vinod-khosla-backs-an-ai-startup-building-a-mind-reading-baseball-cap/"
+    },
+    {
+      "title": "【政策】英国、競業避止条項の緩和へ立法方針——AIスタートアップの採用障壁を低減",
+      "intro": "10月9日、英国のアンディ・バーナム首相はマンチェスターのInnovation Nation Summitで、競業避止条項が有望な新興企業の採用を妨げないよう立法する方針を示しました。",
+      "points": [
+        {
+          "label": "背景",
+          "text": "競業避止条項は、退職者が競合企業へ移ることや起業することを制限する契約です。ElevenLabsやSynthesiaなどが、条項と長い退職通知期間の見直しを求めていました。"
+        },
+        {
+          "label": "確定範囲",
+          "text": "政府は制限の対象や詳細をまだ示していません。Tech.euも当初の「禁止」という表現を「緩和」へ訂正しており、全面禁止が決まった段階ではありません。"
+        }
+      ],
+      "url": "https://tech.eu/2026/10/09/uk-o-ban-non-compete-clauses-marking-boon-for-startup-and-scaleups"
+    },
+    {
+      "title": "【注目ツール】bigarrow、画面案内を更新——AIが示す矢印を利用者の操作に同期",
+      "intro": "10月9日、macOS向けの公開ツール「bigarrow」は0.2.0以降の更新を公開しました。Claude CodeやCodexから画面上に矢印・枠・説明を描き、人が操作する場所を案内するツールです。",
+      "points": [
+        {
+          "label": "更新内容",
+          "text": "対象ウィンドウが隠れると矢印も隠れ、再表示すると戻る機能や、案内を出したエージェントの終了時に矢印を消す機能を追加しました。画面案内が作業の状態とずれる問題を減らします。"
+        },
+        {
+          "label": "人との分担",
+          "text": "ツール自身はクリックや入力を行わず、利用者が実際のボタンを押します。同日の0.4.3では、承認・支払い・送信・削除などを案内するときに、その操作の結果を説明する指示も加えました。"
+        }
+      ],
+      "url": "https://github.com/franzenzenhofer/big-arrow-on-the-screen/blob/main/CHANGELOG.md"
+    }
   ]
 };
