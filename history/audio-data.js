@@ -353,5 +353,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-10.m4a",
     "label": "2026-10-10のAIニュース音声",
     "title": "脳波帽子とAIロボットが消す思考の摩擦"
+  },
+  "2026-10-11": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-11.m4a",
+    "label": "2026-10-11のAIニュース音声",
+    "title": "自力でファイアウォールを破るAI"
   }
 };
