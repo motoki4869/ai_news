@@ -363,5 +363,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-12.m4a",
     "label": "2026-10-12のAIニュース音声",
     "title": "AIの緊急ブレーキと現実世界への実装"
+  },
+  "2026-10-13": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-13.m4a",
+    "label": "2026-10-13のAIニュース音声",
+    "title": "人間を介さず自ら学ぶAI"
   }
 };
