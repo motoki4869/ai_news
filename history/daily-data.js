@@ -7886,5 +7886,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.macrumors.com/2026/10/11/apple-homeview-smart-home-hub-ship-next-month/"
     }
+  ],
+  "2026-10-13": [
+    {
+      "title": "【技術】Sakana AI、MASSを公開——同じモデルのチーム経験から自己改善",
+      "intro": "10月12日、東京のSakana AIはUC Berkeleyの研究者らと、複数の仮想エージェントの協働からモデルを改良する「MASS」を発表しました。論文とコードも公開しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "1つの共有モデルが課題解決・協働手順の探索・結果の評価を担い、選ばれたチームの実行記録で再学習します。チームの経験を共有モデルへ取り込む循環です。"
+        },
+        {
+          "label": "成果と限界",
+          "text": "270億パラメータの公開モデルを2回改良した実験では、4つの研究ベンチマークで出力トークン当たりの得点が元モデルの1.2〜1.6倍になりました。一方、自己評価が共通の盲点や誤りを強化する危険も指摘しています。"
+        }
+      ],
+      "url": "https://sakana.ai/mass/"
+    },
+    {
+      "title": "【産業インフラ】Microsoft、Maia 300を発表——2027年から自社AI推論を複数ギガワットへ",
+      "intro": "10月12日、米Microsoftは第3世代の自社AI推論システム「Azure Maia 300」を発表しました。2027年からMaia系列を複数ギガワット規模で展開し、自社サービスの主要な推論基盤にする計画です。",
+      "points": [
+        {
+          "label": "効率",
+          "text": "同社は主要なGPUシステム比で電力1メガワット当たりの処理トークン数を40%増やせると説明しています。96基構成のラックではMaia 200比で最大7倍の処理量を掲げます。"
+        },
+        {
+          "label": "産業への意味",
+          "text": "演算・メモリー・通信を一体設計し、長い文脈の推論や多段階のエージェント処理を支えます。数値は同社の評価で、本番導入は2027年の予定です。"
+        }
+      ],
+      "url": "https://blogs.microsoft.com/blog/2026/10/12/microsoft-to-expand-azure-maia-system-to-multi-gigawatt-deployments/"
+    },
+    {
+      "title": "【資金調達・注目ツール】Ambi、2600万ドル調達とApple向け公開——会議中に動くアンビエントAIへ",
+      "intro": "10月12日、米サンフランシスコのMistlabsは、2600万ドルの資金調達を背景にAIアシスタント「Ambi」をApple端末向けにベータ版から正式提供へ移しました。Luminous VenturesとHuaqinが資金調達を主導しています。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "iPhone・Mac・Apple Watchで会話の文脈を共有し、会議中の事実確認や提案書作成などを複数のエージェントで進めます。利用者が毎回指示する前に支援するアンビエントAIを目指します。"
+        },
+        {
+          "label": "次の展開",
+          "text": "調達資金は独立したウェアラブル機器の開発にも充てます。音声の保存は初期設定で無効とされていますが、会話を継続的に扱うサービスでは周囲への説明と利用権限の設定も課題になります。"
+        }
+      ],
+      "url": "https://siliconangle.com/2026/10/12/mistlabs-takes-its-ambi-ai-system-out-of-beta-on-apple-devices-with-26m-in-funding/"
+    },
+    {
+      "title": "【政策・安全性】英国、先端AIで政府システムを防御——事故・未遂の報告制度も検討",
+      "intro": "10月12日、英国政府は先端AIを使ったサイバー防御の拡大と、自律AIの重大事故に備える措置を発表しました。ナラヤンAI担当相がロンドンのImperial Collegeで方針を説明しました。",
+      "points": [
+        {
+          "label": "実績と拡大",
+          "text": "2つの政府試行で1000件超の潜在的な脆弱性の特定・修正を支援したと説明し、公共サービスを守る取り組みを拡大します。AI Security Instituteによる最新モデルの評価も進行中です。"
+        },
+        {
+          "label": "制度設計",
+          "text": "Cyber Security and Resilience Billの枠組みを通じ、AIの制御喪失や重大事故・未遂の識別と報告を検討します。議会や専門家と詳細を詰める段階で、報告義務の成立を発表したものではありません。"
+        }
+      ],
+      "url": "https://www.gov.uk/government/news/britain-steps-up-national-defences-against-growing-ai-risks"
+    },
+    {
+      "title": "【研究】Microsoft、StudentSimを発表——「教えた後の学び」を仮想生徒で評価",
+      "intro": "10月12日、Microsoft Researchは生徒ごとの応答と指導後の変化を模擬する「StudentSim」を紹介しました。AI家庭教師を実際の学習者に試す前に評価・改善する研究システムです。",
+      "points": [
+        {
+          "label": "評価方法",
+          "text": "公開された匿名化済み学習記録から個々の生徒のシミュレーターを学習し、チェス・第二言語としての英語作文・数学で検証します。特定の生徒らしく応答するか、助言後に応答が変わるかを測ります。"
+        },
+        {
+          "label": "位置付け",
+          "text": "研究では主要な比較手法を上回り、AI家庭教師の訓練に役立つ評価信号を得たとしています。教室導入済みの製品ではなく、実際の生徒による検証を置き換えるものでもありません。"
+        }
+      ],
+      "url": "https://www.microsoft.com/en-us/research/blog/simulating-student-learning-for-better-ai-tutoring/"
+    }
   ]
 };
