@@ -368,5 +368,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-13.m4a",
     "label": "2026-10-13のAIニュース音声",
     "title": "人間を介さず自ら学ぶAI"
+  },
+  "2026-10-14": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-14.m4a",
+    "label": "2026-10-14のAIニュース音声",
+    "title": "1日3万回の変更でGitを捨てたAI"
   }
 };
