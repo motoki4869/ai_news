@@ -5,6 +5,14 @@ ai_news の変更履歴。新しい日付を上に追記する。
 
 ---
 
+## 2026-10-14
+
+### 企業導入・炭素会計・組織適応の最新トレンド反映
+- **変更**: 最新レポートを日付付き名称と連番見出しへ統一し、不要な脚注記号を除去。ニュース6件を追加し、古い6件を過去ログへ移動、関連3件に出典を追記。レポート数を29本へ更新し、用語4件とMistral Large 4の年表を追加。
+- **理由**: 企業でのAI実装と知識継承の動向を閲覧できるようにし、モデルの試験公開と重み公開予定を混同しないため。
+- **対象**: `report/`, `history/news.html`, `history/archive.html`, `history/reports-index.js`, `history/reports/`, `docs/glossary.md`, `history/glossary-data.js`, `history/generative.html`
+- **commit**: `HEAD`（今回の更新コミット）
+
 ## 2026-10-07
 
 ### 用語集カードに`<br>`が文字のまま表示される不具合を修正
