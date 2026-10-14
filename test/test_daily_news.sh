@@ -28,6 +28,7 @@ if [ "$1" = app-server ]; then
   done
   exit 0
 fi
+printf '%s\n' "$PWD" >> "$FAKE_CODEX_RUN_LOG"
 printf '%s|%s|%s\n' "$PWD" "$REPO_DIR" "${AI_NEWS_REAL_GIT:-}" >> "$REPO_DIR/agent-context.log"
 case "$FAKE_CODEX_MODE" in
   wait-conflict)
@@ -68,6 +69,10 @@ case "$FAKE_CODEX_MODE" in
 NEWS
     printf 'おはようございます☀️ %s月%s日、テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" > "$REPO_DIR/everyday_news/line_message.txt"
     printf '%s\n' 'SUMMARY: OK: 6件目を追加しました'
+    exit 0
+    ;;
+  missing-line)
+    printf '%s\n' 'SUMMARY: OK: LINE通知文を作成しませんでした'
     exit 0
     ;;
   check-untracked)
@@ -230,6 +235,7 @@ done
 git -C "$TEST_REPO" add "everyday_news/$MONTH.md" docs/glossary.md scripts/agent-bin/git
 git -C "$TEST_REPO" commit -q -m 'seed daily news'
 git -C "$TEST_REPO" push -q -u origin main
+SEED_COMMIT="$(git -C "$TEST_REPO" rev-parse HEAD)"
 
 run_daily() {
   local codex_mode="$1"
@@ -237,6 +243,8 @@ run_daily() {
   local notify_state_dir="${4:-$TMP_DIR/notify-state}"
   if [ "${6:-0}" != 1 ]; then
     rm -f "$TEST_REPO/logs/daily_news_source.txt"
+    git --git-dir="$TMP_DIR/origin.git" update-ref refs/heads/main "$SEED_COMMIT"
+    git -C "$TEST_REPO" update-ref -d refs/remotes/origin/main
   fi
   set +e
   PATH="$TMP_DIR:$PATH" \
@@ -248,6 +256,7 @@ run_daily() {
   CLAUDE_BIN="${5:-$TMP_DIR/fake-claude-ok}" \
   AI_NEWS_AGENT_WORKSPACE="$TMP_DIR/agent-workspace" \
   FAKE_CLAUDE_ARGS_LOG="$TMP_DIR/claude-args.log" \
+  FAKE_CODEX_RUN_LOG="$TMP_DIR/codex-calls.log" \
   FAKE_REAL_REPO="$TEST_REPO" \
   TODAY_MONTH="$TODAY_MONTH" \
   TODAY_DAY="$TODAY_DAY" \
@@ -519,35 +528,66 @@ if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ]; then
   echo "Claude Code成功時の経由マーカーが保存されませんでした" >&2
   exit 1
 fi
-if run_daily ok "$TMP_DIR/output-codex-line-retry.log" 0 "$TMP_DIR/notify-state-fallback-line-retry"; then
+codex_calls_before_line_retry="$(wc -l < "$TMP_DIR/codex-calls.log")"
+curl_count_before_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+claude_body_count_before_line_retry="$(grep -c 'Claude Code経由' "$TMP_DIR/curl-body.log" || true)"
+commit_count_before_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if run_daily ok "$TMP_DIR/output-codex-line-retry.log" 0 "$TMP_DIR/notify-state-fallback-line-retry" "" 1; then
   :
 else
-  echo "Claude Code経由のLINE再送テストでCodexの再実行に失敗しました" >&2
+  echo "公開済み日のLINE再送に失敗しました" >&2
   exit 1
 fi
-if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != codex ] \
-   || tail -1 "$TMP_DIR/curl-body.log" | grep -q '⚠️Claude Code経由'; then
-  echo "後続のCodex成功時に古いClaude経由表示が残りました" >&2
+codex_calls_after_line_retry="$(wc -l < "$TMP_DIR/codex-calls.log")"
+curl_count_after_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+claude_body_count_after_line_retry="$(grep -c 'Claude Code経由' "$TMP_DIR/curl-body.log" || true)"
+commit_count_after_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ] \
+   || [ "$codex_calls_before_line_retry" -ne "$codex_calls_after_line_retry" ] \
+   || [ "$curl_count_after_line_retry" -ne "$((curl_count_before_line_retry + 1))" ] \
+   || [ "$commit_count_before_line_retry" -ne "$commit_count_after_line_retry" ] \
+   || [ "$claude_body_count_after_line_retry" -le "$claude_body_count_before_line_retry" ]; then
+  echo "公開済み日のLINE再送でAI更新を避け、Claude経由表示と再送を維持できませんでした" >&2
+  printf 'marker=%s codex=%s->%s curl=%s->%s commits=%s->%s\n' \
+    "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" \
+    "$codex_calls_before_line_retry" "$codex_calls_after_line_retry" \
+    "$curl_count_before_line_retry" "$curl_count_after_line_retry" \
+    "$commit_count_before_line_retry" "$commit_count_after_line_retry" >&2
+  printf 'claude_body=%s->%s\n' \
+    "$claude_body_count_before_line_retry" "$claude_body_count_after_line_retry" >&2
   cat "$TMP_DIR/curl-body.log" >&2
   exit 1
 fi
 
-agent_context_count_before_rerun="$(wc -l < "$TMP_DIR/agent-context.log")"
-commit_count_before_rerun="$(git -C "$TEST_REPO" rev-list --count HEAD)"
-printf '%s\tclaude\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
-if ! run_daily ok "$TMP_DIR/output-published-rerun.log" 0 "$TMP_DIR/notify-state-fallback-line-retry" "" 1; then
-  echo "公開済みニュースの日次再実行に失敗しました" >&2
-  cat "$TMP_DIR/output-published-rerun.log" >&2
+codex_calls_before_marker_recovery="$(wc -l < "$TMP_DIR/codex-calls.log")"
+commit_count_before_marker_recovery="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+rm -f "$TEST_REPO/logs/daily_news_source.txt"
+if ! run_daily ok "$TMP_DIR/output-marker-recovery.log" 0 "$TMP_DIR/notify-state-fallback-line-retry" "" 1; then
+  echo "push済み日のローカルマーカー復旧に失敗しました" >&2
+  cat "$TMP_DIR/output-marker-recovery.log" >&2
   exit 1
 fi
-agent_context_count_after_rerun="$(wc -l < "$TMP_DIR/agent-context.log")"
-commit_count_after_rerun="$(git -C "$TEST_REPO" rev-list --count HEAD)"
-if [ "$agent_context_count_before_rerun" -ne "$agent_context_count_after_rerun" ] \
-   || [ "$commit_count_before_rerun" -ne "$commit_count_after_rerun" ] \
-   || [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ] \
-   || ! grep -q '本日のニュースは既に公開済みのため追加更新をスキップ' "$TMP_DIR/output-published-rerun.log"; then
-  echo "公開済み日の再実行でAI更新・追加commitを避け、経由マーカーを維持できませんでした" >&2
-  cat "$TMP_DIR/output-published-rerun.log" >&2
+codex_calls_after_marker_recovery="$(wc -l < "$TMP_DIR/codex-calls.log")"
+commit_count_after_marker_recovery="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$codex_calls_before_marker_recovery" -ne "$codex_calls_after_marker_recovery" ] \
+   || [ "$commit_count_before_marker_recovery" -ne "$commit_count_after_marker_recovery" ] \
+   || ! grep -q '本日のニュースは既に公開済みのため追加更新をスキップ' "$TMP_DIR/output-marker-recovery.log"; then
+  echo "origin/mainの当日公開commitから再実行をスキップできませんでした" >&2
+  cat "$TMP_DIR/output-marker-recovery.log" >&2
+  exit 1
+fi
+
+rm -f "$TEST_REPO/everyday_news/line_message.txt"
+before_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if run_daily missing-line "$TMP_DIR/output-missing-line.log" 0 "$TMP_DIR/notify-state-missing-line"; then
+  echo "当日LINE通知文のないニュースを公開しました" >&2
+  exit 1
+fi
+after_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$before_missing_line_commit_count" -ne "$after_missing_line_commit_count" ] \
+   || [ -f "$TEST_REPO/logs/daily_news_source.txt" ]; then
+  echo "当日LINE通知文の検査より先に公開済みマーカーまたはcommitを作成しました" >&2
+  cat "$TMP_DIR/output-missing-line.log" >&2
   exit 1
 fi
 

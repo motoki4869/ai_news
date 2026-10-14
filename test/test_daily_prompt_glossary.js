@@ -46,10 +46,15 @@ test('日次スクリプトはニュースと用語集の原本・生成物をco
     '日次スクリプトが更新対象だけをcommitして通常Gitインデックスを同期しません');
   assert.match(script, /AI作業用コピー.*\.gitが存在します/,
     'AIへ.gitのない作業用コピーを渡していません');
-  assert.match(script, /SAVED_SOURCE_DATE.*AI_NEWS_DATE[\s\S]*NEWS_ALREADY_PUBLISHED=1/,
+  assert.match(script, /HEAD_HAS_NEWS_DATE=0[\s\S]*REMOTE_HAS_NEWS_DATE=1[\s\S]*SAVED_SOURCE_DATE.*REMOTE_HAS_NEWS_DATE/,
     '公開済み日の再実行を判定していません');
   assert.match(script, /本日のニュースは既に公開済みのため追加更新をスキップ/,
     '公開済み日の再実行でAIによる記事追加をスキップしていません');
+  assert.ok(
+    script.indexOf('line_notification_has_current_message "$LINE_MSG_FILE"')
+      < script.indexOf('! commit_and_push_daily_news'),
+    'LINE通知文の当日日付検査より前にニュースをpushしています',
+  );
 });
 
 test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {

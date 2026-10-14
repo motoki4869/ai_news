@@ -25,10 +25,25 @@ fi
 cd "$REPO_DIR"
 AI_NEWS_DATE="$(date +%Y-%m-%d)"
 AI_NEWS_MIN_ITEMS=5
+NEWS_FILE="everyday_news/${AI_NEWS_DATE:0:4}${AI_NEWS_DATE:5:2}.md"
 NEWS_ALREADY_PUBLISHED=0
-if [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ]; then
+HEAD_HAS_NEWS_DATE=0
+REMOTE_HAS_NEWS_DATE=0
+REMOTE_NEWS_COMMIT_SUBJECT="$(git -C "$REPO_DIR" log -1 --format=%s origin/main -- "$NEWS_FILE" 2>/dev/null || true)"
+if git -C "$REPO_DIR" show "HEAD:$NEWS_FILE" 2>/dev/null \
+   | grep -Fx "## $AI_NEWS_DATE" >/dev/null; then
+  HEAD_HAS_NEWS_DATE=1
+fi
+if git -C "$REPO_DIR" show "origin/main:$NEWS_FILE" 2>/dev/null \
+   | grep -Fx "## $AI_NEWS_DATE" >/dev/null \
+   && [ "$REMOTE_NEWS_COMMIT_SUBJECT" = "$AI_NEWS_DATE のAIニュースを更新" ]; then
+  REMOTE_HAS_NEWS_DATE=1
+fi
+if [ "$HEAD_HAS_NEWS_DATE" -eq 1 ] \
+   && { [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ] || [ "$REMOTE_HAS_NEWS_DATE" -eq 1 ]; }; then
   NEWS_ALREADY_PUBLISHED=1
-  if [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
+  if [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ] \
+     && [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
     DAILY_NEWS_SOURCE="claude"
   fi
 fi
@@ -394,6 +409,10 @@ if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_n
   STATUS=1
   ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
 fi
+if [ "$STATUS" -eq 0 ] && ! line_notification_has_current_message "$LINE_MSG_FILE"; then
+  STATUS=1
+  ERROR_REASON="当日の日付を含むLINE通知本文がないため、ニュースを公開しません"
+fi
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 0 ]; then
   DAILY_NEWS_SOURCE="codex"
   [ "$IS_FALLBACK" -eq 0 ] || DAILY_NEWS_SOURCE="claude"
@@ -426,9 +445,6 @@ fi
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -ne 1 ]; then
   STATUS=1
   ERROR_REASON="当日分のニュース見出しがcommit済みの履歴にありません"
-elif [ "$STATUS" -eq 0 ] && ! line_notification_has_current_message "$LINE_MSG_FILE"; then
-  STATUS=1
-  ERROR_REASON="当日の日付を含むLINE通知本文が生成されていません"
 fi
 
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
