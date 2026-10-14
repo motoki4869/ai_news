@@ -43,8 +43,10 @@ if [ "$HEAD_HAS_NEWS_DATE" -eq 1 ] \
    && { [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ] || [ "$REMOTE_HAS_NEWS_DATE" -eq 1 ]; }; then
   NEWS_ALREADY_PUBLISHED=1
   if [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ] \
-     && [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
-    DAILY_NEWS_SOURCE="claude"
+     && { [ "${SAVED_SOURCE_AGENT:-}" = "claude" ] \
+       || [ "${SAVED_SOURCE_AGENT:-}" = "codex" ] \
+       || [ "${SAVED_SOURCE_AGENT:-}" = "unknown" ]; }; then
+    DAILY_NEWS_SOURCE="$SAVED_SOURCE_AGENT"
   elif [ "$REMOTE_HAS_NEWS_DATE" -eq 1 ] \
      && [ "$SAVED_SOURCE_DATE" != "$AI_NEWS_DATE" ]; then
     # push済みcommitから公開状態だけ復旧した場合、Claude/Codexの経由元は特定できない。
@@ -416,11 +418,6 @@ if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_n
   STATUS=1
   ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
 fi
-if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 1 ] \
-   && ! line_notification_has_current_message "$LINE_MSG_FILE"; then
-  STATUS=1
-  ERROR_REASON="当日の日付を含むLINE通知本文がないため、成功通知を中止しました"
-fi
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 0 ]; then
   DAILY_NEWS_SOURCE="codex"
   [ "$IS_FALLBACK" -eq 0 ] || DAILY_NEWS_SOURCE="claude"
@@ -455,7 +452,7 @@ if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -ne 1 ]; then
   ERROR_REASON="当日分のニュース見出しがcommit済みの履歴にありません"
 fi
 
-if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] && [ -s "$LINE_MSG_FILE" ] \
+if [ "$STATUS" -eq 0 ] && [ "$NEWS_SECTION_COMMITTED" -eq 1 ] \
    && claim_line_notification "$LINE_MSG_FILE" >/dev/null 2>&1; then
   if ! LINE_MESSAGE="$(line_notification_text "$LINE_MSG_FILE")"; then
     STATUS=1

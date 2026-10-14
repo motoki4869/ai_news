@@ -597,6 +597,16 @@ if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != codex ]; then
   exit 1
 fi
 
+printf '%s\tunknown\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
+if ! run_daily ok "$TMP_DIR/output-unknown-marker-preserved.log" 0 "$TMP_DIR/notify-state-unknown-marker" "" 1; then
+  echo "当日unknownマーカーの再実行に失敗しました" >&2
+  exit 1
+fi
+if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != unknown ]; then
+  echo "当日unknownマーカーが再実行でcodexへ上書きされました" >&2
+  exit 1
+fi
+
 printf '%s\tclaude\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
 printf 'おはようございます☀️ %s月%s日、昨日の通知文です。\n' "$YESTERDAY_MONTH" "$YESTERDAY_DAY" \
   > "$TEST_REPO/everyday_news/line_message.txt"
@@ -619,6 +629,34 @@ if [ "$curl_count_after_invalid_published_line" -ne "$((curl_count_before_invali
   exit 1
 fi
 
+printf 'おはようございます☀️ %s月%s日、再送テストです。\n' "$TODAY_MONTH" "$TODAY_DAY" \
+  > "$TEST_REPO/everyday_news/line_message.txt"
+repeat_published_state="$TMP_DIR/notify-state-repeat-published"
+success_body_count_before_published_send="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
+if ! run_daily ok "$TMP_DIR/output-published-send.log" 0 "$repeat_published_state" "" 1; then
+  echo "公開済み日の初回LINE通知に失敗しました" >&2
+  exit 1
+fi
+success_body_count_after_published_send="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
+if [ "$success_body_count_after_published_send" -ne "$((success_body_count_before_published_send + 1))" ]; then
+  echo "公開済み日の初回LINE成功通知が送られませんでした" >&2
+  exit 1
+fi
+printf 'おはようございます☀️ %s月%s日、昨日の通知文です。\n' "$YESTERDAY_MONTH" "$YESTERDAY_DAY" \
+  > "$TEST_REPO/everyday_news/line_message.txt"
+curl_count_before_notified_invalid_repeat="$(wc -l < "$TMP_DIR/curl.log")"
+if ! run_daily ok "$TMP_DIR/output-notified-invalid-repeat.log" 0 "$repeat_published_state" "" 1; then
+  echo "通知済み日の再実行が無効な通知文で失敗扱いになりました" >&2
+  cat "$TMP_DIR/output-notified-invalid-repeat.log" >&2
+  exit 1
+fi
+curl_count_after_notified_invalid_repeat="$(wc -l < "$TMP_DIR/curl.log")"
+if [ "$curl_count_before_notified_invalid_repeat" -ne "$curl_count_after_notified_invalid_repeat" ]; then
+  echo "通知済み日の再実行で不要なLINE通知を送りました" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
 rm -f "$TEST_REPO/everyday_news/line_message.txt"
 before_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if run_daily missing-line-change "$TMP_DIR/output-missing-line.log" 0 "$TMP_DIR/notify-state-missing-line"; then
@@ -634,6 +672,7 @@ if [ "$before_missing_line_commit_count" -ne "$after_missing_line_commit_count" 
   exit 1
 fi
 curl_count_before_missing_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+success_body_count_before_missing_line_retry="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
 commit_count_before_missing_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if ! run_daily ok "$TMP_DIR/output-missing-line-retry.log" 0 "$TMP_DIR/notify-state-missing-line"; then
   echo "無効な通知文の失敗後に同日再実行で復旧できませんでした" >&2
@@ -641,10 +680,11 @@ if ! run_daily ok "$TMP_DIR/output-missing-line-retry.log" 0 "$TMP_DIR/notify-st
   exit 1
 fi
 curl_count_after_missing_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+success_body_count_after_missing_line_retry="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
 commit_count_after_missing_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if [ "$curl_count_after_missing_line_retry" -ne "$((curl_count_before_missing_line_retry + 1))" ] \
    || [ "$commit_count_before_missing_line_retry" -ne "$commit_count_after_missing_line_retry" ] \
-   || ! grep -q '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log"; then
+   || [ "$success_body_count_after_missing_line_retry" -ne "$((success_body_count_before_missing_line_retry + 1))" ]; then
   echo "公開済み日の無効な通知文を修正した後、LINE成功通知を再送できませんでした" >&2
   cat "$TMP_DIR/output-missing-line-retry.log" >&2
   cat "$TMP_DIR/curl-body.log" >&2
