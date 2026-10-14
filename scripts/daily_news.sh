@@ -45,6 +45,9 @@ if [ "$HEAD_HAS_NEWS_DATE" -eq 1 ] \
   if [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ] \
      && [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
     DAILY_NEWS_SOURCE="claude"
+  elif [ "$REMOTE_HAS_NEWS_DATE" -eq 1 ]; then
+    # push済みcommitから公開状態だけ復旧した場合、Claude/Codexの経由元は特定できない。
+    DAILY_NEWS_SOURCE="unknown"
   fi
 fi
 export AI_NEWS_DATE
@@ -286,6 +289,9 @@ else
             --repo "$AGENT_REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS"; then
       OUTPUT+=$'\nSUMMARY: ERROR: 作業用コピーの生成または最低5件の検査に失敗しました'
       STATUS=1
+    elif ! line_notification_has_current_message "$AGENT_REPO_DIR/everyday_news/line_message.txt"; then
+      OUTPUT+=$'\nSUMMARY: ERROR: 当日の日付を含むLINE通知本文がないため、ニュースを公開しません'
+      STATUS=1
     fi
   fi
   if [ "$STATUS" -eq 0 ] && agent_output_is_complete "$OUTPUT"; then
@@ -408,10 +414,6 @@ if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_n
   --repo "$REPO_DIR" --date "$AI_NEWS_DATE" --min-items "$AI_NEWS_MIN_ITEMS"; then
   STATUS=1
   ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
-fi
-if [ "$STATUS" -eq 0 ] && ! line_notification_has_current_message "$LINE_MSG_FILE"; then
-  STATUS=1
-  ERROR_REASON="当日の日付を含むLINE通知本文がないため、ニュースを公開しません"
 fi
 if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 0 ]; then
   DAILY_NEWS_SOURCE="codex"

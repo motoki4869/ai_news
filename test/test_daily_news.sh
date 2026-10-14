@@ -71,7 +71,13 @@ NEWS
     printf '%s\n' 'SUMMARY: OK: 6件目を追加しました'
     exit 0
     ;;
-  missing-line)
+  missing-line-change)
+    month="$(date +%Y%m)"
+    cat >> "$REPO_DIR/everyday_news/$month.md" <<NEWS
+
+- **【技術】通知欠落時の復旧テスト**（[出典](https://example.com/missing-line)）
+  通知本文が欠けたときに記事変更を本体へ同期せず、再実行できることを確認します。
+NEWS
     printf '%s\n' 'SUMMARY: OK: LINE通知文を作成しませんでした'
     exit 0
     ;;
@@ -571,6 +577,7 @@ codex_calls_after_marker_recovery="$(wc -l < "$TMP_DIR/codex-calls.log")"
 commit_count_after_marker_recovery="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if [ "$codex_calls_before_marker_recovery" -ne "$codex_calls_after_marker_recovery" ] \
    || [ "$commit_count_before_marker_recovery" -ne "$commit_count_after_marker_recovery" ] \
+   || [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != unknown ] \
    || ! grep -q '本日のニュースは既に公開済みのため追加更新をスキップ' "$TMP_DIR/output-marker-recovery.log"; then
   echo "origin/mainの当日公開commitから再実行をスキップできませんでした" >&2
   cat "$TMP_DIR/output-marker-recovery.log" >&2
@@ -579,15 +586,21 @@ fi
 
 rm -f "$TEST_REPO/everyday_news/line_message.txt"
 before_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
-if run_daily missing-line "$TMP_DIR/output-missing-line.log" 0 "$TMP_DIR/notify-state-missing-line"; then
+if run_daily missing-line-change "$TMP_DIR/output-missing-line.log" 0 "$TMP_DIR/notify-state-missing-line"; then
   echo "当日LINE通知文のないニュースを公開しました" >&2
   exit 1
 fi
 after_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if [ "$before_missing_line_commit_count" -ne "$after_missing_line_commit_count" ] \
-   || [ -f "$TEST_REPO/logs/daily_news_source.txt" ]; then
-  echo "当日LINE通知文の検査より先に公開済みマーカーまたはcommitを作成しました" >&2
+   || [ -f "$TEST_REPO/logs/daily_news_source.txt" ] \
+   || ! git -C "$TEST_REPO" diff --quiet HEAD -- "everyday_news/$MONTH.md"; then
+  echo "当日LINE通知文の検査失敗で記事変更を同期または公開しました" >&2
   cat "$TMP_DIR/output-missing-line.log" >&2
+  exit 1
+fi
+if ! run_daily ok "$TMP_DIR/output-missing-line-retry.log" 0 "$TMP_DIR/notify-state-missing-line"; then
+  echo "無効な通知文の失敗後に同日再実行で復旧できませんでした" >&2
+  cat "$TMP_DIR/output-missing-line-retry.log" >&2
   exit 1
 fi
 

@@ -51,9 +51,9 @@ test('日次スクリプトはニュースと用語集の原本・生成物をco
   assert.match(script, /本日のニュースは既に公開済みのため追加更新をスキップ/,
     '公開済み日の再実行でAIによる記事追加をスキップしていません');
   assert.ok(
-    script.indexOf('line_notification_has_current_message "$LINE_MSG_FILE"')
-      < script.indexOf('! commit_and_push_daily_news'),
-    'LINE通知文の当日日付検査より前にニュースをpushしています',
+    script.indexOf('line_notification_has_current_message "$AGENT_REPO_DIR/everyday_news/line_message.txt"')
+      < script.indexOf('! sync_agent_outputs;'),
+    'AI作業用コピー内のLINE通知文を検証する前に本体へ同期しています',
   );
 });
 
