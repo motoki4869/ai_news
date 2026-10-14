@@ -373,5 +373,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-14.m4a",
     "label": "2026-10-14のAIニュース音声",
     "title": "1日3万回の変更でGitを捨てたAI"
+  },
+  "2026-10-15": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-15.m4a",
+    "label": "2026-10-15のAIニュース音声",
+    "title": "スマホ防衛から自律科学へのAI安全保障"
   }
 };
