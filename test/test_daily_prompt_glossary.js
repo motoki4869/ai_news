@@ -55,6 +55,8 @@ test('日次スクリプトはニュースと用語集の原本・生成物をco
       < script.indexOf('! sync_agent_outputs;'),
     'AI作業用コピー内のLINE通知文を検証する前に本体へ同期しています',
   );
+  assert.match(script, /NEWS_ALREADY_PUBLISHED[\s\S]*line_notification_has_current_message "\$LINE_MSG_FILE"/,
+    '公開済み日のLINE再送前に当日日付の通知文を再検査していません');
 });
 
 test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {

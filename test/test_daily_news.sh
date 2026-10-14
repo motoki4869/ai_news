@@ -13,6 +13,9 @@ TODAY="$(date +%Y-%m-%d)"
 MONTH="$(date +%Y%m)"
 TODAY_MONTH=$((10#${TODAY:5:2}))
 TODAY_DAY=$((10#${TODAY:8:2}))
+YESTERDAY="$(date -v-1d +%Y-%m-%d 2>/dev/null || date -d yesterday +%Y-%m-%d)"
+YESTERDAY_MONTH=$((10#${YESTERDAY:5:2}))
+YESTERDAY_DAY=$((10#${YESTERDAY:8:2}))
 mkdir -p "$TEST_REPO/everyday_news" "$TEST_REPO/history" "$TEST_REPO/.claude" \
   "$TEST_REPO/docs" "$TEST_REPO/scripts/agent-bin"
 printf '# 用語集\n' > "$TEST_REPO/docs/glossary.md"
@@ -584,6 +587,38 @@ if [ "$codex_calls_before_marker_recovery" -ne "$codex_calls_after_marker_recove
   exit 1
 fi
 
+printf '%s\tcodex\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
+if ! run_daily ok "$TMP_DIR/output-codex-marker-preserved.log" 0 "$TMP_DIR/notify-state-fallback-line-retry" "" 1; then
+  echo "当日Codexマーカーの再実行に失敗しました" >&2
+  exit 1
+fi
+if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != codex ]; then
+  echo "origin/mainからの公開済み復旧で当日Codexマーカーをunknownへ上書きしました" >&2
+  exit 1
+fi
+
+printf '%s\tclaude\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
+printf 'おはようございます☀️ %s月%s日、昨日の通知文です。\n' "$YESTERDAY_MONTH" "$YESTERDAY_DAY" \
+  > "$TEST_REPO/everyday_news/line_message.txt"
+curl_count_before_invalid_published_line="$(wc -l < "$TMP_DIR/curl.log")"
+claude_body_count_before_invalid_published_line="$(grep -c 'Claude Code経由' "$TMP_DIR/curl-body.log" || true)"
+success_body_count_before_invalid_published_line="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
+if run_daily ok "$TMP_DIR/output-invalid-published-line.log" 0 "$TMP_DIR/notify-state-published-invalid" "" 1; then
+  echo "公開済み日の前日LINE通知文を有効扱いしました" >&2
+  exit 1
+fi
+curl_count_after_invalid_published_line="$(wc -l < "$TMP_DIR/curl.log")"
+claude_body_count_after_invalid_published_line="$(grep -c 'Claude Code経由' "$TMP_DIR/curl-body.log" || true)"
+success_body_count_after_invalid_published_line="$(grep -c '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log" || true)"
+if [ "$curl_count_after_invalid_published_line" -ne "$((curl_count_before_invalid_published_line + 1))" ] \
+   || [ "$claude_body_count_before_invalid_published_line" -ne "$claude_body_count_after_invalid_published_line" ] \
+   || [ "$success_body_count_before_invalid_published_line" -ne "$success_body_count_after_invalid_published_line" ] \
+   || [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ]; then
+  echo "公開済み日の無効なLINE通知文から成功通知を送らずエラー通知へ切り替えられませんでした" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
 rm -f "$TEST_REPO/everyday_news/line_message.txt"
 before_missing_line_commit_count="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if run_daily missing-line-change "$TMP_DIR/output-missing-line.log" 0 "$TMP_DIR/notify-state-missing-line"; then
@@ -598,9 +633,21 @@ if [ "$before_missing_line_commit_count" -ne "$after_missing_line_commit_count" 
   cat "$TMP_DIR/output-missing-line.log" >&2
   exit 1
 fi
+curl_count_before_missing_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+commit_count_before_missing_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
 if ! run_daily ok "$TMP_DIR/output-missing-line-retry.log" 0 "$TMP_DIR/notify-state-missing-line"; then
   echo "無効な通知文の失敗後に同日再実行で復旧できませんでした" >&2
   cat "$TMP_DIR/output-missing-line-retry.log" >&2
+  exit 1
+fi
+curl_count_after_missing_line_retry="$(wc -l < "$TMP_DIR/curl.log")"
+commit_count_after_missing_line_retry="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$curl_count_after_missing_line_retry" -ne "$((curl_count_before_missing_line_retry + 1))" ] \
+   || [ "$commit_count_before_missing_line_retry" -ne "$commit_count_after_missing_line_retry" ] \
+   || ! grep -q '本日のAI_newsが更新されました' "$TMP_DIR/curl-body.log"; then
+  echo "公開済み日の無効な通知文を修正した後、LINE成功通知を再送できませんでした" >&2
+  cat "$TMP_DIR/output-missing-line-retry.log" >&2
+  cat "$TMP_DIR/curl-body.log" >&2
   exit 1
 fi
 
