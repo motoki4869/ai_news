@@ -8040,5 +8040,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://artificialanalysis.ai/articles/artificial-analysis-decision-index"
     }
+  ],
+  "2026-10-15": [
+    {
+      "title": "【技術・安全性】DeepMind、端末内の詐欺検知AIを発表——会話を外部へ送らず警告",
+      "intro": "10月14日、Google DeepMindはシンガポール政府技術庁との共同開発による、スマートフォン上で会話型詐欺を検知するAIを発表しました。地域の詐欺会話で調整した軽量モデルGemmaを利用します。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "低消費電力の分類器で受信メッセージを一次判定し、疑わしいものだけ会話の文脈をGemmaで評価します。送金や機密情報の共有前に注意を促す設計です。"
+        },
+        {
+          "label": "プライバシー",
+          "text": "オンデバイスAIとして処理を端末内で完結させ、私的な通信をサーバーで解析する必要をなくします。全利用者への提供開始を発表したものではありません。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/"
+    },
+    {
+      "title": "【ビジネス・政策】Anthropic、シンガポール拠点を開設——政府と安全評価・事故対応の協力を公表",
+      "intro": "10月14日、Anthropicはアジア太平洋で5番目となるシンガポール事務所の開設と、同国政府との協力覚書を公表しました。9月の開設予告に続く実際の開業です。",
+      "points": [
+        {
+          "label": "協力範囲",
+          "text": "モデル評価、試験基準、事故対応の技術交流やAIの社会的影響の研究を計画します。覚書の署名自体は13日に行われたとCNAが報じています。"
+        },
+        {
+          "label": "導入実績",
+          "text": "同社によると、政府技術庁では1500人超の技術者らがClaude Codeを採用しています。現地チームを置き、行政・金融・企業の利用を支援します。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/singapore-office-opening"
+    },
+    {
+      "title": "【産業・研究】DanaherとNVIDIAが提携——AIの予測と実験を循環させる自律科学へ",
+      "intro": "10月14日、米DanaherはNVIDIAと、科学機器・実験自動化・業務ソフトにAIと高速計算を組み込む協業を発表しました。予測から実験による検証までの時間短縮を目指します。",
+      "points": [
+        {
+          "label": "開発方針",
+          "text": "実験結果をモデルの改善に使い、モデルが次の実験設計を助ける循環を構築します。まず優先する機器群から取り組み、対象の拡大を検討します。"
+        },
+        {
+          "label": "実装と限界",
+          "text": "機器側の計算やリアルタイム推論を組み合わせ、デジタルツインの活用も探ります。研究期間の短縮効果が実証済みという発表ではありません。"
+        }
+      ],
+      "url": "https://investors.danaher.com/2026-10-14-Danaher-Collaborates-with-NVIDIA-to-Advance-Autonomous-Science"
+    },
+    {
+      "title": "【産業インフラ】NVIDIA、半導体製造向けcuPotentialを発表——原子シミュレーションをさらに2〜3倍高速化",
+      "intro": "10月14日、米SEMICON WestでNVIDIAは、原子・分子の相互作用を模擬するAIエージェントの開発用ライブラリー「cuPotential」を発表しました。先行利用段階で提供します。",
+      "points": [
+        {
+          "label": "評価結果",
+          "text": "同社によると、既にGPUで最適化した処理に対し、先行試験でさらに2〜3倍の高速化を得ました。製造シミュレーションや検査にも関連技術の採用が広がっています。"
+        },
+        {
+          "label": "導入例",
+          "text": "Lam Researchは3次元データ用ライブラリーNanoVDBでシミュレーションを30倍高速化したと説明しています。対応機能の公開目標は年内で、数値は各社の評価です。"
+        }
+      ],
+      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Semiconductor-Leaders-Advance-AI-Across-Chip-Design-and-Manufacturing-for-AI-Defined-Fabs/default.aspx"
+    },
+    {
+      "title": "【政策・社会】ハリス前米副大統領、AI安全対策を急ぐよう要請——米中協力を提言",
+      "intro": "10月14日、カマラ・ハリス前米副大統領はソウルの峨山政策研究院で、政府と技術企業にAIの安全対策を急ぐよう求めたとReutersが報じました。",
+      "points": [
+        {
+          "label": "懸念の対象",
+          "text": "サイバー脅威、AIを利用する兵器、人間の制御を外れるシステムを重大な危険として挙げ、開発企業も対策の議論に参加すべきだと述べました。"
+        },
+        {
+          "label": "国際協調",
+          "text": "米中の競争が共通リスクへの協力を妨げるべきではないとし、国際的な規則・基準の対話を提言しました。新たな法令や政府合意の成立ではありません。"
+        }
+      ],
+      "url": "https://www.marketscreener.com/news/kamala-harris-warns-window-closing-for-ai-safeguards-urges-us-china-cooperation-ce785dd2db8df321"
+    }
   ]
 };
