@@ -135,6 +135,7 @@ CREATE_OUTPUT=$("$NLM_BIN" create audio "$NOTEBOOKLM_NOTEBOOK_ID" \
   --format deep_dive \
   --length default \
   --language ja \
+  --focus "日本語の二人による対話形式のニュース解説。質問者と回答者の役割を明確に分け、質問者は質問や相づちに徹し、自分の質問に自分で回答しない。回答者が質問に答えて解説し、会話の途中で二人の役割を入れ替えない。自然で聞きやすい掛け合いで、記事の要点と背景を説明する。" \
   --source-ids "$SOURCE_ID" \
   --confirm 2>&1) || fail "NotebookLM音声の生成を開始できませんでした: $CREATE_OUTPUT"
 log "音声生成を開始しました: $SOURCE_TITLE"
