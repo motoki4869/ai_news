@@ -54,8 +54,8 @@ test('日次ニュース更新プロンプトは当日分が5件未満なら補�
 
     assert.match(
       prompt,
-      /実行日と完全一致する日付のセクション[\s\S]*5件未満なら不足分を調査して補い/,
-      `${path.basename(promptPath)} が同日再実行時に5件まで補うよう指示していません`,
+      /実行日と完全一致する日付のセクション[\s\S]*5件未満なら最低5件まで不足分を補い、5件以上7件未満なら追加候補を調査して重要ニュースがあれば7件まで補う/,
+      `${path.basename(promptPath)} が同日再実行時の最低5件と6〜7件の目標を指示していません`,
     );
   }
 });
@@ -64,10 +64,23 @@ test('日次ニュース更新プロンプトは5件未満の成功を禁止し�
   for (const promptPath of PROMPTS) {
     const prompt = fs.readFileSync(promptPath, 'utf8');
 
-    assert.match(prompt, /必ず5件以上/,
+    assert.match(prompt, /5件は最低件数/,
       `${path.basename(promptPath)} が最低5件を指定していません`);
     assert.match(prompt, /validate_daily_news\.py[\s\S]*--min-items 5/,
       `${path.basename(promptPath)} がcommit前の件数検査を指示していません`);
+  }
+});
+
+test('日次ニュース更新プロンプトは5件で調査を止めず、6〜7件を目標にする', () => {
+  for (const promptPath of PROMPTS) {
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    assert.match(prompt, /通常6〜7件を目標/,
+      `${path.basename(promptPath)} が通常の目標件数を6〜7件にしていません`);
+    assert.match(prompt, /5件見つけた時点で調査を終えない/,
+      `${path.basename(promptPath)} が最低件数到達後の追加調査を指示していません`);
+    assert.match(prompt, /重要ニュースがあれば7件まで/,
+      `${path.basename(promptPath)} が重要ニュースの追加を指示していません`);
   }
 });
 
