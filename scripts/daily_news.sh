@@ -17,17 +17,21 @@ fi
 LINE_MSG_FILE="$REPO_DIR/everyday_news/line_message.txt"
 DAILY_SOURCE_FILE="$REPO_DIR/logs/daily_news_source.txt"
 DAILY_NEWS_SOURCE="codex"
+SAVED_SOURCE_DATE=""
 if [ -f "$DAILY_SOURCE_FILE" ]; then
   IFS=$'\t' read -r SAVED_SOURCE_DATE SAVED_SOURCE_AGENT _ < "$DAILY_SOURCE_FILE" || true
-  if [ "${SAVED_SOURCE_DATE:-}" = "$(date +%Y-%m-%d)" ] \
-     && [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
-    DAILY_NEWS_SOURCE="claude"
-  fi
 fi
 
 cd "$REPO_DIR"
 AI_NEWS_DATE="$(date +%Y-%m-%d)"
 AI_NEWS_MIN_ITEMS=5
+NEWS_ALREADY_PUBLISHED=0
+if [ "$SAVED_SOURCE_DATE" = "$AI_NEWS_DATE" ]; then
+  NEWS_ALREADY_PUBLISHED=1
+  if [ "${SAVED_SOURCE_AGENT:-}" = "claude" ]; then
+    DAILY_NEWS_SOURCE="claude"
+  fi
+fi
 export AI_NEWS_DATE
 
 source "$SCRIPT_ROOT/scripts/lib/codex_fallback.sh"
@@ -220,6 +224,10 @@ elif daily_targets_have_unstaged_changes; then
 elif [ -n "$(unpushed_user_commits)" ]; then
   OUTPUT="SUMMARY: ERROR: mainに日次処理以外の未pushのcommitがあるため、AI作業を開始しません"
   STATUS=1
+elif [ "$NEWS_ALREADY_PUBLISHED" -eq 1 ]; then
+  OUTPUT="SUMMARY: OK: 本日のニュースは既に公開済みのため追加更新をスキップ"
+  STATUS=0
+  echo "$OUTPUT"
 elif ! DAILY_TARGET_STATE="$(snapshot_daily_targets)"; then
   OUTPUT="SUMMARY: ERROR: 更新対象の開始時状態を記録できませんでした"
   STATUS=1
@@ -386,11 +394,12 @@ if [ "$STATUS" -eq 0 ] && ! "$PYTHON_BIN" "$SCRIPT_ROOT/scripts/validate_daily_n
   STATUS=1
   ERROR_REASON="当日分ニュースが最低5件に届かないため、成功通知を中止しました"
 fi
-if [ "$STATUS" -eq 0 ]; then
+if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 0 ]; then
   DAILY_NEWS_SOURCE="codex"
   [ "$IS_FALLBACK" -eq 0 ] || DAILY_NEWS_SOURCE="claude"
 fi
-if [ "$STATUS" -eq 0 ] && ! commit_and_push_daily_news; then
+if [ "$STATUS" -eq 0 ] && [ "$NEWS_ALREADY_PUBLISHED" -eq 0 ] \
+   && ! commit_and_push_daily_news; then
   STATUS=1
   ERROR_REASON="日次ニュースの件数検査後のcommit・pushに失敗しました"
 fi

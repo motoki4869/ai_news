@@ -46,6 +46,10 @@ test('日次スクリプトはニュースと用語集の原本・生成物をco
     '日次スクリプトが更新対象だけをcommitして通常Gitインデックスを同期しません');
   assert.match(script, /AI作業用コピー.*\.gitが存在します/,
     'AIへ.gitのない作業用コピーを渡していません');
+  assert.match(script, /SAVED_SOURCE_DATE.*AI_NEWS_DATE[\s\S]*NEWS_ALREADY_PUBLISHED=1/,
+    '公開済み日の再実行を判定していません');
+  assert.match(script, /本日のニュースは既に公開済みのため追加更新をスキップ/,
+    '公開済み日の再実行でAIによる記事追加をスキップしていません');
 });
 
 test('日次ニュース更新プロンプトは当日分が5件未満なら補い、見出しは重複作成しない', () => {
@@ -81,6 +85,12 @@ test('日次ニュース更新プロンプトは5件で調査を止めず、6〜
       `${path.basename(promptPath)} が最低件数到達後の追加調査を指示していません`);
     assert.match(prompt, /重要ニュースがあれば7件まで/,
       `${path.basename(promptPath)} が重要ニュースの追加を指示していません`);
+    assert.match(prompt, /無理に水増ししない/,
+      `${path.basename(promptPath)} がニュースの水増しを禁止していません`);
+    assert.match(prompt, /既存記事が7件を超えていても削除せず/,
+      `${path.basename(promptPath)} が既存記事の過剰な削除を防いでいません`);
+    assert.match(prompt, /公開済みの日の再実行は日次スクリプトがAI更新をスキップする/,
+      `${path.basename(promptPath)} が公開後の再実行ルールを説明していません`);
   }
 });
 

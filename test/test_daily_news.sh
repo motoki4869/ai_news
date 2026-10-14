@@ -235,6 +235,9 @@ run_daily() {
   local codex_mode="$1"
   local output_file="$2"
   local notify_state_dir="${4:-$TMP_DIR/notify-state}"
+  if [ "${6:-0}" != 1 ]; then
+    rm -f "$TEST_REPO/logs/daily_news_source.txt"
+  fi
   set +e
   PATH="$TMP_DIR:$PATH" \
   REPO_DIR="$TEST_REPO" \
@@ -526,6 +529,25 @@ if [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != codex ] \
    || tail -1 "$TMP_DIR/curl-body.log" | grep -q '⚠️Claude Code経由'; then
   echo "後続のCodex成功時に古いClaude経由表示が残りました" >&2
   cat "$TMP_DIR/curl-body.log" >&2
+  exit 1
+fi
+
+agent_context_count_before_rerun="$(wc -l < "$TMP_DIR/agent-context.log")"
+commit_count_before_rerun="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+printf '%s\tclaude\n' "$TODAY" > "$TEST_REPO/logs/daily_news_source.txt"
+if ! run_daily ok "$TMP_DIR/output-published-rerun.log" 0 "$TMP_DIR/notify-state-fallback-line-retry" "" 1; then
+  echo "公開済みニュースの日次再実行に失敗しました" >&2
+  cat "$TMP_DIR/output-published-rerun.log" >&2
+  exit 1
+fi
+agent_context_count_after_rerun="$(wc -l < "$TMP_DIR/agent-context.log")"
+commit_count_after_rerun="$(git -C "$TEST_REPO" rev-list --count HEAD)"
+if [ "$agent_context_count_before_rerun" -ne "$agent_context_count_after_rerun" ] \
+   || [ "$commit_count_before_rerun" -ne "$commit_count_after_rerun" ] \
+   || [ "$(cut -f2 "$TEST_REPO/logs/daily_news_source.txt")" != claude ] \
+   || ! grep -q '本日のニュースは既に公開済みのため追加更新をスキップ' "$TMP_DIR/output-published-rerun.log"; then
+  echo "公開済み日の再実行でAI更新・追加commitを避け、経由マーカーを維持できませんでした" >&2
+  cat "$TMP_DIR/output-published-rerun.log" >&2
   exit 1
 fi
 
