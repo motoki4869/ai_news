@@ -8117,5 +8117,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.marketscreener.com/news/kamala-harris-warns-window-closing-for-ai-safeguards-urges-us-china-cooperation-ce785dd2db8df321"
     }
+  ],
+  "2026-10-16": [
+    {
+      "title": "【研究】DeepMind、Antigravityで抗菌物質を探索——AIが創薬候補の絞り込みを支援",
+      "intro": "10月15日、Google DeepMindは、AI開発基盤Antigravityで新しい抗菌ペプチド候補を探す研究手順を公開しました。生物学者の検索・構造評価・優先順位付けを支援します。",
+      "points": [
+        {
+          "label": "探索方法",
+          "text": "アミノ酸配列から機能を予測するモデルを使い、タンパク質データベースの未解明の配列を調べます。複数のデータベースを行き来する作業をまとめる狙いです。"
+        },
+        {
+          "label": "成果の範囲",
+          "text": "呼吸器感染症の病原体への作用が予測される候補を紹介しています。抗菌ペプチドは微生物に作用する短いアミノ酸の鎖で、治療薬の有効性を実証した発表ではありません。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/accelerating-antimicrobial-discovery/"
+    },
+    {
+      "title": "【開発ツール】CTCと日本IBM、A-Nativeで協業——新規開発から既存システム刷新までAI支援",
+      "intro": "10月15日、伊藤忠テクノソリューションズ（CTC）と日本IBMは、AI駆動開発サービス「A-Native」での協業と、CTCによる提供開始を発表しました。",
+      "points": [
+        {
+          "label": "支援内容",
+          "text": "IBM Bobを中心としたAI開発ツールで、アプリケーション開発と、既存システム刷新に向けた調査・分析を支援します。"
+        },
+        {
+          "label": "事業上の狙い",
+          "text": "新しいコードを書く作業に加え、既存資産の理解と更新も対象にします。企業の新規開発と刷新を一貫して支えるサービスです。"
+        }
+      ],
+      "url": "https://prtimes.jp/main/html/rd/p/000000736.000046783.html"
+    },
+    {
+      "title": "【注目ツール】primeNumber、自律型データ基盤を提供開始——AIがデータの意味・定義も継続更新",
+      "intro": "10月15日、primeNumberは「primeNumber Autonomous Data Platform」の提供を開始しました。AIエージェントがデータ基盤の変化を検知し、データと業務上の文脈の整備を支援します。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "接続先の仕様や指標定義の変更を検知し、影響するデータや業務を調べて修正案を提示します。用語や指標の定義も更新対象です。"
+        },
+        {
+          "label": "人の役割",
+          "text": "管理画面で人が確認・監督し、提案承認や例外判断は顧客が担います。AIに任せる範囲と監査要件は導入企業ごとに設計します。"
+        }
+      ],
+      "url": "https://primenumber.com/news/47322/"
+    },
+    {
+      "title": "【フィジカルAI】埼玉県の支援事業から対話ロボットの新機能——介護・教育・観光へ展開を後押し",
+      "intro": "10月15日、埼玉県は、丸文とフレンドリーテックがAIコミュニケーションロボットの新機能を公開したと発表しました。県の企業連携支援プログラム「Canvas」から生まれた取り組みです。",
+      "points": [
+        {
+          "label": "公開内容",
+          "text": "新機能は「ケビートーク」と「ケビーリモコン」の2種類です。県は介護現場をはじめ、教育や観光などでの活用を期待しています。"
+        },
+        {
+          "label": "産業支援",
+          "text": "拠点「渋沢MIX」が企業をマッチングし、事業化を伴走支援しました。今回は機能公開の発表で、現場の負担軽減効果を数値で実証したものではありません。"
+        }
+      ],
+      "url": "https://www-pref-saitama.public.ilb.jp-east-3.idcfcloud.net/a0803/news/page/news2026101501.html"
+    },
+    {
+      "title": "【政策】米政府のAIタスクフォース、全体会合を予定——安全対策の方針づくりへ",
+      "intro": "10月15日、Reutersは、米連邦取引委員会（FTC）報道官の説明として、トランプ政権の新しいAIタスクフォースが同日会合を開く予定だと報じました。",
+      "points": [
+        {
+          "label": "体制",
+          "text": "国家情報長官のJay Clayton氏が率い、人事管理局、FTC、国防部門の幹部が参加します。政権は組織を「Super Intelligence Task Force」と呼んでいます。"
+        },
+        {
+          "label": "確認範囲",
+          "text": "初の全体会合後に目的と責任を定める文書を公表する見通しです。報道時点では開催予定の確認で、新規制の決定や会合完了を伝えたものではありません。"
+        }
+      ],
+      "url": "https://www.marketscreener.com/news/trump-s-ai-task-force-to-meet-thursday-ftc-spokesperson-says-ce785dd3df88ff23"
+    },
+    {
+      "title": "【ビジネス・市場】AI関連株の売りが世界へ波及——借入依存の計算基盤に資金調達リスク",
+      "intro": "10月15日、Reuters Breakingviewsは、AI関連株の下落と、借入で計算設備を拡張する企業の資金調達リスクを分析しました。インフレ上昇が市場を圧迫しています。",
+      "points": [
+        {
+          "label": "市場動向",
+          "text": "CoreWeaveは14日の15%下落に続き、15日の米市場の時間外取引で6%超下落しました。韓国KOSPIも15日の取引中に約8%下げたとしています。"
+        },
+        {
+          "label": "分析の論点",
+          "text": "投資意欲が落ちると、借入の多いAI計算基盤企業の設備拡張資金が確保しにくくなる可能性を指摘しています。資金不足が確定したという報道ではなく、市場動向を踏まえた論評です。"
+        }
+      ],
+      "url": "https://www.breakingviews.com/40925ca4af2b/columns/breaking-view/ai-boom-stumbles-over-white-swan-events-2026-10-15/"
+    }
   ]
 };
