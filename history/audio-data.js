@@ -378,5 +378,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-15.m4a",
     "label": "2026-10-15のAIニュース音声",
     "title": "スマホ防衛から自律科学へのAI安全保障"
+  },
+  "2026-10-16": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-16.m4a",
+    "label": "2026-10-16のAIニュース音声",
+    "title": "AI進化の壁はウォール街の金利"
   }
 };
