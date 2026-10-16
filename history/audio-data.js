@@ -383,5 +383,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-16.m4a",
     "label": "2026-10-16のAIニュース音声",
     "title": "AI進化の壁はウォール街の金利"
+  },
+  "2026-10-17": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-17.m4a",
+    "label": "2026-10-17のAIニュース音声",
+    "title": "巨大AIの野心と物理インフラの限界"
   }
 };
