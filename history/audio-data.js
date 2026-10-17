@@ -388,5 +388,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-17.m4a",
     "label": "2026-10-17のAIニュース音声",
     "title": "巨大AIの野心と物理インフラの限界"
+  },
+  "2026-10-18": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-18.m4a",
+    "label": "2026-10-18のAIニュース音声",
+    "title": "勝手にPCを操作する自律AIの衝撃"
   }
 };
