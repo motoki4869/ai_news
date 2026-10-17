@@ -8316,5 +8316,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.datacenterdynamics.com/en/news/nscales-glomfjord-data-center-delayed-site-suffers-leaks-in-cooling-system-and-a-fire/"
     }
+  ],
+  "2026-10-18": [
+    {
+      "title": "【技術】DeepSeek、V4.1-Flash-1017を公開——コード性能の改善と出力短縮を両立",
+      "intro": "10月17日、DeepSeekは画像と文章を扱う公開モデル「V4.1-Flash-1017」をリリースしました。既存のV4.1-Flashを更新し、推論・開発・エージェント業務を改善します。",
+      "points": [
+        {
+          "label": "評価結果",
+          "text": "自社評価でDeepSWE v1.1は74.2から77.0へ、端末操作のTerminal-Bench 4.0は31.2から42.3へ上昇しました。結果は評価環境に依存します。"
+        },
+        {
+          "label": "利用条件",
+          "text": "重みとコードはMITライセンスで、最大100万トークンの文脈に対応します。出力長と実行時間も減らしたと説明しています。"
+        }
+      ],
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017"
+    },
+    {
+      "title": "【研究】Claude、8種類の量子回路を改良——一部設計で演算回数を17分の1に",
+      "intro": "10月17日（日本時間）、AnthropicはClaudeによる量子回路設計の研究を公表しました。化学・最適化・物理・数論など8課題で、既存の公開設計を上回る結果を報告しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "自然言語の仕様と、正しさ・効率を採点する評価器を与え、Claudeが設計と修正を反復しました。人の介入を抑えた探索です。"
+        },
+        {
+          "label": "成果の範囲",
+          "text": "楕円曲線の計算では、従来の最小設計より量子ビットを12%増やす代わりに、量子ゲート数を17分の1にする案を得ました。実用量子コンピューターの完成を示すものではありません。"
+        }
+      ],
+      "url": "https://www.anthropic.com/research/designing-efficient-quantum-circuits"
+    },
+    {
+      "title": "【規制】Anthropic、米議会に安全法案を提案——重大危険時のモデル公開阻止を構想",
+      "intro": "10月17日（日本時間）、BloombergはPoliticoの初報を踏まえ、Anthropicが先端AIの安全・セキュリティを規律する独自法案を米議員に提示したと報じました。",
+      "points": [
+        {
+          "label": "介入条件",
+          "text": "50人超の死傷や10億ドル超の損害を切迫して引き起こす危険がある場合に、政府が公開を阻止できる案です。生物兵器、サイバー攻撃、人間の制御からの逸脱などを対象にします。"
+        },
+        {
+          "label": "成立状況",
+          "text": "企業からの提案段階で、法律の成立や政府による採用が決まったわけではありません。介入を認める危険の水準が論点になります。"
+        }
+      ],
+      "url": "https://news.bloomberglaw.com/us-law-week/anthropic-pitches-ai-safety-bill-to-lawmakers-politico-says"
+    },
+    {
+      "title": "【安全保障】北朝鮮、AI搭載魚雷の試験成功を主張——標的検知の自動化を宣伝",
+      "intro": "10月17日、北朝鮮の国営通信は、AIによる標的検知・誘導を使うとする魚雷「Zam-2.0」の試験成功を発表しました。APによると試験自体は15日です。",
+      "points": [
+        {
+          "label": "発表内容",
+          "text": "推進系は過去5年間に180回超の試験を経たとしていますが、AIの具体的な機能や性能は説明していません。"
+        },
+        {
+          "label": "確認の限界",
+          "text": "韓国軍の即時コメントはなく、主張の独立した検証は示されていません。自律的な標的選定能力が確立したとは判断できません。"
+        }
+      ],
+      "url": "https://apnews.com/article/b9856c5697a043f74586719974dad6cc"
+    },
+    {
+      "title": "【ビジネス・市場】CoreWeave株が11.9%下落——AI設備投資への警戒が相場を圧迫",
+      "intro": "10月17日早朝（日本時間）に終了した16日の米国市場で、AI計算基盤のCoreWeave株が11.9%下落しました。Kiplingerは設備投資とAIバブルへの懸念を伝えています。",
+      "points": [
+        {
+          "label": "関連銘柄",
+          "text": "半導体ETFのVanEck Semiconductor ETFは3.4%、NVIDIAは1.4%下落しました。AI関連株の売りが主要指数にも重荷となりました。"
+        },
+        {
+          "label": "新たな動き",
+          "text": "既に続いていた売り圧力に加え、この日の終値で大幅安が確定しました。市場の警戒を示す動きで、AI需要の消失を実証するものではありません。"
+        }
+      ],
+      "url": "https://www.kiplinger.com/investing/stocks/nasdaq-buckles-on-fear-this-boom-is-an-ai-bubble-stock-market-today"
+    },
+    {
+      "title": "【社会・経済】マスク氏、財政再建をAIとロボットに託す——歳出削減の限界を語る",
+      "intro": "10月17日、Axiosはイーロン・マスク氏と伝記作家ウォルター・アイザックソン氏の新しい対談内容を独自報道しました。マスク氏は政府内部からの削減だけでは赤字問題を解決できないと述べています。",
+      "points": [
+        {
+          "label": "主張",
+          "text": "自ら率いたDOGEの経験を踏まえ、AIとロボットによる経済活動の拡大に期待を示しました。"
+        },
+        {
+          "label": "位置付け",
+          "text": "財政再建を技術による成長に託す個人の見解です。政府の新方針や、赤字削減効果を検証した研究ではありません。"
+        }
+      ],
+      "url": "https://www.axios.com/newsletters/axios-am-045ff9f8-09fb-496d-9127-4068091fbea5"
+    }
   ]
 };
