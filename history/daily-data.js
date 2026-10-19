@@ -8485,5 +8485,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://github.com/parthh01/sphinx"
     }
+  ],
+  "2026-10-20": [
+    {
+      "title": "【ガバナンス】Anthropic、株式5%を公益基金へ拠出——企業価値の上昇に応じて拠出を積み増す仕組み",
+      "intro": "10月19日（日本時間）、米Anthropicは自社株式の5%を新設の「Anthropic Public Benefit Fund」に拠出する計画を発表しました。米国時間18日（日曜）の発表で、株主の承認を条件とします。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "企業価値が50%上がるごとに、さらに2%を追加で拠出できる設計です。基金は非営利法人ではなく同社が全額出資するLLCとし、寄付の形を柔軟に選べるようにしています。"
+        },
+        {
+          "label": "用途と制約",
+          "text": "非営利団体への寄付、特定の人々への直接分配、AIが労働者に与える影響への対応などを想定します。保有株をロビー活動や政治献金に使わないとし、統治体制や評価額の基準は今後数カ月で開示する予定です。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/public-benefit-fund"
+    },
+    {
+      "title": "【技術】MiniMax、M3.1 Flashを正式公開——エージェント業務の費用を70%削減と主張",
+      "intro": "10月19日、中国MiniMaxはエージェント業務・コーディング・コンピューター操作向けの新モデル「M3.1 Flash」を公開しました。9月27日に自社のコーディングツール内で試験提供していたモデルの正式版です。",
+      "points": [
+        {
+          "label": "性能と価格",
+          "text": "同社によると、オンライン推論は約3倍速くなり、エージェント業務の利用コストは70%下がりました。API料金は入力100万トークン当たり0.15ドル、出力0.60ドルです。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "MiniMax API、M Plan、MiniMax Codeで利用でき、OpenRouterで匿名公開されていた「Space Bunny」が初期版だったと明かしました。重みは後日公開予定で、性能値は同社の評価です。"
+        }
+      ],
+      "url": "https://www.minimax.io/blog/minimax-m31f"
+    },
+    {
+      "title": "【産業インフラ】NVIDIA、独自HBMのベースダイをTSMC 3nmに集約と報道——Samsungも競合工場に委託へ",
+      "intro": "10月19日、TrendForceは韓国Seoul Economic Dailyの報道として、NVIDIAが独自仕様のHBM「NVHBM」のベースダイを、Samsung・SK hynix・MicronのいずれもTSMCの3nmで製造するよう求めたと伝えました。",
+      "points": [
+        {
+          "label": "異例の協業",
+          "text": "報道によるとSamsungは要請に応じ、HBMの製造工程で初めて競合のTSMCを使う形になります。自社ファウンドリーも、TSMCの生産能力が不足した場合の予備として試験しています。"
+        },
+        {
+          "label": "背景と留保",
+          "text": "業界推計ではTSMC 3nmの歩留まりは90%超、Samsungの2nm（SF2）は約60%とされ、この差が委託の理由とみられています。各社の公式発表ではなく、報道段階の情報です。"
+        }
+      ],
+      "url": "https://trendforce.com/news/2026/10/19/news-nvidia-reportedly-pushes-tsmc-3nm-nvhbm-base-dies-for-samsung-sk-hynix-micron-in-unlikely-foundry-tie-up"
+    },
+    {
+      "title": "【ビジネス・市場】アジアの半導体株が7月以来の安値——AI投資の資金調達不安とDeepSeekの効率化が重荷",
+      "intro": "10月19日、Bloombergのアジア半導体株指数は2%超下落し、7月以来の安値を付けました。TSMC、SK hynix、日本のAdvantestが主な押し下げ要因になりました。",
+      "points": [
+        {
+          "label": "売りの理由",
+          "text": "借入コストの上昇で、AI計算基盤の拡張に必要な資金調達が難しくなるとの懸念が続いています。DeepSeekの新モデルの効率化で、AIに必要な記憶装置の需要が減るとの見方も売りにつながりました。"
+        },
+        {
+          "label": "読み方",
+          "text": "先週から続くAI関連株の下落の延長です。一方、資金調達の不安が半導体の受注減少に表れた証拠は乏しいとの指摘もあり、需要の縮小が確認されたわけではありません。"
+        }
+      ],
+      "url": "https://www.bloomberg.com/news/articles/2026-10-19/korean-stocks-fall-as-deepseek-model-funding-worry-rattle-chips"
+    },
+    {
+      "title": "【政策】ソウルでGlobal AI & Digital Summit開幕——約60カ国の閣僚がAI政策の実行を議論",
+      "intro": "10月19日、韓国科学技術情報通信部と世界銀行が共催する「Global AI & Digital Summit」がソウルで開幕しました。米国以外での開催は初めてです。",
+      "points": [
+        {
+          "label": "閣僚会合",
+          "text": "裴慶勲（ペ・ギョンフン）副首相兼科学技術情報通信部長官と世界銀行のキム・サンブ副総裁が共同議長を務め、約60カ国が「From Ambition to Action（構想から実行へ）」をテーマに議論しました。"
+        },
+        {
+          "label": "今後の日程",
+          "text": "20〜21日に政策フォーラムと企業展示を開きます。李在明大統領も同日に世界銀行のバンガ総裁と会い、AIとエネルギー基盤での協力拡大を話し合う予定と報じられました。"
+        }
+      ],
+      "url": "https://www.koreatimes.co.kr/business/tech-science/20261019/global-ai-digital-summit-kicks-off-3-day-run-in-seoul"
+    },
+    {
+      "title": "【ビジネス】Boomi、イスラエルのElementary Dataを4000万ドル超で買収——AIに渡すデータの品質管理を強化",
+      "intro": "10月19日、米ペンシルベニア州のデータ連携ソフト企業Boomiが、イスラエルのElementary Dataを4000万ドル超で買収すると報じられました。同社にとって3件目のAI関連スタートアップ買収です。",
+      "points": [
+        {
+          "label": "買収先",
+          "text": "Elementary Dataは社員17人で、データの欠損や異常を監視する「データ可観測性」のツールを開発しています。主にデータ変換ツールdbtの利用者を対象にしています。"
+        },
+        {
+          "label": "狙い",
+          "text": "AIエージェントが企業データを使って業務を進めるほど、元データの信頼性が結果を左右します。データ連携と品質監視を一体で提供する動きです。"
+        }
+      ],
+      "url": "https://www.inquirer.com/business/artificial-intelligence-data-agents-startup-merger-20261019.html"
+    },
+    {
+      "title": "【注目ツール】AIエージェントで「賢すぎるテレビ」を素のテレビへ——広告・追跡の除去に活用広がる",
+      "intro": "10月19日、TechCrunchは、スマートテレビの所有者がAIエージェントを使い、広告や不要なアプリ、視聴データの追跡機能を取り除く動きを紹介しました。",
+      "points": [
+        {
+          "label": "具体例",
+          "text": "ある開発者はオープンソースの「dumbtv」を公開し、別の利用者はClaude Codeに手順を案内させて設定を変更したと説明しています。"
+        },
+        {
+          "label": "意味と留保",
+          "text": "専門知識が必要だった機器の設定変更を、エージェントが手順ごとに支援する実用例です。メーカーの公式機能ではなく、手順や影響は機種によって異なります。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/10/19/people-are-using-ai-to-make-their-smart-tvs-dumb-again"
+    }
   ]
 };
