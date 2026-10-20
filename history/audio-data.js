@@ -403,5 +403,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-20.m4a",
     "label": "2026-10-20のAIニュース音声",
     "title": "AIはソフトウェアから社会インフラへ"
+  },
+  "2026-10-21": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-21.m4a",
+    "label": "2026-10-21のAIニュース音声",
+    "title": "電力が足りないAIと物理世界の壁"
   }
 };
