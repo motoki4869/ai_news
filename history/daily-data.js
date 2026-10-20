@@ -8592,5 +8592,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://techcrunch.com/2026/10/19/people-are-using-ai-to-make-their-smart-tvs-dumb-again"
     }
+  ],
+  "2026-10-21": [
+    {
+      "title": "【政策】政府がAI・デジタル改革推進会議を新設——規制見直しと社会実装を横断推進",
+      "intro": "10月20日、日本政府は「AI・デジタル改革推進会議」の開催を閣議決定しました。人口減少下での経済成長と公共サービス維持に向け、AI活用に伴う制度改革を政府横断で進めます。",
+      "points": [
+        {
+          "label": "対象範囲",
+          "text": "規制・制度・運用ルールの見直し、AI・デジタル基盤の検討、社会実装を扱います。AIによるリスクの最小化を前提に掲げています。"
+        },
+        {
+          "label": "体制",
+          "text": "内閣官房長官とAI・デジタル改革推進担当大臣が議長を務め、デジタル庁が庶務を担当します。従来のデジタル行財政改革会議の検討事項を引き継ぎます。"
+        }
+      ],
+      "url": "https://www.digital.go.jp/councils/ai_digital"
+    },
+    {
+      "title": "【技術】llm-d 1.0公開——エージェントの文脈再利用と無停止更新を推論基盤に統合",
+      "intro": "10月20日、Red HatやIBM、Google Cloudなどが参加する分散推論プロジェクト「llm-d」が1.0を公開しました。複数の計算機でモデルを配信する際の効率と本番運用の安定性を強化します。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "会話の中間情報が残る配信先へ後続の要求を送り、文脈の再計算を減らします。優先度と公平性を考慮した制御で、突発的なエージェント処理と対話処理を共存させます。"
+        },
+        {
+          "label": "運用改善",
+          "text": "安定版の設定APIと、配信を止めずに更新する仕組みを整備しました。モデルの能力に加え、継続運用時の費用と信頼性を改善する公開基盤です。"
+        }
+      ],
+      "url": "https://www.redhat.com/en/about/press-releases/llm-d-1-advances-open-cost-efficient-ai-inference-production-scale"
+    },
+    {
+      "title": "【資金調達・産業】Ardaが累計2億3200万ドル調達を公表——製品設計から組立ラインへの変換をAI化",
+      "intro": "10月20日、米Arda Industriesは事業を公開し、累計2億3200万ドルの資金調達を発表しました。元OpenAI最高研究責任者Bob McGrewらが設立し、製造工程の設計と更新をAIで支援します。",
+      "points": [
+        {
+          "label": "資金の内訳",
+          "text": "シード7200万ドルに続き、シリーズAで1億6000万ドルを調達しました。シリーズAの評価額は15億ドルで、Altimeter、Accel、Khosla Venturesが共同主導しています。"
+        },
+        {
+          "label": "実用化と用途",
+          "text": "最初の顧客AndurilではArsenalOSの一部として導入されています。防衛・電子機器・データセンター供給網への展開と、組立自動化向けロボットモデルの開発を進めます。"
+        }
+      ],
+      "url": "https://www.businesswire.com/news/home/20261020574393/en/"
+    },
+    {
+      "title": "【開発ツール】TorchNeuronが公開ベータへ——PyTorchからAWS独自AIチップを利用しやすく",
+      "intro": "AWSのAIチップTrainium向け「TorchNeuron」は、10月20日を公開ベータの開始日としました。19日に発表されていた開発基盤が、利用開始の節目を迎えます。",
+      "points": [
+        {
+          "label": "利用方法",
+          "text": "PyTorchの標準的なAPIからTrainiumを扱うための接続基盤です。実行先を「neuron」に指定する方式で、既存コードや開発手順を活用しやすくします。"
+        },
+        {
+          "label": "位置付け",
+          "text": "NVIDIA以外の計算基盤を試す際の移行負担を下げる狙いがあります。ベータ段階のため、個々の処理の互換性や性能は別途確認が必要です。"
+        }
+      ],
+      "url": "https://pytorch.org/blog/introducing-torchneuron-native-pytorch-backend-for-aws-trainium/"
+    },
+    {
+      "title": "【産業インフラ】Goldmanが電力制約をAI投資の主要リスクに——データセンター需要は2030年までに170%増予測",
+      "intro": "10月20日、AxiosはGoldman Sachsの新報告を独自に紹介しました。世界のデータセンター電力需要が2025〜2030年に170%増え、増加分の60%超を米国が占めると予測しています。",
+      "points": [
+        {
+          "label": "供給の壁",
+          "text": "発電・送電設備の整備や許認可は、AI技術の進歩より時間がかかります。電力の確保が計算基盤の拡張を左右するとの分析です。"
+        },
+        {
+          "label": "計画への影響",
+          "text": "報告によると年初から86件の計画が中止または大幅延期となり、76件は地元の反対に直接関連しています。借入で進む投資では、建設の遅れが資金面のリスクにもなります。"
+        }
+      ],
+      "url": "https://www.axios.com/2026/10/20/goldman-ai-energy-infrastructure-bottleneck"
+    },
+    {
+      "title": "【ガバナンス】ZoomがAI管理・偽映像検知を発表——エージェントの利用と出力を企業側で統制",
+      "intro": "10月20日、Zoomは年次イベントZoomtopiaで、AIの稼働状況、出力内容、機密情報を管理する新機能群を発表しました。導入企業の管理者がAI利用を監査・制御するための機能です。",
+      "points": [
+        {
+          "label": "管理機能",
+          "text": "AIの集中管理と映像・音声の改変リスク検知は12月を予定しています。出力から特定情報を除外したり、人の確認を求めたりする独自ルールは2027年1〜3月を予定しています。"
+        },
+        {
+          "label": "提供状況",
+          "text": "Microsoft Purviewの機密ラベルをZoom MeetingsとWhiteboardに同期する機能は提供済みです。各機能は異なる時期に提供されます。"
+        }
+      ],
+      "url": "https://news.zoom.com/zoomtopia-2026-security/"
+    },
+    {
+      "title": "【注目ツール】Thought IndustriesがLensを投入——分散した顧客向け知識をAI案内の共通基盤へ",
+      "intro": "10月20日、米Thought Industriesは新製品「Lens」と「Customer Knowledge AI Platform」を発表しました。複数のシステムや部門に分かれた製品知識をまとめ、顧客やAIエージェントへの案内に使う構想です。",
+      "points": [
+        {
+          "label": "解決する課題",
+          "text": "情報源ごとに回答が食い違ったり、古い説明が残ったりすると、顧客が製品を使いこなせなくなります。問い合わせ対応と製品定着を支える知識の一貫性を重視します。"
+        },
+        {
+          "label": "業務上の意味",
+          "text": "回答を生成するAIとともに、その根拠となる製品情報を整える層への投資です。正確性や導入効果の改善は同社が掲げる狙いで、独立した実証値は示されていません。"
+        }
+      ],
+      "url": "https://trainingindustry.com/press-release/sales/thought-industries-launches-lens-and-unveils-customer-knowledge-ai-platform-breaking-the-knowledge-silos-holding-businesses-and-their-customers-back/"
+    }
   ]
 };
