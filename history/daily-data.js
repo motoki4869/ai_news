@@ -8699,5 +8699,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://trainingindustry.com/press-release/sales/thought-industries-launches-lens-and-unveils-customer-knowledge-ai-platform-breaking-the-knowledge-silos-holding-businesses-and-their-customers-back/"
     }
+  ],
+  "2026-10-22": [
+    {
+      "title": "【産業インフラ】NVIDIA、工場組立型DSX PODを発表——準備済み拠点への設置を最短14日に",
+      "intro": "10月21日、NVIDIAはベルリンのGTCで、AI計算設備をコンテナに組み込む「DSX POD」の参照設計を発表しました。提携企業による世界向けの供給開始は2027年初めを予定しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "計算機、通信機器、配線、電源、液冷設備を工場で統合・検証してから搬送します。現地での専門作業や部品の組み合わせに伴う負担を減らす設計です。"
+        },
+        {
+          "label": "短縮の条件",
+          "text": "同社は設置期間を従来の6カ月から最短14日に短縮できるとしています。ただし電力・冷却・通信などが整った敷地が前提で、用地整備や電力確保の期間を含む数字ではありません。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/news/nvidia-introduces-dsx-pod-ai-factories-to-accelerate-europes-infrastructure-deployment"
+    },
+    {
+      "title": "【ガバナンス】NVIDIA、OpenShell参照設計を公開——AIエージェントを専用半導体側から監視・隔離",
+      "intro": "10月21日、NVIDIAは企業や現場機器で自律AIを運用する「OpenShell Reference Architecture」を発表し、提供を開始しました。既存の実行環境ソフトを、計算機から監視機構まで含む設計へ広げます。",
+      "points": [
+        {
+          "label": "制御の分離",
+          "text": "モデルの推論をVera Rubin、ツール操作などをVera CPUで処理し、BlueField-4という専用プロセッサー上のSentryが挙動を監視します。境界を越えようとするエージェントを半導体側で隔離する構成です。"
+        },
+        {
+          "label": "導入の意味",
+          "text": "AI本体と監視を分離し、企業の権限ルールを実行時にも適用する狙いです。Microsoft、SAP、セキュリティ企業などが対応を進めていますが、個々の製品の統合状況は異なります。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/news/openshell-reference-architecture"
+    },
+    {
+      "title": "【開発ツール】Cohere、Rerank 5を公開——検索順位の改善に加え、回答に必要な箇所だけ抽出",
+      "intro": "10月21日、Cohereは企業内検索向けの「Rerank 5 Pro」と「Fast」を公開しました。検索結果を質問との関連度で並べ直すリランキングに、文書内の関連箇所を返す機能を加えています。",
+      "points": [
+        {
+          "label": "実用上の変化",
+          "text": "任意機能のContext Focusは、関連箇所の位置と得点を同じ呼び出しで返します。文書全体を言語モデルへ送る代わりに必要な部分を選び、入力の量と費用を抑える用途があります。"
+        },
+        {
+          "label": "対応範囲",
+          "text": "100以上の言語と3万2000トークンの文脈に対応します。既存文書の索引や埋め込みを作り直さずモデルを切り替えられ、品質重視のProと速度・費用重視のFastを選べます。"
+        }
+      ],
+      "url": "https://docs.cohere.com/v2/changelog/rerank-v5"
+    },
+    {
+      "title": "【産業・研究】MistralとNVIDIA、工学AIで協業——設計・物理計算・モデル改善を循環へ",
+      "intro": "10月21日、MistralはNVIDIAとの産業工学向け協業を発表しました。Mistral Large 4などのモデルと物理シミュレーション技術を組み合わせ、航空宇宙・自動車・半導体の設計業務を支援します。",
+      "points": [
+        {
+          "label": "開発の狙い",
+          "text": "設計、シミュレーション、AIモデルの開発をつなぎ、計算結果を次の設計や学習に反映する流れを目指します。3Dシーンやシミュレーション用素材の生成にも取り組みます。"
+        },
+        {
+          "label": "検証の基盤",
+          "text": "物理モデルと工学ツールを操作するエージェント向けに、公開データセットと評価基準を整備する計画です。技術的な正しさに加え、実行時間や計算費用も測る方針です。"
+        }
+      ],
+      "url": "https://mistral.ai/news/mistral-nvidia-ai-for-industrial-engineering/"
+    },
+    {
+      "title": "【フィジカルAI】Reliable Robotics、商用空港で自律飛行実証を公表——遠隔監督下で地上走行から着陸まで自動化",
+      "intro": "10月21日、Reliable Roboticsは米ニューメキシコ州のアルバカーキ国際空港で、連邦航空局などの試行制度に基づく初の自律飛行実証を完了したと発表しました。民間機と軍用機が利用する空域で既存の管制運用との接続を検証しました。",
+      "points": [
+        {
+          "label": "実証の範囲",
+          "text": "改修したCessna 208Bで自動地上走行・離陸・着陸を実施しました。700マイル以上離れた本社の遠隔操縦士と機内の安全操縦士が監督しています。"
+        },
+        {
+          "label": "次の段階",
+          "text": "地方空港への日常的な貨物配送を計画し、運航データを制度整備に役立てます。今回の発表は実証の完了であり、一般的な商用自律運航の認証取得を意味しません。"
+        }
+      ],
+      "url": "https://www.tmcnet.com/usubmit/-reliable-robotics-sunport-complete-first-autonomous-flights-under-/2026/10/21/10467346.htm"
+    },
+    {
+      "title": "【政策・産業】英国、AIによる適合確認へ500万ポンドの公募開始——開発企業と導入企業の共同実装を支援",
+      "intro": "10月21日、英国のInnovate UKはBridgeAI事業で、規則や基準への適合をAIで監視・検証する共同事業の申請受付を開始しました。公募情報は13日に公表済みで、21日は受付開始の節目です。",
+      "points": [
+        {
+          "label": "支援対象",
+          "text": "総額500万ポンドを用意し、既存のAI・機械学習技術を実務へ導入する案件を募ります。申請期限は12月8日です。"
+        },
+        {
+          "label": "実装の条件",
+          "text": "英国のAI中小企業が主導し、導入先となる中堅・大企業を必須の参加者とします。2〜3組織の共同体を条件に、技術開発だけでなく利用現場との連携を求めています。"
+        }
+      ],
+      "url": "https://www.ukri.org/opportunity/bridgeai-deployment-catalyst-ai-for-assurance-and-compliance/"
+    },
+    {
+      "title": "【政策・安全保障】国連の軍縮研究所、軍事AIの国際フォーラムを準備——人間の判断が縮むリスクを議論へ",
+      "intro": "日本時間10月21日配信のAP報道によると、国連軍縮研究所は軍事AIを扱う国際フォーラムを22日に立ち上げる予定です。軍事判断へのAI浸透に対し、主要な関係者が対応を話し合う場を設けます。",
+      "points": [
+        {
+          "label": "問題意識",
+          "text": "早期警戒や情報収集、偵察などにAIが入り込み、人間がどの段階で制御を失うのかを見極めにくくなっていると同研究所は指摘しています。"
+        },
+        {
+          "label": "位置付け",
+          "text": "新たな議論の枠組みを設ける計画であり、規制条約の成立や軍事利用の禁止が決まったものではありません。報道時点では発足前の予定です。"
+        }
+      ],
+      "url": "https://www.arabnews.com/world/new-un-initiative-will-aim-to-tackle-the-military-uses-of-ai-3007436"
+    }
   ]
 };
