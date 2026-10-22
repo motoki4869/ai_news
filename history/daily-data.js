@@ -8806,5 +8806,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.arabnews.com/world/new-un-initiative-will-aim-to-tackle-the-military-uses-of-ai-3007436"
     }
+  ],
+  "2026-10-23": [
+    {
+      "title": "【注目ツール】Anthropic、Claude Duetを試験公開——指示を待たずに仕事を見つける常駐エージェント",
+      "intro": "10月22日（日本時間）、Anthropicは業務担当者や小規模事業者向けの「Claude Duet」を研究プレビューとして発表しました。米国21日午後の発表で、米国のPro・Max契約者を対象に待機リストから提供します。",
+      "points": [
+        {
+          "label": "働き方",
+          "text": "接続したアプリを定期的に確認し、朝の要約や注意が必要な事項を通知します。利用者が離席してもクラウド上で作業を続け、既存プランの利用枠を消費します。"
+        },
+        {
+          "label": "操作の境界",
+          "text": "メッセージ送信、支払い、署名、削除などを実行する前には利用者の承認を求めます。回答するチャットから、継続して仕事を追う支援役へ広げる製品です。"
+        }
+      ],
+      "url": "https://claude.com/resources/articles/claude-duet"
+    },
+    {
+      "title": "【ビジネス】Meta、四半期売上26%増——AI事業拡大と投資負担が決算に同居",
+      "intro": "10月22日（日本時間）、Metaは2026年7〜9月期決算を発表しました。米国21日午後公表の売上高は646億100万ドルで、前年同期比26%増でした。",
+      "points": [
+        {
+          "label": "収益と費用",
+          "text": "営業利益は129億8800万ドルで37%減、営業利益率は40%から20%へ低下しました。ただし費用には青少年の精神的健康を巡る訴訟の和解関連費用98億9000万ドルが含まれ、利益減をAI投資だけには帰せません。"
+        },
+        {
+          "label": "経営の重点",
+          "text": "Zuckerberg氏は個人向けエージェントMuseとモデルMuse Wonderを四半期の節目として挙げました。既存事業の成長と、新しいAI事業への投資を並行して進めています。"
+        }
+      ],
+      "url": "https://www.marketscreener.com/news/meta-reports-third-quarter-2026-results-ce785cd9dd8cf620"
+    },
+    {
+      "title": "【資金調達・フィジカルAI】Enact、3000万ドルで事業公開——ロボットの駆動部から力を感じる学習へ",
+      "intro": "10月22日、スイスのEnact Intelligenceは事業を公開し、2668万ユーロ（3000万ドル）のプレシード調達を発表しました。redalpine、Notion Capital、firstminute capitalなどが参加しました。",
+      "points": [
+        {
+          "label": "技術の狙い",
+          "text": "視覚に偏った認識を補うため、ロボットを動かす駆動部から直接、力のデータを取得します。物を扱う際の接触や負荷を学び、動作の確実性を高める構想です。"
+        },
+        {
+          "label": "実用化への投資",
+          "text": "12人のチームを2027年末までに5倍へ拡大し、製造、インフラ、小売、食品加工の協力企業と導入を進める計画です。量産性能や導入効果が確立した段階ではありません。"
+        }
+      ],
+      "url": "https://www.eu-startups.com/2026/10/backed-by-yann-lecun-and-arthur-mensch-swiss-physical-ai-startup-enact-intelligence-exits-stealth-with-e26-68-million/"
+    },
+    {
+      "title": "【資金調達・産業】Beyond Vision、2800万ユーロ超を調達——AIドローンの群制御と量産を強化",
+      "intro": "10月22日、ポルトガルのBeyond Visionは2800万ユーロ超の資金調達完了を発表しました。Índico Capital PartnersとLince Capitalが共同主導し、既存株主ActiveCapも追加出資しました。",
+      "points": [
+        {
+          "label": "資金の用途",
+          "text": "産業生産能力の拡大、AIと複数機を協調させる群制御の開発、海外展開に充てます。民間と防衛の両用途を対象とします。"
+        },
+        {
+          "label": "運用基盤",
+          "text": "同社は機体に加え、遠隔管理基盤beXStreamを開発しています。機体の販売だけでなく、防衛・重要インフラ監視の運用全体を支える事業を拡大します。"
+        }
+      ],
+      "url": "https://www.eu-startups.com/2026/10/lisbons-beyond-vision-raises-over-e28-million-to-scale-ai-drones-for-civilian-and-defence-markets/"
+    },
+    {
+      "title": "【産業・研究】Prox、三菱電機のロボット研究支援を公表——複数機の協調を仮想環境で検証",
+      "intro": "10月22日、Prox Industriesは三菱電機のフィジカルAI研究開発に対し、複数ロボットの協調動作を検証するシミュレーション活用を技術支援したと発表しました。",
+      "points": [
+        {
+          "label": "支援内容",
+          "text": "NVIDIA OmniverseとIsaac Simを使った環境整備から、状況に応じた行動の実装、ロボット間の情報共有と協調動作の検証までを支援しました。"
+        },
+        {
+          "label": "研究上の課題",
+          "text": "個々の機体の認識・判断・制御を、通信による連携と組み合わせる必要があります。今回の公表は研究基盤づくりの支援で、商用の自律協調システム発売ではありません。"
+        }
+      ],
+      "url": "https://robotstart.info/article/2026/10/22/382553.html"
+    },
+    {
+      "title": "【注目ツール】FMV、冬モデルで端末内AIを強化——会議の画面記録を文字で検索可能に",
+      "intro": "10月22日、富士通クライアントコンピューティングはFMV冬モデル5シリーズ11機種を発表し、23日から順次提供すると明らかにしました。Copilot+ PC対応機の拡充と独自AIアプリの更新を進めます。",
+      "points": [
+        {
+          "label": "記録の再利用",
+          "text": "会議や授業の画面変化を自動保存するQuick Captureに、画像内の文字を認識して検索する機能を追加します。大量の記録から必要な情報を探しやすくします。"
+        },
+        {
+          "label": "端末での処理",
+          "text": "写真・動画を整理するReclipは、AI専用回路のNPUを使い、解析の高速化とシステム負荷の軽減を図ります。AIを日常の記録・検索に組み込む更新です。"
+        }
+      ],
+      "url": "https://www.fmv.com/20261022-1_news-press-releases.html"
+    }
   ]
 };
