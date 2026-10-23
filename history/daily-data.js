@@ -8898,5 +8898,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.fmv.com/20261022-1_news-press-releases.html"
     }
+  ],
+  "2026-10-24": [
+    {
+      "title": "【注目ツール】Sakana AI、Aquariumを発表——組織の知識と承認をつなぐ業務エージェント基盤",
+      "intro": "10月23日、Sakana AIは企業の意思決定から実行までを支援する「Sakana Aquarium」を発表しました。業務データの意味と関係を定義するオントロジーを土台に、エージェントの構築・運用をまとめます。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "文書や表を既存の保存先に置いたまま接続し、組織固有の知識・ルールを共通化します。一度整えた基盤は別のエージェントでも再利用できます。"
+        },
+        {
+          "label": "統制",
+          "text": "アクセス権限と実行前の人の承認を設定し、判断根拠から実行結果まで記録します。個別案件で繰り返していたデータ接続や判断基準の整理を共通基盤に移す狙いです。"
+        }
+      ],
+      "url": "https://sakana.ai/aquarium-release/"
+    },
+    {
+      "title": "【技術】Anthropic、123ライブラリの安全性を数学で検証——AIが証明を書く開発へ",
+      "intro": "日本時間10月23日、AnthropicはTheoremとの研究を公表し、Claudeが123の公開ソフトウェアライブラリの239入口について、一定条件でクラッシュしないことを形式検証したと発表しました。米国22日の発表です。",
+      "points": [
+        {
+          "label": "検証方法",
+          "text": "コンパイル後の命令を数学的に表し、Claudeが生成した約1億8000万行の証明を、独立した証明検査器Rocqで確認しました。証明の一部と検証に必要な定義を公開しています。"
+        },
+        {
+          "label": "保証の範囲",
+          "text": "対象はRISC-V上のLinux、単一スレッド、固定メモリー、最大64MBの入力などの前提下です。ライブラリ全体や現実の全環境で不具合がないという保証ではありません。"
+        }
+      ],
+      "url": "https://www.anthropic.com/research/formal-verification"
+    },
+    {
+      "title": "【注目ツール】Canva、独自画像モデルCraftを公開——描く前に構図と文字を計画",
+      "intro": "10月23日（日本時間）、Canvaは自社開発した画像生成モデル「Canva Craft」を公開しました。米国22日昼の発表で、CanvaのDream Labから世界の利用者に提供します。",
+      "points": [
+        {
+          "label": "二段階の生成",
+          "text": "まず要素の配置・大小・文字などを計画し、別のモデルが画像にします。最大2K解像度と30種類超の縦横比に対応するとしています。"
+        },
+        {
+          "label": "デザインへの特化",
+          "text": "学習には自社ライブラリの人が制作したテンプレートを活用しました。Magic Layersと組み合わせて生成画像を編集可能な要素へ変換でき、制作後の修正につなげます。"
+        }
+      ],
+      "url": "https://www.canva.com/newsroom/news/canva-craft/"
+    },
+    {
+      "title": "【技術】MiniMax、M3.1 Flashの重みを公開——API限定から自社運用可能なモデルへ",
+      "intro": "10月23日、MiniMaxはM3.1 Flashのモデル重みを公式Hugging Faceリポジトリに公開しました。19日のAPI提供開始に続く、ダウンロードと独自環境での検証・運用を可能にする更新です。",
+      "points": [
+        {
+          "label": "モデル構成",
+          "text": "総パラメーターは約4280億で、各トークンでは約230億を使います。文章・画像・動画を入力でき、最大100万トークンの文脈を扱います。"
+        },
+        {
+          "label": "導入条件",
+          "text": "配信向けの実行手順も公開しています。独自のMiniMax Community Licenseが適用されるため、重みの公開を無条件の商用利用許可と同一視せず、用途ごとの条件確認が必要です。"
+        }
+      ],
+      "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash"
+    },
+    {
+      "title": "【資金調達】Pathos AI、2億3700万ドル調達——製薬大手がAI主導の臨床開発に出資",
+      "intro": "10月23日、米Pathos AIはBristol Myers Squibb主導のシリーズEで2億3700万ドルを調達したと発表しました。調達後評価額は約30億ドルです。",
+      "points": [
+        {
+          "label": "資金の用途",
+          "text": "独自AI基盤Foundryの拡張と、4つの臨床段階のがん治療候補の開発に充てます。候補薬の見極めや臨床試験の設計・運用をAIで支援します。"
+        },
+        {
+          "label": "開発段階",
+          "text": "特にJSKN016の承認申請に向けた試験を進める方針です。今回の資金調達は開発を進めるためのもので、薬効の実証や販売承認を意味しません。"
+        }
+      ],
+      "url": "https://www.pathos.com/pathos-ai-secures-237-million-in-series-e-financing-to-scale-agentic-ai-drug-development-platform-and-advance-oncology-pipeline"
+    },
+    {
+      "title": "【産業インフラ】カザフスタン、4万5000基のGPU導入計画——電力資源をAI計算拠点へ",
+      "intro": "10月23日、NVIDIAのJensen Huang氏がカザフスタンを訪問し、同国政府とFirebirdの投資協定に合わせてAI計算基盤の拡張計画が公表されました。",
+      "points": [
+        {
+          "label": "整備規模",
+          "text": "FirebirdはNVIDIA Grace Blackwell GPU 4万5000基の米国輸出許可を取得したとしています。Kazakhtelecomと建設中の第1期は2027年7〜9月の商用開始を目指します。"
+        },
+        {
+          "label": "国内産業への接続",
+          "text": "第2期を含む潜在容量は約500MWです。計算資源に加え、地元の新興企業・研究・人材育成を支えるFirebird Labs Kazakhstanも設ける計画で、全設備が稼働済みではありません。"
+        }
+      ],
+      "url": "https://blogs.nvidia.com/blog/kazakhstan-ai-compute-ecosystem/"
+    },
+    {
+      "title": "【規制・社会】Etsy、AI製レシピや手芸手順を禁止——完成まで試せない商品の信頼を保護",
+      "intro": "日本時間10月23日に報じられた米Etsyの方針更新では、AIが生成したレシピや編み図など、購入者が作業して成果物を得るための手順を販売対象から除外しました。米国22日付の公式方針で確認できます。",
+      "points": [
+        {
+          "label": "禁止の理由",
+          "text": "購入者が材料と時間を使ってから誤りに気付くリスクを挙げています。個別の人の関与がないボットによる商品・出品の大量自動生成も禁止します。"
+        },
+        {
+          "label": "認める利用",
+          "text": "販売者が創作に関与し、AI利用を説明するアート作品は引き続き認めます。商品画像にAIを使う場合は、実物を実際の背景で撮った未編集写真を最低1枚求めます。"
+        }
+      ],
+      "url": "https://www.etsy.com/seller-handbook/article/1275449912004"
+    }
   ]
 };
