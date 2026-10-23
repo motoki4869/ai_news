@@ -418,5 +418,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-23.m4a",
     "label": "2026-10-23のAIニュース音声",
     "title": "画面を飛び越えて現実世界で動く自律型AI"
+  },
+  "2026-10-24": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-24.m4a",
+    "label": "2026-10-24のAIニュース音声",
+    "title": "AIの数学的証明と人間による制御"
   }
 };
