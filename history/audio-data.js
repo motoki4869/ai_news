@@ -423,5 +423,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-24.m4a",
     "label": "2026-10-24のAIニュース音声",
     "title": "AIの数学的証明と人間による制御"
+  },
+  "2026-10-25": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-25.m4a",
+    "label": "2026-10-25のAIニュース音声",
+    "title": "デジタルの檻を抜け出したAIの現実進出"
   }
 };
