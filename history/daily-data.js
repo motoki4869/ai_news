@@ -9097,5 +9097,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.gov.uk/government/news/chancellor-unveils-britains-ambitious-plan-for-ai"
     }
+  ],
+  "2026-10-26": [
+    {
+      "title": "【産業インフラ】孫正義氏のマレーシア500億ドル投資構想が判明——東南アジアへAI基盤を拡張",
+      "intro": "10月25日、Bloombergはマレーシア首相の説明を基に、孫正義氏が同国でAI・新技術・データセンターに500億ドルを投じる構想を報じました。前日の投資構想に、投資主体が孫氏であるという情報が加わった報道です。",
+      "points": [
+        {
+          "label": "候補地",
+          "text": "サラワク州のクチンとマレー半島が挙がっています。首相は20日のオンライン会談で孫氏から説明を受けたとしています。"
+        },
+        {
+          "label": "確定状況",
+          "text": "SoftBank側の確認は得られておらず、実施時期や資金の内訳も未公表です。投資完了額ではなく、首相が明らかにした計画として捉える必要があります。"
+        }
+      ],
+      "url": "https://www.businesstimes.com.sg/international/softbanks-son-plans-us50-billion-malaysia-tech-outlay-anwar-ibrahim"
+    },
+    {
+      "title": "【技術】Nanbeige、33Bモデルの評価・利用情報を公開——小型モデルへの「教師」を育成",
+      "intro": "10月25日、Nanbeigeはコーディングと業務エージェント向け「Nanbeige4.3-33B」の公開を告知しました。重みのアップロードは24日に先行しており、25日にモデルカードの評価情報が整備されました。",
+      "points": [
+        {
+          "label": "仕様",
+          "text": "約330億パラメータで最大524,288トークンを扱い、Apache 2.0で重みを利用できます。過去の推論を保持する設定を備え、複数段階のツール操作を想定しています。"
+        },
+        {
+          "label": "評価と用途",
+          "text": "開発元の評価ではTerminal-Bench 2.1で80.9、DeepSWEで65.5を記録しました。独立検証は未確認で、今後はこのモデルを教師として、より小さな3Bモデルへ能力を移す計画です。"
+        }
+      ],
+      "url": "https://huggingface.co/Nanbeige/Nanbeige4.3-33B"
+    },
+    {
+      "title": "【研究・医療】皮膚病変200例で旧来CNNが汎用LLMを上回る——正診率と安全性は別の指標",
+      "intro": "10月25日、英国の皮膚科医Magnus Lynch氏は、病理診断済みの皮膚病変200例で、画像専用の畳み込みニューラルネットワーク（CNN）と先端LLMを比較した検証を公開しました。",
+      "points": [
+        {
+          "label": "結果",
+          "text": "追加学習したInception v3の第一候補の正診率は62%で、GPT-6 AstraとClaude Fable 5.1の約42%を上回りました。画像、質問、回答、採点コードも公開しています。"
+        },
+        {
+          "label": "評価の限界",
+          "text": "CNNは初期設定では危険な病変を見逃しやすく、正診率が高いだけで臨床的に安全とは言えません。200例の限定的な検証であり、LLMの回答も各例1回だけという制約があります。"
+        }
+      ],
+      "url": "https://lynchlab.net/llm-skin-cancer"
+    },
+    {
+      "title": "【政策】APが米中AI陣営の選択圧力を取材——第三国の「両取り」が難しくなる構図",
+      "intro": "10月25日、AP通信は米国のPax Silicaと中国の世界AI協力機構（WAICO）を巡り、双方と協力したい国々への圧力を取材報道しました。新組織の発足発表ではなく、各国の立場と米国側の見解を伝える記事です。",
+      "points": [
+        {
+          "label": "具体例",
+          "text": "カザフスタンは米国主導の供給網協力に加わった後、中国側の枠組みにも参加しました。先端半導体へのアクセスと、比較的安価な中国製AIの活用を両立したい事情があります。"
+        },
+        {
+          "label": "対立点",
+          "text": "米国務省は競合する構想への実質的な関与と信頼できるパートナーであることは両立しないとの立場を示しました。技術選択だけでなく、インフラ投資と国際標準への参加にも関わる問題です。"
+        }
+      ],
+      "url": "https://www.clickorlando.com/business/2026/10/25/as-the-us-and-china-form-ai-blocs-countries-are-increasingly-torn-between-them/"
+    },
+    {
+      "title": "【倫理・社会】AIの道徳を宗教に学ぶ動きをAPが検証——価値観の平均化に専門家が懸念",
+      "intro": "10月25日、AP通信はAI企業が宗教者や哲学者に助言を求める動きを取材し、異なる伝統を共通の道徳規則へまとめる難しさを報じました。",
+      "points": [
+        {
+          "label": "企業の姿勢",
+          "text": "Anthropicなどは多様な価値観をモデルの振る舞いに生かそうとしています。今回の記事は新たな提携発表ではなく、その取り組みを巡る取材報道です。"
+        },
+        {
+          "label": "争点",
+          "text": "専門家は、宗教を単純な規則集として扱うと、文化や実践の違いが失われ、特定の伝統へ偏る可能性を指摘しています。"
+        }
+      ],
+      "url": "https://abcnews.com/Technology/wireStory/make-ai-morally-good-tech-companies-turning-religion-137549995"
+    },
+    {
+      "title": "【開発者・社会】RedditのAI関連投稿禁止に反発、別コミュニティが発足——開発支援AIの線引きが争点に",
+      "intro": "10月25日、PPC LandはRedditのr/opensourceでAI関連プロジェクトの禁止を巡る議論が約1,400件に達し、別コミュニティr/TrueOpenSourceが作られたと報じました。禁止方針そのものは24日の投稿です。",
+      "points": [
+        {
+          "label": "運営の理由",
+          "text": "AIを使う・AIで作る・AI向けというプロジェクトを排除し、保守実績などの掲載条件も厳しくしました。運営側は大量の低品質投稿や例外申請への対応負担を挙げています。"
+        },
+        {
+          "label": "新たな論点",
+          "text": "AI支援の貢献を受け入れるLinuxまで排除されるのかという批判に、運営者はLinuxは認めると説明しました。25日に続いた反発と分岐は、AIの利用有無だけで品質を判断する難しさを示しています。"
+        }
+      ],
+      "url": "https://ppc.land/r-opensource-bans-ai-built-projects-for-its-98-000-weekly-visitors/"
+    }
   ]
 };
