@@ -428,5 +428,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-25.m4a",
     "label": "2026-10-25のAIニュース音声",
     "title": "デジタルの檻を抜け出したAIの現実進出"
+  },
+  "2026-10-26": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-26.m4a",
+    "label": "2026-10-26のAIニュース音声",
+    "title": "正診率62%のAIが隠す致命的な罠"
   }
 };
