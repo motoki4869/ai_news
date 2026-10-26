@@ -433,5 +433,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-26.m4a",
     "label": "2026-10-26のAIニュース音声",
     "title": "正診率62%のAIが隠す致命的な罠"
+  },
+  "2026-10-27": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-27.m4a",
+    "label": "2026-10-27のAIニュース音声",
+    "title": "巨額AI投資と4億行のコード書き換え"
   }
 };
