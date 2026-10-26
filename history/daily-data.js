@@ -9189,5 +9189,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://ppc.land/r-opensource-bans-ai-built-projects-for-its-98-000-weekly-visitors/"
     }
+  ],
+  "2026-10-27": [
+    {
+      "title": "【ビジネス】Anthropic、上場申請書を公開——Claudeの成長を公開市場へ",
+      "intro": "10月26日、米Anthropicが新規株式公開に向けた申請書を公開したとAP通信が報じました。11月の上場を目指す動きです。",
+      "points": [
+        {
+          "label": "業績",
+          "text": "上半期の売上高は160億ドル超でしたが、まだ黒字化していません。"
+        },
+        {
+          "label": "段階",
+          "text": "上場は開発・事業拡大の資金源になります。実際の調達額、公開価格、最終評価額は未確定です。"
+        }
+      ],
+      "url": "https://apnews.com/article/anthropic-ipo-shares-public-ca2f4c282bef3201a392e59e3df2300c"
+    },
+    {
+      "title": "【資金調達】Meta、最大950億ドルの株式調達を計画——AI基盤を支える大型増資へ",
+      "intro": "10月26日、米MetaはAIインフラ拡張などに向け、最大950億ドルの株式調達計画を明らかにしました。まず350億ドルを調達する方針です。",
+      "points": [
+        {
+          "label": "内訳",
+          "text": "初回は普通株約225億ドルと転換型優先株125億ドルです。NVIDIA、AMD、Broadcomは合計最大50億ドルの株式購入に関心を示しています。"
+        },
+        {
+          "label": "使途",
+          "text": "アプリ事業、AIエージェントMuse、計算基盤などへの投資を支えます。950億ドルは計画の上限で、全額調達済みではありません。"
+        }
+      ],
+      "url": "https://finance.yahoo.com/markets/article/meta-announces-plans-to-raise-up-to-95-billion-for-ai-buildout-140141962.html"
+    },
+    {
+      "title": "【フィジカルAI】GXO、Digitを米2拠点へ追加導入——人型ロボットが複数倉庫へ展開",
+      "intro": "10月26日、GXO LogisticsとAgility Roboticsは、人型ロボットDigitを米ノースカロライナ州とテネシー州の拠点へ広げると発表しました。運用開始は2027年初めの予定です。",
+      "points": [
+        {
+          "label": "実績",
+          "text": "既存のジョージア州の倉庫では、Digitが搬送容器を累計10万個超移動したと両社は説明しています。追加拠点でも電子商取引向けの反復的な荷扱いを担います。"
+        },
+        {
+          "label": "方式",
+          "text": "機器と運用支援を継続料金で提供するRaaS契約を拡大します。まずDigit 4を使い、Digit 5の商用提供後に移行する計画です。"
+        }
+      ],
+      "url": "https://www.agilityrobotics.com/content/gxo-and-agility-robotics-expand-partnership-to-accelerate-deployment-of-humanoids-in-u-s-operations"
+    },
+    {
+      "title": "【技術】Microsoft、大規模コード移行手法を公開——AIの生成速度に検証を追い付かせる",
+      "intro": "10月26日、MicrosoftはWindowsやAzureの巨大なコードをAIエージェントで移行・更新する取り組みを公式記事で紹介しました。新製品の公開ではなく、社内の開発・検証手法の報告です。",
+      "points": [
+        {
+          "label": "対象",
+          "text": "約4億行のコードのコンパイラー移行や、メモリー安全性を重視する言語Rustへの書き換えを扱います。専門家が修正方針を承認し、エージェントが広範囲に適用します。"
+        },
+        {
+          "label": "検証",
+          "text": "動作比較、エージェントに見せないテスト、数学で条件を確かめる形式検証を組み合わせます。AIが推定した仕様自体が正しいかという課題も認めています。"
+        }
+      ],
+      "url": "https://commandline.microsoft.com/agentic-software-engineering-large-scale-code-migration-language-modernization-spec-driven-development/"
+    },
+    {
+      "title": "【産業・資金調達】Ailytics、740万ドル調達——既存カメラを現場の安全管理AIへ",
+      "intro": "10月26日、シンガポールのAilyticsはTin Men Capital主導のシリーズAで740万ドルを調達したと発表しました。日本、米国、豪州、湾岸地域で展開を進めます。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "既存の監視カメラ映像から空間や作業状況を解析します。新しい推論エンジンは、場面の文脈や複数段階の作業手順を確認し、警告の精度向上を目指します。"
+        },
+        {
+          "label": "規模",
+          "text": "同社によると2024年の4カ国70案件から15カ国400件超の導入へ拡大しました。カメラの全面交換に頼らず、重工業や建設現場の安全管理を支援します。"
+        }
+      ],
+      "url": "https://www.aap.com.au/aapreleases/cision20261025ae80348/"
+    }
   ]
 };
