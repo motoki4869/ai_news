@@ -438,5 +438,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-27.m4a",
     "label": "2026-10-27のAIニュース音声",
     "title": "巨額AI投資と4億行のコード書き換え"
+  },
+  "2026-10-28": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-28.m4a",
+    "label": "2026-10-28のAIニュース音声",
+    "title": "画面から玄関先へ進出するAI"
   }
 };
