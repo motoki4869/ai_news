@@ -9266,5 +9266,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.aap.com.au/aapreleases/cision20261025ae80348/"
     }
+  ],
+  "2026-10-28": [
+    {
+      "title": "【技術】Google、Genie 4を研究公開——音も対話も生成する操作可能な世界モデルへ",
+      "intro": "10月27日、Google DeepMindは仮想環境をリアルタイムに生成する世界モデル「Genie 4」を発表しました。信頼するテスター向けの研究プレビューから提供を始めています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "映像とともに環境音、音楽、登場人物の対話を生成し、操作や文章の指示に応じて場面を変化させます。Gemini系列の能力を組み合わせています。"
+        },
+        {
+          "label": "用途と限界",
+          "text": "ロボットの訓練環境や対話型体験への応用を想定します。長時間の物体の一貫性や複雑な物理挙動には課題があり、一般利用者への提供は今後です。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
+    },
+    {
+      "title": "【注目ツール】IBM、AIエージェントのID・権限制御を拡張——業務を任せる範囲を明確に",
+      "intro": "10月27日、IBMは米アトランタのTechXchangeで、AIエージェントの所有者・権限・行動を管理する機能を発表しました。HashiCorp Vaultとwatsonx Orchestrateを組み合わせます。",
+      "points": [
+        {
+          "label": "制御",
+          "text": "Agent Identityで責任者と権限を記録し、Vaultが短時間で失効する認証情報を提供します。許可外の操作に対してアクセスを拒否し、セッションを取り消す設計です。"
+        },
+        {
+          "label": "提供段階",
+          "text": "Vault 2.2、Agent Identity、Orchestrateの評価機能は一般提供です。エージェントの発見・隔離機能は技術プレビューです。"
+        }
+      ],
+      "url": "https://newsroom.ibm.com/2026-10-27-ibm-introduces-identity-and-control-for-ai-agents%2C-securing-frontier-intelligence-for-the-enterprise?lnk=hpls2us"
+    },
+    {
+      "title": "【安全保障】豪当局、AIによるサイバー脅威に警鐘——重要インフラへの攻撃拡大を懸念",
+      "intro": "10月27日、AFP通信は、豪州の通信情報局が年次サイバー脅威報告で、AIによる「前例のない」脅威を警告したと報じました。",
+      "points": [
+        {
+          "label": "攻撃側の変化",
+          "text": "AIが、外国政府や犯罪者によるネットワーク・重要インフラへの攻撃の規模拡大を助けていると当局は指摘しています。"
+        },
+        {
+          "label": "防御にも活用",
+          "text": "当局はAIの有益な用途も認め、報告書の作成にも一部のAIツールを利用しました。攻撃への転用と防御への活用が同時に進んでいます。"
+        }
+      ],
+      "url": "https://www.afp.com/en/australia-warns-unprecedented-ai-threat"
+    },
+    {
+      "title": "【資金調達】Luxor、1600万ドル調達——採掘事業の基盤をAI計算資源取引へ展開",
+      "intro": "10月27日、Decryptは、米Luxor TechnologyがCMT Digital主導で1600万ドルの戦略ラウンドを実施したと報じました。採掘で築いた電力・機器・取引の事業をAI計算へ広げます。",
+      "points": [
+        {
+          "label": "使途",
+          "text": "クラウド基盤、AI機器事業の運転資金、計算資源のデリバティブ取引、人材採用に充てます。ラウンドには新株と既存株の取引が含まれます。"
+        },
+        {
+          "label": "事業の変化",
+          "text": "計算資源の賃料指数に連動する取引で価格変動に備える手段を提供します。9月のLuxor AI立ち上げに続く、今回の新たな資金調達です。"
+        }
+      ],
+      "url": "https://decrypt.co/381847/bitcoin-mining-firm-luxor-raises-16-million-ai-compute"
+    },
+    {
+      "title": "【技術】Baidu、Unlimited-OCR-2を公開——長文書の読み取りでメモリー増大を抑制",
+      "intro": "10月27日、Baiduは文書画像を文字や構造へ変換するOCRモデル「Unlimited-OCR-2」を公開しました。長い文書でも処理を継続できる新しい注意機構を採用しています。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "文字・画像の参照情報を固定サイズに圧縮し、各生成ステップの遅延とメモリー使用量をほぼ一定に保つと説明しています。文書全体の処理時間が一定になるという意味ではありません。"
+        },
+        {
+          "label": "利用と評価",
+          "text": "重みはMITライセンスで公開され、複数ページをまとめて解析できます。数十〜数百ページの評価で最高水準とする結果は開発元の報告で、独立検証は未確認です。"
+        }
+      ],
+      "url": "https://huggingface.co/baidu/Unlimited-OCR-2"
+    },
+    {
+      "title": "【産業】Arrive AI、住宅へ初の配送端末を設置——荷物の受け渡しを端末内AIで確認",
+      "intro": "10月27日、米Arrive AIはインディアナ州中部の住宅に、配送物を安全に保管するAP3 Plusを初めて設置したと発表しました。住宅での日常利用を確認する試験事例です。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "端末内で画像モデルを動かし、荷物の到着と受け渡しを追跡します。データも端末内に保存します。"
+        },
+        {
+          "label": "今回の新規性",
+          "text": "製品発表は10月7日で、今回は初の住宅設置です。将来のロボットやドローンとの受け渡しも想定しますが、今回それらの配送運用が始まったとは発表していません。"
+        }
+      ],
+      "url": "https://investors.arriveai.com/news-releases/news-release-details/arrive-ai-installs-first-arrive-pointtm-residential-unit"
+    }
   ]
 };

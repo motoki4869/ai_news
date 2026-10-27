@@ -239,9 +239,15 @@ window.GLOSSARY = [
       },
       {
         "term": "<strong>世界モデル / WFM</strong>",
-        "sub": "World Foundation Model",
-        "desc": "物理世界の振る舞いを学習した基盤モデル。NVIDIA Cosmos 3 などが該当し、Mixture-of-Transformers（MoT）を基礎にセンサー入力から物理的な因果を予測する。フィジカルAI・デジタルツインの中核。",
-        "q": "世界モデル / wfm world foundation model 物理世界の振る舞いを学習した基盤モデル。nvidia cosmos 3 などが該当し、mixture-of-transformers（mot）を基礎にセンサー入力から物理的な因果を予測する。フィジカルai・デジタルツインの中核。"
+        "sub": "World Foundation Model（ワールド・ファウンデーション・モデル）",
+        "desc": "環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。2026年10月27日発表のGoogle DeepMindのGenie 4は、操作可能な仮想環境に映像だけでなく環境音や対話も生成し、ロボットの訓練などへの応用を想定する。生成した世界が現実の物理法則を正確に再現する保証はなく、長時間の一貫性や複雑な物理挙動は検証が必要になる。",
+        "q": "世界モデル / wfm world foundation model（ワールド・ファウンデーション・モデル） 環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。2026年10月27日発表のgoogle deepmindのgenie 4は、操作可能な仮想環境に映像だけでなく環境音や対話も生成し、ロボットの訓練などへの応用を想定する。生成した世界が現実の物理法則を正確に再現する保証はなく、長時間の一貫性や複雑な物理挙動は検証が必要になる。"
+      },
+      {
+        "term": "<strong>OCR</strong>",
+        "sub": "Optical Character Recognition（光学文字認識）",
+        "desc": "紙の文書や画像に含まれる文字を、検索や編集に使えるデータへ変換する技術。文書向けAIでは文字だけでなく表や段落、ページをまたぐ構造の復元も扱う。2026年10月27日にBaiduが公開したUnlimited-OCR-2は、参照情報を固定サイズに圧縮し、長い文書で各生成ステップのメモリー使用量や遅延が増える問題を抑える設計を採用している。",
+        "q": "ocr optical character recognition（光学文字認識） 紙の文書や画像に含まれる文字を、検索や編集に使えるデータへ変換する技術。文書向けaiでは文字だけでなく表や段落、ページをまたぐ構造の復元も扱う。2026年10月27日にbaiduが公開したunlimited-ocr-2は、参照情報を固定サイズに圧縮し、長い文書で各生成ステップのメモリー使用量や遅延が増える問題を抑える設計を採用している。"
       },
       {
         "term": "<strong>Terminal-Bench / Terminal-Bench-Science</strong>",
