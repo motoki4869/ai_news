@@ -443,5 +443,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-28.m4a",
     "label": "2026-10-28のAIニュース音声",
     "title": "画面から玄関先へ進出するAI"
+  },
+  "2026-10-29": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-29.m4a",
+    "label": "2026-10-29のAIニュース音声",
+    "title": "電力網と法務を動かす自律型AI"
   }
 };
