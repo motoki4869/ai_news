@@ -9358,5 +9358,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://investors.arriveai.com/news-releases/news-release-details/arrive-ai-installs-first-arrive-pointtm-residential-unit"
     }
+  ],
+  "2026-10-29": [
+    {
+      "title": "【技術】Google、Gemini 4 Carbonを発表——長時間の開発作業とサイバー防御を強化",
+      "intro": "10月28日、Googleは先端モデル「Gemini 4 Carbon」を発表しました。まず一部のサイバー防御担当者へ提供し、Fairwindプログラムで対象を広げます。",
+      "points": [
+        {
+          "label": "評価",
+          "text": "Googleによると、脆弱性発見のSEC-bench Proで88.2%、修正のCWE-benchで71.0%を記録しました。評価条件に依存する数字で、一般業務の成功率ではありません。"
+        },
+        {
+          "label": "提供段階",
+          "text": "開発者・企業・一般利用者への提供は今後です。導入価格は100万トークン当たり入力2ドル、出力10ドルで、導入期間後は各4ドル、20ドルになります。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/"
+    },
+    {
+      "title": "【技術】Liquid AI、LFM3を公開——約20億パラメータ級で音声・画像・判断を手元の機器へ",
+      "intro": "日本時間10月28日、Liquid AIは小型モデル群「LFM3」を公開しました。米国27日の発表で、文章、画像、音声、複数形式の入力、選択肢の判断に対応する6モデルを共通基盤から開発しています。",
+      "points": [
+        {
+          "label": "運用",
+          "text": "開発元によると、文章モデルは4ビット量子化で約1GBに収まり、各モデルをGPU1基で追加学習できます。端末や自社サーバーでの利用も想定します。"
+        },
+        {
+          "label": "公開条件",
+          "text": "重みは公開されていますが、年間売上高1000万ドル以上の企業による商用利用には別途契約が必要です。公開と無条件の商用利用は異なります。"
+        }
+      ],
+      "url": "https://huggingface.co/blog/LiquidAI/lfm3"
+    },
+    {
+      "title": "【注目ツール】Anthropic、法務向けArtifactsを公開——契約比較と出典確認を再利用可能な道具に",
+      "intro": "10月28日、AnthropicはClaude for Legalに、自社資料に合わせて調整・共有できる対話型ツール「Artifacts」のギャラリーを追加しました。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "引用と原典の照合、複数契約の一覧比較、標準条項との差分確認、規制変更の追跡を扱います。回答や出力から根拠資料へたどれます。"
+        },
+        {
+          "label": "業務接続",
+          "text": "60超の法務向けコネクターに対応し、社内資料や調査サービスと接続できます。Claudeが一次処理を行い、弁護士が結果を判断する運用です。"
+        }
+      ],
+      "url": "https://claude.com/resources/articles/introducing-artifacts-for-legal-work"
+    },
+    {
+      "title": "【産業インフラ】PingThingsとDominion Energy、5年提携——7年分の電力網データをAI活用へ",
+      "intro": "10月28日、米PingThingsとDominion Energy Virginiaは、電力網データ基盤の拡張に向けた5年間の提携を発表しました。7年間蓄積した高精細な観測データへAIを適用します。",
+      "points": [
+        {
+          "label": "対象",
+          "text": "PredictiveGridを通じ、世界最大級のデータセンター集積地域に電力を送る送電網の時系列データを活用します。過去の観測記録は後から再取得できない資産です。"
+        },
+        {
+          "label": "背景",
+          "text": "両社は対象地域の電力需要が今後20年で2倍超になると見込んでいます。今回はデータ基盤と共同開発の拡大で、AIによる停電削減効果の実証発表ではありません。"
+        }
+      ],
+      "url": "https://www.pingthings.io/press/pingthings-dominion-five-year-alliance-grid-data-historian/"
+    },
+    {
+      "title": "【注目ツール】Droma、障害分析・予防エージェントを一般提供——IT運用を復旧から再発防止へ",
+      "intro": "10月28日、米DromaはProblem Manager AgentとSRE Agentの一般提供を発表しました。既存の障害対応エージェントと復旧・原因分析・設計改善をつなぎます。",
+      "points": [
+        {
+          "label": "役割",
+          "text": "Problem Managerは過去の障害や変更履歴から再発原因を分析します。サービスの信頼性を設計・運用で改善するSRE（Site Reliability Engineering）を担うエージェントは、構成・容量・依存関係から障害につながる条件を探します。"
+        },
+        {
+          "label": "統制",
+          "text": "判断根拠を示し、人に引き継ぐ仕組みを備えると説明しています。企業が役割・操作・リスク別に、支援、承認付き実行、自律運用の範囲を決めます。"
+        }
+      ],
+      "url": "https://www.prweb.com/releases/droma-launches-problem-manager-and-sre-agents-to-transform-role-based-ai-from-it-incident-response-to-prevention-302921787.html"
+    },
+    {
+      "title": "【倫理・社会】AP、米上院選のAI偽動画を取材——実在人物の名前と写真が虚偽告発に悪用",
+      "intro": "日本時間10月28日、AP通信は、米上院選候補を中傷する動画が実在人物の名前や写真を無断使用していると報じました。専門家はAI生成・改変とロシア系工作網の関与の可能性を指摘しています。",
+      "points": [
+        {
+          "label": "被害",
+          "text": "ブラウン候補の元インターンは、自分に帰属された動画内の主張を虚偽だと否定しました。"
+        },
+        {
+          "label": "拡散",
+          "text": "Xは最初の投稿とアカウントを削除しましたが、複製は残りました。AI利用と関与主体は専門家の分析で、当局の確定認定ではありません。"
+        }
+      ],
+      "url": "https://www.clickorlando.com/news/politics/2026/10/28/disinformation-videos-likely-from-russia-are-exploiting-real-people-to-malign-senate-candidates/"
+    }
   ]
 };
