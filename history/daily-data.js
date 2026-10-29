@@ -9450,5 +9450,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.clickorlando.com/news/politics/2026/10/28/disinformation-videos-likely-from-russia-are-exploiting-real-people-to-malign-senate-candidates/"
     }
+  ],
+  "2026-10-30": [
+    {
+      "title": "【産業】AGIBOT、Workenを提案——ロボットの価値を台数から実働成果へ",
+      "intro": "10月29日、AGIBOTは上海で、ロボットが自律的に生む有用な仕事を測る「Worken」を発表しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "稼働中の台数、自律作業時間、基準作業に対する成果の効率比を掛け合わせます。通電時間と自律的に働く時間を分けて評価します。"
+        },
+        {
+          "label": "普及条件",
+          "text": "同社が提案する枠組みで、確立した業界標準ではありません。作業別の基準と実運用データを蓄積して検証する方針です。"
+        }
+      ],
+      "url": "https://www.agibot.com/article/231/detail/131.html"
+    },
+    {
+      "title": "【資金調達】FuriosaAI、6.2億ドル調達——推論専用半導体の量産拡大へ",
+      "intro": "日本時間10月29日配信の発表で、韓国FuriosaAIはシリーズDで6億2000万ドルを調達したと公表しました。調達後評価額は約29億ドルで、公式ブログの日付は28日です。",
+      "points": [
+        {
+          "label": "使途",
+          "text": "推論アクセラレーターRNGDの生産と世界展開、ソフトウェア基盤、次世代半導体の開発へ投資します。"
+        },
+        {
+          "label": "供給計画",
+          "text": "同社は今年2万枚のカードを生産し、2027年にはその2倍超に対応する製造・メモリー能力を確保したと説明しています。電力と運用費を抑える推論基盤の選択肢を広げます。"
+        }
+      ],
+      "url": "https://via.tt.se/pressmeddelande/4620607/furiosaai-secures-dollar620-million-series-d-to-meet-surging-enterprise-ai-inference-demand-and-accelerate-next-gen-silicon?publisherId=259167"
+    },
+    {
+      "title": "【規制】米司法省、NvidiaのHugging Face買収を照会——AI基盤の競争への影響を点検",
+      "intro": "日本時間10月29日、Reutersは、米司法省がNvidiaによる129億3000万ドルのHugging Face買収について競争への影響を照会していると報じました。事情を知る関係者2人に基づく報道です。",
+      "points": [
+        {
+          "label": "焦点",
+          "text": "半導体企業がモデルやデータの共有基盤を取得することで、競合企業に不利益を与え得るかを調べています。買収発表ではなく、当局の照会が今回の新情報です。"
+        },
+        {
+          "label": "手続き",
+          "text": "既存の事業慣行調査と並行する動きです。司法省は合併審査で通常も意見を集めるとしており、違法認定や買収阻止の決定ではありません。"
+        }
+      ],
+      "url": "https://www.moneycontrol.com/world/us-doj-is-inquiring-about-nvidia-s-purchase-of-hugging-face-sources-say-article-14062884.html"
+    },
+    {
+      "title": "【注目ツール】Gemini、チャット内でファイル編集に対応——生成から手直しまで一画面に",
+      "intro": "10月29日、GoogleはGeminiアプリで文書、PDF、表計算、スライドなどを生成・プレビュー・編集できる機能を発表しました。提供地域の全言語・全ユーザーが対象です。",
+      "points": [
+        {
+          "label": "操作",
+          "text": "全画面で直接入力するほか、範囲を選んで質問したり、文章や画像の修正をGeminiへ指示したりできます。"
+        },
+        {
+          "label": "対応環境",
+          "text": "PDFのプレビューと編集はウェブ・モバイル双方に対応します。Google Docs、Sheets、スライド、Markdown、TXT、コードなどはウェブ版が対象です。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/"
+    },
+    {
+      "title": "【産業】Google、シンガポールに研究拠点——医療AIを地域の研究・診療基盤へ",
+      "intro": "10月29日、Googleはシンガポールの医療イベントで、現地研究者・技術者によるGoogle Research拠点の設立と医療機関との協力を発表しました。",
+      "points": [
+        {
+          "label": "研究基盤",
+          "text": "基盤モデルによる科学研究を進め、シンガポール国立大学や南洋理工大学と連携します。公開モデルを使い、データを地域で管理する医療向け開発も支援します。"
+        },
+        {
+          "label": "現場への接続",
+          "text": "National University Health Systemと診療ガイドライン・文献を整理する支援ツールを評価します。研究拠点の整備と臨床評価の発表で、治療効果が確定したという報告ではありません。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/technology/health/google-for-health-summit-singapore/"
+    },
+    {
+      "title": "【研究】Google、英伊の教育AI研究を公開——授業内の改善と標準テストの差が明確に",
+      "intro": "10月29日、Googleは英国とイタリアで行ったGeminiの教育利用研究を公表しました。英国では12〜15歳の1100人超を対象に、10週間の無作為化比較試験を実施しました。",
+      "points": [
+        {
+          "label": "確認された成果",
+          "text": "英国の課題・小テストではAI指導群が人間の指導群と同程度の成績でした。AIの全回答を専門家が送信前に確認しており、無監督の利用と同一視はできません。"
+        },
+        {
+          "label": "限界",
+          "text": "同期間のSTAR標準テストでは改善が確認されませんでした。イタリアの31校の研究も含め、授業中の支援と幅広い学力への効果を分けて評価する必要があります。"
+        }
+      ],
+      "url": "https://blog.google/products-and-platforms/products/education/impact-studies-uk-italy/"
+    }
   ]
 };
