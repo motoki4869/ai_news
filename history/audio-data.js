@@ -448,5 +448,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-29.m4a",
     "label": "2026-10-29のAIニュース音声",
     "title": "電力網と法務を動かす自律型AI"
+  },
+  "2026-10-30": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-30.m4a",
+    "label": "2026-10-30のAIニュース音声",
+    "title": "AIのコストと成果を測る新基準"
   }
 };
