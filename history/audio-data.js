@@ -458,5 +458,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-10-31.m4a",
     "label": "2026-10-31のAIニュース音声",
     "title": "物理世界を飲み込む巨大AIインフラ"
+  },
+  "2026-11-01": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-01.m4a",
+    "label": "2026-11-01のAIニュース音声",
+    "title": "宇宙でのAI実験とPC乗っ取りの脅威"
   }
 };
