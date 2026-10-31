@@ -9619,5 +9619,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.marketscreener.com/news/spotify-targets-2027-launch-for-ai-remix-service-ft-reports-ce785fdbd989f22c"
     }
+  ],
+  "2026-11-01": [
+    {
+      "title": "【産業インフラ】Google、衛星上のTPUから初のAI応答——宇宙計算が推論実験へ",
+      "intro": "日本時間10月31日、GoogleはProject Suncatcherの試作衛星で、AI専用半導体TPUによる初の応答を受信したと公表しました。米国30日の発表で、搭載した公開モデルGemma 4が地上からの指示に応じました。",
+      "points": [
+        {
+          "label": "実証内容",
+          "text": "地上局から送った依頼に対し、衛星内で宇宙を題材にした俳句を生成し、ノルウェーのスバールバル付近で地上へ送信しました。続いて別の詩や機器の状態を報告する指示も試しました。"
+        },
+        {
+          "label": "次の段階",
+          "text": "軌道上の熱と放射線に対する耐性を検証し、2027年には相互接続する2基の衛星を目指します。今回の応答成功は、商用データセンターとしての採算や継続稼働の実証とは別です。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-satellite-response/"
+    },
+    {
+      "title": "【注目プロダクト】Apple、中国向けAI機能の日程を確定——千問連携で12月提供へ",
+      "intro": "10月31日、Appleは中国本土向けApple Intelligenceの初期機能を、11月4日から開発者向けベータで試験し、12月のiOS 27.3で正式提供すると発表しました。",
+      "points": [
+        {
+          "label": "対象機能",
+          "text": "翻訳、文章の校正・要約、写真の不要物除去、視覚情報の理解などを提供します。Alibabaと協力し、Siriや文章作成支援などの一部で千問（Qwen）を利用できるようにします。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "Apple自身の生成モデルが基盤で、千問は一部の体験を補います。WWDC 2026で発表した次世代のSiri AIなどは、今回の提供に含まれません。"
+        }
+      ],
+      "url": "https://www.apple.com.cn/newsroom/2026/10/apple-intelligence-features-are-coming-to-users-in-china/"
+    },
+    {
+      "title": "【規制・標準】AI大手4社、学習利用の共通拒否シグナルを支持——サイト側の指定を一本化へ",
+      "intro": "日本時間10月31日、The VergeはOpenAI、Google、Microsoft、Anthropicが、ウェブ上のコンテンツのAI学習利用について共通の意思表示方式を採用する方針だと報じました。IETFへ提出された草案に基づく動きです。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "robots.txtに共通のpolicy tokenを記し、学習利用の許可・拒否をパス単位で示します。企業ごとに別々の指定を管理する負担を減らす狙いです。"
+        },
+        {
+          "label": "効力と段階",
+          "text": "学習への利用意思と、クローラーによる取得制御は別の信号です。まだ標準化の草案段階で、全社で実装済みという意味ではありません。（[草案](https://datatracker.ietf.org/doc/html/draft-kelley-aipref-training-preference-signal)）"
+        }
+      ],
+      "url": "https://www.theverge.com/tech/1023763/openai-google-microsoft-ai-scraping-standard-opt-out/"
+    },
+    {
+      "title": "【ビジネス】S&P、Metaの信用見通しをネガティブへ——AI投資の回収力に警戒",
+      "intro": "日本時間10月31日、BloombergはS&P Global RatingsがMetaの信用見通しを安定的からネガティブへ変更したと報じました。米国30日の措置で、AI関連の巨額投資が財務に与える圧力を理由に挙げています。",
+      "points": [
+        {
+          "label": "判断の焦点",
+          "text": "S&Pは、MetaのAI投資の収益化余地が同業より限られ、増え続ける費用を上回る収益をいつ生むか不透明だと説明しました。"
+        },
+        {
+          "label": "措置の意味",
+          "text": "信用格付け自体はAA-を維持しています。今回は将来の格下げリスクを示す見通し変更であり、既に格付けを引き下げたわけではありません。"
+        }
+      ],
+      "url": "https://ca.finance.yahoo.com/news/meta-credit-rating-outlook-downgraded-215600853.html"
+    },
+    {
+      "title": "【ビジネス】家庭向けAI助手Ollieが終了へ——個人エージェント市場で淘汰",
+      "intro": "日本時間10月31日、TechCrunchはプライバシーを重視する家庭向けAI助手Ollieが11月6日にサービスを終了すると報じました。共同創業者兼CEOのBill Lennon氏が米国30日に告知しました。",
+      "points": [
+        {
+          "label": "競争環境",
+          "text": "メールや予定表をつなぐ有料サービスでしたが、CEOはMuseやInstinctなどの参入で差別化、成長、資金確保が難しくなったと説明しました。"
+        },
+        {
+          "label": "利用者対応",
+          "text": "データの書き出しと返金について案内する予定です。生活の予定や情報を預けるAIでは、機能に加えてサービス終了時の移行手段も利用判断の要素になります。"
+        }
+      ],
+      "url": "https://techcrunch.com/2026/10/30/ollie-a-privacy-focused-ai-assistant-is-shutting-down/"
+    },
+    {
+      "title": "【セキュリティ】Microsoft、改ざんClaude Code拡張を解析——削除後も残る侵入経路に注意",
+      "intro": "日本時間10月31日までに公開されたMicrosoftの追加解析は、Cursorの配布基盤で発生した改ざん拡張機能の攻撃手順を明らかにしました。29日の配布事件そのものではなく、30日付で公開された解析結果を扱います。",
+      "points": [
+        {
+          "label": "解析結果",
+          "text": "不正な拡張は通常の機能を動かしながら、遠隔接続用の鍵の追加や起動時の再実行設定を試みます。遠隔接続が失敗しても、不正な鍵や設定が残る場合があります。"
+        },
+        {
+          "label": "影響範囲",
+          "text": "Microsoftは自社のVisual Studio Marketplaceと公式npm配布は影響を受けず、証拠はCursorの配布基盤に限定されると説明しました。拡張を削除するだけでなく、残存設定や接続履歴の調査が必要です。"
+        }
+      ],
+      "url": "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
+    }
   ]
 };

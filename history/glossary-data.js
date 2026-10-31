@@ -538,8 +538,8 @@ window.GLOSSARY = [
       {
         "term": "<strong>TPU</strong>",
         "sub": "Tensor Processing Unit（テンソル処理ユニット）",
-        "desc": "Googleが機械学習の計算向けに開発した専用プロセッサー。Project Suncatcherでは衛星に搭載し、地上と異なる放射線や熱環境でAI処理が可能かを軌道上で試す計画が進む。GPU以外の選択肢を広げるAIインフラの一つ。",
-        "q": "tpu tensor processing unit（テンソル処理ユニット） googleが機械学習の計算向けに開発した専用プロセッサー。project suncatcherでは衛星に搭載し、地上と異なる放射線や熱環境でai処理が可能かを軌道上で試す計画が進む。gpu以外の選択肢を広げるaiインフラの一つ。"
+        "desc": "Googleが機械学習の計算向けに開発した専用プロセッサー。日本時間2026年10月31日に公表したProject Suncatcherの実験では、衛星内のGemma 4が地上からの依頼で俳句を生成し、応答を送信した。今後は熱と放射線への耐性を検証する段階で、地上のデータセンターと同等の継続稼働や採算が確認されたわけではない。",
+        "q": "tpu tensor processing unit（テンソル処理ユニット） googleが機械学習の計算向けに開発した専用プロセッサー。日本時間2026年10月31日に公表したproject suncatcherの実験では、衛星内のgemma 4が地上からの依頼で俳句を生成し、応答を送信した。今後は熱と放射線への耐性を検証する段階で、地上のデータセンターと同等の継続稼働や採算が確認されたわけではない。"
       },
       {
         "term": "<strong>IOWN / APN</strong>",
@@ -713,6 +713,12 @@ window.GLOSSARY = [
     "theme": "t-gov",
     "id": "sec6",
     "entries": [
+      {
+        "term": "<strong>policy token</strong>",
+        "sub": "ポリシートークン",
+        "desc": "ウェブサイトのrobots.txtで、情報の取得方法とは別に用途への許可や拒否を示すための識別子。日本時間2026年10月31日に報じられた共通方式は、AI学習向けに__usage_ai-trainingを指定し、複数のAI企業へ同じ意思を伝える草案である。既存の取得制御とは独立しており、記載だけで技術的にアクセスを遮断する仕組みではない。",
+        "q": "policy token ポリシートークン ウェブサイトのrobots.txtで、情報の取得方法とは別に用途への許可や拒否を示すための識別子。日本時間2026年10月31日に報じられた共通方式は、ai学習向けに__usage_ai-trainingを指定し、複数のai企業へ同じ意思を伝える草案である。既存の取得制御とは独立しており、記載だけで技術的にアクセスを遮断する仕組みではない。"
+      },
       {
         "term": "<strong>AGI</strong>",
         "sub": "Artificial General Intelligence（汎用人工知能）",
