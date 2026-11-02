@@ -463,5 +463,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-01.m4a",
     "label": "2026-11-01のAIニュース音声",
     "title": "宇宙でのAI実験とPC乗っ取りの脅威"
+  },
+  "2026-11-02": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-02.m4a",
+    "label": "2026-11-02のAIニュース音声",
+    "title": "画面を飛び出し肉体を得るAI"
   }
 };
