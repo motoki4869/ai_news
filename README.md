@@ -7,7 +7,7 @@
 ## 自動実行
 
 - launchdジョブ名: `com.motoki.ainews.daily`
-- 実行時刻: 毎日 7:00（JST）
+- 実行時刻: 毎日 6:30（JST）。Macの電源が切れている間の実行分は自動補完されない
 - 起動スクリプト: `scripts/daily_news.sh`
   - `codex exec` でプロンプト（`scripts/daily_news_prompt.codex.txt`）を実行し、Codex CLIの利用上限メッセージを検出した場合、または実行に失敗した場合は `claude -p` と `scripts/daily_news_prompt.txt` へ切り替える。結果を `SUMMARY:` 行から抜き出してmacOS通知（`osascript`）を出す
   - 生成データは `generate_daily_data.py` / `generate_reports_data.py` で `history/` 用のJSONに変換される（レポート全文は `history/reports/<ID>.json` に1本ずつ書き出し、ページはタップされた分だけを取りに行く）

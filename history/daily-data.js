@@ -9711,5 +9711,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
     }
+  ],
+  "2026-11-02": [
+    {
+      "title": "【産業インフラ】Aramco、HUMAINの49%取得を完了——石油資産とAI基盤を統合",
+      "intro": "11月1日、サウジアラビアのPIFとAramcoはAI企業HUMAINへの出資取引の完了を発表しました。PIFが51%を維持し、Aramcoが完全子会社を通じて49%を取得します。",
+      "points": [
+        {
+          "label": "出資内容",
+          "text": "AramcoはAI・計算・デジタル関連資産に加え、2026年中に約99億リヤル（26億ドル）の現金を拠出します。昨年の構想発表から、取引完了へ進んだことが今回の新しい動きです。"
+        },
+        {
+          "label": "供給計画",
+          "text": "HUMAINは2030年までに3GWのAIデータセンター容量を整備する計画です。これは稼働済み容量ではなく、今後の拡張目標です。"
+        }
+      ],
+      "url": "https://www.aramco.com/en/news-media/news/2026/pif-and-aramco-close-humain-transaction-to-accelerate-humains-global-growth"
+    },
+    {
+      "title": "【フィジカルAI】Meta、中国Fourierと人型試作機Max——AIエージェントに身体を用意",
+      "intro": "日本時間11月1日までに、The Informationの取材でMetaと中国のFourierが人型ロボットMaxを試作したことが明らかになりました。The Next Webも1日に報じ、Metaは内部研究・実験用と説明しています。",
+      "points": [
+        {
+          "label": "試作機の構成",
+          "text": "報道によると高さ約1.5m、重さ約48kgで、NVIDIAのJetson Thorと5本指の手を備えます。約3カ月で試作し、9月から後継機Max 2の開発も進めています。"
+        },
+        {
+          "label": "提供段階",
+          "text": "MetaはAIエージェントMuseの物理的な実行手段として人型機を研究していますが、試作機を販売する計画はありません。家庭向け製品の発売発表とは区別が必要です。"
+        }
+      ],
+      "url": "https://thenextweb.com/news/meta-humanoid-robot-fourier-max"
+    },
+    {
+      "title": "【産業インフラ】BBC、AI専業クラウドの巨額債務を報道——計算需要の裏に資金調達リスク",
+      "intro": "11月1日、BBCはAI向け計算資源を貸し出す「ネオクラウド」企業の借り入れと事業継続リスクを報じました。大手AI企業への設備供給を支える企業群の財務構造を取り上げた新しい分析記事です。",
+      "points": [
+        {
+          "label": "拡大の仕組み",
+          "text": "長期の顧客契約や購入したAI半導体を裏付けに借り入れ、先に高価な設備を整える構造です。需要が落ちた場合も返済や設備費用が残ります。"
+        },
+        {
+          "label": "見方の幅",
+          "text": "Gartnerは2030年までに8割が独立企業としての事業を終えると予測する一方、計算需要は供給を上回るという見方も紹介されています。予測は倒産の確定や、すべての企業の破綻を意味しません。"
+        }
+      ],
+      "url": "https://www.bbc.co.uk/news/articles/cje36degrgv5o"
+    },
+    {
+      "title": "【ビジネス】CNBC、銀行・製薬のAI効果を比較——投資回収の説明が決算へ",
+      "intro": "11月1日、CNBCはSantander、Novartisなどの決算説明を比較し、AI導入が売上・費用・収益性にどう表れ始めているかを報じました。各社の決算発表日そのものではなく、この日に公開された横断分析を扱います。",
+      "points": [
+        {
+          "label": "数値化の例",
+          "text": "Santanderは2026年1〜9月のAI関連施策による事業価値を1億9400万ユーロと説明しました。売上増や費用削減などを含む指標で、AI単独の純利益ではありません。"
+        },
+        {
+          "label": "比較の限界",
+          "text": "NovartisはAIの損益への貢献を説明していますが、その額を切り出していません。Carlsbergは大規模な効果はまだ得られていないとしており、導入企業で一様に成果が出ているわけではありません。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/11/01/ai-investments-company-earnings.html"
+    },
+    {
+      "title": "【ビジネス】Meta広告とGoogle検索の成長差が拡大——AIによる収益構造の変化",
+      "intro": "11月1日、CNBCはMetaの広告事業とGoogleの検索事業を比較し、直近四半期の成長率の差が2021年以来の大きさになったと報じました。AI投資の規模ではなく、広告収益への異なる作用を分析しています。",
+      "points": [
+        {
+          "label": "広告配信の改善",
+          "text": "Metaは広告の対象選定や制作を支えるAIツールが成長に寄与していると説明しています。CNBCによると、同社の広告事業はGoogleの検索などの部門の2倍超の速さで成長しました。"
+        },
+        {
+          "label": "検索の課題",
+          "text": "チャットボットやAI要約の普及で、従来のリンクをクリックする行動が変わっています。Googleは検索回数の増加を報告していますが、利用増を広告収益へ結び付ける方法が引き続き焦点です。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/11/01/ai-meta-ads-google-search.html"
+    }
   ]
 };
