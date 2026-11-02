@@ -468,5 +468,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-02.m4a",
     "label": "2026-11-02のAIニュース音声",
     "title": "画面を飛び出し肉体を得るAI"
+  },
+  "2026-11-03": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-03.m4a",
+    "label": "2026-11-03のAIニュース音声",
+    "title": "油田開発から行政判断まで担うAI"
   }
 };
