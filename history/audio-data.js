@@ -473,5 +473,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-03.m4a",
     "label": "2026-11-03のAIニュース音声",
     "title": "油田開発から行政判断まで担うAI"
+  },
+  "2026-11-04": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-04.m4a",
+    "label": "2026-11-04のAIニュース音声",
+    "title": "AI進化を阻む巨大電力と地政学の壁"
   }
 };
