@@ -9895,5 +9895,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://github.com/deepseek-ai/dsh-superagent-prototype"
     }
+  ],
+  "2026-11-04": [
+    {
+      "title": "【技術・実用ツール】Google、Antigravityに化学分析機能——創薬の仮説づくりを約1時間で実演",
+      "intro": "11月3日、Google DeepMindはGoogle Antigravity向けのケモインフォマティクス（化学情報学）機能を公開しました。肺がん治療薬を題材に、文献の化合物収集から新しい分子と合成経路の提案までを約1時間で行う例を示しています。",
+      "points": [
+        {
+          "label": "役割分担",
+          "text": "AIが文献探索や分析手順を組み立て、分子の計算は専用の化学ツールが担います。研究者は化合物と出典を画面で確認しながら分析を進められます。"
+        },
+        {
+          "label": "提供と限界",
+          "text": "Scienceプラグインから利用でき、対象の科学者1万人には最上位の利用枠を6カ月無料提供する募集も開始しました。候補分子は仮説であり、合成と実験による検証が必要です。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/"
+    },
+    {
+      "title": "【産業インフラ】DraxとBrookfield、英国でGW級AI拠点計画——発電所用地に200億ポンド超の投資余地",
+      "intro": "11月3日、Drax、BrookfieldとAIインフラ企業Radiantは、英国ノースヨークシャーのDrax発電所用地でAIデータセンターを開発・運営する提携を発表しました。Brookfieldは全体の潜在投資額が200億ポンドを超える可能性を示しました。",
+      "points": [
+        {
+          "label": "段階整備",
+          "text": "第1段階は最大100MW、2028年第1四半期の稼働を目標とし、初期投資は25億ポンドを想定します。その後も容量を段階的に拡張する構想です。"
+        },
+        {
+          "label": "実現条件",
+          "text": "既存の送電網接続や発電設備、冷却設備を活用します。第1段階の進行には計画・規制・系統の承認や適切な入居企業の確保が必要です。"
+        }
+      ],
+      "url": "https://www.drax.com/news/drax-brookfield-and-radiant-announce-20bn-partnership-to-deliver-gw-scale-data-centre-capacity-at-drax-power-station/"
+    },
+    {
+      "title": "【ビジネス】Hg、Anthropic参加の欧州AI導入会社へ出資合意——モデル提供から現場実装へ",
+      "intro": "11月3日、英国の投資会社Hgは、Anthropicやエンジェル投資家が参加する新たなAI導入支援会社への出資合意を正式発表しました。欧州企業向けの独立会社として年内の正式始動を予定します。",
+      "points": [
+        {
+          "label": "事業の仕組み",
+          "text": "Claudeを基盤に、顧客の現場に入り実装を担う技術者を配置します。試験導入から実業務への展開や、AIを組み込んだ製品開発を支援します。"
+        },
+        {
+          "label": "今回の進展",
+          "text": "以前から報道されていた構想について、出資者側が合意を公表した点が新しい動きです。欧州の多言語・規制環境を対象とし、取引条件は開示していません。（[投資家向け発表](https://www.hgcapitaltrust.com/news-insights/news/2026/03-11-2026)）"
+        }
+      ],
+      "url": "https://hgcapital.com/insights/new-ai-transformation-company-raises-funding"
+    },
+    {
+      "title": "【ビジネス・買収】Salesforce、Cresta買収契約——音声AIと顧客情報を接続へ",
+      "intro": "日本時間11月3日までに、Salesforceは音声AI企業Crestaの買収契約を発表しました。米国2日の発表で、顧客対応の音声エージェントや通話分析をService Cloudと組み合わせます。",
+      "points": [
+        {
+          "label": "統合の狙い",
+          "text": "Crestaは複雑な電話対応の自動化と、人間の担当者へのリアルタイム支援を提供します。会話の内容を顧客履歴や業務処理につなぎ、問い合わせ解決を支援する構想です。"
+        },
+        {
+          "label": "完了時期",
+          "text": "買収完了はSalesforceの2028会計年度第1四半期を見込み、規制承認などが条件です。公式発表は買収価格を開示せず、完了後も既存の電話・コンタクトセンター基盤への対応を続けるとしています。"
+        }
+      ],
+      "url": "https://www.salesforce.com/news/stories/salesforce-signs-definitive-agreement-to-acquire-cresta/"
+    },
+    {
+      "title": "【資金調達】Lazarus AI、4300万ドルを調達——顧客が管理できる業務AIへ投資",
+      "intro": "11月3日、米ボストンのLazarus AIは4300万ドルの資金調達を発表しました。QBE、State Farm Venturesなどが参加し、研究開発、提携拡大、新製品の投入に充てます。",
+      "points": [
+        {
+          "label": "提供形態",
+          "text": "自社設備や顧客のクラウドなどで動かし、機密データとモデル変更を顧客が管理する方式です。文書解析、ソースコードの脆弱性調査、旧システムの更新を対象とします。"
+        },
+        {
+          "label": "評価の読み方",
+          "text": "同社は150の顧客用途で文書の項目単位の精度が単独モデルより12.5ポイント向上したと説明しました。企業発表の数値で、あらゆる業務で同じ改善を保証するものではありません。"
+        }
+      ],
+      "url": "https://finance.yahoo.com/technology/ai/articles/lazarus-ai-raises-43-million-133000254.html"
+    },
+    {
+      "title": "【セキュリティ】英国NCSC、2028年までのAI攻撃を警告——重要インフラの防御投資を要求",
+      "intro": "11月3日、英国国家サイバーセキュリティセンター（NCSC）は新報告書を公表し、2028年までに英国の重要インフラへのランサムウェア攻撃でAIを使う不正プログラムが利用される可能性が高いと評価しました。",
+      "points": [
+        {
+          "label": "脅威の変化",
+          "text": "AIは脆弱性の悪用や人をだます攻撃の規模と効率を高めると予測しています。今回の発表は将来の脅威評価で、該当する攻撃の発生確認ではありません。"
+        },
+        {
+          "label": "対応の焦点",
+          "text": "NCSCは、長年の防御不足がAIで速く露呈するとして、基礎的なセキュリティ対策と組織の復旧力への投資を要請しました。防御側によるAI活用も機会と位置づけています。"
+        }
+      ],
+      "url": "https://www.ncsc.gov.uk/news/cyber-chief-uk-facing-ai-powered-attacks-on-critical-infrastructure-in-two-years"
+    },
+    {
+      "title": "【規制・半導体】NVIDIA、クラウド顧客に対中依存縮小を要求とFT報道——計算資源へのアクセスにも制限",
+      "intro": "11月3日、Financial Timesは関係者5人の話として、NVIDIAがデータセンターの提携先に中国顧客への依存を減らすよう求めていると報じました。チップの直接輸出に加え、海外クラウドを通じたAI計算資源の利用にも関わる動きです。",
+      "points": [
+        {
+          "label": "報道の内容",
+          "text": "クラウド企業のサービス販売の少なくとも51%を中国以外の企業向けにするよう、過去数カ月にわたり口頭で指示してきたとしています。この日は措置の実態が報道された日です。"
+        },
+        {
+          "label": "確認状況",
+          "text": "正式な法令の発表ではなく、匿名関係者に基づく企業の運用方針の報道です。追報したReutersは直ちに独自確認できなかったと明記しています。（[Reuters](https://www.streetinsider.com/Reuters/Nvidia%2Borders%2Bdata%2Bcentre%2Bclients%2Bto%2Breduce%2BChina%2Bexposure,%2BFT%2Breports/27275695.html)）"
+        }
+      ],
+      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-orders-data-centre-clients-050013308.html"
+    }
   ]
 };
