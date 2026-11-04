@@ -10002,5 +10002,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-orders-data-centre-clients-050013308.html"
     }
+  ],
+  "2026-11-05": [
+    {
+      "title": "【技術】Google、主観的な画像分類を対話で設計——曖昧な判断基準をAIと具体化",
+      "intro": "11月4日、Google Researchは画像分類器を利用者との対話で構築するAgile Deliberationを公開しました。「健康的な食事」など、人によって境界が異なる分類を対象とします。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "境界事例の画像へのフィードバックを通じて、利用者自身の定義を明確にします。言語モデルが分類器の改善を支援し、手作業のプロンプト調整を減らします。"
+        },
+        {
+          "label": "検証と公開",
+          "text": "18回、各1.5時間の対人実験で、比較手法より良い分類結果と負担軽減を報告しました。コードも公開していますが、主観的な基準の正解を一律に決める技術ではありません。"
+        }
+      ],
+      "url": "https://www.research.google/blog/agile-deliberation-how-ai-helps-humans-define-the-gray-areas/"
+    },
+    {
+      "title": "【開発ツール】Oumi、エージェント構築と再学習を接続——実務の失敗を改善データへ",
+      "intro": "日本時間11月4日夜、SiliconANGLEはOumiがFrontier AI Engineerを拡張したと報じました。業務の依頼からエージェントの道具・環境を定義し、評価とモデル学習まで支援します。",
+      "points": [
+        {
+          "label": "改善の循環",
+          "text": "本番で失敗した作業や利用者の好みを、評価課題や学習データへ変換します。既存のエージェント環境を維持して評価・学習機能に接続する方式も用意します。"
+        },
+        {
+          "label": "提供段階",
+          "text": "好ましい応答を学ぶ手法などを追加し、結果の相対評価で学習するGRPOは限定プレビューとしています。すべての方式が一般提供されたわけではありません。"
+        }
+      ],
+      "url": "https://siliconangle.com/2026/11/04/oumis-frontier-ai-engineer-now-builds-ai-agents-and-retrains-the-models-behind-them/"
+    },
+    {
+      "title": "【産業インフラ】1FINITY、通信とAIの共通基盤向け製品を発表——基地局設備を産業AIへ拡張",
+      "intro": "11月4日、富士通グループの1FINITYは、AI-Native vRAN構想の中核ソフトウェア「Open vRAN Solutions VB5000」を発表しました。無線装置とともに12月から世界で提供する予定です。",
+      "points": [
+        {
+          "label": "共通基盤",
+          "text": "無線アクセス網をソフトウェアで動かすvRANとAI処理を、NVIDIA AI Aerialや対応サーバーを使って同じ基盤で実行します。通信事業者による企業向け計算・通信サービスの一体提供を狙います。"
+        },
+        {
+          "label": "現場への展開",
+          "text": "安定した通信とリアルタイム制御が必要なロボットなどを想定します。通信事業者と連携したフィールド検証は2027年度の計画で、商用現場での効果は今後の確認対象です。"
+        }
+      ],
+      "url": "https://ai.watch.impress.co.jp/docs/news/2153451.html"
+    },
+    {
+      "title": "【資金調達】Sentra、1億5000万ドルを調達——AIエージェントのデータ権限管理へ投資",
+      "intro": "11月4日、ニューヨークとテルアビブを拠点とするSentraは、Capital One Ventures主導の1億5000万ドルの資金調達を発表しました。AIエージェントが触れられる企業データの可視化と制御を強化します。",
+      "points": [
+        {
+          "label": "保護の仕組み",
+          "text": "保存された機密データを分類し、人間とAIそれぞれのアクセス権を把握します。利用前の過剰な権限の縮小と、異常なアクセス時の権限取り消しを組み合わせます。"
+        },
+        {
+          "label": "データの扱い",
+          "text": "解析は顧客の環境内で行い、機密データそのものを外へ移さない方式です。資金は製品開発に加え、販売体制と展開地域の拡大にも充てます。"
+        }
+      ],
+      "url": "https://sentra.io/news/sentra-raises-150-million-agentic-data-security"
+    },
+    {
+      "title": "【実用プロダクト】Descope、代理AIのログイン基盤Envoyを発表——本人とエージェントの権限を分離",
+      "intro": "11月4日、Descopeは消費者向けアプリが個人のAIエージェントを受け入れるためのEnvoyを発表しました。GoFundMeやGoodRxなどが初期・設計パートナーとして参加します。",
+      "points": [
+        {
+          "label": "認証と承認",
+          "text": "草案段階のPersonal Agent Protocol（Poppy）を支援し、顧客と代理AIを別の主体として記録します。買い物は許しても支払い方法の変更は許さないなど、操作ごとに権限を設定できます。"
+        },
+        {
+          "label": "利用者の制御",
+          "text": "機微な操作はスマートフォンなどで本人の承認を求め、AIだけのアクセスを取り消すこともできます。既存の顧客認証基盤に併設する設計です。"
+        }
+      ],
+      "url": "https://www.descope.com/press-release/envoy"
+    },
+    {
+      "title": "【規制】米OCC、銀行検査官向けAI監督枠組みを公表——高度さより失敗時の影響を重視",
+      "intro": "11月4日、米通貨監督庁（OCC）は銀行のAI利用を検査する担当者向けの監督枠組みを公表しました。AIを独立したリスク区分にせず、既存の業務リスク管理を補う位置づけです。",
+      "points": [
+        {
+          "label": "評価の軸",
+          "text": "銀行の規模や用途に応じ、誤作動の影響、AIへ委ねる権限、人間の監督を検討します。取引を実行する単純なAIが、社内用途の高度なモデルより高リスクになり得ます。"
+        },
+        {
+          "label": "制度上の効力",
+          "text": "検査官を支援する資料で、銀行への新たな強制要件は設けていません。文書はAI等を「Super Intelligence」と総称しており、人間超えの能力の実現を認定した発表ではありません。"
+        }
+      ],
+      "url": "https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-54.html"
+    }
   ]
 };
