@@ -61,7 +61,9 @@ python3 scripts/collect_vercel_analytics.py
 
 ## NotebookLM音声
 
-日次ニュースの更新に成功すると、専用NotebookLMノートブックへ当日分のニュースセクションだけを渡して日本語の音声概要を生成します。NotebookLMが付けた音声タイトルとともに `history/daily.html` の日付選択画面から再生できます。
+日次ニュースの更新に成功すると、当日分の記事からCodexで日本語の対話台本を作り、その台本だけを専用NotebookLMノートブックへ渡して音声概要を生成します。女性の聞き手が質問し、男性の解説役が答える順番を台本で固定し、話者順と空の発言を機械検査します。NotebookLMには台本の順序と役割を維持するよう指示しますが、逐語読み上げを保証するものではありません。NotebookLMが付けた音声タイトルとともに `history/daily.html` の日付選択画面から再生できます。
+
+生成した台本は `logs/audio-scripts/YYYY-MM-DD.md` にローカル保存します（Git管理外）。台本生成でCodexが失敗した場合や形式検査に通らなかった場合は、記事を直接渡さず音声生成を見送ります。ニュース更新自体は継続します。台本生成にもCodex CLIの認証と利用枠が必要です。
 
 ### 音声本体の置き場所（GitHub Releases）
 

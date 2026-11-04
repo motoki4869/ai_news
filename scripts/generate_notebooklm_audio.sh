@@ -77,6 +77,16 @@ if ! "$NLM_BIN" login --check >/dev/null 2>&1; then
   fail "NotebookLMのログイン状態を確認できませんでした"
 fi
 
+SCRIPT_TMP="$AUDIO_TMP_DIR/dialogue.md"
+log "Codexで対話台本を作成します: $SOURCE_TITLE"
+if ! AI_NEWS_DATE="$TARGET_DATE" PYTHON_BIN="$PYTHON_BIN" \
+  "$PYTHON_BIN" "$REPO_DIR/scripts/generate_audio_script.py" "$SOURCE_TMP" "$SCRIPT_TMP"; then
+  fail "対話台本を作成できなかったため、音声生成を見送ります"
+fi
+# 聞き直し時に入力台本を確認できるよう、ローカルのログ領域へ保存する。
+mkdir -p "$REPO_DIR/logs/audio-scripts" || fail "台本の保存先を作成できませんでした"
+cp "$SCRIPT_TMP" "$REPO_DIR/logs/audio-scripts/$TARGET_DATE.md" || fail "台本を保存できませんでした"
+
 extract_ids() {
   "$PYTHON_BIN" -c '
 import json, sys
@@ -117,7 +127,7 @@ if matches:
 }
 
 SOURCE_ADD_OUTPUT=$("$NLM_BIN" source add "$NOTEBOOKLM_NOTEBOOK_ID" \
-  --file "$SOURCE_TMP" \
+  --file "$SCRIPT_TMP" \
   --title "$SOURCE_TITLE" \
   --wait \
   --wait-timeout "$AUDIO_MAX_WAIT_SECONDS" 2>&1) || fail "当日ソースを追加できませんでした: $SOURCE_ADD_OUTPUT"
@@ -135,7 +145,7 @@ CREATE_OUTPUT=$("$NLM_BIN" create audio "$NOTEBOOKLM_NOTEBOOK_ID" \
   --format deep_dive \
   --length default \
   --language ja \
-  --focus "日本語の二人による対話形式のニュース解説。役割は声で固定する。女性の声の話し手は最初から最後まで聞き手で、質問・相づち・短い感想だけを話し、ニュースの内容を自分で解説しない。男性の声の話し手は最初から最後まで解説役で、聞き手の質問に答えて記事の要点と背景を説明し、自分から聞き手に質問しない。ニュースが変わっても、番組の最後まで二人の役割を入れ替えない。" \
+  --focus "選択した資料は完成済みの対話台本です。台本の発言順・質問と回答の対応・ニュースの順序を維持し、省略や新しい話題の追加をせず、できるだけ台本どおりに話してください。聞き手（女性）の発言は女性の声、解説役（男性）の発言は男性の声で読み、最後まで役割を入れ替えないでください。話者ラベルや見出しは読み上げません。" \
   --source-ids "$SOURCE_ID" \
   --confirm 2>&1) || fail "NotebookLM音声の生成を開始できませんでした: $CREATE_OUTPUT"
 log "音声生成を開始しました: $SOURCE_TITLE"
