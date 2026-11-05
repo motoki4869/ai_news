@@ -1110,10 +1110,10 @@ window.GLOSSARY = [
         "q": "anthropic claude opus / sonnet / fable / mythos fable 5.1 は terminal-bench 4.0 で55.8%。mythos はサイバー能力が突出しており、mythos preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、project glasswing の40社パートナーにのみ厳格提供されている。"
       },
       {
-        "term": "GPT-6 Astra / GPT-6.1 Sol / Sol / Luna / GPT-Live",
+        "term": "GPT-6 / GPT-6.1 / GPT-Live / GPT-Image",
         "sub": "<strong>OpenAI</strong>",
-        "desc": "GPT-5.6 の Sol / Terra / Luna の3系統を2026年7月9日に一般公開。2026年9月にはGPT-6世代として旗艦 Astra に続き、9月22日に Sol（コーディング等の複雑なタスク向け）と Luna（要約・抽出など大量処理向け）、9月29日に改良版 GPT-6.1 Sol を公開し、API価格をGPT-5.6世代の約半額に下げた。Astra は公開前、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された経緯を持つ。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
-        "q": "openai gpt-6 astra / gpt-6.1 sol / sol / luna / gpt-live gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
+        "desc": "GPT-5.6 の Sol / Terra / Luna の3系統を2026年7月9日に一般公開。2026年9月にはGPT-6世代として旗艦 Astra に続き、9月22日に Sol（コーディング等の複雑なタスク向け）と Luna（要約・抽出など大量処理向け）、9月29日に改良版 GPT-6.1 Sol を公開し、API価格をGPT-5.6世代の約半額に下げた。Astra は公開前、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された経緯を持つ。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。米国11月4日付発表のImages 2.6は画像生成・編集とGIF制作を扱い、APIでは速度重視のGPT-Image-2.6 Flareと、品質や編集の一貫性を重視するSunburstを提供する。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
+        "q": "openai gpt-6 / gpt-6.1 / gpt-live / gpt-image gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。米国11月4日付発表のimages 2.6は画像生成・編集とgif制作を扱い、apiでは速度重視のgpt-image-2.6 flareと、品質や編集の一貫性を重視するsunburstを提供する。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
         "term": "Gemini 4 Carbon / Argon / Flash",

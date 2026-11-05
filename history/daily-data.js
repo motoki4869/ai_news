@@ -10094,5 +10094,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-54.html"
     }
+  ],
+  "2026-11-06": [
+    {
+      "title": "【実用プロダクト】OpenAI、Images 2.6を投入——画像編集からGIF制作まで一体化",
+      "intro": "日本時間11月5日、OpenAIはChatGPT、Codex、API向けにImages 2.6の提供を告知しました。米国4日付の発表で、画像生成の高速化に加え、静止画やスケッチからGIFを作る機能を導入します。",
+      "points": [
+        {
+          "label": "制作の変化",
+          "text": "同社は生成が従来より50%速くなり、編集を重ねても人物や商品の特徴を保ちやすくなったと説明しています。速度と品質は同社による評価です。"
+        },
+        {
+          "label": "開発者向け",
+          "text": "APIには速度重視のFlareと品質重視のSunburstを用意します。編集箇所の指定、SVG出力、構図を考える処理量の調整にも対応し、素材作成から修正までの反復を支援します。"
+        }
+      ],
+      "url": "https://openai.com/index/introducing-images-2-6/"
+    },
+    {
+      "title": "【ビジネス】Figma、AI課金と自社モデルで採算改善へ——利用拡大を収益に転換",
+      "intro": "日本時間11月5日朝、ReutersはFigmaの財務責任者への取材を報じました。AI機能の利用量に応じたクレジット課金と、自社の設計向けモデルを組み合わせ、利益率改善を進めます。",
+      "points": [
+        {
+          "label": "利用の広がり",
+          "text": "10月までに大口有料顧客の8割超が毎週AIクレジットを消費しました。同社は自社モデルで処理する業務の比率を2倍超へ増やし、遅延と提供コストの削減を図っています。"
+        },
+        {
+          "label": "決算への反映",
+          "text": "通期売上高と営業利益率の見通しを引き上げました。一方、第3四半期の粗利益率は80%で市場予想の81%を下回り、AI需要の増加と採算管理の両立が課題です。"
+        }
+      ],
+      "url": "https://www.streetinsider.com/Reuters/Figma%2Bbanking%2Bon%2BAI%2Bcredits,%2Bin-house%2Bmodel%2Bto%2Blift%2Bmargins/27291145.html"
+    },
+    {
+      "title": "【フィジカルAI】Agility、Nasdaq上場を発表——人型ロボットの量産を市場資金で支える",
+      "intro": "11月5日、米Agility Roboticsは、Churchill Capital Corp XIとの企業結合を経て、同日からNasdaqで取引を始めると発表しました。商用稼働実績を持つ人型ロボット専業企業として、米国初の上場としています。",
+      "points": [
+        {
+          "label": "資金の規模",
+          "text": "企業結合と関連調達による資金は費用控除前で約4億6500万ドルです。完了前に受け取った1億ドルも含み、すべてが上場当日に入る資金ではありません。"
+        },
+        {
+          "label": "受注と納入",
+          "text": "次世代機Digit 5には3億ドル超の複数年受注がありますが、性能や契約上の条件を満たす必要があります。早期顧客への提供は2027年前半、一般提供は同年末を目標としています。"
+        }
+      ],
+      "url": "https://www.agilityrobotics.com/content/agility-becomes-first-u-s-publicly-listed-pure-play-humanoid-robotics-company-begins-trading-today-on-nasdaq-as-aglt"
+    },
+    {
+      "title": "【規制・産業】中国、SoftBankのABBロボット買収を阻止と報道——フィジカルAI構想に審査の壁",
+      "intro": "11月5日、Financial Timesは関係者の話として、中国当局がSoftBankによるABBのロボティクス事業買収を認めないと通知したと報じました。約54億ドルの取引を巡る新たな審査動向です。",
+      "points": [
+        {
+          "label": "事業への重み",
+          "text": "中国はABBのロボット事業にとって最大の市場です。産業ロボットをAI事業拡大の柱に据えるSoftBankにとって、主要市場での承認が取引実現を左右します。"
+        },
+        {
+          "label": "確認の範囲",
+          "text": "出典はFT報道を伝える記事で、当局の決定文や詳細な理由は示されていません。買収契約の正式な解除や、再申請の可否まで確定したとは扱えません。"
+        }
+      ],
+      "url": "https://finance.yahoo.com/technology/ai/articles/softbank-5-4-bln-takeover-034551741.html"
+    },
+    {
+      "title": "【政策】米政府、AI研究所に適用する法規整理へ——連邦の監督方針を月内公表予定",
+      "intro": "日本時間11月5日、Reutersは米国防総省のEmil Michael最高技術責任者が、米国内AI研究所に適用される法規制を月内に明示する方針を述べたと報じました。発言は米国4日、カリフォルニア州ナパの会議で行われました。",
+      "points": [
+        {
+          "label": "検討主体",
+          "text": "同氏が副議長を務める政府のSuper Intelligence Task Forceが、今後1〜2週間で規制の全体像を公表すると説明しました。"
+        },
+        {
+          "label": "現時点の段階",
+          "text": "具体的な条文や追加義務は示していません。新法成立の発表ではなく、既存法の適用関係と監督の枠組みをどう整理するかが焦点です。"
+        }
+      ],
+      "url": "https://www.marketscreener.com/news/pentagon-chief-tech-officer-says-government-will-detail-laws-that-apply-to-ai-labs-this-month-ce785fdfd08aff21"
+    },
+    {
+      "title": "【産業インフラ】英議会、重要鉱物の対中依存を警告——AI基盤の制約が原料供給へ",
+      "intro": "11月5日、英国下院の経済安全保障などを担当する小委員会は、重要鉱物の供給網に関する報告書を公表しました。防衛や半導体に加え、AIインフラの整備にも安定した原料確保が必要だと指摘しています。",
+      "points": [
+        {
+          "label": "供給網の課題",
+          "text": "中国への集中と輸出管理が英国の製造業にも影響するとし、守るべき産業能力から必要な鉱物と供給量を逆算するよう求めました。"
+        },
+        {
+          "label": "政策提言",
+          "text": "G7やEUなどと需要を束ね、採掘・精製への共同投資や長期購入につなげる構想を提案しました。報告書の勧告であり、資金拠出や共同事業の成立を意味しません。"
+        }
+      ],
+      "url": "https://publications.parliament.uk/pa/cm5902/cmselect/cmbeis/132/report.html"
+    }
   ]
 };
