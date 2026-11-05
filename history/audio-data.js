@@ -478,5 +478,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-04.m4a",
     "label": "2026-11-04のAIニュース音声",
     "title": "AI進化を阻む巨大電力と地政学の壁"
+  },
+  "2026-11-05": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-05.m4a",
+    "label": "2026-11-05のAIニュース音声",
+    "title": "自律AIの課題は賢さより権限"
   }
 };
