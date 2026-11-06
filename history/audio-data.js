@@ -488,5 +488,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-06.m4a",
     "label": "2026-11-06のAIニュース音声",
     "title": "画像生成AIから始まるレアメタル争奪戦"
+  },
+  "2026-11-07": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-07.m4a",
+    "label": "2026-11-07のAIニュース音声",
+    "title": "ハッキングと口座分析まで実行するAI"
   }
 };
