@@ -969,9 +969,9 @@ window.GLOSSARY = [
       },
       {
         "term": "<strong>Daybreak</strong>",
-        "sub": "OpenAI",
-        "desc": "防御側に脆弱性発見能力を提供するプログラム。通常版の「Daybreak Blue」と、ゼロデイ発見・攻撃チェーン検証まで踏み込める「GPT-5.6-Cyber」を使える「Daybreak Red」の2階層構成。",
-        "q": "daybreak openai 防御側に脆弱性発見能力を提供するプログラム。通常版の「daybreak blue」と、ゼロデイ発見・攻撃チェーン検証まで踏み込める「gpt-5.6-cyber」を使える「daybreak red」の2階層構成。"
+        "sub": "デイブレイク",
+        "desc": "OpenAIが審査済みの防御担当者にサイバー業務向けAIを提供する制度。Blueは脆弱性や修正の検証、Redは許可された攻撃実証などを扱う。日本時間2026年11月6日発表のGPT-6 Cyberは、まずRed顧客の一部に限定提供される。本人確認や接続元制限を伴い、モデルの能力だけでなく利用者と実行範囲を管理する仕組みである。",
+        "q": "daybreak デイブレイク openaiが審査済みの防御担当者にサイバー業務向けaiを提供する制度。blueは脆弱性や修正の検証、redは許可された攻撃実証などを扱う。日本時間2026年11月6日発表のgpt-6 cyberは、まずred顧客の一部に限定提供される。本人確認や接続元制限を伴い、モデルの能力だけでなく利用者と実行範囲を管理する仕組みである。"
       },
       {
         "term": "<strong>Project Perception</strong>",
@@ -1103,6 +1103,12 @@ window.GLOSSARY = [
     "theme": "t-models",
     "id": "sec9",
     "entries": [
+      {
+        "term": "Inkling / Inkling 2 Small",
+        "sub": "<strong>Thinking Machines Lab</strong>",
+        "desc": "画像と文章を扱うInkling系列を開発する企業。日本時間2026年11月6日発表のInkling 2 Smallは総パラメータ5940億のうち170億を稼働させる方式を採り、自社基盤Tinkerで推論と追加学習を提供する。発表時の重みは非公開で、外部の安全性評価後にApache 2.0で公開する予定と説明している。",
+        "q": "thinking machines lab inkling / inkling 2 small 画像と文章を扱うinkling系列を開発する企業。日本時間2026年11月6日発表のinkling 2 smallは総パラメータ5940億のうち170億を稼働させる方式を採り、自社基盤tinkerで推論と追加学習を提供する。発表時の重みは非公開で、外部の安全性評価後にapache 2.0で公開する予定と説明している。"
+      },
       {
         "term": "Claude Opus / Sonnet / Fable / Mythos",
         "sub": "<strong>Anthropic</strong>",
