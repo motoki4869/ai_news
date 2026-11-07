@@ -10278,5 +10278,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://ca.finance.yahoo.com/news/meta-pauses-change-terms-publishers-212728235.html"
     }
+  ],
+  "2026-11-08": [
+    {
+      "title": "【研究】PSI、18年来の量子計算予想の証明を発表——AIの数学研究を機械検査へ",
+      "intro": "日本時間11月7日、米Physical Superintelligence（PSI）は、非公開のAnthropicモデルを使った研究システムがAaronson–Ambainis予想の証明を見つけたと発表しました。米国6日付の発表で、2008年以来の未解決問題を扱います。",
+      "points": [
+        {
+          "label": "検証方法",
+          "text": "自社基盤での実行3日目に完全な証明を得たと説明し、証明支援系Leanによる検査を通過した形式化と論文を公開しました。Stanfordの研究者らが証明を読み、短い解説を作成しています。"
+        },
+        {
+          "label": "成果の範囲",
+          "text": "ランダムな入力に対する量子計算の高速化の限界に関わる理論研究です。実用量子コンピューターの完成を示すものではなく、研究所の発表と外部専門家の検討段階を区別する必要があります。"
+        }
+      ],
+      "url": "https://psi.inc/research/aaronson-ambainis/"
+    },
+    {
+      "title": "【技術・科学】OpenAI、実験原データの評価BioBasicsBenchを公開——AIの実験室理解は得点率66.7%",
+      "intro": "日本時間11月7日、OpenAIは酵素設計企業Ligoと開発したBioBasicsBenchを公表しました。米国6日付の発表で、生物実験の画像や測定値から、結論や実験上の不備を読み取る100課題を用意しました。",
+      "points": [
+        {
+          "label": "評価の仕組み",
+          "text": "蛋白質、画像・細胞解析、定量分析、核酸、分子クローニングの5分野が対象です。専門家の採点基準に照らして部分点を与え、証拠不足を見抜けるかも確かめます。"
+        },
+        {
+          "label": "結果の読み方",
+          "text": "推論量を多く割く設定でGPT-6 Astraは平均得点率66.7%、GPT-5.6 Solは43.8%でした。課題の完全正答率や実際の研究業務の自動化率ではなく、画像解釈や対照実験の確認には改善余地が残ります。"
+        }
+      ],
+      "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/"
+    },
+    {
+      "title": "【実用プロダクト】Meta、Museに自作画面spacesを導入——会話型AIが個人用アプリへ",
+      "intro": "日本時間11月7日、Metaは個人向けAIエージェントMuseに、言葉で専用の操作画面を作るspacesを導入しました。米国6日の発表で、Museを提供している地域で利用可能としています。",
+      "points": [
+        {
+          "label": "使い方",
+          "text": "旅行計画や注文管理などを説明すると画面を作成し、会話で機能や見た目を変更できます。接続したアプリの情報を背景で更新し、作った画面を再訪できる設計です。"
+        },
+        {
+          "label": "モデルも更新",
+          "text": "同日発表の専用モデルは、過去の重要情報を思い出す能力と、障害に遭っても目標へ作業を続ける能力を強化します。重要情報を適切に使う課題の成績は76%から90%へ改善したというMeta自身の評価です。（[技術発表](https://research.meta.ai/blog/specialized-models-for-muse-and-metaai)）"
+        }
+      ],
+      "url": "https://about.fb.com/news/2026/11/introducing-spaces-customize-muse-app/"
+    },
+    {
+      "title": "【資金調達】OpenAI、110億ドルを調達とReuters報道——評価額は1.25兆ドルへ",
+      "intro": "日本時間11月7日、Reutersは関係者の話として、OpenAIが新たな調達ラウンドの初期分として110億ドルを確保したと報じました。企業評価額は1兆2500億ドルとしています。",
+      "points": [
+        {
+          "label": "調達の段階",
+          "text": "110億ドルは当初最大300億ドルを目標としたラウンドの一部です。投資家によるとSoftBankとMGXが参加しており、ラウンド全体の完了を意味しません。"
+        },
+        {
+          "label": "価格の変化",
+          "text": "Reutersは当初求めた評価額が1兆5000億ドルだったと伝えています。巨額の資金需要が続く一方、投資家が受け入れる企業価値には調整が生じています。"
+        }
+      ],
+      "url": "https://new.streetinsider.com/Reuters/OpenAI%2Bgets%2B%2411%2Bbillion%2Bfunding%2Bat%2B%241.25%2Btrillion%2Bvaluation%2C%2Bsource%2Bsays/27307823.html"
+    },
+    {
+      "title": "【産業インフラ】Microsoft、OracleのAI計算契約を縮小と報道——設備確保から適合性重視へ",
+      "intro": "日本時間11月7日、ReutersはBloombergの取材を引用し、MicrosoftがOracleからAI計算能力を借りる契約を更新せず、利用を段階的に終了していると報じました。ここ数カ月の運用変更が今回明らかになりました。",
+      "points": [
+        {
+          "label": "見直しの理由",
+          "text": "報道では、借りていた設備の旧世代NVIDIAチップがMicrosoftの変化する需要に合わなくなったとしています。計算資源の量だけでなく、用途との適合性が設備投資の判断材料になります。"
+        },
+        {
+          "label": "確認の範囲",
+          "text": "MicrosoftはReutersの照会に直ちに回答していません。Oracleは旧世代GPUを含めAI基盤への需要は強いと説明しており、この契約の縮小から市場全体の需要減を断定することはできません。"
+        }
+      ],
+      "url": "https://www.streetinsider.com/Reuters/Microsoft%2Bis%2Bwinding%2Bdown%2BOracle%2Bdeal%2Bto%2Brent%2BAI%2Bcloud%2Bcapacity%2C%2BBloomberg%2BNews%2Breports/27306455.html"
+    },
+    {
+      "title": "【フィジカルAI】Embodied AI、工場向けAIRを実機公開——人の操作から現場学習へ",
+      "intro": "日本時間11月7日午前0時、スイスのEmbodied AIはミュンヘンのHumanoid Europeで車輪型の双腕ロボットAIRを公開しました。事前発表は6日で、今回扱うのは現地6日16時の実機披露です。",
+      "points": [
+        {
+          "label": "導入の仕組み",
+          "text": "最初は人が遠隔操作し、その作業記録からAIが学んで自律化する構想です。重い部品を胴体に集め、接触時に力を逃がす軽い腕で、人と同じ作業場所での利用を目指します。"
+        },
+        {
+          "label": "実用化の段階",
+          "text": "メーカーで試験中とし、欧州の適合表示であるCEの取得は2027年の予定です。試験での成績は企業の説明であり、AIRの独立した安全認証や量産納入の完了を示しません。（[現地報道](https://www.humanoidsdaily.com/news/embodied-ai-air-wheeled-humanoid-factory-humanoid-europe)）"
+        }
+      ],
+      "url": "https://markets.chroniclejournal.com/thepilotnews/article/bizwire-2026-11-6-embodied-ai-unveils-air-a-physically-safe-humanoid-robot-that-learns-on-the-job"
+    }
   ]
 };
