@@ -493,5 +493,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-07.m4a",
     "label": "2026-11-07のAIニュース音声",
     "title": "ハッキングと口座分析まで実行するAI"
+  },
+  "2026-11-08": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-08.m4a",
+    "label": "2026-11-08のAIニュース音声",
+    "title": "汎用チャットから専門インフラへ変わるAI"
   }
 };
