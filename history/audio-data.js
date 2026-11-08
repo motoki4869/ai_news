@@ -498,5 +498,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-08.m4a",
     "label": "2026-11-08のAIニュース音声",
     "title": "汎用チャットから専門インフラへ変わるAI"
+  },
+  "2026-11-09": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-09.m4a",
+    "label": "2026-11-09のAIニュース音声",
+    "title": "Anthropicがガス発電機を買う理由"
   }
 };
