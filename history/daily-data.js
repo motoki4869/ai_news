@@ -10370,5 +10370,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://markets.chroniclejournal.com/thepilotnews/article/bizwire-2026-11-6-embodied-ai-unveils-air-a-physically-safe-humanoid-robot-that-learns-on-the-job"
     }
+  ],
+  "2026-11-09": [
+    {
+      "title": "【産業インフラ】Anthropic、34億ドルの発電機確保と報道——AI研究所が電源設備を直接調達",
+      "intro": "11月8日、Financial TimesとReutersは、Anthropicがデータセンター向けガス発電機の確保に約34億ドルを投じたと報じました。9月下旬の取引が今回明らかになったものです。",
+      "points": [
+        {
+          "label": "取引の対象",
+          "text": "テキサス州のOnePWR Solutionsから、合計1.7GWの大型発電機の調達契約を引き継いだとしています。設置に必要な設計・建設能力も含みますが、OnePWR自体の買収ではありません。"
+        },
+        {
+          "label": "確認の範囲",
+          "text": "Reutersは独自に確認できておらず、両社も照会に回答していません。設備の納入や発電開始を意味しません。"
+        }
+      ],
+      "url": "https://www.streetinsider.com/Reuters/Anthropic%2Bsecures%2B%243.4%2Bbillion%2Bgenerator%2Bdeal%2Bfor%2BAI%2Bdata%2Bcenters%2C%2BFT%2Breports/27309458.html"
+    },
+    {
+      "title": "【規制・安全性】米AI評価機関、ホワイトハウスへ非公式報告とAP——独立性と公開検証に懸念",
+      "intro": "11月8日、APは米商務省のAI安全性評価部門が、ホワイトハウスの一部門へ非公式に報告するよう求められたと報じました。事情を知る元政府職員2人への取材に基づきます。",
+      "points": [
+        {
+          "label": "評価体制の空白",
+          "text": "部門は常任責任者を欠き、安全性に関する研究報告の公開も停止しています。新モデルを独立して調べる政府側の検証能力が焦点です。"
+        },
+        {
+          "label": "異なる見方",
+          "text": "評価の政治化を懸念する声がある一方、政権に近づくことで予算や存在感が増すとの見方もあります。ホワイトハウスは部門に関する個別の質問には回答していません。"
+        }
+      ],
+      "url": "https://abcnews.com/US/wireStory/staff-us-center-ai-safety-reporting-white-house-137950879"
+    },
+    {
+      "title": "【産業・政策】CoreWeave、テキサス次期知事に協力提案——AI拠点拡大が地域条件の交渉へ",
+      "intro": "日本時間11月8日、CoreWeaveがテキサス州知事当選者Gina Hinojosa氏へ書簡を送り、データセンター開発での協力を求めたことが報じられました。米国7日の報道で、建設抑制を掲げる次期政権との調整に動いています。",
+      "points": [
+        {
+          "label": "提案の内容",
+          "text": "Michael Intrator CEOは、許可済み案件の責任ある完成と、将来の開発に適用する明確で持続的な基準について、政権移行チームとの協議を歓迎すると説明しました。"
+        },
+        {
+          "label": "実現条件",
+          "text": "Hinojosa氏は水資源や電力網の保護を理由に、新規建設の一時停止を求めています。今回は企業側の協力提案で、知事側の同意や建設許可の取得ではありません。"
+        }
+      ],
+      "url": "https://uk.investing.com/news/stock-market-news/coreweave-seeks-truce-with-texas-governorelect-hinojosa-4966590"
+    },
+    {
+      "title": "【ビジネス・雇用】CNBC、AI採用の料金モデルを取材——候補者選別の高速化が紹介手数料を揺さぶる",
+      "intro": "11月8日、CNBCは英国などの採用業者を取材し、AIが候補者の探索・選別を速めることで、人材紹介料金の根拠が問われ始めていると報じました。この日に公開された取材記事で、既存調査も背景として紹介しています。",
+      "points": [
+        {
+          "label": "効率化の数字",
+          "text": "Bullhornの2026年調査では、英国・アイルランドの採用専門家約300人の37%が、AIによって選別が26〜50%速くなったと回答しています。調査自体が8日に発表されたという意味ではありません。"
+        },
+        {
+          "label": "対価の変化",
+          "text": "履歴書を探して転送するだけの業務は企業自身でも自動化しやすくなります。手数料が一律に下がったという報道ではなく、専門的な見極めや関係構築にどう料金を付けるかが争点です。"
+        }
+      ],
+      "url": "https://www.cnbc.com/2026/11/08/ai-recruitment-agency-fees.html"
+    },
+    {
+      "title": "【技術】Qualcomm、端末内MoEエージェントを実演——必要な専門部分を先読みしてアプリ操作",
+      "intro": "11月8日、雷峰網はQualcommの中国AI製品技術責任者が上海で7日に行った説明を掲載しました。中国国際輸入博覧会で、StepFun、Infris AI、Longsysと展示した端末内AIエージェントの仕組みを紹介しています。",
+      "points": [
+        {
+          "label": "動作の仕組み",
+          "text": "入力に応じて専門部分を選ぶMoEモデルを使い、意図の理解、作業の組み立て、アプリ操作を端末側で行います。必要な専門部分を予測して先に読み込み、保存領域からメモリーへ移す効率も改善します。"
+        },
+        {
+          "label": "提供段階",
+          "text": "メモリー容量や消費電力が限られる携帯端末での実演です。新たな一般向けアプリの発売や、あらゆる作業を端末だけで完了できるという発表ではありません。"
+        }
+      ],
+      "url": "https://www.leiphone.com/category/chips/aOKsujJpdDvRKj5S.html"
+    }
   ]
 };
