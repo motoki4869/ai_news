@@ -508,5 +508,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-10.m4a",
     "label": "2026-11-10のAIニュース音声",
     "title": "クレーン計算から心の相談まで担うAI"
+  },
+  "2026-11-11": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-11.m4a",
+    "label": "2026-11-11のAIニュース音声",
+    "title": "振込直前に詐欺を止める最新AI"
   }
 };
