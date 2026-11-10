@@ -974,6 +974,12 @@ window.GLOSSARY = [
     "id": "sec7",
     "entries": [
       {
+        "term": "<strong>PII</strong>",
+        "sub": "Personally Identifiable Information（個人識別情報）",
+        "desc": "氏名や住所、識別番号など、個人を特定するために使える情報。2026年11月10日にNVIDIAが発表したNemotron PII Japanは、日本語文書中の該当箇所を検出し、伏せ字などで隠すモデルの開発を支える合成データである。実際の業務では書式や情報の組み合わせによって見落としが変わるため、検出精度と保護方法の検証が必要になる。",
+        "q": "pii personally identifiable information（個人識別情報） 氏名や住所、識別番号など、個人を特定するために使える情報。2026年11月10日にnvidiaが発表したnemotron pii japanは、日本語文書中の該当箇所を検出し、伏せ字などで隠すモデルの開発を支える合成データである。実際の業務では書式や情報の組み合わせによって見落としが変わるため、検出精度と保護方法の検証が必要になる。"
+      },
+      {
         "term": "<strong>Personal Agent Protocol（Poppy）</strong>",
         "sub": "Personal Agent Protocol（パーソナル・エージェント・プロトコル）",
         "desc": "個人の代理として動くAIが、利用者本人とは別の身元と権限でサービスへ接続するための草案仕様。2026年11月4日発表のDescope Envoyは、この仕様を支援し、買い物などの許可範囲や本人承認を組み込む。操作記録でも本人とAIを区別でき、AIの権限だけを取り消せる。仕様は策定途上であり、すべてのサービスの対応を意味しない。",
@@ -1178,8 +1184,8 @@ window.GLOSSARY = [
       {
         "term": "Claude Opus / Sonnet / Fable / Mythos",
         "sub": "<strong>Anthropic</strong>",
-        "desc": "Fable 5.1 は Terminal-Bench 4.0 で55.8%。Mythos はサイバー能力が突出しており、Mythos Preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、Project Glasswing の40社パートナーにのみ厳格提供されている。",
-        "q": "anthropic claude opus / sonnet / fable / mythos fable 5.1 は terminal-bench 4.0 で55.8%。mythos はサイバー能力が突出しており、mythos preview は「あまりに極端なサイバーセキュリティリスク」を理由に一般公開が凍結され、project glasswing の40社パートナーにのみ厳格提供されている。"
+        "desc": "Claude系列を開発する企業。日本時間2026年11月10日発表のFable 5.2とMythos 5.2は同じ基盤モデルを使い、開発・推論・画像理解と長時間の技術作業を強化した。Fableはサイバー・生物分野の悪用防止措置を施して一般提供し、Mythosは検証プログラムや企業向けClaude Securityなどを通じて限定提供する。旧Mythos Previewの提供条件とは区別が必要になる。",
+        "q": "anthropic claude opus / sonnet / fable / mythos claude系列を開発する企業。日本時間2026年11月10日発表のfable 5.2とmythos 5.2は同じ基盤モデルを使い、開発・推論・画像理解と長時間の技術作業を強化した。fableはサイバー・生物分野の悪用防止措置を施して一般提供し、mythosは検証プログラムや企業向けclaude securityなどを通じて限定提供する。旧mythos previewの提供条件とは区別が必要になる。"
       },
       {
         "term": "GPT-6 / GPT-6.1 / GPT-Live / GPT-Image",
@@ -1212,10 +1218,10 @@ window.GLOSSARY = [
         "q": "spacexai grok 4.5 / 4.7 xai系のgrokシリーズを擁する陣営。grok 4.5 は汎用チャットとリアルタイム情報の取り込みを強みとし、他社と比べて出力の制約が緩い方針を取ることが議論の対象になる。2026年9月21日公開のgrok 4.7はパラメータ数が前モデル比40%増の2.1兆に達し、大型モデル投入のペースを緩めない姿勢を示した。"
       },
       {
-        "term": "Muse Spark / Spark Open",
+        "term": "Muse Spark / Spark Open / Ember",
         "sub": "<strong>Meta</strong>",
-        "desc": "個人向けAIエージェントアプリMuseなどを支えるモデルを開発する企業。2026年10月にオープンウェイトのMuse Spark Openを公開し、総パラメータ8160億、入力ごとの稼働420億、最大100万トークンの文脈に対応した。Appleと協力したMacでの実行構成には512GBメモリのMac Studioを2台使い、手元での運用にも大きな計算資源が必要なことを示している。",
-        "q": "meta muse spark / spark open 個人向けaiエージェントアプリmuseなどを支えるモデルを開発する企業。2026年10月にオープンウェイトのmuse spark openを公開し、総パラメータ8160億、入力ごとの稼働420億、最大100万トークンの文脈に対応した。appleと協力したmacでの実行構成には512gbメモリのmac studioを2台使い、手元での運用にも大きな計算資源が必要なことを示している。"
+        "desc": "個人向けAIエージェントMuseなどを支えるモデルを開発する企業。2026年10月に公開したMuse Spark Openに続き、日本時間11月10日にMuse Emberを発表した。Emberはツール呼び出しやコード修正など反復作業向けの小型モデルで、入力20万トークン以下では100万トークン当たり入力0.10ドル、出力0.50ドルとなる。最大100万トークンの文脈に対応するが、長い入力では単価が上がる。",
+        "q": "meta muse spark / spark open / ember 個人向けaiエージェントmuseなどを支えるモデルを開発する企業。2026年10月に公開したmuse spark openに続き、日本時間11月10日にmuse emberを発表した。emberはツール呼び出しやコード修正など反復作業向けの小型モデルで、入力20万トークン以下では100万トークン当たり入力0.10ドル、出力0.50ドルとなる。最大100万トークンの文脈に対応するが、長い入力では単価が上がる。"
       },
       {
         "term": "GLM-5.3 等",
