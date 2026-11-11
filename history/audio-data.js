@@ -513,5 +513,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-11.m4a",
     "label": "2026-11-11のAIニュース音声",
     "title": "振込直前に詐欺を止める最新AI"
+  },
+  "2026-11-12": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-12.m4a",
+    "label": "2026-11-12のAIニュース音声",
+    "title": "たった10個のニューロンが物理世界を狂わせる"
   }
 };
