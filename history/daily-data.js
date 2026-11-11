@@ -10646,5 +10646,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.trendmicro.com/ja_jp/about/newsroom/press-releases/2026/pr-20261110-01.html"
     }
+  ],
+  "2026-11-12": [
+    {
+      "title": "【技術】Google、Gemini 4 Carbonの提供を拡大——最難関の開発・研究を有料利用者へ",
+      "intro": "日本時間11月11日、GoogleはGemini 4 Carbonを有料APIの開発者・企業などへ提供開始しました。米国10日の発表で、10月の防御担当者向け限定提供から対象を広げます。",
+      "points": [
+        {
+          "label": "用途の違い",
+          "text": "複雑な修正や科学研究で、長時間の探索と検証を行うモデルです。Googleは通常の開発・知識業務にはArgonが適すると説明しています。"
+        },
+        {
+          "label": "料金と利用先",
+          "text": "100万トークン当たり入力2ドル、出力10ドルの導入価格は11月30日までで、その後は各4ドル、20ドルです。Google AI Ultra向けにはGeminiアプリやAntigravityなどでも順次提供します。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/"
+    },
+    {
+      "title": "【実用プロダクト】Anthropic、Claudeに表計算と共同ボード——会話からチームの作業場所へ",
+      "intro": "日本時間11月11日、AnthropicはClaude SheetsとClaude Whiteboardsのベータ提供を開始し、Claude DashboardsをClaude Dataとして一般提供しました。米国10日の発表で、全有料プランが対象です。",
+      "points": [
+        {
+          "label": "共同編集",
+          "text": "Sheetsは予算表や進捗表、Whiteboardsは計画の整理に使えます。会話で作った成果物をClaudeと同僚が同じ場所で編集し続けられます。"
+        },
+        {
+          "label": "データと管理",
+          "text": "Claude Dataは接続先のデータからダッシュボードや説明資料を作ります。EnterpriseではSheetsとWhiteboardsが初期設定で無効、Dataは11月19日に既定で有効になります。"
+        }
+      ],
+      "url": "https://claude.com/resources/articles/sheets-whiteboards-data"
+    },
+    {
+      "title": "【フィジカルAI】DeepMind、Gemini Robotics 2.5を発表——自動車工場の部品仕分けで成功率96%",
+      "intro": "日本時間11月11日、Google DeepMindは画像・言語からロボットの動作を出力するVLAモデル、Gemini Robotics 2.5を発表しました。米国10日の発表で、提携先へ順次提供します。",
+      "points": [
+        {
+          "label": "現場の実証",
+          "text": "ドイツとハンガリーのMercedes-Benz工場で、ApptronikのApollo 2が部品を取り出し、組み付け順に整理しました。96%は同社の概念実証の成績で、全面的な無人運用の達成を意味しません。"
+        },
+        {
+          "label": "学習の広がり",
+          "text": "200超の作業で評価し、道具や柔らかい物の扱いを強化しました。Gemini 4 Argonで仮想の練習環境を作り、失敗映像の分析と改善案の検証も支援しています。"
+        }
+      ],
+      "url": "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/"
+    },
+    {
+      "title": "【規制】ニューヨーク州、RAISE法の登録受付を開始——独立研究と行政監督を接続",
+      "intro": "日本時間11月11日、米ニューヨーク州は大規模な最先端AI開発企業向け登録窓口の開設と、州全体のAI安全研究体制を発表しました。米国10日の発表で、RAISE法に基づく登録期限は2027年1月1日です。",
+      "points": [
+        {
+          "label": "制度の実装",
+          "text": "1月から安全枠組みの公開などを求め、重大な安全事故には72時間以内の報告義務を設けます。今回の新規性は法律の成立ではなく、受付と監督準備の具体化です。"
+        },
+        {
+          "label": "独立した評価",
+          "text": "Binghamton大学を拠点とするセンターに80人超の研究者を結集し、Empire AIの計算基盤で先端AIを検証します。成果を州の政策判断や安全要件の改善につなげます。"
+        }
+      ],
+      "url": "https://www.suny.edu/suny-news/press-releases/11-26/11-10-26-2/"
+    },
+    {
+      "title": "【ビジネス・医療】Oura、Counsel Healthを6.25億ドルで買収合意——健康計測から医師の診療へ接続",
+      "intro": "日本時間11月11日、Ouraは医師が監督する医療AI基盤Counsel Healthの買収合意を公表しました。米国10日の発表で、取引額は現金6億2500万ドル、年末までの完了を予定します。（[取引条件](https://www.lw.com/en/news/2026/11/latham-advises-oura-in-acquisition-of-counsel-health)）",
+      "points": [
+        {
+          "label": "連携の狙い",
+          "text": "指輪型端末の継続的な健康データから、AIへの質問や医師による検査・治療につなぐ構想です。既存の提携を買収へ進め、予防から継続的なケアまでを結び付けます。"
+        },
+        {
+          "label": "人とデータの管理",
+          "text": "診療判断には資格を持つ医師が関与し、医師へのデータ共有には利用者の許可が必要です。今回は最終契約の締結で、買収完了の発表ではありません。"
+        }
+      ],
+      "url": "https://ouraring.com/blog/oura-to-acquire-counsel-health/"
+    },
+    {
+      "title": "【セキュリティ】Microsoft、10個未満のニューロン改変で裏口を実証——通常評価を通るモデルにも潜む不正動作",
+      "intro": "日本時間11月11日、Microsoft Researchは、モデルの普段使われにくいニューロンを改変する「Lazarus」の研究を公開しました。米国10日の発表で、再学習せずAIエージェントへバックドアを埋め込む手法です。",
+      "points": [
+        {
+          "label": "攻撃の条件",
+          "text": "攻撃者にはモデルの重みを書き換える権限が必要です。通常は正常に振る舞い、特定の日付などを見たときだけ不正な命令を出し、エージェントに与えた権限で実行され得ます。"
+        },
+        {
+          "label": "運用への示唆",
+          "text": "一般的な性能・安全性評価だけでは改変を見逃す恐れがあります。Microsoftは元の重みとの照合や入手元の確認、実行権限の制限を挙げ、重みの検査や署名も強化する方針です。"
+        }
+      ],
+      "url": "https://www.microsoft.com/en-us/research/blog/lazare-veni-foras-reprogramming-dormant-neurons-to-backdoor-ai-agents/"
+    },
+    {
+      "title": "【産業インフラ】ダイキン、60MWのAI冷却設計を公開——液冷と空冷を一つの制御系へ",
+      "intro": "日本時間11月11日、ダイキンは米国子会社によるAIデータセンター向け標準設計モデルD60-Wを公表しました。米国10日付の発表で、NVIDIA Vera Rubin NVL72を使う基盤に対応します。",
+      "points": [
+        {
+          "label": "設計の構成",
+          "text": "60MWのIT負荷を6つの増設可能なユニットで支え、92%を液冷、残る8%を空冷で処理します。ラックから外気への排熱までを統合し、設計時の機器間調整を減らす狙いです。"
+        },
+        {
+          "label": "提供の段階",
+          "text": "気候に応じて冷却方式を切り替え、蒸発式冷却塔の補給水を不要にします。設計図の公開であり、開発中の冷却液分配装置とドライクーラーは2027年後半の提供予定です。"
+        }
+      ],
+      "url": "https://www.daikin.com/press/2026/20261111"
+    }
   ]
 };
