@@ -10860,5 +10860,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://united.mediaroom.com/news-releases?item=125496"
     }
+  ],
+  "2026-11-14": [
+    {
+      "title": "【技術】Google、Gemini 4 Hydrogenを公開——高速な実行モデルを検索と開発へ展開",
+      "intro": "日本時間11月13日、Googleは日常の開発や複数段階の作業を高速に進めるGemini 4 Hydrogenを公開しました。米国12日の発表で、API、Geminiアプリ、Google検索などへ展開します。",
+      "points": [
+        {
+          "label": "役割分担",
+          "text": "難しい設計・探索を担うCarbonやArgonと組み合わせ、コード作成や検証を実行します。AntigravityのOrchestratorは同じ作業中にモデルを切り替えます。"
+        },
+        {
+          "label": "料金",
+          "text": "最大100万トークンの入力範囲で、100万トークン当たり入力1.50ドル、出力7.50ドルです。Googleは従来の3.8 Flashより高速と説明していますが、実際の効果は作業条件で変わります。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/"
+    },
+    {
+      "title": "【実用プロダクト】Anthropic、エージェント基盤の自社運用を解禁——履歴と認証情報を企業内へ",
+      "intro": "日本時間11月13日までに、Anthropicはself-hosted Claude Managed Agentsの非公開ベータを開始しました。米国12日付の更新で、実行環境だけでなくサービス全体を顧客側で運用できます。",
+      "points": [
+        {
+          "label": "管理範囲",
+          "text": "エージェントの制御、作業用の隔離環境、セッション履歴などを自社クラウドや社内設備へ置けます。参加には同社の担当窓口への申請が必要です。"
+        },
+        {
+          "label": "データの境界",
+          "text": "モデルへの要求は選択した外部提供先へ送ります。Claude自体を社内で動かす提供形態ではなく、顧客が基盤の保守と安全管理を担います。（[構成](https://platform.claude.com/docs/en/managed-agents/self-hosted)）"
+        }
+      ],
+      "url": "https://platform.claude.com/docs/en/release-notes/overview"
+    },
+    {
+      "title": "【産業インフラ】AWS、SGLang-Neuronを公開——既存の推論手順をTrainiumへ接続",
+      "intro": "日本時間11月13日までに、AWSはAIモデルの配信基盤SGLangを独自半導体Trainiumで利用するSGLang-Neuronを公開しました。米国12日の発表で、AWSの深層学習用コンテナから利用できます。",
+      "points": [
+        {
+          "label": "移行の仕組み",
+          "text": "SGLang本体とは独立した追加部品がTrainium固有の処理を受け持ち、モデル起動や生成APIの操作を共通化します。TorchNeuronを通じてPyTorchの実行経路を使います。"
+        },
+        {
+          "label": "用途",
+          "text": "モデルの推論配信と、強化学習に使う実行記録の生成に対応します。慣れた操作を保ちながら半導体を選ぶ余地が広がりますが、対応モデルや性能は個別の確認が必要です。"
+        }
+      ],
+      "url": "https://aws.amazon.com/blogs/machine-learning/deploy-frontier-ai-models-on-aws-trainium-with-sglang-neuron/"
+    },
+    {
+      "title": "【セキュリティ】IBM、LLMONの実験モデルを公表——指示と資料を明示して混同を抑制",
+      "intro": "日本時間11月13日、IBM Graniteチームは、指示と入力資料の関係を明示する記法LLMONと、これを扱うGranite 4.1の実験プレビューを紹介しました。米国12日付の公式記事とツール群の公開を扱います。",
+      "points": [
+        {
+          "label": "構造化の方法",
+          "text": "指示、資料、出力要件を専用の区切りと識別子で示し、どの指示をどの資料に適用するか結び付けます。30億・80億パラメータのモデルを評価用に提供します。"
+        },
+        {
+          "label": "評価の限界",
+          "text": "IBMは資料に隠れた不正指示への耐性改善を報告しています。学習した振る舞いであり、安全性の保証ではなく、本番運用向けでもありません。"
+        }
+      ],
+      "url": "https://huggingface.co/blog/ibm-granite/llmon-an-llm-native-markup-language-now-in-granite"
+    },
+    {
+      "title": "【技術・開発ツール】Perplexity、Decider v1.3を公開——確率判定に原文の位置抽出を追加",
+      "intro": "日本時間11月13日までに、Perplexityは判断専用モデルDecider v1.3と軽量版Flash v1.3を公開しました。米国12日の発表で、重みの公開とAPI提供を行います。",
+      "points": [
+        {
+          "label": "追加機能",
+          "text": "locateは該当する原文と開始・終了位置を返し、個人情報の検出や文書からの項目抽出に使えます。同じ入力への分類・採点と組み合わせられます。"
+        },
+        {
+          "label": "使い方の違い",
+          "text": "自由な文章ではなく候補ごとの確率を返すため、振り分けや出力の検査に組み込みやすい設計です。公開評価と社内評価の成績は同社の報告として読む必要があります。"
+        }
+      ],
+      "url": "https://www.perplexity.ai/en-GB/hub/blog/perplexity-decider"
+    },
+    {
+      "title": "【技術・音声】Salesforce、音声認識モデルの重みを公開——文字起こしの形式も指示で制御",
+      "intro": "日本時間11月13日までに、SalesforceはSOV-Transcribe-1を公開しました。米国12日付の発表で、音声を自社設備で文字起こしできるモデルをApache 2.0で配布します。",
+      "points": [
+        {
+          "label": "認識と制御",
+          "text": "人名や電話番号の認識、雑音・アクセントへの対応を重視し、発話どおりか整形した文章かを自然言語で指定できます。英語など7言語に対応し、日本語は含みません。"
+        },
+        {
+          "label": "評価の範囲",
+          "text": "モデルカードではArtificial Analysisの非ストリーミング音声認識で公開重みモデルの首位、全体7位としています。逐次認識とは別の評価で、実際の業務音声での精度確認が必要です。"
+        }
+      ],
+      "url": "https://huggingface.co/salesforce-sovereign-intelligence/SOV-Transcribe-1"
+    },
+    {
+      "title": "【政策】米政治団体、AI有権者調査に110万ドル——規制論を2028年選挙の争点へ",
+      "intro": "11月13日、APは民主党系団体Tomorrow Togetherが、AIに関する有権者への訴え方を調べる取り組みを始めると報じました。デンバーでの政治会合に合わせた新たな調査活動です。",
+      "points": [
+        {
+          "label": "規模",
+          "text": "初期予算は110万ドルです。同団体は中間選挙でもAIやデータセンターの規制を支持する候補を支援していました。"
+        },
+        {
+          "label": "位置付け",
+          "text": "AIへの不安や安全対策を今後の選挙戦にどう結び付けるかが焦点です。新しい法律や規制の成立を意味するものではありません。"
+        }
+      ],
+      "url": "https://apnews.com/article/257d420d3a99f3fee65d2f6087a8b6b9"
+    }
   ]
 };
