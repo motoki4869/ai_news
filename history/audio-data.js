@@ -523,5 +523,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-13.m4a",
     "label": "2026-11-13のAIニュース音声",
     "title": "ユナイテッド航空がAI予約を禁止した理由"
+  },
+  "2026-11-14": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-14.m4a",
+    "label": "2026-11-14のAIニュース音声",
+    "title": "万能AIの終焉と特化型AIの連携"
   }
 };
