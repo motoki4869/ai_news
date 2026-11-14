@@ -528,5 +528,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-14.m4a",
     "label": "2026-11-14のAIニュース音声",
     "title": "万能AIの終焉と特化型AIの連携"
+  },
+  "2026-11-15": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-15.m4a",
+    "label": "2026-11-15のAIニュース音声",
+    "title": "買い物からロボットまで代行するAI"
   }
 };
