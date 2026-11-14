@@ -10967,5 +10967,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://apnews.com/article/257d420d3a99f3fee65d2f6087a8b6b9"
     }
+  ],
+  "2026-11-15": [
+    {
+      "title": "【実用プロダクト】OpenAI、ChatGPT Walletを発表——購入ごとの承認でAI代理決済へ",
+      "intro": "日本時間11月14日、OpenAIはAIが購入を代行するChatGPT Walletを発表しました。米国13日付の発表で、まず米国の18歳以上のChatGPT Pro利用者へdotsを通じて提供します。",
+      "points": [
+        {
+          "label": "決済の仕組み",
+          "text": "商品・総額・カードを確認し、生体認証などで購入ごとに承認します。決済用トークンを使い、加盟店やエージェントに実際のカード情報を開示しません。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "American Express、Mastercard、Visaと協力し、対象の米国発行カードに対応します。支出上限を設定して購入を全面委任する機能は今後の構想です。"
+        }
+      ],
+      "url": "https://openai.com/index/introducing-chatgpt-wallet/"
+    },
+    {
+      "title": "【実用プロダクト】Google、GeminiとWalletを接続——支出履歴から家計を分析",
+      "intro": "日本時間11月14日までに、Googleは米国のGeminiアプリ利用者向けにGoogle Walletとの連携を開始しました。米国13日付の発表で、支出履歴に基づく予算づくりを支援します。",
+      "points": [
+        {
+          "label": "利用例",
+          "text": "継続課金や値上げの発見、前年の旅行費を参考にした予算提案、支出のグラフ化に対応します。銀行・カード口座はPlaid経由で追加接続できます。"
+        },
+        {
+          "label": "権限",
+          "text": "利用者が接続を選び、いつでも解除できます。金融情報の読み取りに限定され、送金や投資は実行できません。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/google-wallet-gemini-app/"
+    },
+    {
+      "title": "【開発ツール】Google Cloud、AI監視を統合——実行履歴と費用を企業の管理下へ",
+      "intro": "日本時間11月14日までに、Google CloudはBigQueryとLookerを横断するAIエージェントの監視・評価機能を発表しました。米国13日付の公開で、自社製と外部開発のエージェントをまとめて追跡します。",
+      "points": [
+        {
+          "label": "監視内容",
+          "text": "利用量、遅延、トークン消費などを確認し、必要に応じて会話を顧客所有のBigQueryテーブルへ記録します。運用指標と会話内容は別々に管理できます。"
+        },
+        {
+          "label": "費用管理",
+          "text": "大きすぎるデータ照会を事前に止める上限に加え、日次の入力・出力トークン上限をプレビュー提供します。監視データの保存・取り込み自体にも費用が発生します。"
+        }
+      ],
+      "url": "https://cloud.google.com/blog/products/data-analytics/enterprise-ai-agent-observability-with-bigquery-and-looker/"
+    },
+    {
+      "title": "【産業インフラ】NVIDIA、DLAのPython実行手順を公開——端末内AIでGPUの負荷を分担",
+      "intro": "日本時間11月14日までに、NVIDIAはJetson AGX Orinの深層学習専用回路DLAをPythonから使う実装例を公開しました。米国13日付の記事で、cuDLAによる推論処理の組み立て方を示しています。",
+      "points": [
+        {
+          "label": "処理分担",
+          "text": "対応するニューラルネットワーク演算をDLAへ移し、GPUを前処理・後処理などへ回します。電力と計算能力が限られる機器で複数のAI処理を併用する用途を想定します。"
+        },
+        {
+          "label": "実装条件",
+          "text": "モデルのコンパイル、メモリーの登録、実行同期などが必要です。新しい半導体の発表ではなく、既存回路の活用を支える開発手順の公開です。"
+        }
+      ],
+      "url": "https://developer.nvidia.com/blog/run-native-dla-inference-in-python-on-nvidia-jetson-agx-orin-using-cudla/"
+    },
+    {
+      "title": "【フィジカルAI】NVIDIA、SimReadyの作業例を公開——缶の把持を仮想空間で検証",
+      "intro": "日本時間11月14日までに、NVIDIAは物理特性付き3D素材SimReadyを使ったロボットの把持・移動手順を公開しました。米国13日付の公式記事で、アーム、グリッパー、飲料缶をIsaac Sim上で組み合わせます。",
+      "points": [
+        {
+          "label": "再利用",
+          "text": "SimReady Centralから衝突判定、質量、関節などを設定した素材を取得し、制御を試せます。見た目の3D形状だけを使う場合の追加設定を減らします。"
+        },
+        {
+          "label": "検証の限界",
+          "text": "素材の検査は設定が要件を満たすかを確認するものです。組み立てたロボットが作業を成功させるかは別途シミュレーションで確かめる必要があります。"
+        }
+      ],
+      "url": "https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place"
+    },
+    {
+      "title": "【ビジネス・ロボティクス】OpenAI、再編後も研究継続と説明——ロボット部門の解散報道を訂正",
+      "intro": "11月14日、The DecoderはOpenAIの説明を受け、ロボティクス部門を「再び解散」とした記事を訂正しました。研究・製品部門との連携を強める再編で、研究は続くとしています。",
+      "points": [
+        {
+          "label": "組織変更",
+          "text": "研究者はMark Chen氏の主要研究部門へ、応用ロボティクスとハードウェアのチームはGreg Brockman氏の応用部門へ移ります。"
+        },
+        {
+          "label": "新情報",
+          "text": "ロボット開発からの撤退と断定できない点が明確になりました。14日の訂正・説明を扱い、記事中の既存の制御実験は新発表として扱いません。"
+        }
+      ],
+      "url": "https://the-decoder.com/openai-reassigns-robotics-researchers-to-other-teams-as-general-purpose-models-might-make-specialized-robotics-ai-unnecessary/"
+    },
+    {
+      "title": "【政策】米国防当局、AI部門を超知能局へ改称——名称変更でも既存任務を維持",
+      "intro": "日本時間11月14日、Breaking Defenseは米国防当局がデジタル・AI統括部門をSuper Intelligence Officeへ改称したと報じました。米国13日の発表で、連邦政府の用語変更方針に合わせます。",
+      "points": [
+        {
+          "label": "業務継続",
+          "text": "当局は任務の変更ではないと説明し、既存の運用計画、企業向け募集、提携を継続します。システムや各組織の名称は数週間かけて移行します。"
+        },
+        {
+          "label": "名称の意味",
+          "text": "一般に人間の知能を超える仮説上のAIを指す「超知能」と、行政組織の呼称変更は別です。今回の発表は超知能の技術的実現を示していません。"
+        }
+      ],
+      "url": "https://breakingdefense.com/2026/11/pentagon-rebrands-principle-ai-shop-as-super-intelligence-office/"
+    }
   ]
 };
