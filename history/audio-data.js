@@ -533,5 +533,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-15.m4a",
     "label": "2026-11-15のAIニュース音声",
     "title": "買い物からロボットまで代行するAI"
+  },
+  "2026-11-16": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-16.m4a",
+    "label": "2026-11-16のAIニュース音声",
+    "title": "120億ドルのAI半導体と無効化される既存ルール"
   }
 };
