@@ -11074,5 +11074,82 @@ window.DAILY_NEWS = {
       ],
       "url": "https://breakingdefense.com/2026/11/pentagon-rebrands-principle-ai-shop-as-super-intelligence-office/"
     }
+  ],
+  "2026-11-16": [
+    {
+      "title": "【社会・倫理】韓国の税理士試験首席がAI不正を告白——対面試験でも解答の外部生成",
+      "intro": "11月15日、韓国の税理士資格試験の首席合格者が生成AIを使った不正を認めました。",
+      "points": [
+        {
+          "label": "手口",
+          "text": "問題を撮影し、スマートフォンで解答を確認したと説明しています。"
+        },
+        {
+          "label": "捜査",
+          "text": "ソウル警察が自首書を受理しました。"
+        }
+      ],
+      "url": "https://www.theguardian.com/technology/2026/nov/15/ai-cheating-south-korea-college-entrance-exam"
+    },
+    {
+      "title": "【ビジネス】NVIDIA前CEOの復帰署名が11万人超——経営移行に支持者から圧力",
+      "intro": "11月15日朝の日本時間で、Jensen Huang前CEOの復帰を求める「Stand with Jensen」の署名が11万6256人に達したとITmediaが報じました。12日の辞任そのものではなく、その後の署名運動の拡大を扱います。",
+      "points": [
+        {
+          "label": "支持の広がり",
+          "text": "署名サイトにはElon Musk氏やEpic GamesのTim Sweeney氏らの名前が並びます。人数と賛同者はサイト上の表示に基づくもので、署名者全員の本人確認を示す数字ではありません。"
+        },
+        {
+          "label": "意思決定",
+          "text": "復帰を求める声が広がっても、取締役会による経営者の選任や調査とは別です。署名数の増加は復帰決定を意味しません。"
+        }
+      ],
+      "url": "https://www.itmedia.co.jp/news/article/2611/15/2000003207/"
+    },
+    {
+      "title": "【産業インフラ】WSJ、約120億ドルのAI半導体注文記録を報道——東南アジア経由の供給網を追跡",
+      "intro": "日本時間11月15日、Wall Street Journalは、Megaspeedが中国企業向けに手配したNVIDIA製半導体の注文記録を報じました。米国14日夜の調査報道で、提携媒体To Vimaにも掲載されています。",
+      "points": [
+        {
+          "label": "記録の範囲",
+          "text": "2024年3月〜2025年6月に約120億ドル相当、数十万個の注文を手配したとしています。ただし、記録から実際の納入量や供給元までは確認できないと明記しています。"
+        },
+        {
+          "label": "異なる経路",
+          "text": "海外データセンターの計算資源を遠隔利用することと、規制対象の半導体を密輸することは異なります。NVIDIAは密輸防止に取り組むとし、Megaspeedも米国法の順守を表明しています。"
+        }
+      ],
+      "url": "https://www.tovima.com/wsj/how-jensen-huang-built-the-backdoor-route-that-keeps-beijing-in-the-ai-race/"
+    },
+    {
+      "title": "【規制】中国、AI技術輸出管理案の意見募集が最終日——23項目の対象範囲が焦点",
+      "intro": "11月15日、中国商務部・科学技術部による技術輸出管理案の意見募集が、公告で定めた最終日を迎えました。10月16日の案公表ではなく、募集日程上の節目を扱います。",
+      "points": [
+        {
+          "label": "対象案",
+          "text": "大規模モデル、エージェント、計算クラスター、情報処理に関わるAI技術23項目を含みます。開源や学術論文の公開などで公共領域に入った技術は管理対象外としています。"
+        },
+        {
+          "label": "制度の段階",
+          "text": "最終日を迎えたことは、改訂案の成立や新たな禁止措置の施行を意味しません。対象技術の輸出前登録は10月16日からの暫定措置で、今回初めて始まる制度ではありません。"
+        }
+      ],
+      "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2026/art_0a31a3c9ac404f7a9b0e917ce3412997.html"
+    },
+    {
+      "title": "【倫理・著作権】豪議員、AI政策で著作権保護を要求——創作者の権利を争点化",
+      "intro": "日本時間11月15日、豪議員Andrew McLachlan氏の著作権保護を求める発言が報じられました。",
+      "points": [
+        {
+          "label": "論点",
+          "text": "学習利用を権利者が拒否するオプトアウト方式に懸念を示しています。"
+        },
+        {
+          "label": "段階",
+          "text": "法改正の成立ではなく、政策策定中の議論です。"
+        }
+      ],
+      "url": "https://www.theguardian.com/australia-news/2026/nov/15/art-over-profit-ai-policy-debate-andrew-mclachlan"
+    }
   ]
 };
