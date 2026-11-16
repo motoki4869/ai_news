@@ -538,5 +538,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-16.m4a",
     "label": "2026-11-16のAIニュース音声",
     "title": "120億ドルのAI半導体と無効化される既存ルール"
+  },
+  "2026-11-17": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-17.m4a",
+    "label": "2026-11-17のAIニュース音声",
+    "title": "画面を飛び出し物理空間を動かすAI"
   }
 };
