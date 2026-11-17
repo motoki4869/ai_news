@@ -543,5 +543,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-17.m4a",
     "label": "2026-11-17のAIニュース音声",
     "title": "画面を飛び出し物理空間を動かすAI"
+  },
+  "2026-11-18": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-18.m4a",
+    "label": "2026-11-18のAIニュース音声",
+    "title": "AIに完璧を求める人間の矛盾"
   }
 };
