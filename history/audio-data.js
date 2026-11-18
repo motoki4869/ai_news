@@ -548,5 +548,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-18.m4a",
     "label": "2026-11-18のAIニュース音声",
     "title": "AIに完璧を求める人間の矛盾"
+  },
+  "2026-11-19": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-19.m4a",
+    "label": "2026-11-19のAIニュース音声",
+    "title": "AIコスト激減と膨らむ債務バブル"
   }
 };
