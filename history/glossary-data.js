@@ -578,6 +578,12 @@ window.GLOSSARY = [
         "q": "光nic optical network interface card（光ネットワークインターフェースカード） サーバーに取り付け、光通信でネットワークとのデータ送受信を担う拡張カード。1finityのn100は約100キロメートル離れたデータセンター間を最大毎秒800ギガビットで接続し、拠点をまたぐ人工知能の学習や推論に使う計算資源の活用を想定している。"
       },
       {
+        "term": "<strong>ABF基板</strong>",
+        "sub": "Ajinomoto Build-up Film（味の素ビルドアップフィルム）を使う基板",
+        "desc": "薄い絶縁フィルムを使って配線層を重ね、半導体チップの細かな端子を外の回路につなぐパッケージ基板。台湾のKinsusは、NVIDIAと結んだ契約に基づき、同社向けの生産能力を現行の3.5倍超に増やす計画を示した。AI半導体の量産にはチップ本体に加えて、こうした基板の供給能力も必要になる。",
+        "q": "abf基板 ajinomoto build-up film（味の素ビルドアップフィルム）を使う基板 薄い絶縁フィルムを使って配線層を重ね、半導体チップの細かな端子を外の回路につなぐパッケージ基板。台湾のkinsusは、nvidiaと結んだ契約に基づき、同社向けの生産能力を現行の3.5倍超に増やす計画を示した。ai半導体の量産にはチップ本体に加えて、こうした基板の供給能力も必要になる。"
+      },
+      {
         "term": "<strong>MLPerf Training</strong>",
         "sub": "MLPerf Training（エムエルパーフ・トレーニング）",
         "desc": "業界団体のMLCommonsが運営し、所定の精度に達するまでの学習時間を共通の手順で測る公開ベンチマーク。第6.1版では、約3970億パラメータの言語モデルを追加学習する課題が加わり、異なる半導体やサーバー構成の性能を比較できる。",
@@ -1266,10 +1272,10 @@ window.GLOSSARY = [
         "q": "anthropic claude opus / sonnet / fable / mythos claude系列を開発する企業。日本時間2026年11月10日発表のfable 5.2とmythos 5.2は同じ基盤モデルを使い、開発・推論・画像理解と長時間の技術作業を強化した。fableはサイバー・生物分野の悪用防止措置を施して一般提供し、mythosは検証プログラムや企業向けclaude securityなどを通じて限定提供する。旧mythos previewの提供条件とは区別が必要になる。"
       },
       {
-        "term": "GPT-6 / GPT-6.1 / GPT-Live / GPT-Image",
+        "term": "GPT-6 / GPT-6.2 / GPT-Live / GPT-Image",
         "sub": "<strong>OpenAI</strong>",
-        "desc": "GPT-5.6 の Sol / Terra / Luna の3系統を2026年7月9日に一般公開。2026年9月にはGPT-6世代として旗艦 Astra に続き、9月22日に Sol（コーディング等の複雑なタスク向け）と Luna（要約・抽出など大量処理向け）、9月29日に改良版 GPT-6.1 Sol を公開し、API価格をGPT-5.6世代の約半額に下げた。Astra は公開前、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された経緯を持つ。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。米国11月4日付発表のImages 2.6は画像生成・編集とGIF制作を扱い、APIでは速度重視のGPT-Image-2.6 Flareと、品質や編集の一貫性を重視するSunburstを提供する。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
-        "q": "openai gpt-6 / gpt-6.1 / gpt-live / gpt-image gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。米国11月4日付発表のimages 2.6は画像生成・編集とgif制作を扱い、apiでは速度重視のgpt-image-2.6 flareと、品質や編集の一貫性を重視するsunburstを提供する。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
+        "desc": "GPT-5.6 の Sol / Terra / Luna の3系統を2026年7月9日に一般公開。2026年9月にはGPT-6世代として旗艦 Astra に続き、9月22日に Sol（コーディング等の複雑なタスク向け）と Luna（要約・抽出など大量処理向け）、9月29日に改良版 GPT-6.1 Sol を公開し、API価格をGPT-5.6世代の約半額に下げた。Astra は公開前、Preparedness Framework の最高危険水準「Critical」到達の可能性から開発の一部が停止された経緯を持つ。日本時間2026年11月18日にはGPT-6.2 AstraとSolを公開。Astraは複雑な業務向け、Solは日常業務向けで、FrontierCode 2.0ではSolがAstraに0.5ポイント差まで迫り、費用は約5分の1だった。GPT-Live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にChatGPTデスクトップアプリの音声モードとして実装された。米国11月4日付発表のImages 2.6は画像生成・編集とGIF制作を扱い、APIでは速度重視のGPT-Image-2.6 Flareと、品質や編集の一貫性を重視するSunburstを提供する。なお Codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。",
+        "q": "openai gpt-6 / gpt-6.2 / gpt-live / gpt-image gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。日本時間2026年11月18日にはgpt-6.2 astraとsolを公開。astraは複雑な業務向け、solは日常業務向けで、frontiercode 2.0ではsolがastraに0.5ポイント差まで迫り、費用は約5分の1だった。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。米国11月4日付発表のimages 2.6は画像生成・編集とgif制作を扱い、apiでは速度重視のgpt-image-2.6 flareと、品質や編集の一貫性を重視するsunburstを提供する。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
         "term": "Gemini 4 Carbon / Argon / Hydrogen",
@@ -1284,10 +1290,10 @@ window.GLOSSARY = [
         "q": "liquid ai lfm3 / d1 リキッド・エーアイが開発する小型モデル群。lfmはliquid foundation modelsの略で、日本時間2026年10月28日公開のlfm3は約20億パラメータ級の6モデルを共通基盤から作り、文章・画像・音声・判断を扱う。gpu1基での追加学習や端末内利用を想定するが、年間売上高1000万ドル以上の企業の商用利用には別途契約が必要になる。"
       },
       {
-        "term": "MAI-Cyber-1-Flash 等",
+        "term": "MAI Code 2 / MAI-Cyber-1-Flash",
         "sub": "<strong>Microsoft</strong>",
-        "desc": "Microsoftの自社開発モデル群の総称。2026年9月14日、MAIモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。",
-        "q": "microsoft mai-cyber-1-flash 等 microsoftの自社開発モデル群の総称。2026年9月14日、maiモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。"
+        "desc": "Microsoftの自社開発モデル群の総称。2026年9月14日、MAIモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。日本時間2026年11月18日のIgniteで開発向けのCode 2とCode 2 Flashを発表し、GitHub CopilotとMicrosoft Foundryで提供した。Code 2は複数ファイルにまたがる実装、Flashは局所的な修正など頻度の高い作業を想定する。",
+        "q": "microsoft mai code 2 / mai-cyber-1-flash microsoftの自社開発モデル群の総称。2026年9月14日、maiモデル群の行動を規律する37ページの「行動規範」草案を公開し意見公募を開始（シャットダウンへの抵抗、自律的な目標設定、監査者への推論隠蔽を禁止）。日本時間2026年11月18日のigniteで開発向けのcode 2とcode 2 flashを発表し、github copilotとmicrosoft foundryで提供した。code 2は複数ファイルにまたがる実装、flashは局所的な修正など頻度の高い作業を想定する。"
       },
       {
         "term": "Grok 4.5 / 4.7",

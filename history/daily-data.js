@@ -11365,5 +11365,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.lycorp.co.jp/ja/news/release/020992/"
     }
+  ],
+  "2026-11-19": [
+    {
+      "title": "【技術】OpenAIがGPT-6.2 AstraとSolを公開——難しい業務と日常開発で費用を抑える",
+      "intro": "日本時間11月18日（米国時間17日）、OpenAIが複雑な業務向けのAstraと日常業務向けのSolを公開しました。",
+      "points": [
+        {
+          "label": "業務タスクの評価",
+          "text": "同社によると、Astraは複数工程の業務を測るAgents’ Last Examで旧Astraを5.2ポイント上回り、1課題当たりの費用は3分の1未満でした。"
+        },
+        {
+          "label": "開発時の使い分け",
+          "text": "実際のコードベースを使うFrontierCode 2.0では、SolがAstraとの差を0.5ポイント以内に抑え、費用は約5分の1でした。"
+        }
+      ],
+      "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol/"
+    },
+    {
+      "title": "【技術】MicrosoftがMAI Code 2を投入——自社の開発モデルをGitHub Copilotに展開",
+      "intro": "日本時間11月18日（米国時間17日）、MicrosoftがサンフランシスコのIgniteで、開発向け自社モデルCode 2とCode 2 Flashを発表しました。",
+      "points": [
+        {
+          "label": "用途",
+          "text": "Code 2は複数ファイルの実装や複雑なデバッグを想定し、Flashはコードの説明や局所的な修正など頻度の高い作業を担います。"
+        },
+        {
+          "label": "提供先",
+          "text": "両モデルはGitHub Copilotで一般提供され、開発基盤のMicrosoft Foundryでも利用できます。"
+        }
+      ],
+      "url": "https://blogs.microsoft.com/blog/2026/11/17/ignite-2026-building-the-frontier-ecosystem/"
+    },
+    {
+      "title": "【産業インフラ】NVIDIAが台湾の供給契約を拡大——AI半導体の基板と先端パッケージを増強",
+      "intro": "日本時間11月18日（米国時間17日）、NVIDIAがAI向け計算設備の増産に向け、基板や先端パッケージの供給を拡大する契約を発表しました。",
+      "points": [
+        {
+          "label": "基板",
+          "text": "台湾のKinsusは、NVIDIA向けのABF基板の生産能力を現行の3.5倍超に増やす計画です。2027年後半に生産を始め、2028年第3四半期に増強分の確保を目指します。"
+        },
+        {
+          "label": "先端パッケージ",
+          "text": "台湾のSPILも、複数年契約に基づき組み立てや検査を含む生産ラインを増設し、2029年半ばまでにNVIDIA向けの能力を引き上げる予定です。"
+        }
+      ],
+      "url": "https://nvidianews.nvidia.com/_gallery/download_pdf/6afcd31a3d6332df129940a0/"
+    },
+    {
+      "title": "【産業】Pony.aiの自動運転タクシー売上が2.65倍——有償運行と車両納入が伸長",
+      "intro": "11月18日、中国などで自動運転サービスを展開するPony.aiが2026年7〜9月期の決算を発表しました。",
+      "points": [
+        {
+          "label": "増収要因",
+          "text": "自動運転タクシー事業の売上は前年同期比165.4％増の1,780万ドルでした。第7世代車両による有償運行の拡大と、共同展開先への車両納入が寄与しました。"
+        },
+        {
+          "label": "事業全体",
+          "text": "売上は75.2％増の4,460万ドルでした。営業損失は前年同期の6,970万ドルから6,870万ドルに縮小しました。"
+        }
+      ],
+      "url": "https://ir.pony.ai/news-releases/news-release-details/pony-ai-inc-reports-third-quarter-2026-financial-results-total"
+    },
+    {
+      "title": "【政策】ECBがAI企業の株価急落リスクを指摘——社債とノンバンクにも波及の恐れ",
+      "intro": "11月18日、欧州中央銀行（ECB）が金融安定報告を公表し、AI企業に対する高い利益期待が外れた場合に資産価格が急落するリスクを指摘しました。",
+      "points": [
+        {
+          "label": "資金調達",
+          "text": "AI関連企業の債務が膨らむなか、企業同士の出資や取引が循環すると、最終的な需要の強さを見極めにくくなります。"
+        },
+        {
+          "label": "波及経路",
+          "text": "一部の銀行以外の金融機関は価格変動に弱く、銀行にも取引関係を通じて損失が波及し得ると分析しました。"
+        }
+      ],
+      "url": "https://www.ecb.europa.eu/press/financial-stability-publications/fsr/pdf/ecb.fsr202611~e03b919d36.en.pdf"
+    },
+    {
+      "title": "【実用プロダクト】Geminiのタスク機能が日本など6カ国で無料に——定期作業をバックグラウンドで代行",
+      "intro": "日本時間11月18日（米国時間17日）、GoogleがGeminiのタスク機能を日本、米国など6カ国で無料提供し始めました。",
+      "points": [
+        {
+          "label": "代行できる作業",
+          "text": "Gemini 4 Hydrogenが複数工程の調査や定期作業を実行し、完了時に通知します。メールと予定表をもとにした朝のまとめなどを任せられます。"
+        },
+        {
+          "label": "地域別の展開",
+          "text": "店舗への電話など、新たな高度機能は米国から順次提供します。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features/"
+    },
+    {
+      "title": "【実用プロダクト】SunoがVisualsを公開——楽曲の構成や歌詞に合わせて短尺動画を生成",
+      "intro": "日本時間11月18日（米国時間17日）、米Sunoが、楽曲に合わせた動画や画像を作るVisualsを公開しました。",
+      "points": [
+        {
+          "label": "制作方法",
+          "text": "ライブラリの楽曲から最長15秒の映像を作り、テキストの指示で延長・編集できます。歌声に合わせた口の動きも生成します。"
+        },
+        {
+          "label": "利用条件",
+          "text": "画像・動画の生成には楽曲生成とは別のクレジットを使います。特定の人物や著作物の再現を抑えるため、入力と画像にフィルターを設けています。"
+        }
+      ],
+      "url": "https://suno.com/blog/introducing-visuals"
+    }
   ]
 };
