@@ -288,8 +288,8 @@ window.GLOSSARY = [
       {
         "term": "<strong>世界モデル / WFM</strong>",
         "sub": "World Foundation Model（ワールド・ファウンデーション・モデル）",
-        "desc": "環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。2026年10月27日発表のGoogle DeepMindのGenie 4は、操作可能な仮想環境に映像だけでなく環境音や対話も生成し、ロボットの訓練などへの応用を想定する。生成した世界が現実の物理法則を正確に再現する保証はなく、長時間の一貫性や複雑な物理挙動は検証が必要になる。",
-        "q": "世界モデル / wfm world foundation model（ワールド・ファウンデーション・モデル） 環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。2026年10月27日発表のgoogle deepmindのgenie 4は、操作可能な仮想環境に映像だけでなく環境音や対話も生成し、ロボットの訓練などへの応用を想定する。生成した世界が現実の物理法則を正確に再現する保証はなく、長時間の一貫性や複雑な物理挙動は検証が必要になる。"
+        "desc": "環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。Google DeepMindが2026年10月27日に発表したGenie 4は映像に加えて環境音や会話も生成する。日本時間11月19日から対象のGoogle AI Ultra加入者向けにProject Genieで提供され、探索中にテキストで環境を変更できる。ロボットの訓練などに応用する際は、長時間の一貫性や物理挙動が現実とどの程度一致するかを検証する必要がある。",
+        "q": "世界モデル / wfm world foundation model（ワールド・ファウンデーション・モデル） 環境の状態や操作に応じて次に何が起こるかを予測・生成する基盤モデル。google deepmindが2026年10月27日に発表したgenie 4は映像に加えて環境音や会話も生成する。日本時間11月19日から対象のgoogle ai ultra加入者向けにproject genieで提供され、探索中にテキストで環境を変更できる。ロボットの訓練などに応用する際は、長時間の一貫性や物理挙動が現実とどの程度一致するかを検証する必要がある。"
       },
       {
         "term": "<strong>OCR</strong>",
@@ -1278,10 +1278,10 @@ window.GLOSSARY = [
         "q": "openai gpt-6 / gpt-6.2 / gpt-live / gpt-image gpt-5.6 の sol / terra / luna の3系統を2026年7月9日に一般公開。2026年9月にはgpt-6世代として旗艦 astra に続き、9月22日に sol（コーディング等の複雑なタスク向け）と luna（要約・抽出など大量処理向け）、9月29日に改良版 gpt-6.1 sol を公開し、api価格をgpt-5.6世代の約半額に下げた。astra は公開前、preparedness framework の最高危険水準「critical」到達の可能性から開発の一部が停止された経緯を持つ。日本時間2026年11月18日にはgpt-6.2 astraとsolを公開。astraは複雑な業務向け、solは日常業務向けで、frontiercode 2.0ではsolがastraに0.5ポイント差まで迫り、費用は約5分の1だった。gpt-live は聞き取りと発話を同時に行えるリアルタイム音声モデルで、7月にchatgptデスクトップアプリの音声モードとして実装された。米国11月4日付発表のimages 2.6は画像生成・編集とgif制作を扱い、apiでは速度重視のgpt-image-2.6 flareと、品質や編集の一貫性を重視するsunburstを提供する。なお codex はモデル名ではなく、これらのモデルを動かすコーディングエージェント製品の名称。"
       },
       {
-        "term": "Gemini 4 Carbon / Argon / Hydrogen",
+        "term": "Gemini 4 / Genie 4",
         "sub": "<strong>Google / DeepMind</strong>",
-        "desc": "Gemini系列を開発する企業・研究組織。Carbonは長時間の探索や検証を伴う難しい開発・研究向けで、通常業務にはArgonを推奨する。日本時間2026年11月13日公開のHydrogenは日常の開発やエージェントの高速な実行を担い、検索やアプリにも展開する。最大100万トークンの入力範囲で、100万トークン当たり入力1.50ドル、出力7.50ドルとなる。",
-        "q": "google / deepmind gemini 4 carbon / argon / hydrogen gemini系列を開発する企業・研究組織。carbonは長時間の探索や検証を伴う難しい開発・研究向けで、通常業務にはargonを推奨する。日本時間2026年11月13日公開のhydrogenは日常の開発やエージェントの高速な実行を担い、検索やアプリにも展開する。最大100万トークンの入力範囲で、100万トークン当たり入力1.50ドル、出力7.50ドルとなる。"
+        "desc": "Gemini系列や世界モデルのGenieを開発する企業・研究組織。日本時間2026年11月19日から提供するGemini 4 Neonは複雑な開発や分析を担い、難しい長期課題向けのCarbonと日常作業を高速にこなすHydrogenの間に位置する。Neonは有料API、企業向けGemini、個人向けのGoogle AI ProとUltraに順次展開する。",
+        "q": "google / deepmind gemini 4 / genie 4 gemini系列や世界モデルのgenieを開発する企業・研究組織。日本時間2026年11月19日から提供するgemini 4 neonは複雑な開発や分析を担い、難しい長期課題向けのcarbonと日常作業を高速にこなすhydrogenの間に位置する。neonは有料api、企業向けgemini、個人向けのgoogle ai proとultraに順次展開する。"
       },
       {
         "term": "LFM3 / d1",

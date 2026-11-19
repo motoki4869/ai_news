@@ -11472,5 +11472,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://suno.com/blog/introducing-visuals"
     }
+  ],
+  "2026-11-20": [
+    {
+      "title": "【資金調達】Anthropicが公募価格を83ドルに決定——新規上場の売出総額は約813億ドル",
+      "intro": "日本時間11月19日朝（米国時間18日夕方）、Claudeを開発するAnthropicが、米ナスダックへの新規上場に向けた公募価格を1株83ドルに決めたと発表しました。",
+      "points": [
+        {
+          "label": "売り出しの内訳",
+          "text": "対象は9億8000万株で、約9億5635万株をAnthropic、残りを既存株主が売り出します。既存株主の売却代金は同社の調達額に含まれません。"
+        },
+        {
+          "label": "上場予定",
+          "text": "米国時間19日に銘柄コード「ANT」で取引を始める予定とし、引受会社には最大1億4700万株を追加購入できる権利を付与しました。"
+        }
+      ],
+      "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering"
+    },
+    {
+      "title": "【技術】GoogleがGemini 4 Neonを提供——複雑な開発・分析向けに性能と処理速度を両立",
+      "intro": "日本時間11月19日（米国時間18日）、Googleが複雑なソフトウェア開発や分析向けのGemini 4 Neonを発表し、順次提供を始めました。",
+      "points": [
+        {
+          "label": "モデルの位置づけ",
+          "text": "長時間かかる難しい課題向けのCarbonと、日常作業を高速に処理するHydrogenの間を担います。Googleによると、最も高い思考設定で第三者の性能指標Artificial Analysis Intelligence Indexの総合3位に入りました。"
+        },
+        {
+          "label": "提供先",
+          "text": "開発者向けの有料APIや企業向けGeminiに加え、個人向けGeminiアプリのGoogle AI ProとUltraでも順次利用できます。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/"
+    },
+    {
+      "title": "【実用プロダクト】Project GenieでGenie 4の提供開始——生成した仮想世界を探索中に書き換え",
+      "intro": "日本時間11月19日（米国時間18日）、Google DeepMindとGoogle Labsは、ブラウザーで仮想世界を生成・探索するProject Genieで、世界モデルGenie 4を対象のGoogle AI Ultra加入者に提供し始めました。",
+      "points": [
+        {
+          "label": "探索中の編集",
+          "text": "テキストで指示すると探索中に環境を変更でき、環境音や登場人物の会話も生成します。"
+        },
+        {
+          "label": "共有と利用条件",
+          "text": "コミュニティーギャラリーで他のユーザーの作品を探索し、作り替えられます。Google AI Pro加入者は待機リストに登録できます。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/genie-4-now-available-project-genie/"
+    },
+    {
+      "title": "【産業】ファミマが飲料補充ロボットを本格導入へ——先行店舗で作業時間を約7割削減",
+      "intro": "11月19日、ファミリーマートはTelexistenceと改良してきた飲料補充ロボットとデジタル在庫棚を、2027年1月から国内店舗に順次導入すると発表しました。",
+      "points": [
+        {
+          "label": "自動補充",
+          "text": "ロボットは販売実績をAIで分析し、売れ筋を優先して1日最大約1800本を売り場に並べます。"
+        },
+        {
+          "label": "従業員の作業",
+          "text": "デジタル在庫棚が商品の位置と数量を管理し、従業員は在庫棚への補充を担当します。先行店舗では在庫管理・飲料補充の作業時間が1日当たり約7割減りました。"
+        }
+      ],
+      "url": "https://www.family.co.jp/company/news_releases/2026/20261119_02.html"
+    },
+    {
+      "title": "【ビジネス】AlibabaのAIクラウド外販売上が64％増——需要拡大と収益性改善が並行",
+      "intro": "11月19日、中国のAlibaba Groupは7〜9月期決算で、AIクラウド・計算サービスの外部顧客向け売上が前年同期比64％増えたと発表しました。",
+      "points": [
+        {
+          "label": "需要の内訳",
+          "text": "AI関連製品の売上は13四半期連続で前年同期比3桁増となり、自動車や金融などの顧客でクラウド利用が拡大しました。"
+        },
+        {
+          "label": "収益性",
+          "text": "クラウド部門の調整後利益（利払い・税金・無形資産償却前）は前年同期比121％増の88億3800万元で、同利益率は14.5％でした。"
+        }
+      ],
+      "url": "https://home.alibabagroup.com/en-US/document-2060213191907999744"
+    },
+    {
+      "title": "【政策】米主要7社がAI導入企業の協議会を発足——安全情報の共有を規制議論の争点に",
+      "intro": "日本時間11月19日、AxiosはJPMorgan Chase、General Motors、Pfizerなど米主要7社が、AIを導入する企業の立場を政策に反映させる協議会を発足させたと報じました。",
+      "points": [
+        {
+          "label": "参加業種",
+          "text": "金融、自動車、製薬に加え、物流・航空や農機の企業も参加し、実際の業務へのAI導入で生じる課題を政策当局に伝えます。"
+        },
+        {
+          "label": "事故情報の共有",
+          "text": "協議会の顧問は、開発企業から当局へ事故が報告されても導入企業に情報が届かない場合があり、業務でのリスク管理に支障が出ると指摘しました。"
+        }
+      ],
+      "url": "https://www.axios.com/2026/11/19/jpmorgan-gm-pfizer-ai-regulation-frontier"
+    },
+    {
+      "title": "【開発ツール】Google LabsがStitch Loopを発表——公開後のサービスを運用データから改善",
+      "intro": "日本時間11月19日（米国時間18日）、Google Labsは公開済みサービスのコードと運用指標を参照する実験的なAIエージェント、Stitch Loopを発表しました。",
+      "points": [
+        {
+          "label": "改善の流れ",
+          "text": "応答速度やアクセシビリティーなどの目標に照らして改善箇所を探し、隔離した環境で変更を試してから、人が確認できる修正案を作ります。"
+        },
+        {
+          "label": "提供段階",
+          "text": "Googleは待機リストの登録を開始しました。サービスを運営するチームが公開後の改善を継続するためのツールです。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-loop/"
+    }
   ]
 };
