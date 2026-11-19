@@ -553,5 +553,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-19.m4a",
     "label": "2026-11-19のAIニュース音声",
     "title": "AIコスト激減と膨らむ債務バブル"
+  },
+  "2026-11-20": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-20.m4a",
+    "label": "2026-11-20のAIニュース音声",
+    "title": "コードを自ら書き換えるAIインフラと隠れたリスク"
   }
 };
