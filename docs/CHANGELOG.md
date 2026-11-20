@@ -11,6 +11,7 @@ ai_news の変更履歴。新しい日付を上に追記する。
 - **変更**: スキルの合格基準・テストケース・過去の失敗を`.agents/evaluation/`に分け、SKILL.mdの末尾からそこを参照するようにした。
 - **理由**: スキルは使い捨ての派生物で、残すべき資産は素材と評価だという方針（`~/.agents/docs/skills_policy.md`）に合わせ、モデルやスキルが変わっても合格基準と過去の失敗が失われないようにするため。
 - **対象**: `.agents/skills/format-report/SKILL.md`, `.agents/evaluation/format-report.md`
+- **commit**: `7250f41`
 
 ## 2026-11-15
 
