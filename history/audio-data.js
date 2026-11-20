@@ -558,5 +558,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-20.m4a",
     "label": "2026-11-20のAIニュース音声",
     "title": "コードを自ら書き換えるAIインフラと隠れたリスク"
+  },
+  "2026-11-21": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-21.m4a",
+    "label": "2026-11-21のAIニュース音声",
+    "title": "巨大AIと現実世界の激突"
   }
 };
