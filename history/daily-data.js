@@ -11579,5 +11579,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-loop/"
     }
+  ],
+  "2026-11-21": [
+    {
+      "title": "【ビジネス】Anthropicがナスダックで取引開始——初日終値は公募価格を17％上回る",
+      "intro": "日本時間11月20日（米東部時間19日）、Claudeを開発するAnthropicが米ナスダックで取引を始めました。",
+      "points": [
+        {
+          "label": "初値",
+          "text": "銘柄コードは「ANT」で、初値は111.50ドルと、公募価格の83ドルを約34％上回りました。"
+        },
+        {
+          "label": "終値",
+          "text": "取引中に上げ幅が縮まり、97.17ドルで初日を終えました。公募価格に対する上昇率は約17％でした。"
+        }
+      ],
+      "url": "https://www.cbsnews.com/news/anthropic-ipo-nasdaq-debut-claude-ai/"
+    },
+    {
+      "title": "【産業】豪NEXTDCが住宅近くの新規開発を見送る方針——AI需要拡大で問われる立地選び",
+      "intro": "11月20日、オーストラリアのデータセンター運営会社NEXTDCは、住宅に近い場所で新たな開発案件を進めない方針を株主総会で示しました。",
+      "points": [
+        {
+          "label": "立地の背景",
+          "text": "メルボルン西部の既存拠点M3では、拡張計画を巡って地域社会の懸念が高まりました。同社は工業用地での開発でも周辺住民への配慮を強めます。"
+        },
+        {
+          "label": "供給計画",
+          "text": "同社はクラウドとAIを長期的な需要の要因と位置づけ、豪国内外で計5GW超の開発案件を抱えています。"
+        }
+      ],
+      "url": "https://company-announcements.afr.com/asx/nxt/eada3519-e466-11f1-a91c-125e5cae6bdb.pdf"
+    },
+    {
+      "title": "【実用プロダクト】Mac版Geminiがコンピューター操作に対応——アプリをまたぐ反復作業を代行",
+      "intro": "日本時間11月20日（米国時間19日）、Googleは米国でMac版Geminiのコンピューター操作（Computer Use）機能を英語で提供し始めました。",
+      "points": [
+        {
+          "label": "できる作業",
+          "text": "ローカルファイルやアプリ、ウェブサイトをまたぎ、クリックや入力を組み合わせて複数手順の作業を進めます。"
+        },
+        {
+          "label": "利用範囲",
+          "text": "対象は有料プランの利用者です。利用者はGeminiが操作できるアプリを選び、作業を途中で止められます。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/computer-use-mac/"
+    },
+    {
+      "title": "【プライバシー】Signalがスマホ版の画面取得を制限——OS内蔵AIから会話を保護",
+      "intro": "日本時間11月20日、メッセージアプリのSignalは、端末内蔵のAIアシスタントが会話画面を読み取るのを防ぐ対策を発表しました。",
+      "points": [
+        {
+          "label": "端末ごとの対策",
+          "text": "iOS 27ではアプリ内のスクリーンショットを遮断します。対応するAndroidでは、AIによる画面取得を検知すると画面保護が有効になります。"
+        },
+        {
+          "label": "OSへの要望",
+          "text": "Signalは、アプリ開発者が画面や通知などへのAIアクセスを明示的に拒否できる仕組みをOS提供元に求めています。"
+        }
+      ],
+      "url": "https://signal.org/blog/protecting-your-privacy/"
+    },
+    {
+      "title": "【開発ツール】Gemini APIがTool Retrievalを試験提供——必要なツール定義だけを読み込む",
+      "intro": "日本時間11月20日（米国時間19日）、Googleはエージェントが多数の候補から必要なツールを検索できるTool RetrievalをGemini APIで試験公開しました。",
+      "points": [
+        {
+          "label": "仕組み",
+          "text": "ツールに渡す入力項目やデータ型の定義を最初からすべて送る方式に比べ、必要になった定義だけを読み込むことで入力トークン数と待ち時間を抑えます。"
+        },
+        {
+          "label": "対応範囲",
+          "text": "Gemini 3.6以降のモデルが対象で、会話やツールの実行を扱うInteractions APIで利用できます。"
+        }
+      ],
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval/"
+    },
+    {
+      "title": "【ビジネス】Appleの求人に汎用操作エージェント——自社アプリ外の作業代行も視野に",
+      "intro": "日本時間11月20日（米東部時間19日）、BloombergはAppleの新たな求人に、利用者に代わって端末を操作するAIエージェントの開発計画が記されていると報じました。",
+      "points": [
+        {
+          "label": "求人が示す機能",
+          "text": "ウェブ閲覧、複数アプリでの作業、コードの作成やデバッグなどを担う汎用エージェントの開発を想定しています。"
+        },
+        {
+          "label": "開発段階",
+          "text": "Appleは開発を率いるエンジニアリング責任者を募集しており、提供時期は明らかになっていません。"
+        }
+      ],
+      "url": "https://uk.finance.yahoo.com/news/apple-working-ai-agent-device-214456605.html"
+    },
+    {
+      "title": "【産業】GMOがロボットハンドコンテストの審査員を発表——物を扱う機構の開発を後押し",
+      "intro": "11月20日、GMOインターネットグループとGMO AI＆ロボティクス商事は、国内で開く第1回GMOロボットハンドコンテストの審査員を発表しました。",
+      "points": [
+        {
+          "label": "審査体制",
+          "text": "エンジニアの中島聡氏、ロボット開発に携わる佐野元紀氏、製造業を発信するものづくり太郎氏らが審査します。"
+        },
+        {
+          "label": "開発支援",
+          "text": "賞金総額は1,000万円で、12月18日まで参加者を募集します。ロボットが物をつかんで扱う部分に焦点を当てた取り組みです。"
+        }
+      ],
+      "url": "https://ai-robotics.gmo/news/article/gmo-robot-hand-competition/"
+    }
   ]
 };
