@@ -168,8 +168,8 @@ window.GLOSSARY = [
       {
         "term": "<strong>Lean</strong>",
         "sub": "リーン（証明支援系）",
-        "desc": "数学の命題と証明を形式言語で記述し、推論の各段階が規則に従うかをコンピューターで検査する仕組み。日本時間2026年11月7日のPSIの発表では、非公開Anthropicモデルを使ったシステムが発見したAaronson–Ambainis予想の証明を確認するために用いた。検査が通っても、記述した命題が元の問題を正しく表しているかは専門家による確認が必要になる。",
-        "q": "lean リーン（証明支援系） 数学の命題と証明を形式言語で記述し、推論の各段階が規則に従うかをコンピューターで検査する仕組み。日本時間2026年11月7日のpsiの発表では、非公開anthropicモデルを使ったシステムが発見したaaronson–ambainis予想の証明を確認するために用いた。検査が通っても、記述した命題が元の問題を正しく表しているかは専門家による確認が必要になる。"
+        "desc": "数学の命題と証明を形式言語で記述し、推論の各段階が規則に従うかをコンピューターで検査する仕組み。日本時間2026年11月21日には、Levent Alpöge氏がClaudeと取り組んだリーマン予想の証明案が約1700万行のLeanコードとして公開された。先行するAaronson–Ambainis予想の証明の確認にも使われた。記述した命題が元の問題を正しく表しているかも検証の対象になる。",
+        "q": "lean リーン（証明支援系） 数学の命題と証明を形式言語で記述し、推論の各段階が規則に従うかをコンピューターで検査する仕組み。日本時間2026年11月21日には、levent alpöge氏がclaudeと取り組んだリーマン予想の証明案が約1700万行のleanコードとして公開された。先行するaaronson–ambainis予想の証明の確認にも使われた。記述した命題が元の問題を正しく表しているかも検証の対象になる。"
       },
       {
         "term": "<strong>GDPx</strong>",
@@ -1266,10 +1266,10 @@ window.GLOSSARY = [
     "id": "sec9",
     "entries": [
       {
-        "term": "Inkling / Inkling 2 Small",
+        "term": "Inkling / Inkling 2 Small / Inkling 2 Mini",
         "sub": "<strong>Thinking Machines Lab</strong>",
-        "desc": "画像と文章を扱うInkling系列を開発する企業。日本時間2026年11月6日発表のInkling 2 Smallは総パラメータ5940億のうち170億を稼働させる方式を採り、自社基盤Tinkerで推論と追加学習を提供する。発表時の重みは非公開で、外部の安全性評価後にApache 2.0で公開する予定と説明している。",
-        "q": "thinking machines lab inkling / inkling 2 small 画像と文章を扱うinkling系列を開発する企業。日本時間2026年11月6日発表のinkling 2 smallは総パラメータ5940億のうち170億を稼働させる方式を採り、自社基盤tinkerで推論と追加学習を提供する。発表時の重みは非公開で、外部の安全性評価後にapache 2.0で公開する予定と説明している。"
+        "desc": "画像と文章を扱うInkling系列を開発する企業。Inkling 2 Smallは総パラメータ5940億のモデルで、自社基盤Tinkerを通じて推論と追加学習を提供する。日本時間2026年11月21日に重みを公開したInkling 2 Miniは総パラメータ264億で、一部の層を繰り返し使う設計を採り、ノートパソコンなど手元の機器での実行を想定する。",
+        "q": "thinking machines lab inkling / inkling 2 small / inkling 2 mini 画像と文章を扱うinkling系列を開発する企業。inkling 2 smallは総パラメータ5940億のモデルで、自社基盤tinkerを通じて推論と追加学習を提供する。日本時間2026年11月21日に重みを公開したinkling 2 miniは総パラメータ264億で、一部の層を繰り返し使う設計を採り、ノートパソコンなど手元の機器での実行を想定する。"
       },
       {
         "term": "Claude Opus / Sonnet / Fable / Mythos",
