@@ -568,5 +568,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-22.m4a",
     "label": "2026-11-22のAIニュース音声",
     "title": "割引なしでAI株に群がる巨大テック"
+  },
+  "2026-11-23": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-23.m4a",
+    "label": "2026-11-23のAIニュース音声",
+    "title": "現実社会と激突するAI実装の摩擦"
   }
 };
