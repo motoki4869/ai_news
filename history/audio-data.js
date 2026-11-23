@@ -573,5 +573,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-23.m4a",
     "label": "2026-11-23のAIニュース音声",
     "title": "現実社会と激突するAI実装の摩擦"
+  },
+  "2026-11-24": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-24.m4a",
+    "label": "2026-11-24のAIニュース音声",
+    "title": "250のAIエージェントが動かす社会インフラ"
   }
 };
