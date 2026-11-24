@@ -11992,5 +11992,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.moneycontrol.com/news/business/funding/matters-ai-raises-12-million-in-pre-series-a-round-to-scale-ai-powered-enterprise-data-security-platform-14087413.html"
     }
+  ],
+  "2026-11-25": [
+    {
+      "title": "【実用プロダクト】AnthropicがClaude Shipをベータ公開、コードレビューから承認まで自動化",
+      "intro": "日本時間11月24日、米AnthropicはGitHub上のコード変更提案をレビューし、修正や承認も行うClaude Shipを公開しました。",
+      "points": [
+        {
+          "label": "承認の条件",
+          "text": "チームが設定した規則で、AIが承認できる変更と、人の確認が必要な変更を指定します。GitHubの既存の変更保護ルールや必須チェックとも併用できます。"
+        },
+        {
+          "label": "提供範囲",
+          "text": "Claude TeamとEnterpriseが対象です。レビュー機能は一般提供され、修正支援と承認判断はベータです。"
+        }
+      ],
+      "url": "https://claude.com/resources/articles/introducing-claude-ship"
+    },
+    {
+      "title": "【M&A】AmazonがDecartの最適化技術を取得へ、独自AI半導体をソフトで強化",
+      "intro": "日本時間11月24日、米AmazonがイスラエルのDecartからAI処理の最適化技術を取得する契約が明らかになりました。",
+      "points": [
+        {
+          "label": "取得対象",
+          "text": "複数の半導体でAIモデルを効率よく動かすソフトウェア技術が対象で、Decartの創業者と技術チームの一部もAmazonに加わる予定です。"
+        },
+        {
+          "label": "狙い",
+          "text": "Amazonは2025年からDecartと自社半導体Trainiumの最適化に取り組んでおり、今回の契約で学習や推論の性能と費用効率の改善を進めます。"
+        }
+      ],
+      "url": "https://www.aboutamazon.com/news/company-news/amazon-decart-ai-optimization"
+    },
+    {
+      "title": "【技術】OpenClaw財団などがShellBenchを公開、日常業務の完遂率は首位でも62.5％",
+      "intro": "11月24日、OpenClaw財団やUCバークレーなどの研究者が、実際の利用記録をもとに作ったAIエージェントの評価手法を公開しました。",
+      "points": [
+        {
+          "label": "評価設計",
+          "text": "領収書の照合など100課題を用意し、12モデルを5種類のハーネス（モデルにツールや実行環境をつなぐ仕組み）に組み合わせ、計5万3100回の実行を採点しました。"
+        },
+        {
+          "label": "完遂率",
+          "text": "ハーネス横断の平均ではGPT-6 Astraが62.5％で首位でした。結論が合っていても、根拠となるファイルを示さずに失点する例が報告されました。"
+        }
+      ],
+      "url": "https://openclaw.ai/blog/shellbench"
+    },
+    {
+      "title": "【フィジカルAI】Nuro・Lucid・Uberが公道で無人走行試験、ロボタクシーは安全運転手なしの段階へ",
+      "intro": "日本時間11月24日、Nuro、Lucid、Uberは米サンフランシスコ湾岸地域で、安全運転手が同乗しないロボタクシーの公道試験を始めたと発表しました。",
+      "points": [
+        {
+          "label": "対象地域",
+          "text": "Lucid Gravityを使い、パロアルト、マウンテンビュー、ロスアルトス、サニーベールで試験します。Lucidは改良した車両100台超を納入しました。"
+        },
+        {
+          "label": "商用化計画",
+          "text": "従業員向けの無人試乗を経て、2027年第1四半期に湾岸地域で一般提供を始める見通しです。"
+        }
+      ],
+      "url": "https://www.nuro.ai/blog/nuro-lucid-uber-begin-driverless-testing-on-public-roads"
+    },
+    {
+      "title": "【規制】英当局がMetaのMuseに声明、AIに渡す権限を利用者が管理できる設計を要求",
+      "intro": "11月24日、英競争・市場庁は、Metaの個人向けAIエージェントMuseの英国展開にあわせ、同サービスに消費者保護法が適用されると表明しました。",
+      "points": [
+        {
+          "label": "提供時の説明",
+          "text": "事業者には、AIにデータへのアクセスや代理で行動する権限を与えた際の影響を伝え、利用者がその権限を容易に管理できるようにすることを求めています。"
+        },
+        {
+          "label": "規約と運用",
+          "text": "当局との協議を受けてMetaは利用規約を修正しました。当局は提供開始後も、利用者への説明と実際の動作を確認する方針です。"
+        }
+      ],
+      "url": "https://competitionandmarkets.blog.gov.uk/2026/11/24/cma-statement-on-uk-launch-of-meta-muse/"
+    },
+    {
+      "title": "【資金調達】Emboがシードで1億1000万ドル調達、世界モデルでロボットを仮想訓練",
+      "intro": "日本時間11月24日、ロボット向けAIを開発する米Emboは、Andreessen Horowitz主導のシード調達を発表しました。",
+      "points": [
+        {
+          "label": "出資企業",
+          "text": "Khosla Ventures、DST Global、NVIDIAの投資部門NVenturesなども参加しました。"
+        },
+        {
+          "label": "学習方法",
+          "text": "動画から物体の動きや環境の変化を学び、モデルが生成するさまざまな状況で動作を練習させます。初めての環境で不意の変化にも対応できるロボットを目指します。"
+        }
+      ],
+      "url": "https://a16z.com/announcement/investing-in-embo/"
+    },
+    {
+      "title": "【資金調達】Zipherが4500万ドル調達、企業データ処理の計算資源配分をAIに委任",
+      "intro": "日本時間11月24日、イスラエルのZipherがシリーズAで4500万ドルを調達したことが明らかになりました。シードを含む累計調達額は5300万ドルです。",
+      "points": [
+        {
+          "label": "処理の仕組み",
+          "text": "顧客が性能目標や予算を設定し、AIエージェントが処理方式、計算資源の割り当て、実行時刻を決めます。"
+        },
+        {
+          "label": "資金の用途",
+          "text": "研究開発体制を拡充し、北米の大企業向けの販売や他地域への展開を進めます。"
+        }
+      ],
+      "url": "https://www.calcalistech.com/ctechnews/article/bkreuwq1xg"
+    }
   ]
 };
