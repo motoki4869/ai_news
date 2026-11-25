@@ -12099,5 +12099,97 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.calcalistech.com/ctechnews/article/bkreuwq1xg"
     }
+  ],
+  "2026-11-26": [
+    {
+      "title": "【技術】Sakana AIがNamazu Smallを発表、300億パラメータで長文読解と検索を強化",
+      "intro": "11月25日、日本のSakana AIは、NVIDIAのNemotron 3 Nanoに追加学習を施した小型推論モデルを発表しました。",
+      "points": [
+        {
+          "label": "評価結果",
+          "text": "検索、長文読解、知識の正確さを測る25の評価の平均で、約4倍の規模のNemotron 3 Superを上回ったと報告しました。モデル内部の知識だけで答える課題の改善は限定的でした。"
+        },
+        {
+          "label": "提供計画",
+          "text": "企業が自社設備で運用するオンプレミス提供を予定し、12月前半に詳細を案内します。"
+        }
+      ],
+      "url": "https://sakana.ai/namazu-small/"
+    },
+    {
+      "title": "【技術】PrismMLがBonsai 2.5を公開、5.9GBのまま端末上のツール操作を強化",
+      "intro": "日本時間11月25日、米PrismMLはQwen3.8 27Bを三値量子化で軽量化したTernary Bonsai 2.5 27Bの重みを公開しました。",
+      "points": [
+        {
+          "label": "圧縮の仕組み",
+          "text": "モデルの主要な重みを3種類の値で表し、モデルの容量を前版と同じ約5.9GBに抑えました。"
+        },
+        {
+          "label": "複数手順の評価",
+          "text": "同社のツール操作評価2種の平均スコアは前版の60.2から82.2に上昇しました。重みはApache 2.0で提供します。"
+        }
+      ],
+      "url": "https://prismml.com/news/prismml-launches-ternary-bonsai-2-5-27b"
+    },
+    {
+      "title": "【実用プロダクト】ClaudeがSkills over MCPを試験提供、外部サービスから作業手順も取得",
+      "intro": "日本時間11月25日、米Anthropicは外部ツールとの接続規格MCPを通じて、作業手順を配布できる機能をClaudeとClaude Codeで公開ベータにしました。",
+      "points": [
+        {
+          "label": "手順の配布",
+          "text": "外部サービス側がツールと手順をまとめて更新でき、Claudeは必要な手順だけを読み込みます。Shopifyは店舗の設計・更新を支援する手順を提供します。"
+        },
+        {
+          "label": "長時間の処理",
+          "text": "サーバーに処理を預けて後から結果を受け取る機能と、処理の途中で利用者に入力を求める機能も一般提供に移りました。"
+        }
+      ],
+      "url": "https://claude.com/fr/resources/articles/skills-over-mcp-tasks-and-more"
+    },
+    {
+      "title": "【産業】Fluidstackが最大400MWのBlackbirdを発表、工場組み立てで着工から半年を目標に",
+      "intro": "日本時間11月25日、AIインフラを手がけるFluidstackは、顧客の敷地に建設する組み立て式データセンターを発表しました。",
+      "points": [
+        {
+          "label": "建設方式",
+          "text": "アリゾナ州の工場で電源や冷却、配線を備えた設備を組み立て、検査済みの状態で現地へ運ぶ計画です。"
+        },
+        {
+          "label": "拡張範囲",
+          "text": "10MW超の区画から最大400MWまで拡張できる設計です。同社は着工から6カ月以内の建設を目指します。"
+        }
+      ],
+      "url": "https://www.prnewswire.com/news-releases/fluidstack-launches-modular-400-mw-data-center-products-designed-to-be-built-in-six-months-302949865.html"
+    },
+    {
+      "title": "【フィジカルAI】DataCanvasが深圳で開発基盤を発表、ロボットの訓練から実機検証まで支援",
+      "intro": "11月25日、中国のDataCanvasは深圳の業界会合で、ロボットなどの開発を支えるPhysical AI Factoryを発表しました。",
+      "points": [
+        {
+          "label": "開発工程",
+          "text": "実機データや仮想環境、計算資源を組み合わせ、モデルの学習から実機への導入、運用データを用いた改善までを支えます。"
+        },
+        {
+          "label": "地域連携",
+          "text": "深圳市龍華区の工業・情報化当局や企業と協力協定を結び、製造現場での利用を想定した事業を進めます。"
+        }
+      ],
+      "url": "https://www.todayforai.com/en/items/art-1fe024f5-e2f"
+    },
+    {
+      "title": "【倫理】米AI業界で意思決定の委任を巡り議論、人間の主導権が焦点に",
+      "intro": "日本時間11月25日、米Axiosは、人間を上回る能力を想定したAIに将来どこまで意思決定を委ねるかを巡り、業界内で意見が分かれていると報じました。",
+      "points": [
+        {
+          "label": "議論の争点",
+          "text": "報道によると、Anthropic社内の一部では、安全性が確認された用途でAIに権限を移す考えが出ています。Metaのアレクサンダー・ワン氏は社会の主導権をAIに委ねる考えに反対しました。"
+        },
+        {
+          "label": "会社の見解",
+          "text": "Anthropicの広報担当者は、CEOが人間によるAIの制御を支持しており、Claudeも人間の監督を損なわないよう訓練していると説明しました。"
+        }
+      ],
+      "url": "https://www.axios.com/2026/11/25/anthropic-ai-human-control-debate-free-will"
+    }
   ]
 };
