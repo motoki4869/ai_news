@@ -588,5 +588,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-26.m4a",
     "label": "2026-11-26のAIニュース音声",
     "title": "自律型小型AIに人間は主導権を渡すのか"
+  },
+  "2026-11-27": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-27.m4a",
+    "label": "2026-11-27のAIニュース音声",
+    "title": "画面を出て現実世界に着陸するAI"
   }
 };
