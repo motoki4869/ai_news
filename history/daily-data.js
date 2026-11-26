@@ -12191,5 +12191,112 @@ window.DAILY_NEWS = {
       ],
       "url": "https://www.axios.com/2026/11/25/anthropic-ai-human-control-debate-free-will"
     }
+  ],
+  "2026-11-27": [
+    {
+      "title": "【産業】キオクシアとNVIDIAがSSDでGPUメモリ拡張を実証、ペタバイト規模のデータ参照へ",
+      "intro": "11月26日、キオクシアはNVIDIAと、高速な保存装置であるSSDを活用してGPUが扱えるデータ容量を広げる実証を始めたと発表しました。",
+      "points": [
+        {
+          "label": "実証構成",
+          "text": "7.68TBのSSDを144台搭載したNVIDIAのGB200システムを使い、2兆個のベクトルからなるデータベースを処理できるかを検証します。"
+        },
+        {
+          "label": "狙い",
+          "text": "GPUに直結する広帯域メモリ（HBM）の容量を補い、AIが生成時に大規模なデータセットを参照できるようにします。"
+        }
+      ],
+      "url": "https://www.kioxia.com/ja-jp/business/news/2026/20261126-1.html"
+    },
+    {
+      "title": "【技術】BharatGenがPatram 1.5を公開、手書きや表のある書類をページごと読み解く",
+      "intro": "11月26日、インドのBharatGenは、複数言語や手書きが混在する書類を対象とした約70億パラメータの文書解析モデルを公開しました。",
+      "points": [
+        {
+          "label": "抽出方法",
+          "text": "文書をページ画像として扱い、表やレイアウトを踏まえて、利用者が指定した項目を必要な形式で抽出します。"
+        },
+        {
+          "label": "回答の保留",
+          "text": "ページ内に根拠が見つからない質問では回答を控える機能を備えます。モデルの重みはHugging Faceで申請して入手できます。"
+        }
+      ],
+      "url": "https://huggingface.co/bharatgenai/Patram1.5-7B"
+    },
+    {
+      "title": "【フィジカルAI】アマダと日立が工場AIの初期実証を完了、生産計画と保守の判断を支援",
+      "intro": "11月26日、アマダと日立製作所は、板金加工工場の運営と保守を支援するAIエージェントの初期実証を終えたと発表しました。",
+      "points": [
+        {
+          "label": "検証した業務",
+          "text": "急な納期変更に応じた生産計画の調整や、機械トラブルの原因候補と復旧手順の提示を検証しました。"
+        },
+        {
+          "label": "次の段階",
+          "text": "両社はAIエージェントの現場導入を進め、状況に応じて設備が動き、作業者を支援するフィジカルAIの実装を目指します。"
+        }
+      ],
+      "url": "https://prtimes.jp/main/html/rd/p/000000084.000141666.html"
+    },
+    {
+      "title": "【規制】NVIDIAが東南アジア4カ国向けサーバー出荷を停止と報道、米輸出管理が調達に波及",
+      "intro": "11月26日、英Financial Timesは、NVIDIAが自社のチップを搭載したサーバーの出荷を止めるよう製造パートナーに指示したと報じました。",
+      "points": [
+        {
+          "label": "対象市場",
+          "text": "報道で挙がった出荷先はマレーシア、シンガポール、タイ、インドネシアです。"
+        },
+        {
+          "label": "規制の影響",
+          "text": "米国が先端半導体の輸出許可要件を強化するなかでの措置で、規制対応を進める間の一時停止となるかは報道時点で不明です。"
+        }
+      ],
+      "url": "https://www.investing.com/news/stock-market-news/nvidia-halts-server-shipments-to-four-southeast-asian-countries-ft-reports-5052112"
+    },
+    {
+      "title": "【政策】韓国の公共AIが鉄道予約を計画、チャットから生活手続きの代行へ",
+      "intro": "11月26日、韓国の情報通信産業振興院はソウルで、12月に公開を予定する公共AIサービスの拡張方針を示しました。",
+      "points": [
+        {
+          "label": "機能の展開",
+          "text": "2026年はチャットを中心に提供し、2027年は高速鉄道KTXの予約や公的給付の通知など、用途別の機能追加を計画します。"
+        },
+        {
+          "label": "安全対策",
+          "text": "個人情報保護やセキュリティ、AIの不適切な行動を抑える仕組みについて、参加する3つの企業連合と協議しています。"
+        }
+      ],
+      "url": "https://news.sbs.co.kr/amp/news.amp?news_id=N1008865174"
+    },
+    {
+      "title": "【資金調達】ドバイのXEBO.aiに1050万ドル出資へ、顧客の声を分析するAIを米国展開",
+      "intro": "11月26日、アラブ首長国連邦のEmirates Growth Fundは、ドバイのXEBO.aiのシリーズAに1050万ドルを出資する契約を結んだと発表しました。",
+      "points": [
+        {
+          "label": "事業領域",
+          "text": "XEBO.aiは顧客や従業員から集めた意見をAIで分析し、企業のサービスや業務の改善を支援します。"
+        },
+        {
+          "label": "資金の用途",
+          "text": "製品開発やアラブ首長国連邦と湾岸諸国での事業拡大に充て、米国市場への参入も計画します。"
+        }
+      ],
+      "url": "https://www.egf.gov.ae/en/news/emirates-growth-fund-invests-%2410.5-million-in-uae-built-ai-company-xebo.ai"
+    },
+    {
+      "title": "【開発ツール】llama.cppがAMD機器向け性能比較を公開、手元で動くAIの速度を条件別に比較",
+      "intro": "11月26日、端末上でAIモデルを動かすソフトウェアllama.cppの開発チームは、AMD機器の推論性能を比較できるダッシュボードをHugging Faceで公開しました。",
+      "points": [
+        {
+          "label": "測定項目",
+          "text": "Radeon 8060SとRadeon AI Pro R9700Sを対象に、512トークンの入力を処理する速度と、128トークンを生成する速度を別々に示します。"
+        },
+        {
+          "label": "比較条件",
+          "text": "モデルやソフトウェアの版、量子化方式を切り替えて比較できます。測定手順と元データも公開しています。"
+        }
+      ],
+      "url": "https://huggingface.co/blog/ggml-org/llamacpp-amd-bench"
+    }
   ]
 };
