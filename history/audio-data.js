@@ -593,5 +593,10 @@ window.DAILY_AUDIO = {
     "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-27.m4a",
     "label": "2026-11-27のAIニュース音声",
     "title": "画面を出て現実世界に着陸するAI"
+  },
+  "2026-11-28": {
+    "src": "https://github.com/motoki4869/ai_news/releases/download/audio/2026-11-28.m4a",
+    "label": "2026-11-28のAIニュース音声",
+    "title": "画面を飛び出し物理世界へ進出するAI"
   }
 };
