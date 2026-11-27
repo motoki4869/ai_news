@@ -160,6 +160,12 @@ window.GLOSSARY = [
     "id": "sec2",
     "entries": [
       {
+        "term": "<strong>PBR</strong>",
+        "sub": "Physically Based Rendering（物理ベースレンダリング）",
+        "desc": "光と物体の表面の関係を物理法則に基づいて再現する描画手法。色に加えて表面の粗さや金属らしさなどを画像データで指定し、照明が変わっても材質の見え方を自然に保つ。2026年11月27日発表のTencentのHy3D 3.6は、こうした材質表現に使うテクスチャを最大8Kで生成できる。",
+        "q": "pbr physically based rendering（物理ベースレンダリング） 光と物体の表面の関係を物理法則に基づいて再現する描画手法。色に加えて表面の粗さや金属らしさなどを画像データで指定し、照明が変わっても材質の見え方を自然に保つ。2026年11月27日発表のtencentのhy3d 3.6は、こうした材質表現に使うテクスチャを最大8kで生成できる。"
+      },
+      {
         "term": "<strong>LLMON</strong>",
         "sub": "LLM Object Notation（レモン）",
         "desc": "言語モデルへ渡す指示、入力資料、出力要件を専用の区切りや識別子で整理する記法。日本時間2026年11月13日に紹介されたIBMのGranite 4.1実験モデルでは、指示が対象とする資料を明示し、資料内の不正な命令との混同を抑える。学習による耐性改善であり、実行権限の制御や安全性を保証する仕組みではない。",
@@ -365,6 +371,12 @@ window.GLOSSARY = [
     "theme": "t-physical",
     "id": "sec3",
     "entries": [
+      {
+        "term": "<strong>Android XR</strong>",
+        "sub": "アンドロイド・エックスアール（XRはExtended Reality）",
+        "desc": "Googleが眼鏡型端末やヘッドセット向けに開発するプラットフォーム。現実の視界に情報を重ねたり、仮想空間でアプリを使ったりできる。2026年11月27日に国内発売されたXREAL AURAでは、Geminiが利用者の見ているものを踏まえ、音声でのアプリ起動や端末操作を支援する。",
+        "q": "android xr アンドロイド・エックスアール（xrはextended reality） googleが眼鏡型端末やヘッドセット向けに開発するプラットフォーム。現実の視界に情報を重ねたり、仮想空間でアプリを使ったりできる。2026年11月27日に国内発売されたxreal auraでは、geminiが利用者の見ているものを踏まえ、音声でのアプリ起動や端末操作を支援する。"
+      },
       {
         "term": "<strong>ADAS</strong>",
         "sub": "Advanced Driver Assistance Systems（先進運転支援システム）",
