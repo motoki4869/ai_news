@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ja" data-register="blueprint">
+<head>
+<title>テータリフトを√x段つないで素数の和を抑える</title>
+<link rel="stylesheet" href="kit.css" data-ve-kit>
+<style>
+.legend{display:flex;flex-wrap:wrap;gap:var(--s-4);font-size:var(--t-small);color:var(--text-dim);margin-top:var(--s-2)}
+.legend svg{vertical-align:middle;margin-right:var(--s-1)}
+.mini-bar{fill:var(--st)}
+.mini-err{fill:none;stroke:var(--text-dim);stroke-width:1.5;stroke-dasharray:4 3}
+.band{fill:var(--accent-dim)}
+.cond{font-size:var(--t-small)}
+.todo li{margin-bottom:var(--s-2)}
+.sources code,.ve-table code{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<nav class="ve-toc" aria-label="Sections"><div><a href="#trunk">全体</a><a href="#window">√xの窓</a><a href="#stepanov">仕組み</a><a href="#chain">連鎖</a><a href="#field">補助の数体</a><a href="#map">発表文との対応</a><a href="#unknown">未確認</a></div><span class="pos"></span></nav>
+<main>
+<header>
+  <p class="eyebrow">Leanファイル調査 · 証明の幹</p>
+  <h1>テータリフトを<span class="num">√x</span>段つないで、素数の和を抑える</h1>
+  <p class="lead">1,737万行のLeanを最終定理から上流へたどると、<b>「長さ√xの連鎖で重複度を稼ぎ、素数の和を x<sup>1/2+ε</sup> で抑える」</b>という発表文どおりの骨組みが見つかりました。</p>
+  <p class="meta">対象：alpo.ge/lean.tar.gz（14分割） · 調査日 2026-11-27 · ビルドは未実施</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><span class="ve-label">総行数</span><span class="val"><span data-count="1737">1737</span><span class="unit">万行</span></span></div>
+  <div class="kpi"><span class="ve-label">定理・補題</span><span class="val"><span data-count="81">81</span><span class="unit">万個</span></span></div>
+  <div class="kpi"><span class="ve-label">sorry・axiom</span><span class="val"><span data-count="0">0</span><span class="unit">件</span></span></div>
+  <div class="kpi"><span class="ve-label">ビルド</span><span class="val">未確認</span></div>
+</div>
+
+<section id="trunk">
+  <p class="ve-label caps">全体</p>
+  <h2>6段で、大定理からリーマン予想まで流れる</h2>
+  <figure class="ve-steps">
+    <div class="frame"><svg class="ve-svg" viewBox="0 0 1000 450" aria-label="証明の幹の全体図。既知の大定理から、補助の数体の評価とテータリフトの連鎖を経て、√x段の不等式、素数和の評価、零点のない領域、リーマン予想へ進む">
+      <rect class="ve-bnd" x="10" y="20" width="210" height="400"/><text class="ve-bnd-t" x="18" y="14">入力：既知の大定理</text>
+      <rect class="ve-bnd" x="790" y="20" width="200" height="420"/><text class="ve-bnd-t" x="798" y="14">解析：零点のない領域</text>
+
+      <path class="ve-e" data-s="2" d="M210 68H240V105H270"/>
+      <path class="ve-e" data-s="2" d="M210 148H240V125H270"/>
+      <path class="ve-e" data-s="2" d="M210 288H240V315H270"/>
+      <path class="ve-e" data-s="2" d="M210 368H240V335H270"/>
+      <path class="ve-e" data-s="3" d="M480 115H510V210H540"/>
+      <text class="ve-el r" x="516" y="160">評価を渡す</text>
+      <path class="ve-e is-async" data-s="3" d="M480 325H510V240H540"/>
+      <text class="ve-el r" x="516" y="290">重複度 m</text>
+      <path class="ve-e is-hot" data-s="4" d="M740 225H770V68H800"/>
+      <text class="ve-el l" x="764" y="150">矛盾で導く</text>
+      <path class="ve-e" data-s="5" d="M890 96V150"/>
+      <text class="ve-el r" x="898" y="127">明示公式</text>
+      <path class="ve-e" data-s="5" d="M890 206V260"/>
+      <text class="ve-el r" x="898" y="237">指標を広げる</text>
+      <path class="ve-e" data-s="6" d="M890 316V370"/>
+      <text class="ve-el r" x="898" y="347">関数等式</text>
+
+      <g class="ve-n" data-s="1" data-ref="row"><rect class="sh" x="20" y="40" width="190" height="56"/><text x="115" y="62">ガロア表現の存在</text><text class="sub" x="115" y="82">Row0b</text></g>
+      <g class="ve-n" data-s="1"><rect class="sh" x="20" y="120" width="190" height="56"/><text x="115" y="142">局所ラングランズ</text><text class="sub" x="115" y="162">recTExists</text></g>
+      <g class="ve-n" data-s="1"><rect class="sh" x="20" y="260" width="190" height="56"/><text x="115" y="282">Greenの分類</text><text class="sub" x="115" y="302">GLq.Green</text></g>
+      <g class="ve-n" data-s="1"><rect class="sh" x="20" y="340" width="190" height="56"/><text x="115" y="362">Siegel–Weil など</text><text class="sub" x="115" y="382">ファイル内で証明</text></g>
+
+      <g class="ve-n" data-s="2" data-ref="field"><rect class="sh" x="270" y="80" width="210" height="70"/><text x="375" y="106">補助の数体 E</text><text class="sub" x="375" y="128">VWin：Sha型の群が小さい</text></g>
+      <g class="ve-n" data-s="2" data-ref="chain"><rect class="sh" x="270" y="290" width="210" height="70"/><text x="375" y="316">テータリフトの連鎖</text><text class="sub" x="375" y="338">LiftChain：m 段</text></g>
+
+      <g class="ve-n is-key" data-s="3" data-ref="ineq"><rect class="sh" x="540" y="185" width="200" height="80"/><text x="640" y="212">√x 段で稼ぐ不等式</text><text class="sub" x="640" y="236">GrowthInequalityForm</text></g>
+
+      <g class="ve-n" data-s="4"><rect class="sh" x="800" y="40" width="180" height="56"/><text x="890" y="62">素数和 ≤ x^(1/2+Cε)</text><text class="sub" x="890" y="82">Chebyshev 窓</text></g>
+      <g class="ve-n" data-s="5"><rect class="sh" x="800" y="150" width="180" height="56"/><text x="890" y="172">Re s &gt; 1/2 で零点なし</text><text class="sub" x="890" y="192">ZeroFreeAll</text></g>
+      <g class="ve-n" data-s="5"><rect class="sh" x="800" y="260" width="180" height="56"/><text x="890" y="282">非原始指標にも</text><text class="sub" x="890" y="302">imprimitive</text></g>
+      <g class="ve-n" data-s="6"><rect class="sh" x="800" y="370" width="180" height="56"/><text x="890" y="392">リーマン予想・GRH</text><text class="sub" x="890" y="412">riemannHypothesis</text></g>
+    </svg></div>
+    <div class="legend">
+      <span><svg width="40" height="10" viewBox="0 0 40 10" aria-hidden="true"><path class="ve-e" d="M2 5H36"/></svg>実線：定義を読んで確認</span>
+      <span><svg width="40" height="10" viewBox="0 0 40 10" aria-hidden="true"><path class="ve-e is-async" d="M2 5H36"/></svg>破線：名前と型からの推測</span>
+    </div>
+    <div class="ve-player">
+      <ol class="ve-cap">
+        <li data-n="1/6">入力は既知の大定理です。ガロア表現の存在や局所ラングランズ対応を、ファイル内で証明して使います。</li>
+        <li data-n="2/6">大定理から2つの道具を作ります。補助の数体 E の評価と、m 段のテータリフトの連鎖です。</li>
+        <li data-n="3/6">2つの道具を1つの不等式にまとめます。連鎖の長さ m は √x に固定します。連鎖から不等式へのつなぎは推測です。</li>
+        <li data-n="4/6">不等式から、素数の重み付き和が x^(1/2+Cε) 以下だと出ます。大きすぎると矛盾するからです。</li>
+        <li data-n="5/6">素数和の評価から、L 関数は Re s &gt; 1/2 で 0 にならないと出ます。非原始指標にも広げます。</li>
+        <li data-n="6/6">関数等式で s と 1−s を対応させ、零点が Re s = 1/2 上にあると結論します。</li>
+      </ol>
+      <button data-go="-1" aria-label="前へ">←</button><button data-play>再生</button><input type="range" aria-label="ステップ"><button data-go="1" aria-label="次へ">→</button>
+    </div>
+    <figcaption><span class="fig-n">Fig. 1</span>証明の幹は、大定理 → 補助の数体と連鎖 → √x段の不等式 → 零点のない領域 → リーマン予想の順に流れます。</figcaption>
+  </figure>
+</section>
+
+<section id="window">
+  <p class="ve-label caps">√xの窓</p>
+  <h2>連鎖の長さ m は √x のすぐ近くに固定されている</h2>
+  <figure>
+    <div class="frame"><svg class="ve-svg" viewBox="0 0 1000 190" aria-label="指数の軸。m は x の 0.46 乗から 0.52 乗の間にある。ε は 0.04 の例">
+      <rect class="band" x="465" y="60" width="53" height="40"/>
+      <path class="ve-axis" d="M60 100H940"/>
+      <path class="ve-axis" d="M60 94V106M500 90V110M940 94V106"/>
+      <text class="ve-axis-t" x="60" y="130">x⁰ = 1</text>
+      <text class="ve-axis-t" x="500" y="130">x^(1/2) = √x</text>
+      <text class="ve-axis-t" x="940" y="130">x¹ = x</text>
+      <g class="ve-dim is-key"><path class="ext" d="M465 60V34M518 60V34"/><path class="ln" d="M465 40H518M461 44l8-8M514 44l8-8"/><text x="491" y="28">m の範囲</text></g>
+      <text class="ve-tag" x="270" y="80">下限 x^(1/2−ε)</text>
+      <path class="ann" d="M425 76H462"/>
+      <text class="ve-tag" x="560" y="80">上限 x^(1/2+ε/2)</text>
+      <path class="ann" d="M521 76H555"/>
+      <text class="ve-tag" x="60" y="170">SizeWindows・RestSize の条件：x ^ (1/2 − ε) ≤ m</text>
+    </svg></div>
+    <figcaption><span class="fig-n">Fig. 2</span>Leanの条件は、m を x<sup>1/2−ε</sup> 以上 x<sup>1/2+ε/2</sup> 以下に置きます。図は ε = 0.04 の例です。</figcaption>
+  </figure>
+  <p>発表文の「長さ X の和に、長さ √X の連鎖」という一文は、この条件として <code>x ^ ((1 : ℝ) / 2 - ε) ≤ m</code> とそのまま書かれていました。</p>
+</section>
+
+<section id="stepanov">
+  <p class="ve-label caps">仕組み</p>
+  <h2>m を増やすと、主要項だけが伸びて誤差を追い越す</h2>
+  <div class="cases">
+    <div class="case" data-st="risk"><span class="chip risk">誤差に負ける</span><h3>m = 1</h3>
+      <svg class="ve-mini" viewBox="0 0 240 128" aria-label="m=1では主要項が誤差より小さい">
+        <rect class="mini-bar" x="20" y="96" width="60" height="16"/><text class="ve-tag" x="20" y="88">主要項×m</text>
+        <rect class="mini-err" x="140" y="48" width="60" height="64"/><text class="ve-tag" x="140" y="40">誤差</text>
+      </svg></div>
+    <div class="case" data-st="warn"><span class="chip warn">まだ負ける</span><h3>m = x^(1/4)</h3>
+      <svg class="ve-mini" viewBox="0 0 240 128" aria-label="m が x の4分の1乗では主要項が誤差に近づく">
+        <rect class="mini-bar" x="20" y="64" width="60" height="48"/><text class="ve-tag" x="20" y="56">主要項×m</text>
+        <rect class="mini-err" x="140" y="46" width="60" height="66"/><text class="ve-tag" x="140" y="38">誤差</text>
+      </svg></div>
+    <div class="case" data-st="ok"><span class="chip ok">追い越す</span><h3>m ≈ √x</h3>
+      <svg class="ve-mini" viewBox="0 0 240 128" aria-label="m が √x では主要項が誤差を上回る">
+        <rect class="mini-bar" x="20" y="22" width="60" height="90"/><text class="ve-tag" x="20" y="14">主要項×m</text>
+        <rect class="mini-err" x="140" y="44" width="60" height="68"/><text class="ve-tag" x="140" y="36">誤差</text>
+      </svg></div>
+  </div>
+  <figure>
+    <div class="frame"><svg class="ve-svg" viewBox="0 0 1000 120" aria-label="不等式の形">
+      <text class="ve-tag" x="40" y="50">|TT| × m × b × (δ/2) × ( G(x) − 4·x^(1/2+ε) )   ≤   誤差 ＋ 2·|TT|·m·b / x</text>
+      <text class="ve-tag key" x="40" y="90">→ 左辺が勝つなら G(x) は大きくなれない： G(x) ≤ x^(1/2+(C+3)ε)</text>
+    </svg></div>
+    <figcaption><span class="fig-n">Fig. 3</span>素数の和 G(x) が大きすぎると、m 倍された左辺が誤差を超えて矛盾します。上の3枚の数値はイメージです。</figcaption>
+  </figure>
+  <p>これは、関数体でのステパノフの方法と同じ構造です。重複度 m を稼ぐと主要項だけが m 倍になり、誤差はそれほど増えません。</p>
+</section>
+
+<section id="chain">
+  <p class="ve-label caps">連鎖</p>
+  <h2>1回のテータリフトが、重複度1つ分になる</h2>
+  <figure>
+    <div class="frame"><svg class="ve-svg" viewBox="0 0 1000 220" aria-label="G(m) から G(0) まで、テータリフトで1段ずつ下る連鎖">
+      <path class="ve-e" d="M170 80H230"/><text class="ve-el r" x="174" y="70">リフト</text>
+      <path class="ve-e" d="M370 80H430"/><text class="ve-el r" x="374" y="70">リフト</text>
+      <path class="ve-e" d="M570 80H630"/><text class="ve-el r" x="574" y="70">リフト</text>
+      <path class="ve-e" d="M770 80H830"/><text class="ve-el r" x="774" y="70">リフト</text>
+      <g class="ve-n" data-ref="chain"><rect class="sh" x="30" y="50" width="140" height="60"/><text x="100" y="72">G(m)</text><text class="sub" x="100" y="94">一番上の段</text></g>
+      <g class="ve-n"><rect class="sh" x="230" y="50" width="140" height="60"/><text x="300" y="72">G(m−1)</text><text class="sub" x="300" y="94">空間 Y_(m−1)</text></g>
+      <rect class="ve-bnd" x="430" y="50" width="140" height="60"/><text class="ve-tag" x="478" y="86">…</text>
+      <g class="ve-n"><rect class="sh" x="630" y="50" width="140" height="60"/><text x="700" y="72">G(1)</text><text class="sub" x="700" y="94">空間 Y_1</text></g>
+      <g class="ve-n"><rect class="sh" x="830" y="50" width="140" height="60"/><text x="900" y="72">G(0)</text><text class="sub" x="900" y="94">空間 Y_0</text></g>
+      <g class="ve-dim is-key"><path class="ext" d="M100 115V160M900 115V160"/><path class="ln" d="M100 154H900M96 158l8-8M896 158l8-8"/><text x="500" y="146">m 段（m ≈ √x）</text></g>
+      <text class="ve-tag" x="30" y="200">LiftChain：j &lt; m のとき G(j) = G(j+1) のテータリフト · DefiniteLiftChain：指標 μ(j+1) で捻る</text>
+    </svg></div>
+    <figcaption><span class="fig-n">Fig. 4</span>連鎖は G(m) から G(0) まで、テータリフトで1段ずつ下ります。段数が重複度 m になります。</figcaption>
+  </figure>
+  <p>各段にはカスプ形式がのります。連鎖の数値データには、格子の傾き μ（Bostの傾き不等式の形）と割り切れ性 <code>DIV</code> が入っています。</p>
+</section>
+
+<section id="field">
+  <p class="ve-label caps">補助の数体</p>
+  <h2>円分体を4つの条件で切り出し、その数体のコホモロジーを小さく抑える</h2>
+  <figure>
+    <div class="frame"><svg class="ve-svg" viewBox="0 0 1000 300" aria-label="円分体を4つの条件で切り出して補助の数体Eを作り、そのSha型の群の長さの和を評価する">
+      <path class="ve-e" d="M210 150H370"/><text class="ve-el r" x="222" y="140">切り出す</text>
+      <path class="ve-e" d="M570 150H690"/><text class="ve-el r" x="580" y="140">コホモロジー</text>
+      <g class="ve-n"><rect class="sh" x="30" y="115" width="180" height="70"/><text x="120" y="142">円分体</text><text class="sub" x="120" y="164">Q(ζ_N)</text></g>
+      <g class="ve-n" data-ref="field"><rect class="sh" x="370" y="115" width="200" height="70"/><text x="470" y="142">補助の数体 E</text><text class="sub" x="470" y="164">IsChiField</text></g>
+      <g class="ve-n is-key"><rect class="sh" x="690" y="105" width="280" height="90"/><text x="830" y="132">Sha型の群の長さの和</text><text class="sub" x="830" y="156">≤ √exp(x^ε)</text><text class="sub" x="830" y="178">VVle · shaLen</text></g>
+      <text class="ve-tag cond" x="30" y="230">切り出す4つの条件</text>
+      <text class="ve-tag cond" x="30" y="256">① 2^(e+2) を法に a ≡ ±1 （2べきの塔）</text>
+      <text class="ve-tag cond" x="30" y="280">② 指標 ψ の核</text>
+      <text class="ve-tag cond" x="400" y="256">③ 素数 q ≡ 3 (mod 8) のヤコビ記号</text>
+      <text class="ve-tag cond" x="400" y="280">④ 素数 d ≡ 7 (mod 16) のヤコビ記号</text>
+      <text class="ve-tag" x="690" y="230">発表文の項目17（Vandiverの弱い形）</text>
+      <text class="ve-tag" x="690" y="256">と項目11（岩澤塔）にあたるとみられる</text>
+    </svg></div>
+    <figcaption><span class="fig-n">Fig. 5</span>補助の数体 E のガロアコホモロジーが小さいという評価 <code>VWin</code> が、もう1つの入力になります。</figcaption>
+  </figure>
+</section>
+
+<section id="map">
+  <p class="ve-label caps">発表文との対応</p>
+  <h2>発表文の項目の多くに、対応する定義が見つかった</h2>
+  <div class="ve-table"><table>
+    <thead><tr><th>発表文の項目</th><th>Leanで見つかったもの</th><th>確度</th></tr></thead>
+    <tbody>
+      <tr><td>長さ √X の連鎖</td><td><code>SizeWindows</code>・<code>RestSize</code> の <code>x^(1/2−ε) ≤ m</code></td><td><span class="chip ok">高</span></td></tr>
+      <tr><td>8. 反復テータリフト、重複度 m</td><td><code>LiftChain</code>・<code>DefiniteLiftChain</code></td><td><span class="chip ok">高</span></td></tr>
+      <tr><td>5. Λ への切り替え、ギナン＝ヴェイユ</td><td>素数和 <code>Λ.Gm(x)</code>、オイラー定数、<code>logDerivativeAtOne</code></td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>9・10. 割り切れ性、Chowla–Selberg、Siegel質量</td><td><code>Data.DIV</code>、<code>ChowlaSelbergPeriod</code>、<code>SiegelMassRatio</code></td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>11. 岩澤塔</td><td><code>IsChiField</code> の 2^(e+2) の条件</td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>12. シーソー、Rallis</td><td><code>DefiniteChainFromRallis</code>、<code>SeeSaw</code></td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>13. Bostの傾き不等式</td><td><code>QuotientSlopeBoundsWith</code>、傾き μ・μ_max</td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>17. Vandiverの弱い形</td><td><code>VVle</code> の <code>shaLen</code></td><td><span class="chip warn">中</span></td></tr>
+      <tr><td>14. 各リフトの「コスト」</td><td><code>CostWindows</code>、<code>moveCost</code></td><td><span class="chip risk">低</span></td></tr>
+      <tr><td>19. Behrend</td><td><code>Formalism.BehrendSets</code>（名前のみ）</td><td><span class="chip risk">低</span></td></tr>
+    </tbody>
+  </table></div>
+  <p>確度の「高」は定義の中身を読んで一致を確認したもの、「中」は定義の形が一致するもの、「低」は名前だけで対応を推測したものです。</p>
+  <p><b>訂正：</b><code>BoundAtTwoThree</code> は項目14の「2/3」ではありませんでした。剰余標数が 2 と 3 の素点での評価です。</p>
+</section>
+
+<section id="unknown">
+  <p class="ve-label caps">未確認</p>
+  <h2>決め手のビルドと、連鎖から不等式へのつなぎは未確認</h2>
+  <ul class="todo">
+    <li><span class="chip risk">未確認</span> <b>ビルドが通るか。</b>1,737万行の検査は手元のMacでは現実的ではありません。通った後の <code>#print axioms riemannHypothesis</code> が最終確認になります。</li>
+    <li><span class="chip warn">推測</span> <b>連鎖から不等式へのつなぎ。</b><code>LiftChain</code> の連鎖が不等式のデータに入る途中は、名前と型でしか確認できていません。</li>
+    <li><span class="chip warn">未読</span> <b>明示公式の本体と、大定理の証明の中身。</b>主張だけ確認しました。</li>
+  </ul>
+</section>
+
+<section class="sources" aria-label="Sources"><p class="ve-label caps">Sources</p>
+  <p><code>lean/src/Main.lean</code> · <code>lean/src/Statements.lean</code> · <code>Development/AutomorphicArithmetic/CharacterBoxes/MainConclusion.lean</code> · <code>Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/TopWin.lean</code> · <code>Formalism/SizeWindowBrackets/GrowthBoundGivesRiemannHypothesis.lean</code> · <code>Formalism/SizeWindowBrackets/SChain.lean</code> · <code>Formalism/RankGapBounds/MeanBoundSecondForm.lean</code> · <code>Formalism/SharpRestriction/Divisibility/ZetaProductPairs.lean</code> · <code>Formalism/SharpRestriction/Divisibility/FunctionModelRallisFromInputs.lean</code> · <code>Development/AutomorphicArithmetic/CharacterBoxes/ExistsPageN.lean</code></p>
+  <p>詳しい調査記録：同じフォルダの <code>リーマン予想とGRHの証明発表（2026-11-20）_Leanファイル調査.md</code></p>
+</section>
+</main>
+</body>
+</html>
